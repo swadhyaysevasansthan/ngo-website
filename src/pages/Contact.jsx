@@ -35,19 +35,19 @@ const Contact = () => {
     {
       icon: <MapPin className="w-6 h-6" />,
       title: "Our Address",
-      content: "Swadhyay Mandir, B-3/2-1, Trikoot Society-1, Room 1, Delhi - 110089",
+      content: "first floor, B-3/2, Sector 16, Rohini, Delhi, 110089",
     },
     {
       icon: <Phone className="w-6 h-6" />,
       title: "Phone Number",
-      content: "+91 9810 090 974",
-      link: "tel:+919810090974",
+      content: "+91 95992 24323",
+      link: "tel:+9195992 24323",
     },
     {
       icon: <Mail className="w-6 h-6" />,
       title: "Email Address",
-      content: "swadhyay.yogan@gmail.com",
-      link: "mailto:swadhyay.yogan@gmail.com",
+      content: "swadhyaysevasansthan@gmail.com",
+      link: "mailto:swadhyaysevasansthan@gmail.com",
     },
   ];
 
@@ -170,3 +170,4 @@ const Contact = () => {
 };
 
 export default Contact;
+
