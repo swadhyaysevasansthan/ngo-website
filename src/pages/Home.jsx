@@ -194,7 +194,7 @@ const Home = () => {
                 </Button>
               </Link>
               <Link to="/contact">
-                <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-primary-600">
+                <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-gray-900 hover:border-white">
                   Contact Us
                 </Button>
               </Link>
@@ -207,3 +207,4 @@ const Home = () => {
 };
 
 export default Home;
+
