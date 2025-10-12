@@ -63,7 +63,7 @@ const ALL_QUIZZES = [
 
 // Access/lock configuration at module scope
 const ACCESS_CODE = 'ecoquest@123';
-const ACCESS_DURATION_MIN = 15; // 15 minutes for both access and lock
+const ACCESS_DURATION_MIN = 13; // 15 minutes for both access and lock
 const ACCESS_KEY = 'sss_quiz_access_granted';
 const CLICK_KEY = 'sss_quiz_taken_at';
 
@@ -292,5 +292,6 @@ const Quiz = () => {
 };
 
 export default Quiz;
+
 
 
