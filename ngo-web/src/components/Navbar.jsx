@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import ngoLogo from '../assets/ngo-logo.png';  // Add this import
+import ngoLogo from '../assets/ngo-logo copy.png';  // Add this import
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,9 +10,10 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About Us', path: '/about' },
+    { name: 'Our Team', path: '/ourteam'}, //new
     { name: 'Quiz', path: '/quiz' },
     { name: 'Question Bank', path: '/question-bank' }, // new
-    { name: 'Our Team', path: '/ourteam'}, //new
+    
     { name: 'Contact', path: '/contact' },
   ];
 

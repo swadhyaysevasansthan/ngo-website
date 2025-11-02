@@ -59,16 +59,18 @@ const Footer = () => {
               <li className="flex items-start space-x-3">
                 <MapPin size={18} className="text-primary-400 mt-1 flex-shrink-0" />
                 <span className="text-sm">
-                   Swadhyay Health Care, first floor, B-3/2, Sector 16, Rohini, Delhi, 110089
+                   B-3/2, 1st floor ,Sector 16, Rohini, Delhi, 110089
+
                 </span>
               </li>
               <li className="flex items-center space-x-3">
                 <Phone size={18} className="text-primary-400 flex-shrink-0" />
-                <span className="text-sm">+91 95992 24323</span>
+                <span className="text-sm">+91 95992 24323, 9837042298, 9810279323
+</span>
               </li>
               <li className="flex items-center space-x-3">
                 <Mail size={18} className="text-primary-400 flex-shrink-0" />
-                <span className="text-sm">swadhyaysevasansthan@gmail.com</span>
+                <span className="text-sm">swadhyaysevafoundation@gmail.com</span>
               </li>
 
               {/* Social Media Links */}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Heart, Users, BookOpen, Sprout, ArrowRight, Target, Eye } from 'lucide-react';
@@ -7,6 +7,11 @@ import Card from '../components/Card';
 import SectionHeader from '../components/SectionHeader';
 
 const Home = () => {
+
+  useEffect(() => {
+    document.title = 'Home - Swadhyay Seva Foundation';
+  }, []);
+
   const services = [
     {
       icon: <BookOpen className="w-12 h-12" />,

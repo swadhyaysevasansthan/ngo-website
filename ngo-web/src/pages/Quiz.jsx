@@ -5,7 +5,9 @@ import Card from '../components/Card';
 import SectionHeader from '../components/SectionHeader';
 import Button from '../components/Button';
 
-/* ========= Module-scope constants (Option B) ========= */
+
+/* ========= Module-scope constants ========= */
+
 
 // Custom Sprout icon as a JSX factory function
 const SproutIcon = (props) => (
@@ -29,74 +31,97 @@ const SproutIcon = (props) => (
 );
 
 
-
-// Stable quizzes array (3 entries) — each uses the same dual icons
+// Stable quizzes array (3 entries)
 const ALL_QUIZZES = [
   {
     id: 1,
     title: 'Environmental Awareness Quiz',
     description:
       'Test your knowledge about environmental conservation, climate change, biodiversity, and sustainable practices. Learn about the importance of protecting our planet.',
-    duration: '13 minutes',
+    duration: '12 minutes',
     questions: '25 questions',
-    url: 'https://forms.office.com/r/6NmRuEY2z8',
+    url: 'https://forms.office.com/r/wrVmC81JPb',
   },
   {
     id: 2,
     title: 'Environmental Awareness Quiz',
     description:
       'Test your knowledge about environmental conservation, climate change, biodiversity, and sustainable practices. Learn about the importance of protecting our planet.',
-    duration: '13 minutes',
+    duration: '12 minutes',
     questions: '25 questions',
-    url: 'https://forms.office.com/r/Lp7E7trv4v',
+    url: 'https://forms.office.com/r/hn4KLS1p6a',
   },
   {
     id: 3,
     title: 'Environmental Awareness Quiz',
     description:
       'Test your knowledge about environmental conservation, climate change, biodiversity, and sustainable practices. Learn about the importance of protecting our planet.',
-    duration: '13 minutes',
+    duration: '12 minutes',
     questions: '25 questions',
-    url: 'https://forms.office.com/r/0PKvu7QDR9',
+    url: 'https://forms.office.com/r/cQFY32eJb6',
   },
 ];
 
+
+// Access code to quiz mapping
+const ACCESS_CODE_MAP = {
+  [process.env.REACT_APP_ACCESS_CODE_1]: 0, // Maps to quiz at index 0
+  [process.env.REACT_APP_ACCESS_CODE_2]: 1, // Maps to quiz at index 1
+  [process.env.REACT_APP_ACCESS_CODE_3]: 2, // Maps to quiz at index 2
+};
+
+
 // Access/lock configuration at module scope
-const ACCESS_CODE = 'ecoquest@123';
-const ACCESS_DURATION_MIN = 13; // 15 minutes for both access and lock
+const ACCESS_DURATION_MIN = 13; // 12 minutes for both access and lock
 const ACCESS_KEY = 'sss_quiz_access_granted';
 const CLICK_KEY = 'sss_quiz_taken_at';
+
 
 // Utility at module scope
 const minutesSince = (timestamp) => (Date.now() - timestamp) / (1000 * 60);
 
+
 /* =================== Component =================== */
 
+
 const Quiz = () => {
-  // Random quiz
-  const [randomQuiz, setRandomQuiz] = useState(null);
+
+
+  useEffect(() => {
+    document.title = 'Quiz - Swadhyay Seva Foundation';
+  }, []);
+
+
+  // Display quiz (default to first quiz for display purposes)
+  const [displayQuiz, setDisplayQuiz] = useState(ALL_QUIZZES[0]);
+  
+  // Selected quiz based on access code
+  const [selectedQuiz, setSelectedQuiz] = useState(null);
+
 
   // Access code gate
   const [codeInput, setCodeInput] = useState('');
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [authError, setAuthError] = useState('');
 
+
   // One-click lock
   const [isTakenLocked, setIsTakenLocked] = useState(false);
 
-  // Initialize: pick random quiz, restore authorization and one-click lock
-  useEffect(() => {
-    // random quiz (from 3 quizzes)
-    const idx = Math.floor(Math.random() * ALL_QUIZZES.length);
-    setRandomQuiz(ALL_QUIZZES[idx]);
 
-    // restore access
+  // Initialize: restore authorization and quiz selection
+  useEffect(() => {
+    // restore access and quiz selection
     try {
       const stored = localStorage.getItem(ACCESS_KEY);
       if (stored) {
-        const { grantedAt } = JSON.parse(stored);
+        const { grantedAt, quizIndex } = JSON.parse(stored);
         if (minutesSince(grantedAt) <= ACCESS_DURATION_MIN) {
           setIsAuthorized(true);
+          if (quizIndex !== undefined && ALL_QUIZZES[quizIndex]) {
+            setSelectedQuiz(ALL_QUIZZES[quizIndex]);
+            setDisplayQuiz(ALL_QUIZZES[quizIndex]);
+          }
         } else {
           localStorage.removeItem(ACCESS_KEY);
         }
@@ -104,6 +129,7 @@ const Quiz = () => {
     } catch {
       localStorage.removeItem(ACCESS_KEY);
     }
+
 
     // restore click lock
     try {
@@ -122,28 +148,41 @@ const Quiz = () => {
     }
   }, []);
 
-  // Verify access code
+
+  // Verify access code and set corresponding quiz
   const handleVerifyCode = (e) => {
     e.preventDefault();
     setAuthError('');
-    if (codeInput.trim() === ACCESS_CODE) {
+    
+    const trimmedCode = codeInput.trim().toLowerCase();
+    const quizIndex = ACCESS_CODE_MAP[trimmedCode];
+    
+    if (quizIndex !== undefined) {
       setIsAuthorized(true);
-      localStorage.setItem(ACCESS_KEY, JSON.stringify({ grantedAt: Date.now() }));
+      setSelectedQuiz(ALL_QUIZZES[quizIndex]);
+      setDisplayQuiz(ALL_QUIZZES[quizIndex]);
+      localStorage.setItem(ACCESS_KEY, JSON.stringify({ 
+        grantedAt: Date.now(),
+        quizIndex: quizIndex 
+      }));
     } else {
       setIsAuthorized(false);
       setAuthError('Invalid code. Please contact the organizer for the correct access code.');
     }
   };
 
-  // Take quiz with one-click lock (15-minute lock)
+
+  // Take quiz with one-click lock (12-minute lock)
   const handleTakeQuiz = () => {
-    if (!randomQuiz?.url || randomQuiz.url === '#') return;
+    if (!selectedQuiz?.url || selectedQuiz.url === '#') return;
     if (isTakenLocked) return;
+
 
     localStorage.setItem(CLICK_KEY, String(Date.now()));
     setIsTakenLocked(true);
-    window.open(randomQuiz.url, '_blank', 'noopener,noreferrer');
+    window.open(selectedQuiz.url, '_blank', 'noopener,noreferrer');
   };
+
 
   return (
     <div className="bg-gray-50">
@@ -165,6 +204,7 @@ const Quiz = () => {
           </motion.div>
         </div>
       </section>
+
 
       {/* Why Quizzes Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -195,100 +235,106 @@ const Quiz = () => {
         </Card>
       </section>
 
+
       {/* Featured Quiz Section */}
       <section className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader title="Featured Quiz" subtitle="Enter the access code to proceed" />
 
-          {randomQuiz && (
-            <div className="max-w-3xl mx-auto">
-              <Card delay={0.1}>
-                <div className="p-8 md:p-12">
-                  {/* Badge with two separate circles side by side */}
-                    <div className="flex items-center justify-center gap-4 mx-auto mb-6">
-                      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center shadow-sm">
-                        <Brain className="w-9 h-9 text-primary-600" />
-                      </div>
-                      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center shadow-sm">
-                        <SproutIcon className="w-8 h-8 text-green-600" />
-                      </div>
-                    </div>
 
-                  <h3 className="text-3xl font-bold text-gray-800 mb-4 text-center">
-                    {randomQuiz.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed mb-8 text-center text-lg">
-                    {randomQuiz.description}
-                  </p>
-
-                  {/* Duration + Questions side by side */}
-                  <div className="flex flex-wrap gap-3 mb-8 justify-center">
-                    <span className="px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium">
-                      {randomQuiz.duration}
-                    </span>
-                    <span className="px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium">
-                      {randomQuiz.questions}
-                    </span>
+          <div className="max-w-3xl mx-auto">
+            <Card delay={0.1}>
+              <div className="p-8 md:p-12">
+                {/* Badge with two separate circles side by side */}
+                <div className="flex items-center justify-center gap-4 mx-auto mb-6">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center shadow-sm">
+                    <Brain className="w-9 h-9 text-primary-600" />
                   </div>
-
-                  {/* Access Gate + One-Click Control (no countdown UI) */}
-                  {!isAuthorized ? (
-                    <div className="max-w-xl mx-auto">
-                      <div className="flex items-center justify-center mb-4 text-gray-700">
-                        <Lock className="w-5 h-5 mr-2 text-primary-600" />
-                        <span className="text-sm">Protected quiz. Enter the access code to continue.</span>
-                      </div>
-                      <form onSubmit={handleVerifyCode} className="flex flex-col sm:flex-row gap-3 justify-center">
-                        <input
-                          type="password"
-                          value={codeInput}
-                          onChange={(e) => setCodeInput(e.target.value)}
-                          placeholder="Enter access code"
-                          className="w-full sm:w-64 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                          aria-label="Access code"
-                        />
-                        <Button type="submit" variant="primary" className="w-full sm:w-auto">
-                          Verify Code
-                        </Button>
-                      </form>
-                      {authError && <p className="text-red-600 text-sm text-center mt-3">{authError}</p>}
-                    </div>
-                  ) : (
-                    <div className="flex flex-col items-center gap-4">
-                      <div className="flex items-center justify-center text-green-600">
-                        <ShieldCheck className="w-5 h-5 mr-2" />
-                        <span className="text-sm font-medium">Access granted</span>
-                      </div>
-
-                      <Button
-                        variant="primary"
-                        className={`w-full sm:w-auto ${(!randomQuiz.url || randomQuiz.url === '#' || isTakenLocked) ? 'opacity-60 cursor-not-allowed' : ''}`}
-                        onClick={handleTakeQuiz}
-                        disabled={!randomQuiz.url || randomQuiz.url === '#' || isTakenLocked}
-                        title={
-                          !randomQuiz.url || randomQuiz.url === '#'
-                            ? 'Quiz link coming soon'
-                            : isTakenLocked
-                            ? 'You have already opened the quiz. Please try again later.'
-                            : 'Open quiz in a new tab'
-                        }
-                      >
-                        Take Quiz <ExternalLink className="inline ml-2" size={18} />
-                      </Button>
-
-                      <p className="text-xs text-gray-500 text-center">
-                        Note: After clicking “Take Quiz”, don’t go back. You won’t be able to take it again.
-                      </p>
-                    </div>
-                  )}
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center shadow-sm">
+                    <SproutIcon className="w-8 h-8 text-green-600" />
+                  </div>
                 </div>
-              </Card>
-            </div>
-          )}
+
+
+                <h3 className="text-3xl font-bold text-gray-800 mb-4 text-center">
+                  {displayQuiz.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed mb-8 text-center text-lg">
+                  {displayQuiz.description}
+                </p>
+
+
+                {/* Duration + Questions side by side */}
+                <div className="flex flex-wrap gap-3 mb-8 justify-center">
+                  <span className="px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium">
+                    {displayQuiz.duration}
+                  </span>
+                  <span className="px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium">
+                    {displayQuiz.questions}
+                  </span>
+                </div>
+
+
+                {/* Access Gate + One-Click Control */}
+                {!isAuthorized ? (
+                  <div className="max-w-xl mx-auto">
+                    <div className="flex items-center justify-center mb-4 text-gray-700">
+                      <Lock className="w-5 h-5 mr-2 text-primary-600" />
+                      <span className="text-sm">Protected quiz. Enter the access code to continue.</span>
+                    </div>
+                    <form onSubmit={handleVerifyCode} className="flex flex-col sm:flex-row gap-3 justify-center">
+                      <input
+                        type="password"
+                        value={codeInput}
+                        onChange={(e) => setCodeInput(e.target.value)}
+                        placeholder="Enter access code"
+                        className="w-full sm:w-64 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                        aria-label="Access code"
+                      />
+                      <Button type="submit" variant="primary" className="w-full sm:w-auto">
+                        Verify Code
+                      </Button>
+                    </form>
+                    {authError && <p className="text-red-600 text-sm text-center mt-3">{authError}</p>}
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="flex items-center justify-center text-green-600">
+                      <ShieldCheck className="w-5 h-5 mr-2" />
+                      <span className="text-sm font-medium">Access granted</span>
+                    </div>
+
+
+                    <Button
+                      variant="primary"
+                      className={`w-full sm:w-auto ${(!selectedQuiz?.url || selectedQuiz.url === '#' || isTakenLocked) ? 'opacity-60 cursor-not-allowed' : ''}`}
+                      onClick={handleTakeQuiz}
+                      disabled={!selectedQuiz?.url || selectedQuiz.url === '#' || isTakenLocked}
+                      title={
+                        !selectedQuiz?.url || selectedQuiz.url === '#'
+                          ? 'Quiz link coming soon'
+                          : isTakenLocked
+                          ? 'You have already opened the quiz. Please try again later.'
+                          : 'Open quiz in a new tab'
+                      }
+                    >
+                      Take Quiz <ExternalLink className="inline ml-2" size={18} />
+                    </Button>
+
+
+                    <p className="text-xs text-gray-500 text-center">
+                      Note: After clicking "Take Quiz", don't go back. You won't be able to take it again.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </Card>
+          </div>
         </div>
       </section>
     </div>
   );
 };
+
 
 export default Quiz;

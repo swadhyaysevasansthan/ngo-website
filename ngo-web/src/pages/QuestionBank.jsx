@@ -80,6 +80,11 @@ const PdfJsViewer = ({ src }) => {
 };
 
 const QuestionBank = () => {
+
+  useEffect(() => {
+    document.title = 'Question Bank - Swadhyay Seva Foundation';
+  }, []);
+
   const [code, setCode] = useState("");
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [error, setError] = useState("");

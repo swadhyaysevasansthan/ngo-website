@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
 import Card from '../components/Card';
@@ -6,6 +6,11 @@ import SectionHeader from '../components/SectionHeader';
 import Button from '../components/Button';
 
 const Contact = () => {
+
+  useEffect(() => {
+    document.title = 'Contact - Swadhyay Seva Foundation';
+  }, []);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -35,19 +40,19 @@ const Contact = () => {
     {
       icon: <MapPin className="w-6 h-6" />,
       title: "Our Address",
-      content: "Swadhyay Health Care, First floor, B-3/2, Sector 16, Rohini, Delhi, 110089",
+      content: "B-3/2, 1st floor ,Sector 16, Rohini, Delhi, 110089",
     },
     {
       icon: <Phone className="w-6 h-6" />,
       title: "Phone Number",
-      content: "+91 95992 24323",
+      content: "+91 95992 24323, 9837042298, 9810279323",
       link: "tel:+9195992 24323",
     },
     {
       icon: <Mail className="w-6 h-6" />,
       title: "Email Address",
-      content: "swadhyaysevasansthan@gmail.com",
-      link: "mailto:swadhyaysevasansthan@gmail.com",
+      content: "swadhyaysevafoundation@gmail.com",
+      link: "mailto:swadhyaysevafoundation@gmail.com",
     },
   ];
 

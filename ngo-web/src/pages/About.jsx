@@ -1,10 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { motion } from 'framer-motion';
 import { Award, Users, Heart, Leaf } from 'lucide-react';
 import Card from '../components/Card';
 import SectionHeader from '../components/SectionHeader';
 
 const About = () => {
+
+  useEffect(() => {
+    document.title = 'About Us - Swadhyay Seva Foundation';
+  }, []);
+
   const values = [
     {
       icon: <Heart className="w-10 h-10" />,
