@@ -7,6 +7,7 @@ import About from './pages/About';
 import Quiz from './pages/Quiz';
 import Contact from './pages/Contact';
 import QuestionBank from './pages/QuestionBank'; // new
+import OurTeam from './pages/OurTeam';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/question-bank" element={<QuestionBank />} /> 
+            <Route path="/ourteam" element={<OurTeam />} />
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </main>

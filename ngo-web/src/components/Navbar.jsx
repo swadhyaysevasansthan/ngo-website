@@ -12,6 +12,7 @@ const Navbar = () => {
     { name: 'About Us', path: '/about' },
     { name: 'Quiz', path: '/quiz' },
     { name: 'Question Bank', path: '/question-bank' }, // new
+    { name: 'Our Team', path: '/ourteam'}, //new
     { name: 'Contact', path: '/contact' },
   ];
 

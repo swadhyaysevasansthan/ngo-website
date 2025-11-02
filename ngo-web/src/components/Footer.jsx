@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Heart } from 'lucide-react';
+import { Mail, Phone, MapPin, Heart, Instagram, Linkedin } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -40,6 +40,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/OurTeam" className="hover:text-primary-400 transition-colors text-sm">
+                  Our Team
+                </Link>
+              </li>
+              <li>
                 <Link to="/contact" className="hover:text-primary-400 transition-colors text-sm">
                   Contact Us
                 </Link>
@@ -64,6 +69,26 @@ const Footer = () => {
               <li className="flex items-center space-x-3">
                 <Mail size={18} className="text-primary-400 flex-shrink-0" />
                 <span className="text-sm">swadhyaysevasansthan@gmail.com</span>
+              </li>
+
+              {/* Social Media Links */}
+              <li className="flex items-center space-x-4 mt-3">
+                <a
+                  href="https://www.instagram.com/swadhyaysevafoundation/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-pink-500 transition-colors"
+                >
+                  <Instagram size={20} />
+                </a>
+                <a
+                  href="https://www.linkedin.com/company/swadhyaysevasansthan"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-blue-400 transition-colors"
+                >
+                  <Linkedin size={20} />
+                </a>
               </li>
             </ul>
           </div>
