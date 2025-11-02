@@ -7,7 +7,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 // Set PDF.js worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-const ACCESS_CODE = process.env.REACT_APP_QUESTION_BANK_ACCESS_CODE; // 
+const ACCESS_CODE = "SNEAC2025"; // 
 const PDF_FILE = "/question-banks/paper-7-9th.pdf"; // 
 
 // ✅ Responsive PDF viewer
