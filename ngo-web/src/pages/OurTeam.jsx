@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import { Award, Users, User, Heart, Leaf, Cpu } from 'lucide-react';
+// import { Award, Users, User, Heart, Leaf, Cpu } from 'lucide-react';
 import Card from '../components/Card';
 import SectionHeader from '../components/SectionHeader';
 
@@ -13,7 +13,7 @@ const OurTeam = () => {
     {
       name: "Manish Goel",
       role: "Founder & President",
-      description: "Naturopath, Trainer, Financial Consultant, Social Activist, Vedic Farmer",
+      description: "Naturopath, Trainer, Financial Consultant, Social Activist, Vedic Farmer ",
       image: "/images/team/manish-goel.jpg",
     },
     {

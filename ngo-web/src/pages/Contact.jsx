@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
 import Card from '../components/Card';
 import SectionHeader from '../components/SectionHeader';
-import Button from '../components/Button';
+// import Button from '../components/Button';
 
 const Contact = () => {
 

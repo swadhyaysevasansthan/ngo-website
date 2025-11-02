@@ -65,9 +65,9 @@ const ALL_QUIZZES = [
 
 // Access code to quiz mapping
 const ACCESS_CODE_MAP = {
-  "ecoquest1@sneac2025": 0, // Maps to quiz at index 0
-  "ecoquest2@swadhyay": 1, // Maps to quiz at index 1
-  "ecoquest3@quizenv": 2, // Maps to quiz at index 2
+  [process.env.REACT_APP_QUIZ_ACCESS_CODE_1]: 0, // Maps to quiz at index 0
+  [process.env.REACT_APP_QUIZ_ACCESS_CODE_2]: 1, // Maps to quiz at index 1
+  [process.env.REACT_APP_QUIZ_ACCESS_CODE_3]: 2, // Maps to quiz at index 2
 };
 
 
