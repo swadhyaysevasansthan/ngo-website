@@ -20,6 +20,9 @@ module.exports = {
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
+      },
+      screens: {
+        'nav': '900px', // custom breakpoint called 'nav'
       }
     },
   },

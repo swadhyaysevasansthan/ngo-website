@@ -38,7 +38,7 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden nav:flex space-x-8">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -57,7 +57,7 @@ const Navbar = () => {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-gray-700 hover:text-primary-600 focus:outline-none"
+            className="nav:hidden text-gray-700 hover:text-primary-600 focus:outline-none"
           >
             {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
@@ -65,7 +65,7 @@ const Navbar = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden pb-4">
+          <div className="nav:hidden pb-4">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
