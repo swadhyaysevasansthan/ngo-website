@@ -150,7 +150,7 @@ const OurTeam = () => {
 
   const generalBodyTeam = [
     { name: "Rajiv Kumar Garg", role: "Member", image: "/images/team/user-nobg.png", },
-    { name: "Tushar Goel", role: "Member", image: "/images/team/user-nobg.png", },
+    { name: "Tushar Goel", role: "Member", image: "/images/team/tushar-goel.jpg", },
     { name: "Ishita Goel", role: "Member", image: "/images/team/user-nobg.png", },
     { name: "Mansi Goel", role: "Member", image: "/images/team/user-nobg.png", },
   ];
@@ -169,7 +169,7 @@ const OurTeam = () => {
     {
       name: "Tushar Goel",
       role: "Pursuing B.Tech (Computer Science)",
-      image: "/images/team/user-nobg.png",
+      image: "/images/team/tushar-goel.jpg",
     },
     {
       name: "Govind Goyal",
