@@ -17,11 +17,10 @@ const TeamSection = ({
         {members.map((member, index) => {
           const hasDetails = !!member.details;
           const hasDescription = !!member.description;
-
           return (
             <div
               key={index}
-              className={!hasDetails ? "cursor-default" : "cursor-pointer"}
+              className={hasDetails ? "cursor-pointer" : "cursor-default"}
               onClick={() => selectable && hasDetails && setSelectedMember(member)}
               style={!hasDetails ? { opacity: 1 } : {}}
             >
@@ -46,11 +45,15 @@ const TeamSection = ({
                   {member.role && (
                     <p className="text-sm text-primary-600 text-center font-medium mb-2">{member.role}</p>
                   )}
-                  {/* If NO details, show description in card */}
+                  {/* Show description in card if no details */}
                   {hasDescription && !hasDetails && (
-                    <p className="text-xs text-gray-600 text-center leading-relaxed">{member.description}</p>
+                    <div className="w-full overflow-y-auto max-h-[90px] md:max-h-[110px] lg:max-h-[125px] px-2 text-xs text-gray-600 text-center leading-relaxed">
+                      {typeof member.description === "string"
+                        ? member.description
+                        : member.description}
+                    </div>
                   )}
-                  {/* If details, show click for more only */}
+                  {/* If details exist, do NOT reveal description in card -- show only click-for-more */}
                   {hasDetails && (
                     <span className="mt-2 block text-xs text-gray-400 text-center">(Click for more)</span>
                   )}
