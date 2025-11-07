@@ -262,6 +262,6 @@ export const youngITTeam = [
     {
       name: "Govind Goyal",
       role: "B.Tech (Computer Science)",
-      image: "/images/team/user-nobg.png", 
+      image: "/images/team/govind.jpg", 
     }
   ];
