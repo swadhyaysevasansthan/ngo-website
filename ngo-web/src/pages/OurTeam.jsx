@@ -88,7 +88,7 @@ const OurTeam = () => {
           subtitle: "Innovative minds driving our digital transformation",
           bg: "bg-white"
         }}
-        selectable={false}
+        setSelectedMember={setSelectedMember}
       />
 
       {selectedMember && selectedMember.details &&
