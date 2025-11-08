@@ -45,10 +45,10 @@ export const coreMembers = [
       image: "/images/team/user-nobg.png",
     },
     {
-      name: "Ruchi Rawal",
+      name: "Dr. Ruchi Rawal",
       role: "General Secretary",
       description: "Contributing to sustainable environmental and paper-making initiatives",
-      image: "/images/team/user-nobg.png",
+      image: "/images/team/ruchi.jpg",
     },
     
   ];
