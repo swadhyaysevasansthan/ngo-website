@@ -47,8 +47,14 @@ export const coreMembers = [
     {
       name: "Dr. Ruchi Rawal",
       role: "General Secretary",
-      description: "Contributing to sustainable environmental and paper-making initiatives",
+      description: "Certified Naturopathy & Marma Therapy Practitioner 10+ Years of Experience | 3000+ Patients Healed Across India",
       image: "/images/team/ruchi.jpg",
+      details: (
+        <div>
+          <p>Dr. Ruchi Rawal is a highly experienced Naturopathy doctor and certified Marma Therapy expert, dedicated to holistic healing for over a decade. She has successfully treated more than 3000 individuals of all age groups across India through personalized diet plans and Ayurvedic herbs.</p><br/>
+          <p>Her core focus lies in managing and reversing lifestyle disorders naturally—such as thyroid issues, diabetes, PCOS, obesity, hypertension, and more. Dr. Ruchi combines the ancient wisdom of Ayurveda with the power of nature to heal from the root.</p>
+        </div>
+      )
     },
     
   ];
