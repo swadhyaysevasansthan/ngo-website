@@ -5,33 +5,44 @@ import ngoLogo from '../assets/ngo-logo copy.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [quizDropdownOpen, setQuizDropdownOpen] = useState(false);
+  const [ourWorkDropdownOpen, setOurWorkDropdownOpen] = useState(false);
   const location = useLocation();
-  const dropdownRef = useRef(null); //click outside
+  const quizDropdownRef = useRef(null);
+  const ourWorkDropdownRef = useRef(null);
 
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About Us', path: '/about' },
     { name: 'Our Team', path: '/ourteam' },
-    { name: 'Quiz', path: '/quiz' },
-    { name: 'Question Bank', path: '/question-bank' },
-    { name: 'Our Work', dropdown: true },
+    { name: 'Quiz', dropdown: true, type: 'quiz' },
+    { name: 'Our Work', dropdown: true, type: 'ourWork' },
     { name: 'Contact', path: '/contact' },
   ];
 
-  const ourWorkSubLinks = [
-    { name: 'Milestones', path: '/milestones' },
-    { name: 'Activities', path: '/activities' },
-    { name: 'Highlights', path: '/highlights' },
+  const quizSubLinks = [
+    { name: 'Question Bank', path: '/question-bank' },
+    { name: 'Quiz', path: '/quiz' },
   ];
+
+  const ourWorkSubLinks = [
+  { name: 'Natural Farming', path: '/natural-farming' },
+  { name: 'Naturopathy', path: '/naturopathy' },
+  { name: 'Plantation', path: '/plantation' },
+  { name: 'Yoga', path: '/yoga' },
+];
+
 
   const isActive = (path) => location.pathname === path;
 
-  //Close dropdown if clicking outside
+  // Close dropdowns if clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
+      if (quizDropdownRef.current && !quizDropdownRef.current.contains(event.target)) {
+        setQuizDropdownOpen(false);
+      }
+      if (ourWorkDropdownRef.current && !ourWorkDropdownRef.current.contains(event.target)) {
+        setOurWorkDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -55,27 +66,46 @@ const Navbar = () => {
           <div className="hidden nav:flex space-x-8 relative">
             {navLinks.map((link, index) =>
               link.dropdown ? (
-                <div key={index} className="relative" ref={dropdownRef}>
+                <div 
+                  key={index} 
+                  className="relative" 
+                  ref={link.type === 'quiz' ? quizDropdownRef : ourWorkDropdownRef}
+                >
                   <button
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                    onClick={() => {
+                      if (link.type === 'quiz') {
+                        setQuizDropdownOpen(!quizDropdownOpen);
+                        setOurWorkDropdownOpen(false);
+                      } else {
+                        setOurWorkDropdownOpen(!ourWorkDropdownOpen);
+                        setQuizDropdownOpen(false);
+                      }
+                    }}
                     className="flex items-center space-x-1 text-gray-700 hover:text-primary-600 transition-colors duration-200"
                   >
-                    <span>Our Work</span>
+                    <span>{link.name}</span>
                     <ChevronDown
                       size={18}
                       className={`transform transition-transform duration-200 ${
-                        dropdownOpen ? 'rotate-180' : ''
+                        (link.type === 'quiz' && quizDropdownOpen) || 
+                        (link.type === 'ourWork' && ourWorkDropdownOpen)
+                          ? 'rotate-180' 
+                          : ''
                       }`}
                     />
                   </button>
 
-                  {dropdownOpen && (
+                  {((link.type === 'quiz' && quizDropdownOpen) || 
+                    (link.type === 'ourWork' && ourWorkDropdownOpen)) && (
                     <div className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
-                      {ourWorkSubLinks.map((sublink) => (
+                      {(link.type === 'quiz' ? quizSubLinks : ourWorkSubLinks).map((sublink) => (
                         <Link
                           key={sublink.path}
                           to={sublink.path}
-                          onClick={() => setDropdownOpen(false)}
+                          onClick={() => {
+                            setQuizDropdownOpen(false);
+                            setOurWorkDropdownOpen(false);
+                          }}
                           className={`block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600 ${
                             isActive(sublink.path) ? 'font-semibold text-primary-600' : ''
                           }`}
@@ -111,32 +141,43 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Mobile Navigation (unchanged) */}
+        {/* Mobile Navigation */}
         {isOpen && (
           <div className="nav:hidden pb-4">
             {navLinks.map((link, index) =>
               link.dropdown ? (
                 <div key={index} className="px-4">
                   <button
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                    onClick={() => {
+                      if (link.type === 'quiz') {
+                        setQuizDropdownOpen(!quizDropdownOpen);
+                      } else {
+                        setOurWorkDropdownOpen(!ourWorkDropdownOpen);
+                      }
+                    }}
                     className="flex justify-between items-center w-full text-gray-700 py-3 hover:text-primary-600"
                   >
-                    <span>Our Work</span>
+                    <span>{link.name}</span>
                     <ChevronDown
                       className={`transform transition-transform duration-200 ${
-                        dropdownOpen ? 'rotate-180' : ''
+                        (link.type === 'quiz' && quizDropdownOpen) || 
+                        (link.type === 'ourWork' && ourWorkDropdownOpen)
+                          ? 'rotate-180' 
+                          : ''
                       }`}
                     />
                   </button>
-                  {dropdownOpen && (
+                  {((link.type === 'quiz' && quizDropdownOpen) || 
+                    (link.type === 'ourWork' && ourWorkDropdownOpen)) && (
                     <div className="pl-4">
-                      {ourWorkSubLinks.map((sublink) => (
+                      {(link.type === 'quiz' ? quizSubLinks : ourWorkSubLinks).map((sublink) => (
                         <Link
                           key={sublink.path}
                           to={sublink.path}
                           onClick={() => {
                             setIsOpen(false);
-                            setDropdownOpen(false);
+                            setQuizDropdownOpen(false);
+                            setOurWorkDropdownOpen(false);
                           }}
                           className={`block py-2 text-gray-700 hover:text-primary-600 ${
                             isActive(sublink.path) ? 'font-semibold text-primary-600' : ''

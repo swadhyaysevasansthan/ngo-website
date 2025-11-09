@@ -38,7 +38,7 @@ const ALL_QUIZZES = [
     title: 'Environmental Awareness Quiz',
     description:
       'Test your knowledge about environmental conservation, climate change, biodiversity, and sustainable practices. Learn about the importance of protecting our planet.',
-    duration: '12 minutes',
+    duration: '10 minutes',
     questions: '25 questions',
     url: 'https://forms.office.com/r/wrVmC81JPb',
   },
@@ -47,7 +47,7 @@ const ALL_QUIZZES = [
     title: 'Environmental Awareness Quiz',
     description:
       'Test your knowledge about environmental conservation, climate change, biodiversity, and sustainable practices. Learn about the importance of protecting our planet.',
-    duration: '12 minutes',
+    duration: '10 minutes',
     questions: '25 questions',
     url: 'https://forms.office.com/r/hn4KLS1p6a',
   },
@@ -56,7 +56,7 @@ const ALL_QUIZZES = [
     title: 'Environmental Awareness Quiz',
     description:
       'Test your knowledge about environmental conservation, climate change, biodiversity, and sustainable practices. Learn about the importance of protecting our planet.',
-    duration: '12 minutes',
+    duration: '10 minutes',
     questions: '25 questions',
     url: 'https://forms.office.com/r/cQFY32eJb6',
   },

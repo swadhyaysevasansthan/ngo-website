@@ -8,9 +8,10 @@ import Quiz from './pages/Quiz';
 import Contact from './pages/Contact';
 import QuestionBank from './pages/QuestionBank'; // new
 import OurTeam from './pages/OurTeam';
-import Milestones from './pages/Milestones';// new
-import Activities from './pages/Activities';// new
-import Highlights from './pages/Highlights';// new
+import NaturalFarming from './pages/NaturalFarming';
+import Naturopathy from './pages/Naturopathy';
+import Plantation from './pages/Plantation';
+import Yoga from './pages/Yoga';
 
 function App() {
   return (
@@ -25,9 +26,10 @@ function App() {
             <Route path="/question-bank" element={<QuestionBank />} /> 
             <Route path="/ourteam" element={<OurTeam />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/milestones" element={<Milestones />} />
-            <Route path="/activities" element={<Activities />} />
-            <Route path="/highlights" element={<Highlights />} />
+            <Route path="/natural-farming" element={<NaturalFarming />} />
+            <Route path="/naturopathy" element={<Naturopathy />} />
+            <Route path="/plantation" element={<Plantation />} />
+            <Route path="/yoga" element={<Yoga />} />
           </Routes>
         </main>
         <Footer />

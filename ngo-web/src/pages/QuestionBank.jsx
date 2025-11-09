@@ -8,7 +8,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const ACCESS_CODE = process.env.REACT_APP_QUESTION_ACCESS_CODE; // 
-const PDF_FILE = "/question-banks/paper-7-9th.pdf"; // 
+const PDF_FILE = "/question-banks/paper 2 for 7-9th.pdf"; // 
 
 // ✅ Responsive PDF viewer
 const PdfJsViewer = ({ src }) => {
