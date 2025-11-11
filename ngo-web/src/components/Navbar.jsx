@@ -6,8 +6,8 @@ import ngoLogo from '../assets/ngo-logo copy.png';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeMobileDropdown, setActiveMobileDropdown] = useState('');
-  const [activeDesktopDropdown, setActiveDesktopDropdown] = useState('');
   const [activeMobileSubDropdown, setActiveMobileSubDropdown] = useState('');
+  const [activeDesktopDropdown, setActiveDesktopDropdown] = useState('');
   const location = useLocation();
   const quizDropdownRef = useRef(null);
   const ourCommunitiesDropdownRef = useRef(null);
@@ -138,13 +138,12 @@ const Navbar = () => {
                     />
                   </button>
 
-                  {/* Dropdown Menu */}
+                  {/* Dropdown Menu (Desktop) */}
                   {activeDesktopDropdown === link.type && (
                     <div className="absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 z-50">
                       {(link.type === 'quiz' ? quizSubLinks : ourCommunitiesSubLinks).map(
                         (sublink) => (
                           <div key={sublink.path} className="relative group">
-                            {/* Main sublink */}
                             <Link
                               to={sublink.path}
                               onClick={() => setActiveDesktopDropdown('')}
@@ -157,7 +156,7 @@ const Navbar = () => {
                               {sublink.name}
                             </Link>
 
-                            {/* Second-level dropdown (Events) */}
+                            {/* Second-level submenu for desktop */}
                             {sublink.sublinks && (
                               <div className="absolute left-full top-0 mt-0 w-48 bg-white rounded-lg shadow-lg py-2 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-200">
                                 {sublink.sublinks.map((eventLink) => (
@@ -227,7 +226,7 @@ const Navbar = () => {
                     />
                   </button>
 
-                  {/* Mobile Submenu */}
+                  {/* Mobile dropdowns */}
                   {activeMobileDropdown === link.type && (
                     <div className="pl-4">
                       {(link.type === 'quiz' ? quizSubLinks : ourCommunitiesSubLinks).map(
@@ -235,11 +234,13 @@ const Navbar = () => {
                           <div key={sublink.path}>
                             <button
                               onClick={() =>
-                                setActiveMobileSubDropdown(
-                                  activeMobileSubDropdown === sublink.path
-                                    ? ''
-                                    : sublink.path
-                                )
+                                sublink.sublinks
+                                  ? setActiveMobileSubDropdown(
+                                      activeMobileSubDropdown === sublink.path
+                                        ? ''
+                                        : sublink.path
+                                    )
+                                  : (setIsOpen(false), setActiveMobileDropdown(''))
                               }
                               className="flex justify-between items-center w-full py-2 text-gray-700 hover:text-primary-600"
                             >
@@ -255,7 +256,7 @@ const Navbar = () => {
                               )}
                             </button>
 
-                            {/* Second-level submenu for mobile */}
+                            {/* Nested mobile submenu */}
                             {activeMobileSubDropdown === sublink.path && sublink.sublinks && (
                               <div className="pl-4">
                                 {sublink.sublinks.map((eventLink) => (
