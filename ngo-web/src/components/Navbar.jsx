@@ -208,57 +208,64 @@ const Navbar = () => {
             {navLinks.map((link, index) =>
               link.dropdown ? (
                 <div key={index} className="px-4">
+                  {/* Main mobile dropdown button */}
                   <button
-                    onClick={() =>
+                    onClick={(e) => {
+                      e.stopPropagation();
                       setActiveMobileDropdown(
                         activeMobileDropdown === link.type ? '' : link.type
-                      )
-                    }
-                    className="flex justify-between items-center w-full text-gray-700 py-3 hover:text-primary-600"
+                      );
+                    }}
+                    className="flex justify-between items-center w-full text-gray-700 py-3 hover:text-primary-600 cursor-pointer"
                   >
                     <span>{link.name}</span>
                     <ChevronDown
-                      className={
-                        activeMobileDropdown === link.type
-                          ? 'transform rotate-180 transition-transform duration-200'
-                          : 'transform transition-transform duration-200'
-                      }
+                      className={`transform transition-transform duration-200 ${
+                        activeMobileDropdown === link.type ? 'rotate-180' : ''
+                      }`}
                     />
                   </button>
 
-                  {/* Mobile dropdowns */}
-                  {activeMobileDropdown === link.type && (
-                    <div className="pl-4">
-                      {(link.type === 'quiz' ? quizSubLinks : ourCommunitiesSubLinks).map(
-                        (sublink) => (
-                          <div key={sublink.path}>
-                            <button
-                              onClick={() =>
-                                sublink.sublinks
-                                  ? setActiveMobileSubDropdown(
-                                      activeMobileSubDropdown === sublink.path
-                                        ? ''
-                                        : sublink.path
-                                    )
-                                  : (setIsOpen(false), setActiveMobileDropdown(''))
-                              }
-                              className="flex justify-between items-center w-full py-2 text-gray-700 hover:text-primary-600"
-                            >
-                              <span>{sublink.name}</span>
-                              {sublink.sublinks && (
-                                <ChevronDown
-                                  className={
+                  {/* Mobile dropdown content */}
+                  <div
+                    className={`pl-4 overflow-hidden transition-all duration-300 ease-in-out ${
+                      activeMobileDropdown === link.type ? 'max-h-[1000px]' : 'max-h-0'
+                    }`}
+                  >
+                    {(link.type === 'quiz' ? quizSubLinks : ourCommunitiesSubLinks).map(
+                      (sublink) => (
+                        <div key={sublink.path}>
+                          {sublink.sublinks ? (
+                            <>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setActiveMobileSubDropdown(
                                     activeMobileSubDropdown === sublink.path
-                                      ? 'transform rotate-180 transition-transform duration-200'
-                                      : 'transform transition-transform duration-200'
-                                  }
+                                      ? ''
+                                      : sublink.path
+                                  );
+                                }}
+                                className="flex justify-between items-center w-full py-2 text-gray-700 hover:text-primary-600 cursor-pointer"
+                              >
+                                <span>{sublink.name}</span>
+                                <ChevronDown
+                                  className={`transform transition-transform duration-200 ${
+                                    activeMobileSubDropdown === sublink.path
+                                      ? 'rotate-180'
+                                      : ''
+                                  }`}
                                 />
-                              )}
-                            </button>
+                              </button>
 
-                            {/* Nested mobile submenu */}
-                            {activeMobileSubDropdown === sublink.path && sublink.sublinks && (
-                              <div className="pl-4">
+                              {/* Second-level submenu */}
+                              <div
+                                className={`pl-4 overflow-hidden transition-all duration-300 ease-in-out ${
+                                  activeMobileSubDropdown === sublink.path
+                                    ? 'max-h-[1000px]'
+                                    : 'max-h-0'
+                                }`}
+                              >
                                 {sublink.sublinks.map((eventLink) => (
                                   <Link
                                     key={eventLink.path}
@@ -274,12 +281,23 @@ const Navbar = () => {
                                   </Link>
                                 ))}
                               </div>
-                            )}
-                          </div>
-                        )
-                      )}
-                    </div>
-                  )}
+                            </>
+                          ) : (
+                            <Link
+                              to={sublink.path}
+                              onClick={() => {
+                                setIsOpen(false);
+                                setActiveMobileDropdown('');
+                              }}
+                              className="block py-2 text-gray-700 hover:text-primary-600"
+                            >
+                              {sublink.name}
+                            </Link>
+                          )}
+                        </div>
+                      )
+                    )}
+                  </div>
                 </div>
               ) : (
                 <Link
