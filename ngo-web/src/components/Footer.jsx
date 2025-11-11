@@ -76,7 +76,7 @@ const Footer = () => {
               {/* Social Media Links */}
               <li className="flex items-center space-x-4 mt-3">
                 <a
-                  href="https://www.instagram.com/swadhyaysevafoundation/"
+                  href="https://www.instagram.com/swadhyay.seva.foundation/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-pink-500 transition-colors"
