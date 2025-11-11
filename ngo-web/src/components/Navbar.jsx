@@ -16,10 +16,13 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About Us', path: '/about' },
+    { name: 'Milestones', path: '/milestones' },
     { name: 'Our Team', path: '/ourteam' },
     { name: 'Quiz', dropdown: true, type: 'quiz' },
     { name: 'Our Communities', dropdown: true, type: 'ourcommunities' },
+    { name: 'Partner with Us', path: '/partners' },
     { name: 'Contact', path: '/contact' },
+    { name: 'Donate', path: '/donate' },
   ];
 
   const quizSubLinks = [
