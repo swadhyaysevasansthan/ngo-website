@@ -7,56 +7,91 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeMobileDropdown, setActiveMobileDropdown] = useState('');
   const [activeDesktopDropdown, setActiveDesktopDropdown] = useState('');
+  const [activeMobileSubDropdown, setActiveMobileSubDropdown] = useState('');
   const location = useLocation();
   const quizDropdownRef = useRef(null);
-  const ourWorkDropdownRef = useRef(null);
+  const ourCommunitiesDropdownRef = useRef(null);
 
-  // Links
+  // Navigation Links
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About Us', path: '/about' },
     { name: 'Our Team', path: '/ourteam' },
     { name: 'Quiz', dropdown: true, type: 'quiz' },
-    { name: 'Our Work', dropdown: true, type: 'ourwork' },
+    { name: 'Our Communities', dropdown: true, type: 'ourcommunities' },
     { name: 'Contact', path: '/contact' },
   ];
+
   const quizSubLinks = [
     { name: 'Question Bank', path: '/question-bank' },
     { name: 'Quiz', path: '/quiz' },
   ];
-  const ourWorkSubLinks = [
-    { name: 'Natural Farming', path: '/natural-farming' },
-    { name: 'Naturopathy', path: '/naturopathy' },
-    { name: 'Plantation', path: '/plantation' },
-    { name: 'Yoga', path: '/yoga' },
+
+  const ourCommunitiesSubLinks = [
+    {
+      name: 'Natural Farming',
+      path: '/natural-farming',
+      sublinks: [
+        { name: 'Current Events', path: '/natural-farming/current-events' },
+        { name: 'Past Events', path: '/natural-farming/past-events' },
+        { name: 'Upcoming Events', path: '/natural-farming/upcoming-events' },
+      ],
+    },
+    {
+      name: 'Naturopathy',
+      path: '/naturopathy',
+      sublinks: [
+        { name: 'Current Events', path: '/naturopathy/current-events' },
+        { name: 'Past Events', path: '/naturopathy/past-events' },
+        { name: 'Upcoming Events', path: '/naturopathy/upcoming-events' },
+      ],
+    },
+    {
+      name: 'Plantation',
+      path: '/plantation',
+      sublinks: [
+        { name: 'Current Events', path: '/plantation/current-events' },
+        { name: 'Past Events', path: '/plantation/past-events' },
+        { name: 'Upcoming Events', path: '/plantation/upcoming-events' },
+      ],
+    },
+    {
+      name: 'Yoga',
+      path: '/yoga',
+      sublinks: [
+        { name: 'Current Events', path: '/yoga/current-events' },
+        { name: 'Past Events', path: '/yoga/past-events' },
+        { name: 'Upcoming Events', path: '/yoga/upcoming-events' },
+      ],
+    },
   ];
 
   const isActive = (path) => location.pathname === path;
 
-  // Desktop click outside: only for desktop menus
-useEffect(() => {
-  function handleClickOutside(event) {
-    // Only close the dropdown if it's open and the click is outside the relevant dropdown
-    if (
-      activeDesktopDropdown === 'quiz' &&
-      quizDropdownRef.current &&
-      !quizDropdownRef.current.contains(event.target)
-    ) {
-      setActiveDesktopDropdown('');
+  // Handle outside click for desktop
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        activeDesktopDropdown === 'quiz' &&
+        quizDropdownRef.current &&
+        !quizDropdownRef.current.contains(event.target)
+      ) {
+        setActiveDesktopDropdown('');
+      }
+      if (
+        activeDesktopDropdown === 'ourcommunities' &&
+        ourCommunitiesDropdownRef.current &&
+        !ourCommunitiesDropdownRef.current.contains(event.target)
+      ) {
+        setActiveDesktopDropdown('');
+      }
     }
-    if (
-      activeDesktopDropdown === 'ourwork' &&
-      ourWorkDropdownRef.current &&
-      !ourWorkDropdownRef.current.contains(event.target)
-    ) {
-      setActiveDesktopDropdown('');
+
+    if (activeDesktopDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
     }
-  }
-  if (activeDesktopDropdown) {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }
-}, [activeDesktopDropdown]);
+  }, [activeDesktopDropdown]);
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
@@ -70,9 +105,7 @@ useEffect(() => {
               className="w-16 h-16 rounded-full object-cover"
             />
             <div className="flex flex-col">
-              <span className="font-bold text-xl text-gray-800">
-                Swadhyay
-              </span>
+              <span className="font-bold text-xl text-gray-800">Swadhyay</span>
               <span className="text-xs text-gray-600">Seva Foundation</span>
             </div>
           </Link>
@@ -84,7 +117,7 @@ useEffect(() => {
                 <div
                   key={index}
                   className="relative"
-                  ref={link.type === 'quiz' ? quizDropdownRef : ourWorkDropdownRef}
+                  ref={link.type === 'quiz' ? quizDropdownRef : ourCommunitiesDropdownRef}
                 >
                   <button
                     onClick={() =>
@@ -105,25 +138,43 @@ useEffect(() => {
                     />
                   </button>
 
+                  {/* Dropdown Menu */}
                   {activeDesktopDropdown === link.type && (
-                    <div className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
-                      {(link.type === 'quiz'
-                        ? quizSubLinks
-                        : ourWorkSubLinks
-                      ).map((sublink) => (
-                        <Link
-                          key={sublink.path}
-                          to={sublink.path}
-                          onClick={() => setActiveDesktopDropdown('')}
-                          className={`block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600 ${
-                            isActive(sublink.path)
-                              ? 'font-semibold text-primary-600'
-                              : ''
-                          }`}
-                        >
-                          {sublink.name}
-                        </Link>
-                      ))}
+                    <div className="absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 z-50">
+                      {(link.type === 'quiz' ? quizSubLinks : ourCommunitiesSubLinks).map(
+                        (sublink) => (
+                          <div key={sublink.path} className="relative group">
+                            {/* Main sublink */}
+                            <Link
+                              to={sublink.path}
+                              onClick={() => setActiveDesktopDropdown('')}
+                              className={`block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600 ${
+                                isActive(sublink.path)
+                                  ? 'font-semibold text-primary-600'
+                                  : ''
+                              }`}
+                            >
+                              {sublink.name}
+                            </Link>
+
+                            {/* Second-level dropdown (Events) */}
+                            {sublink.sublinks && (
+                              <div className="absolute left-full top-0 mt-0 w-48 bg-white rounded-lg shadow-lg py-2 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-200">
+                                {sublink.sublinks.map((eventLink) => (
+                                  <Link
+                                    key={eventLink.path}
+                                    to={eventLink.path}
+                                    onClick={() => setActiveDesktopDropdown('')}
+                                    className="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600"
+                                  >
+                                    {eventLink.name}
+                                  </Link>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )
+                      )}
                     </div>
                   )}
                 </div>
@@ -175,28 +226,57 @@ useEffect(() => {
                       }
                     />
                   </button>
+
+                  {/* Mobile Submenu */}
                   {activeMobileDropdown === link.type && (
                     <div className="pl-4">
-                      {(link.type === 'quiz'
-                        ? quizSubLinks
-                        : ourWorkSubLinks
-                      ).map((sublink) => (
-                        <Link
-                          key={sublink.path}
-                          to={sublink.path}
-                          onClick={() => {
-                            setIsOpen(false);
-                            setActiveMobileDropdown('');
-                          }}
-                          className={`block py-2 text-gray-700 hover:text-primary-600 ${
-                            isActive(sublink.path)
-                              ? 'font-semibold text-primary-600'
-                              : ''
-                          }`}
-                        >
-                          {sublink.name}
-                        </Link>
-                      ))}
+                      {(link.type === 'quiz' ? quizSubLinks : ourCommunitiesSubLinks).map(
+                        (sublink) => (
+                          <div key={sublink.path}>
+                            <button
+                              onClick={() =>
+                                setActiveMobileSubDropdown(
+                                  activeMobileSubDropdown === sublink.path
+                                    ? ''
+                                    : sublink.path
+                                )
+                              }
+                              className="flex justify-between items-center w-full py-2 text-gray-700 hover:text-primary-600"
+                            >
+                              <span>{sublink.name}</span>
+                              {sublink.sublinks && (
+                                <ChevronDown
+                                  className={
+                                    activeMobileSubDropdown === sublink.path
+                                      ? 'transform rotate-180 transition-transform duration-200'
+                                      : 'transform transition-transform duration-200'
+                                  }
+                                />
+                              )}
+                            </button>
+
+                            {/* Second-level submenu for mobile */}
+                            {activeMobileSubDropdown === sublink.path && sublink.sublinks && (
+                              <div className="pl-4">
+                                {sublink.sublinks.map((eventLink) => (
+                                  <Link
+                                    key={eventLink.path}
+                                    to={eventLink.path}
+                                    onClick={() => {
+                                      setIsOpen(false);
+                                      setActiveMobileDropdown('');
+                                      setActiveMobileSubDropdown('');
+                                    }}
+                                    className="block py-2 text-gray-700 hover:text-primary-600"
+                                  >
+                                    {eventLink.name}
+                                  </Link>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )
+                      )}
                     </div>
                   )}
                 </div>
