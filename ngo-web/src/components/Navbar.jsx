@@ -27,6 +27,9 @@ const Navbar = () => {
   const quizSubLinks = [
     { name: 'Question Bank', path: '/question-bank' },
     { name: 'Online Quiz', path: '/quiz' },
+    { name: 'School Stories', path: '/quiz/school-stories' },
+    { name: 'Currently Active Events', path: '/quiz/currently-active' },
+    { name: 'Upcoming Engagements', path: 'quiz/upcoming-engagements' },
   ];
 
   const ourCommunitiesSubLinks = [

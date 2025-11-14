@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Heart, Users, BookOpen, Sprout, ArrowRight, Target, Eye } from 'lucide-react';
+import { Heart, Users, BookOpen, Sprout, ArrowRight, Target, Eye, Brain } from 'lucide-react';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import SectionHeader from '../components/SectionHeader';
@@ -32,6 +32,11 @@ const Home = () => {
       title: "Community Empowerment",
       description: "Organizing mass plantation drives, creating green zones, and empowering youth through environmental and social initiatives.",
     },
+    {
+      icon: <Brain className="w-12 h-12" />,
+      title: "Quiz & Knowledge Assessment",
+      description: "Conducting engaging quiz competitions in schools and communities to encourage learning, stimulate curiosity, and foster healthy competition. Participants gain recognition and valuable knowledge through interactive experiences.",
+    },
   ];
 
   // ---------- Highlights slideshow logic ----------
@@ -43,13 +48,24 @@ const Home = () => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // --- MODIFICATION 1: Wrap nextSlide in useCallback ---
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  }, [images.length]); // Add dependency
+
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
 
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
+    // --- MODIFICATION 2: Add the useEffect for the automatic carousel ---
+  useEffect(() => {
+    // Set an interval to advance the slide every 3 seconds
+    const intervalId = setInterval(nextSlide, 3000);
+
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, [nextSlide]); // Dependency array ensures effect stability
+
 
 
   return (
@@ -82,7 +98,7 @@ const Home = () => {
             </div>
           </motion.div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-0 left-0 right-0 mb-[-1px]">
           <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#F9FAFB"/>
           </svg>
@@ -127,34 +143,35 @@ const Home = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <SectionHeader title="Highlights"/>
 
-          {/* Slideshow Container */}
-          <div className="relative overflow-hidden rounded-2xl shadow-lg max-w-4xl mx-auto">
-            <div className="flex justify-center items-center relative">
+          {/* --- MODIFICATION 3: Apply new styles for a better cross-fade effect --- */}
+          <div className="relative overflow-hidden rounded-2xl shadow-lg max-w-4xl mx-auto" style={{ height: '500px' }}> {/* Give it a fixed height */}
+            <div className="relative w-full h-full">
 
               {images.map((src, index) => (
                 <img
                   key={index}
                   src={src}
                   alt={`Highlight ${index + 1}`}
-                  className={`w-full h-auto object-contain object-center transition-opacity duration-700 ${index === currentIndex ? 'opacity-100' : 'opacity-0 absolute'
-                    }`}
+                  className={`w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-1000 ease-in-out ${
+                    index === currentIndex ? 'opacity-100' : 'opacity-0'
+                  }`}
                 />
               ))}
 
-              {/* Prev Button */}
+              {/* Prev Button (add z-10) */}
               <button
                 onClick={prevSlide}
-                className="absolute left-2 md:left-1 top-1/2 -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 rounded-full p-2 shadow-md text-2xl"
+                className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-80 rounded-full p-3 shadow-md text-gray-800 z-10"
               >
-                ‹
+                &#10094; {/* Left Arrow */}
               </button>
 
-              {/* Next Button */}
+              {/* Next Button (add z-10) */}
               <button
                 onClick={nextSlide}
-                className="absolute right-2 md:right-1 top-1/2 -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 rounded-full p-2 shadow-md text-2xl"
+                className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-80 rounded-full p-3 shadow-md text-gray-800 z-10"
               >
-                ›
+                &#10095; {/* Right Arrow */}
               </button>
 
             </div>
@@ -170,7 +187,7 @@ const Home = () => {
             title="What We Do"
             subtitle="Comprehensive programs designed to create lasting positive impact"
           />
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
               <Card key={index} delay={index * 0.1}>
                 <div className="p-6 text-center">

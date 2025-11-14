@@ -47,7 +47,7 @@ export const coreMembers = [
     {
       name: "Dr. Ruchi Rawal",
       role: "General Secretary",
-      description: "Certified Naturopathy & Marma Therapy Practitioner 10+ Years of Experience | 3000+ Patients Healed Across India",
+      description: "Certified Naturopathy & Marma Therapy Practitioner 10+ Years of Experience, 3000+ Patients Healed Across India",
       image: "/images/team/ruchi.jpg",
       details: (
         <div>
@@ -79,8 +79,19 @@ export const patrons = [
   },
   {
     name: "Dr. Anand Singh",
-    description: "Professor, College of Horticulture, Banda University of Agriculture and Technology, Banda, Uttar Pradesh",
-    image: "/images/team/user-nobg.png",
+    role: "Professor, College of Horticulture, Fruit Science",
+    description: "Professor of Fruit Science, Researcher, Extension Specialist",
+    image: "/images/team/anand-singh.jpeg",
+    details: (
+      <div>
+         <p> Dr. Anand Singh is a distinguished Professor of Fruit Science at Banda University of Agriculture and Technology (BUAT), Banda, Uttar Pradesh, known for his significant contributions to horticultural research, education, and agricultural extension.</p><br/>
+          <p>He earned both his M.Sc. and Ph.D. in Fruit Science from Acharya Narendra Deva University of Agriculture & Technology (ANDUAT), Ayodhya.</p><br/>
+          <p>With a rich professional journey, Dr. Singh has previously served as Head and Senior Scientist at Krishi Vigyan Kendra (KVK)-II, Sitapur, Uttar Pradesh, and KVK Sitamarhi, Bihar. His leadership and scientific guidance have enabled these KVKs to achieve recognition and awards across several platforms.</p><br/>
+          <p>Dr. Singh has worked extensively on government-funded research initiatives supported by ICAR, DST, DBT, UPCST, NABARD, and other prestigious agencies. His areas of focus include fruit crop improvement, production technology, and farmer-centric extension programs. A respected member of multiple professional societies, he also serves on the Geographical Indication (G.I.) team for Allahabad Surkha Guava, contributing to the preservation of indigenous horticultural heritage.</p><br/>
+          <p>Dr. Singh has authored over 20 research papers, numerous review articles, extension bulletins, and booklets. He is a regular contributor to radio and television programs, where he delivers expert insights on fruit science, horticultural advancements, and farmer welfare.</p><br/>
+          <p>Through his dedication to research, teaching, and outreach, Dr. Anand Singh continues to play a pivotal role in advancing fruit science and empowering farming communities.</p>
+        </div>
+    ),
   },
   {
     name: "Sandeep Marodia",
@@ -207,8 +218,18 @@ export const environmentExperts = [
     {
       name: "Dr. Anand Singh",
       role: "Professor, Fruit Science",
-      description: "College of Horticulture, Banda University of Agriculture & Technology, Banda",
-      image: "/images/team/user-nobg.png",
+      description: "Professor of Fruit Science, Researcher, Extension Specialist",
+      image: "/images/team/anand-singh.jpeg",
+      details: (
+      <div>
+         <p> Dr. Anand Singh is a distinguished Professor of Fruit Science at Banda University of Agriculture and Technology (BUAT), Banda, Uttar Pradesh, known for his significant contributions to horticultural research, education, and agricultural extension.</p><br/>
+          <p>He earned both his M.Sc. and Ph.D. in Fruit Science from Acharya Narendra Deva University of Agriculture & Technology (ANDUAT), Ayodhya.</p><br/>
+          <p>With a rich professional journey, Dr. Singh has previously served as Head and Senior Scientist at Krishi Vigyan Kendra (KVK)-II, Sitapur, Uttar Pradesh, and KVK Sitamarhi, Bihar. His leadership and scientific guidance have enabled these KVKs to achieve recognition and awards across several platforms.</p><br/>
+          <p>Dr. Singh has worked extensively on government-funded research initiatives supported by ICAR, DST, DBT, UPCST, NABARD, and other prestigious agencies. His areas of focus include fruit crop improvement, production technology, and farmer-centric extension programs. A respected member of multiple professional societies, he also serves on the Geographical Indication (G.I.) team for Allahabad Surkha Guava, contributing to the preservation of indigenous horticultural heritage.</p><br/>
+          <p>Dr. Singh has authored over 20 research papers, numerous review articles, extension bulletins, and booklets. He is a regular contributor to radio and television programs, where he delivers expert insights on fruit science, horticultural advancements, and farmer welfare.</p><br/>
+          <p>Through his dedication to research, teaching, and outreach, Dr. Anand Singh continues to play a pivotal role in advancing fruit science and empowering farming communities.</p>
+        </div>
+    ),
     },
     {
       name: "Dr. Brij Mohan Pandey",
@@ -250,7 +271,7 @@ export const youngITTeam = [
     {
       name: "Tushar Jain",
       role: "B.Tech (CSAI)",
-      description: "Java Developer | Oracle Certified in Generative AI | Creative Technologist",
+      description: "Java Developer, Oracle Certified in Generative AI, Creative Technologist",
       image: "/images/team/user-nobg.png",
       details: (
         <div>
@@ -290,7 +311,7 @@ export const youngITTeam = [
       name: "Govind Goyal",
       role: "B.Tech (Computer Science)",
       image: "/images/team/govind.jpg", 
-      description: "Machine Learning & Data Science Engineer | Skilled in Python, TensorFlow & MLOps",
+      description: "Machine Learning & Data Science Engineer, Skilled in Python, TensorFlow & MLOps",
       details: (
         <div>
           <p>

@@ -28,3 +28,7 @@ dist-ssr
 
 # React build output
 build/
+
+#JSX FILES
+src/components/WelcomeModal.jsx
+src/components/WelcomeModal.css
