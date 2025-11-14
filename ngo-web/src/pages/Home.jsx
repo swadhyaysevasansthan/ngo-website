@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Heart, Users, BookOpen, Sprout, ArrowRight, Target, Eye } from 'lucide-react';
@@ -7,7 +7,6 @@ import Card from '../components/Card';
 import SectionHeader from '../components/SectionHeader';
 
 const Home = () => {
-
   useEffect(() => {
     document.title = 'Home - Swadhyay Seva Foundation';
   }, []);
@@ -34,6 +33,32 @@ const Home = () => {
       description: "Organizing mass plantation drives, creating green zones, and empowering youth through environmental and social initiatives.",
     },
   ];
+
+  // ---------- Highlights slideshow logic ----------
+  const images = [
+    '/images/highlight/high1.png',
+    '/images/highlight/high2.png',
+    '/images/highlight/high3.png',
+  ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+
+  // Auto-scroll effect (every 5 seconds)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 5000); // Change slide every 5 seconds
+    return () => clearInterval(interval);
+  }, [currentIndex]);
+  // ------------------------------------------------
 
   return (
     <div className="bg-gray-50">
@@ -105,6 +130,47 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Highlights Section */}
+      <section className="bg-white py-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <SectionHeader title="Highlights"/>
+
+          {/* Slideshow Container */}
+          <div className="relative overflow-hidden rounded-2xl shadow-lg max-w-4xl mx-auto">
+            <div className="flex justify-center items-center relative">
+
+              {images.map((src, index) => (
+                <img
+                  key={index}
+                  src={src}
+                  alt={`Highlight ${index + 1}`}
+                  className={`w-full h-auto object-contain object-center transition-opacity duration-700 ${index === currentIndex ? 'opacity-100' : 'opacity-0 absolute'
+                    }`}
+                />
+              ))}
+
+              {/* Prev Button */}
+              <button
+                onClick={prevSlide}
+                className="absolute left-2 md:left-1 top-1/2 -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 rounded-full p-2 shadow-md text-2xl"
+              >
+                ‹
+              </button>
+
+              {/* Next Button */}
+              <button
+                onClick={nextSlide}
+                className="absolute right-2 md:right-1 top-1/2 -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 rounded-full p-2 shadow-md text-2xl"
+              >
+                ›
+              </button>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+
       {/* What We Do Section */}
       <section className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -135,9 +201,9 @@ const Home = () => {
       {/* Core Focus Areas Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <SectionHeader
-            title="Our Core Focus"
-            subtitle="Building sustainable communities through integrated programs"
-          />
+          title="Our Core Focus"
+          subtitle="Building sustainable communities through integrated programs"
+        />
         <div className="grid md:grid-cols-3 gap-6">
           <Card>
             <div className="p-6">
