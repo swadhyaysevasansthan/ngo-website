@@ -51,14 +51,6 @@ const Home = () => {
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
-  // Auto-scroll effect (every 5 seconds)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 5000); // Change slide every 5 seconds
-    return () => clearInterval(interval);
-  }, [currentIndex]);
-  // ------------------------------------------------
 
   return (
     <div className="bg-gray-50">
