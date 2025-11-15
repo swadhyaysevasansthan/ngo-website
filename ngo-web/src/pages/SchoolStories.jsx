@@ -31,7 +31,30 @@ const SchoolStories = () => {
         '/images/events/emrs/emrs2.jpeg',
         '/images/events/emrs/emrs3.jpeg',
       ]
+    },
+    {
+      id: 2,
+      school: 'PM Shri School Jawahar Navodya Vidyalaya Lari',
+      location: 'Tabo, Himachal Pradesh',
+      date: 'November 13, 2025',
+      participants: '49 students',
+      description: 'We organized an exciting environmental awareness quiz at PM Shri School Jawahar Navodya Vidyalaya in the remote village of Lari, Tabo. The quiz challenged 49 bright students on topics including sustainable development, renewable energy, and conservation practices. The event fostered environmental consciousness in this high-altitude community, inspiring students to become eco-ambassadors in their region.',
+      highlights: [
+        'Comprehensive quiz covering sustainable living and eco-friendly practices',
+        'Strong participation from students in a remote mountain region',
+        'Interactive sessions on local environmental challenges and solutions',
+        'Distribution of educational materials and certificates to all participants',
+        'Emphasis on the role of youth in climate action'
+      ],
+      images: [
+        '/images/events/JNV/jnv1.jpeg', 
+        '/images/events/JNV/jnv2.jpeg',
+        '/images/events/JNV/jnv3.jpeg',
+        '/images/events/JNV/jnv4.jpeg',
+        '/images/events/JNV/jnv5.jpeg',
+      ]
     }
+
   ];
 
   const closeModal = () => {

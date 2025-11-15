@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Heart, Users, BookOpen, Sprout, ArrowRight, Target, Eye, Brain } from 'lucide-react';
@@ -6,10 +6,12 @@ import Button from '../components/Button';
 import Card from '../components/Card';
 import SectionHeader from '../components/SectionHeader';
 
+
 const Home = () => {
   useEffect(() => {
     document.title = 'Home - Swadhyay Seva Foundation';
   }, []);
+
 
   const services = [
     {
@@ -39,6 +41,7 @@ const Home = () => {
     },
   ];
 
+
   // ---------- Highlights slideshow logic ----------
   const images = [
     '/images/highlight/high1.png',
@@ -46,26 +49,18 @@ const Home = () => {
     '/images/highlight/high3.png',
   ];
 
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // --- MODIFICATION 1: Wrap nextSlide in useCallback ---
-  const nextSlide = useCallback(() => {
+
+  const nextSlide = () => {
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  }, [images.length]); // Add dependency
+  };
+
 
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
-
-    // --- MODIFICATION 2: Add the useEffect for the automatic carousel ---
-  useEffect(() => {
-    // Set an interval to advance the slide every 3 seconds
-    const intervalId = setInterval(nextSlide, 3000);
-
-    // Clean up the interval when the component unmounts
-    return () => clearInterval(intervalId);
-  }, [nextSlide]); // Dependency array ensures effect stability
-
 
 
   return (
@@ -105,6 +100,7 @@ const Home = () => {
         </div>
       </section>
 
+
       {/* Mission & Vision Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid md:grid-cols-2 gap-8">
@@ -122,6 +118,7 @@ const Home = () => {
             </div>
           </Card>
 
+
           <Card delay={0.2}>
             <div className="p-8">
               <div className="w-16 h-16 bg-saffron-100 rounded-full flex items-center justify-center mb-6">
@@ -138,14 +135,16 @@ const Home = () => {
         </div>
       </section>
 
+
       {/* Highlights Section */}
       <section className="bg-white py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <SectionHeader title="Highlights"/>
 
-          {/* --- MODIFICATION 3: Apply new styles for a better cross-fade effect --- */}
-          <div className="relative overflow-hidden rounded-2xl shadow-lg max-w-4xl mx-auto" style={{ height: '500px' }}> {/* Give it a fixed height */}
+
+          <div className="relative overflow-hidden rounded-2xl shadow-lg max-w-4xl mx-auto" style={{ height: '500px' }}>
             <div className="relative w-full h-full">
+
 
               {images.map((src, index) => (
                 <img
@@ -158,26 +157,30 @@ const Home = () => {
                 />
               ))}
 
-              {/* Prev Button (add z-10) */}
+
+              {/* Prev Button */}
               <button
                 onClick={prevSlide}
                 className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-80 rounded-full p-3 shadow-md text-gray-800 z-10"
               >
-                &#10094; {/* Left Arrow */}
+                &#10094;
               </button>
 
-              {/* Next Button (add z-10) */}
+
+              {/* Next Button */}
               <button
                 onClick={nextSlide}
                 className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-80 rounded-full p-3 shadow-md text-gray-800 z-10"
               >
-                &#10095; {/* Right Arrow */}
+                &#10095;
               </button>
+
 
             </div>
           </div>
         </div>
       </section>
+
 
 
       {/* What We Do Section */}
@@ -207,6 +210,7 @@ const Home = () => {
         </div>
       </section>
 
+
       {/* Core Focus Areas Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <SectionHeader
@@ -226,6 +230,7 @@ const Home = () => {
             </div>
           </Card>
 
+
           <Card delay={0.1}>
             <div className="p-6">
               <h4 className="font-semibold text-lg text-primary-700 mb-3">Natural Farming</h4>
@@ -237,6 +242,7 @@ const Home = () => {
               </ul>
             </div>
           </Card>
+
 
           <Card delay={0.2}>
             <div className="p-6">
@@ -251,6 +257,7 @@ const Home = () => {
           </Card>
         </div>
       </section>
+
 
       {/* CTA Section */}
       <section className="bg-gradient-to-r from-primary-600 to-saffron-600 py-16">
@@ -285,5 +292,6 @@ const Home = () => {
     </div>
   );
 };
+
 
 export default Home;
