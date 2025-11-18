@@ -137,49 +137,46 @@ const Home = () => {
 
 
       {/* Highlights Section */}
-      <section className="bg-white py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <SectionHeader title="Highlights"/>
+<section className="bg-white py-16">
+  <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <SectionHeader title="Highlights"/>
 
+    <div className="relative overflow-hidden rounded-2xl shadow-lg max-w-4xl mx-auto">
+      {/* Responsive container with aspect ratio */}
+      <div className="relative w-full" style={{ paddingBottom: '56.25%' }}> {/* 16:9 aspect ratio */}
+        
+        {images.map((src, index) => (
+          <img
+            key={index}
+            src={src}
+            alt={`Highlight ${index + 1}`}
+            className={`absolute top-0 left-0 w-full h-full object-contain transition-opacity duration-1000 ease-in-out ${
+              index === currentIndex ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        ))}
 
-          <div className="relative overflow-hidden rounded-2xl shadow-lg max-w-4xl mx-auto" style={{ height: '500px' }}>
-            <div className="relative w-full h-full">
+        {/* Prev Button */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-80 rounded-full p-2 md:p-3 shadow-md text-gray-800 z-10"
+        >
+          &#10094;
+        </button>
 
+        {/* Next Button */}
+        <button
+          onClick={nextSlide}
+          className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-80 rounded-full p-2 md:p-3 shadow-md text-gray-800 z-10"
+        >
+          &#10095;
+        </button>
 
-              {images.map((src, index) => (
-                <img
-                  key={index}
-                  src={src}
-                  alt={`Highlight ${index + 1}`}
-                  className={`w-full h-full object-cover absolute top-0 left-0 transition-opacity duration-1000 ease-in-out ${
-                    index === currentIndex ? 'opacity-100' : 'opacity-0'
-                  }`}
-                />
-              ))}
+      </div>
+    </div>
+  </div>
+</section>
 
-
-              {/* Prev Button */}
-              <button
-                onClick={prevSlide}
-                className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-80 rounded-full p-3 shadow-md text-gray-800 z-10"
-              >
-                &#10094;
-              </button>
-
-
-              {/* Next Button */}
-              <button
-                onClick={nextSlide}
-                className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-80 rounded-full p-3 shadow-md text-gray-800 z-10"
-              >
-                &#10095;
-              </button>
-
-
-            </div>
-          </div>
-        </div>
-      </section>
 
 
 
