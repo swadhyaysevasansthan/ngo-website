@@ -53,7 +53,47 @@ const SchoolStories = () => {
         '/images/events/JNV/jnv4.jpeg',
         '/images/events/JNV/jnv5.jpeg',
       ]
-    }
+    },
+    {
+  id: 3,
+  school: 'Academic Heights World School',
+  location: 'New Delhi, Delhi',
+  date: 'November 18, 2025',
+  participants: '30 students',
+  description: 'Academic Heights World School in New Delhi welcomed our team for an interactive environmental quiz event. Thirty enthusiastic students participated, showcasing impressive knowledge on recycling, water conservation, and sustainable living. The event offered a platform for young minds to explore real-world environmental issues and seek innovative solutions for their city.',
+  highlights: [
+    'Engaging quiz sessions with creative rounds',
+    'Focus on urban sustainability, recycling, and water conservation',
+    'Participation certificates presented to all students',
+    'Facilitated group discussion on local eco-friendly initiatives'
+  ],
+  images: [
+    '/images/events/academic-heights/acad1.jpeg', 
+    '/images/events/academic-heights/acad2.jpeg',
+    '/images/events/academic-heights/acad3.jpeg',
+  ]
+},
+{
+  id: 4,
+  school: 'Koormanchal Academy, Almora',
+  location: 'Almora, Uttarakhand',
+  date: 'November 18, 2025',
+  participants: '5 students',
+  description: 'Our outreach at Koormanchal Academy in Almora brought the message of environmental stewardship to a small but motivated group of five students. Despite the limited numbers, the quiz event sparked meaningful dialogue around biodiversity and the unique ecological challenges of the Himalayan region. The personalized session fostered lasting curiosity and an eagerness for further learning.',
+  highlights: [
+    'Personalized quiz and discussion event with every participant',
+    'Special emphasis on biodiversity in the Himalayan region',
+    'Encouraged creative thinking on local environmental protection',
+    'Distributed certificates and resource materials to all students'
+  ],
+  images: [
+    '/images/events/koormanchal/koormanchal1.jpeg', 
+    '/images/events/koormanchal/koormanchal2.jpeg',
+    '/images/events/koormanchal/koormanchal3.jpeg',
+  ]
+}
+
+
 
   ];
 
@@ -108,9 +148,11 @@ const SchoolStories = () => {
               transition={{ delay: index * 0.1 }}
               className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] max-w-sm"
             >
-              <Card>
+             <Card className="h-[260px] sm:h-[270px] lg:h-[280px] flex flex-col justify-between">
+
+
                 <div
-                  className="p-6 cursor-pointer hover:shadow-xl transition-shadow"
+                  className="p-6 cursor-pointer hover:shadow-xl transition-shadow h-full flex flex-col justify-between"
                   onClick={() => setSelectedEvent(event)}
                 >
                   <h3 className="text-xl font-bold text-gray-800 mb-4">
