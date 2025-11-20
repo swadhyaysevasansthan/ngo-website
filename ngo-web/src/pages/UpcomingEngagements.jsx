@@ -10,9 +10,6 @@ const UpcomingEngagements = () => {
   }, []);
 
   const upcomingEvents = [
-  { date: '13/11/2025', school: 'PM SHRI SCHOOL JAWAHAR NAVODAYA VIDYALAYA', location: 'HIMACHAL PRADESH' },
-  { date: '18/11/2025', school: 'KOORMANCHAL ACADEMY, ALMORA', location: 'UTTARAKHAND' },
-  { date: '18/11/2025', school: 'Academic Heights World School', location: 'DELHI' },
   { date: '21/11/2025', school: 'DAV PUBLIC SCHOOL BSPS', location: 'HIMACHAL PRADESH' },
   { date: '21/11/2025', school: 'Gyan Vigyan Children\'s Academy', location: 'UTTARAKHAND' },
   { date: '21/11/2025', school: 'EMRS NICHAR', location: 'HIMACHAL PRADESH' },
@@ -21,14 +18,17 @@ const UpcomingEngagements = () => {
   { date: '01/12/2025', school: 'Cygnus High World School', location: 'HARYANA' },
   { date: '02/12/2025', school: 'Akal Academy Ajitsar', location: 'HARYANA' },
   { date: '05/12/2025', school: 'Mayoor School, Noida', location: 'UTTAR PRADESH' },
+  { date: '08/12/2025', school: 'Countrywide Public School, Garur', location: 'UTTARAKHAND' },
   { date: '09/12/2025', school: 'SACHDEVA PUBLIC SCHOOL, PITAM PURA', location: 'DELHI' },
   { date: '10/12/2025', school: 'St Xavier\'s High School, Cuttack', location: 'ODISHA' },
+  { date: '10/12/2025', school: 'Vidya Bharti School', location: 'DELHI' },
   { date: '16/12/2025', school: 'Anant Vidya Niketan Public School (Bir)', location: 'HIMACHAL PRADESH' },
   { date: '16/12/2025', school: 'DELHI HERITAGE SCHOOL', location: 'DELHI' },
+  { date: '21/12/2025', school: 'DAV Public School, Tanda', location: 'UTTAR PRADESH' },
   { date: '22/12/2025', school: 'JHABBAN LAL DAV PUBLIC SCHOOL', location: 'DELHI' },
   { date: '22/12/2025', school: 'JAGANNATH INTERNATIONAL SCHOOL', location: 'DELHI' },
   { date: '23/12/2025', school: 'DAV PUBLIC SCHOOL MIDNAPUR', location: 'WEST BENGAL' },
-  { date: '12/01/2026', school: 'JK Public School, IIT Kharagpur', location: 'WEST BENGAL' },
+  { date: '12/01/2026', school: 'DAV Model School, IIT Kharagpur', location: 'WEST BENGAL' },
   { date: '17/01/2026', school: 'JK PUBLIC SCHOOL, KATHUA', location: 'JAMMU AND KASHMIR' },
   { date: '27/01/2026', school: 'Akal Academy, Chogawan', location: 'PUNJAB' },
   { date: '15/03/2026', school: 'Dalhousie Public School', location: 'HIMACHAL PRADESH' },
