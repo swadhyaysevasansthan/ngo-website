@@ -10,11 +10,6 @@ const UpcomingEngagements = () => {
   }, []);
 
   const upcomingEvents = [
-  { date: '21/11/2025', school: 'DAV PUBLIC SCHOOL BSPS', location: 'HIMACHAL PRADESH' },
-  { date: '21/11/2025', school: 'Gyan Vigyan Children\'s Academy', location: 'UTTARAKHAND' },
-  { date: '21/11/2025', school: 'EMRS NICHAR', location: 'HIMACHAL PRADESH' },
-  { date: '24/11/2025', school: 'Salwan Public School', location: 'DELHI EAST' },
-  { date: '24/11/2025', school: 'Pooma Prajna High School', location: 'MAHARASHTRA' },
   { date: '01/12/2025', school: 'Cygnus High World School', location: 'HARYANA' },
   { date: '02/12/2025', school: 'Akal Academy Ajitsar', location: 'HARYANA' },
   { date: '05/12/2025', school: 'Mayoor School, Noida', location: 'UTTAR PRADESH' },

@@ -177,7 +177,7 @@ export const teamMembers = [
     name: "Yogini Shushma",
     role: "MA in YOGA, Diploma in Naturopathy",
     description: "Yoga champion, pranic healer and referee.",
-    image: "/images/team/user-nobg.png",
+    image: "/images/team/shushma.jpg",
     details: (
       <div>
         <p>MA in YOGA, Diploma in naturopathy.</p><br/> 
