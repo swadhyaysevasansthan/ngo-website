@@ -15,19 +15,25 @@ const Navbar = () => {
   // Navigation Links
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'About Us', path: '/about' },
-    { name: 'Our Team', path: '/ourteam' },
+    { name: 'About Us', dropdown: true, type: 'about' },
+    // { name: 'Our Team', path: '/ourteam' },
     { name: 'Quiz', dropdown: true, type: 'quiz' },
+    { name: 'School Stories', path: '/school-stories' },
     { name: 'Our Communities', dropdown: true, type: 'ourcommunities' },
-    { name: 'Partner with Us', path: '/partners' },
+    // { name: 'Partner with Us', path: '/partners' },
     { name: 'Contact', path: '/contact' },
     { name: 'Donate', path: '/donate' },
+  ];
+
+  const aboutSubLinks = [
+    { name: 'About the Foundation', path: '/about' },
+    { name: 'Our Team', path: '/ourteam' },
   ];
 
   const quizSubLinks = [
     { name: 'Question Bank', path: '/question-bank' },
     { name: 'Online Quiz', path: '/quiz' },
-    { name: 'School Stories', path: '/quiz/school-stories' },
+    
     { name: 'Currently Active Events', path: '/quiz/currently-active' },
     { name: 'Upcoming Engagements', path: 'quiz/upcoming-engagements' },
   ];
@@ -116,7 +122,7 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8 relative">
+          <div className="hidden nav:flex space-x-8 relative">
             {navLinks.map((link, index) =>
               link.dropdown ? (
                 <div
@@ -146,41 +152,43 @@ const Navbar = () => {
                   {/* Dropdown Menu (Desktop) */}
                   {activeDesktopDropdown === link.type && (
                     <div className="absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 z-50">
-                      {(link.type === 'quiz' ? quizSubLinks : ourCommunitiesSubLinks).map(
-                        (sublink) => (
-                          <div key={sublink.path} className="relative group">
-                            <Link
-                              to={sublink.path}
-                              onClick={() => setActiveDesktopDropdown('')}
-                              className={`block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600 ${
-                                isActive(sublink.path)
-                                  ? 'font-semibold text-primary-600'
-                                  : ''
-                              }`}
-                            >
-                              {sublink.name}
-                            </Link>
+                      {(
+                        link.type === 'quiz'
+                          ? quizSubLinks
+                          : link.type === 'about'
+                            ? aboutSubLinks
+                            : ourCommunitiesSubLinks
+                      ).map((sublink) => (
+                        <div key={sublink.path} className="relative group">
+                          <Link
+                            to={sublink.path}
+                            onClick={() => setActiveDesktopDropdown('')}
+                            className={`block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600 ${
+                              isActive(sublink.path) ? 'font-semibold text-primary-600' : ''
+                            }`}
+                          >
+                            {sublink.name}
+                          </Link>
 
-                            {/* Second-level submenu for desktop */}
-                            {sublink.sublinks && (
-                              <div className="absolute left-full top-0 mt-0 w-48 bg-white rounded-lg shadow-lg py-2 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-200">
-                                {sublink.sublinks.map((eventLink) => (
-                                  <Link
-                                    key={eventLink.path}
-                                    to={eventLink.path}
-                                    onClick={() => setActiveDesktopDropdown('')}
-                                    className="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600"
-                                  >
-                                    {eventLink.name}
-                                  </Link>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        )
-                      )}
+                          {sublink.sublinks && (
+                            <div className="absolute left-full top-0 mt-0 w-48 bg-white rounded-lg shadow-lg py-2 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-200">
+                              {sublink.sublinks.map((eventLink) => (
+                                <Link
+                                  key={eventLink.path}
+                                  to={eventLink.path}
+                                  onClick={() => setActiveDesktopDropdown('')}
+                                  className="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600"
+                                >
+                                  {eventLink.name}
+                                </Link>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ))}
                     </div>
                   )}
+
                 </div>
               ) : (
                 <Link
@@ -201,7 +209,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-gray-700 hover:text-primary-600 focus:outline-none"
+            className="nav:hidden text-gray-700 hover:text-primary-600 focus:outline-none"
           >
             {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
@@ -209,7 +217,7 @@ const Navbar = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="block pb-4 md:hidden">
+          <div className="block pb-4 nav:hidden">
             {navLinks.map((link, index) =>
               link.dropdown ? (
                 <div key={index} className="px-4">
@@ -237,7 +245,13 @@ const Navbar = () => {
                       activeMobileDropdown === link.type ? 'max-h-[1000px]' : 'max-h-0'
                     }`}
                   >
-                    {(link.type === 'quiz' ? quizSubLinks : ourCommunitiesSubLinks).map(
+                    {(
+                        link.type === 'quiz'
+                          ? quizSubLinks
+                          : link.type === 'about'
+                            ? aboutSubLinks
+                            : ourCommunitiesSubLinks
+                      ).map(
                       (sublink) => (
                         <div key={sublink.path}>
                           {sublink.sublinks ? (

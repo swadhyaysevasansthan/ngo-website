@@ -22,7 +22,7 @@ module.exports = {
         poppins: ['Poppins', 'sans-serif'],
       },
       screens: {
-        'nav': '1000px', // custom breakpoint called 'nav'
+        'nav': '1170px', // custom breakpoint called 'nav'
       }
     },
   },
