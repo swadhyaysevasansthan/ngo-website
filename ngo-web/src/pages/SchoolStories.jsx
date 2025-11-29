@@ -184,9 +184,9 @@ const SchoolStories = () => {
     'Encouraged real-world solutions for cleaner, greener city living'
   ],
   images: [
-    '/images/events/salwan-mayurvihar/salwan1.jpg', // Replace with your actual image paths
-    '/images/events/salwan-mayurvihar/salwan2.jpg',
-    '/images/events/salwan-mayurvihar/salwan3.jpg',
+    '/images/events/salwan/salwan1.jpg', 
+    '/images/events/salwan/salwan2.jpg',
+    '/images/events/salwan/salwan3.jpg',
   ]
 }
 
