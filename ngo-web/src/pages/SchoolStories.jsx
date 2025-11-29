@@ -133,7 +133,7 @@ const SchoolStories = () => {
     },
     {
       id: 7,
-      school: 'Pooma Prajna High School',
+      school: 'Poorna Prajna High School',
       location: 'Mumbai, Maharashtra',
       date: 'November 24, 2025',
       participants: '37 students',
@@ -169,7 +169,27 @@ const SchoolStories = () => {
     //     '/images/events/emrs-nichar/emrsnichar2.jpg',
     //     '/images/events/emrs-nichar/emrsnichar3.jpg',
     //   ]
-    // }
+    // },
+    {
+  id: 9,
+  school: 'Salwan Public School, Mayur Vihar',
+  location: 'Mayur Vihar, Delhi',
+  date: 'November 28, 2025',
+  participants: '43 students',
+  description: 'Salwan Public School in Mayur Vihar hosted an energetic quiz event focused on urban environmental issues. Forty-three students participated, tackling questions on sustainable living, pollution control, and city-based conservation strategies. The event inspired lively debates and creative problem-solving, motivating students to pursue eco-friendly practices in their daily lives and neighborhoods.',
+  highlights: [
+    'Stimulating quiz sessions centered on urban sustainability',
+    'Debates and discussions on local environmental challenges',
+    'Certificates presented to all student participants',
+    'Encouraged real-world solutions for cleaner, greener city living'
+  ],
+  images: [
+    '/images/events/salwan-mayurvihar/salwan1.jpg', // Replace with your actual image paths
+    '/images/events/salwan-mayurvihar/salwan2.jpg',
+    '/images/events/salwan-mayurvihar/salwan3.jpg',
+  ]
+}
+
 
   ];
 
