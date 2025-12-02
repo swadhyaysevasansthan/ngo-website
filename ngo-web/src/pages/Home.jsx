@@ -5,7 +5,7 @@ import { Heart, Users, BookOpen, Sprout, ArrowRight, Target, Eye, Brain } from '
 import Button from '../components/Button';
 import Card from '../components/Card';
 import SectionHeader from '../components/SectionHeader';
-
+import Testimonials from '../components/Testimonials';
 
 const Home = () => {
   useEffect(() => {
@@ -254,6 +254,8 @@ const Home = () => {
           </Card>
         </div>
       </section>
+
+      <Testimonials />
 
 
       {/* CTA Section */}
