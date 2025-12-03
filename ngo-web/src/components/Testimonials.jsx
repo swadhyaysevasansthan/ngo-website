@@ -30,10 +30,10 @@ const Testimonials = () => {
   ];
 
   return (
-    <section className="bg-gradient-to-br from-gray-50 to-blue-50 py-16">
+    <section className="bg-white py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
-          title="Voices from Our Schools"
+          title="Voices from Schools"
           subtitle="What educators say about our environmental awareness initiatives"
         />
 
