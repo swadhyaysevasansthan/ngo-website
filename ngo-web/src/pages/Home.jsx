@@ -253,6 +253,7 @@ const Home = () => {
             </div>
           </Card>
         </div>
+        
       </section>
 
       <Testimonials />
@@ -280,7 +281,7 @@ const Home = () => {
                 </Button>
               </Link>
               <Link to="/contact">
-                <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-gray-900 hover:border-white">
+                <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-black hover:border-white">
                   Contact Us
                 </Button>
               </Link>

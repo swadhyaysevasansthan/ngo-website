@@ -1,44 +1,46 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Quote } from 'lucide-react';
+import { Quote, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import Card from './Card';
 import SectionHeader from './SectionHeader';
 
 const Testimonials = () => {
-  const testimonials = [
+  // Featured testimonials for homepage (first 3)
+  const featuredTestimonials = [
     {
-      quote: "The event proved to be highly informative and inspiring, playing a significant role in enhancing students' environmental awareness, competitive spirit, and overall confidence.",
-      name: "Ashok Pant",
-      role: "Principal",
-      school: "Gyan Vigyan Children's Academy",
-      location: "Hawalbagh, Almora, Uttarakhand"
+      quote: "We would like to thank you and your team for conducting Yoga Sessions at The Rajputana Rifles Regiment Centre for our troops (Approx 600 persons). We are quite sure that with your dedication and hardwork you and your group (SWADHYAY) will grow and succeed in your endeavors.",
+      name: "Lt Col Vikash Jhajhria",
+      role: "Adjutant",
+      organization: "The Rajputana Rifles Regimental Centre",
+      location: "PIN - 900106"
     },
     {
-      quote: "The online quiz provided valuable insight and awareness regarding the environment. Such initiatives play a vital role in fostering environmental awareness, analytical thinking, and intellectual growth among young learners.",
-      name: "Principal",
-      role: "Principal",
-      school: "Academic Heights World School",
-      location: "Pitampura, New Delhi"
+      quote: "We feel proud of your lecture among the students and staff. You have aware the students not to eat outside snacks and eatables. You also stressed on NATURE CARE, How the natural food can help our body to digest the things. You talked about YOGA also.",
+      name: "Managing Director",
+      role: "Managing Director",
+      organization: "Evergray High School",
+      location: "Kaithal"
     },
     {
-      quote: "Students benefit from this exam in many ways, as they learn how to conserve biodiversity at their local level and compete with other students in great and simple ways.",
-      name: "Rattan Singh",
-      role: "Principal I/C",
-      school: "Jawahar Navodaya Vidyalaya",
-      location: "Lari, Lahaul & Spiti, Himachal Pradesh"
+      quote: "We appreciate Dr Manish Goel, founder of SWADHAY, for his Mission 'Har Ghar Moringa'. We are also thankful to him and his team for planting Moringa plants in our society and enlightening people about its medicinal qualities.",
+      name: "President",
+      role: "President",
+      organization: "IVT Co-operative Group Housing Society Ltd.",
+      location: "Rohini, Delhi"
     }
   ];
 
   return (
-    <section className="bg-white py-16">
+    <section className="bg-gradient-to-br from-gray-50 to-blue-50 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
-          title="Voices from Schools"
-          subtitle="What educators say about our environmental awareness initiatives"
+          title="Voices of Appreciation"
+          subtitle="What institutions and communities say about our initiatives"
         />
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mt-12">
-          {testimonials.map((testimonial, index) => (
+          {featuredTestimonials.map((testimonial, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
@@ -67,7 +69,7 @@ const Testimonials = () => {
                       {testimonial.role}
                     </p>
                     <p className="text-sm text-gray-600 mt-1">
-                      {testimonial.school}
+                      {testimonial.organization}
                     </p>
                     <p className="text-xs text-gray-500 mt-0.5">
                       {testimonial.location}
@@ -79,7 +81,19 @@ const Testimonials = () => {
           ))}
         </div>
 
-        
+        {/* View All Button */}
+        <div className="text-center mt-12">
+          <Link to="/testimonials">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex items-center gap-2 bg-primary-600 text-white px-8 py-4 rounded-lg font-semibold shadow-lg hover:bg-primary-700 transition-colors"
+            >
+              View All Testimonials
+              <ArrowRight size={20} />
+            </motion.button>
+          </Link>
+        </div>
       </div>
     </section>
   );

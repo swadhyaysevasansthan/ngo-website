@@ -28,6 +28,7 @@ const Navbar = () => {
   const aboutSubLinks = [
     { name: 'About the Foundation', path: '/about' },
     { name: 'Our Team', path: '/ourteam' },
+    { name: 'Testimonials', path: '/testimonials'}
   ];
 
   const quizSubLinks = [
@@ -42,38 +43,22 @@ const Navbar = () => {
     {
       name: 'Natural Farming',
       path: '/natural-farming',
-      sublinks: [
-        { name: 'Current Events', path: '/natural-farming/current-events' },
-        { name: 'Past Events', path: '/natural-farming/past-events' },
-        { name: 'Upcoming Events', path: '/natural-farming/upcoming-events' },
-      ],
+      
     },
     {
       name: 'Naturopathy',
       path: '/naturopathy',
-      sublinks: [
-        { name: 'Current Events', path: '/naturopathy/current-events' },
-        { name: 'Past Events', path: '/naturopathy/past-events' },
-        { name: 'Upcoming Events', path: '/naturopathy/upcoming-events' },
-      ],
+      
     },
     {
       name: 'Plantation',
       path: '/plantation',
-      sublinks: [
-        { name: 'Current Events', path: '/plantation/current-events' },
-        { name: 'Past Events', path: '/plantation/past-events' },
-        { name: 'Upcoming Events', path: '/plantation/upcoming-events' },
-      ],
+      
     },
     {
       name: 'Yoga',
       path: '/yoga',
-      sublinks: [
-        { name: 'Current Events', path: '/yoga/current-events' },
-        { name: 'Past Events', path: '/yoga/past-events' },
-        { name: 'Upcoming Events', path: '/yoga/upcoming-events' },
-      ],
+     
     },
   ];
 

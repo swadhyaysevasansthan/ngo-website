@@ -16,6 +16,7 @@ import Yoga from './pages/Yoga';
 import SchoolStories from './pages/SchoolStories';
 import CurrentlyActiveEvents from './pages/CurrentlyActiveEvents';
 import UpcomingEngagements from './pages/UpcomingEngagements';
+import TestimonialsPage from './pages/TestimonialsPage';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
             <Route path="/quiz/upcoming-engagements" element={<UpcomingEngagements />} />
             <Route path="/ourteam" element={<OurTeam />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/testimonials" element={<TestimonialsPage />} />
             <Route path="/natural-farming" element={<NaturalFarming />} />
             <Route path="/naturopathy" element={<Naturopathy />} />
             <Route path="/plantation" element={<Plantation />} />
