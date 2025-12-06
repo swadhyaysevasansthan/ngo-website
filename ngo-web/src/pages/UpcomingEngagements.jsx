@@ -10,7 +10,6 @@ const UpcomingEngagements = () => {
   }, []);
 
   const upcomingEvents = [
-  { date: '05/12/2025', school: 'Mayoor School, Noida', location: 'UTTAR PRADESH' },
   { date: '08/12/2025', school: 'Countrywide Public School, Garur', location: 'UTTARAKHAND' },
   { date: '09/12/2025', school: 'DAV PUBLIC SCHOOL, MIDNAPUR', location: 'WEST BENGAL' },
   { date: '09/12/2025', school: 'SACHDEVA PUBLIC SCHOOL, PITAM PURA', location: 'DELHI' },
