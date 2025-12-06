@@ -20,6 +20,7 @@ const UpcomingEngagements = () => {
   { date: '13/12/2025', school: 'Atreyee DAV Public School, Tanda', location: 'WEST BENGAL' },
   { date: '16/12/2025', school: 'Anant Vidya Niketan Public School (Bir)', location: 'HIMACHAL PRADESH' },
   { date: '16/12/2025', school: 'DELHI HERITAGE SCHOOL', location: 'DELHI' },
+  { date: '19/12/2025', school: 'Ryan International School, Rohini', location: 'DELHI' },
   { date: '21/12/2025', school: 'DAV Public School, Tanda', location: 'UTTAR PRADESH' },
   { date: '21/12/2025', school: 'DAV Public School, Raipur', location: 'CHHATTISGARH' },
   { date: '22/12/2025', school: 'JAGANNATH INTERNATIONAL SCHOOL', location: 'DELHI' },
@@ -27,10 +28,12 @@ const UpcomingEngagements = () => {
   { date: '12/01/2026', school: 'DAV Model School, IIT Kharagpur', location: 'WEST BENGAL' },
   { date: '16/01/2025', school: 'JHABBAN LAL DAV PUBLIC SCHOOL', location: 'DELHI' },
   { date: '17/01/2026', school: 'JK PUBLIC SCHOOL, KATHUA', location: 'JAMMU AND KASHMIR' },
+  { date: '21/01/2026', school: 'Brainy Blooms Lecole Internationale', location: 'PUDUCHERRY' },
   { date: '22/03/2026', school: 'Delhi Public Senior Secondary School, Barmer', location: 'RAJASTHAN' },
   { date: '27/01/2026', school: 'Akal Academy, Chogawan', location: 'PUNJAB' },
   { date: '15/03/2026', school: 'Dalhousie Public School', location: 'HIMACHAL PRADESH' },
-  { date: '19/03/2026', school: 'Ryan International School, Rohini', location: 'DELHI' },
+  
+  
 ];
 
 
