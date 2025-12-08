@@ -47,6 +47,9 @@ const Home = () => {
     '/images/highlight/high1.png',
     '/images/highlight/high2.png',
     '/images/highlight/high3.png',
+    '/images/highlight/high4.png',
+    '/images/highlight/high5.png',
+    '/images/highlight/high6.png',
   ];
 
 
