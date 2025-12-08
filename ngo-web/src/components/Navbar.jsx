@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
-import ngoLogo from '../assets/ngo-logo copy.png';
+import ngoLogo from '../assets/ngo-head-logo copy.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,18 +9,16 @@ const Navbar = () => {
   const [activeMobileSubDropdown, setActiveMobileSubDropdown] = useState('');
   const [activeDesktopDropdown, setActiveDesktopDropdown] = useState('');
   const location = useLocation();
+
   const quizDropdownRef = useRef(null);
   const ourCommunitiesDropdownRef = useRef(null);
 
-  // Navigation Links
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About Us', dropdown: true, type: 'about' },
-    // { name: 'Our Team', path: '/ourteam' },
     { name: 'Quiz', dropdown: true, type: 'quiz' },
     { name: 'School Stories', path: '/school-stories' },
     { name: 'Our Communities', dropdown: true, type: 'ourcommunities' },
-    // { name: 'Partner with Us', path: '/partners' },
     { name: 'Contact', path: '/contact' },
     { name: 'Donate', path: '/donate' },
   ];
@@ -28,43 +26,25 @@ const Navbar = () => {
   const aboutSubLinks = [
     { name: 'About the Foundation', path: '/about' },
     { name: 'Our Team', path: '/ourteam' },
-    { name: 'Testimonials', path: '/testimonials'}
+    { name: 'Testimonials', path: '/testimonials' }
   ];
 
   const quizSubLinks = [
     { name: 'Question Bank', path: '/question-bank' },
     { name: 'Online Quiz', path: '/quiz' },
-    
     { name: 'Currently Active Events', path: '/quiz/currently-active' },
-    { name: 'Upcoming Engagements', path: 'quiz/upcoming-engagements' },
+    { name: 'Upcoming Engagements', path: '/quiz/upcoming-engagements' },
   ];
 
   const ourCommunitiesSubLinks = [
-    {
-      name: 'Natural Farming',
-      path: '/natural-farming',
-      
-    },
-    {
-      name: 'Naturopathy',
-      path: '/naturopathy',
-      
-    },
-    {
-      name: 'Plantation',
-      path: '/plantation',
-      
-    },
-    {
-      name: 'Yoga',
-      path: '/yoga',
-     
-    },
+    { name: 'Natural Farming', path: '/natural-farming' },
+    { name: 'Naturopathy', path: '/naturopathy' },
+    { name: 'Plantation', path: '/plantation' },
+    { name: 'Yoga', path: '/yoga' },
   ];
 
   const isActive = (path) => location.pathname === path;
 
-  // Handle outside click for desktop
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -90,53 +70,136 @@ const Navbar = () => {
   }, [activeDesktopDropdown]);
 
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
+    <>
+      {/* -------------------------LOGO ABOVE NAVBAR------------------------- */}
+      <div className="bg-white py-4 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 flex justify-center">
+          <Link to="/" className="flex flex-col items-center space-y-1">
             <img
               src={ngoLogo}
               alt="Swadhyay Logo"
-              className="w-16 h-16 rounded-full object-cover"
+              className="w-80 h-auto object-contain"
             />
-            <div className="flex flex-col">
-              <span className="font-bold text-xl text-gray-800">Swadhyay</span>
-              <span className="text-xs text-gray-600">Seva Foundation</span>
-            </div>
           </Link>
+        </div>
+      </div>
+      {/* ------------------------------------------------------------------- */}
 
-          {/* Desktop Navigation */}
-          <div className="hidden nav:flex space-x-8 relative">
-            {navLinks.map((link, index) =>
-              link.dropdown ? (
-                <div
-                  key={index}
-                  className="relative"
-                  ref={link.type === 'quiz' ? quizDropdownRef : ourCommunitiesDropdownRef}
-                >
-                  <button
-                    onClick={() =>
-                      setActiveDesktopDropdown(
-                        activeDesktopDropdown === link.type ? '' : link.type
-                      )
-                    }
-                    className="flex items-center space-x-1 text-gray-700 hover:text-primary-600 transition-colors duration-200"
-                  >
-                    <span>{link.name}</span>
-                    <ChevronDown
-                      size={18}
-                      className={
-                        activeDesktopDropdown === link.type
-                          ? 'transform rotate-180 transition-transform duration-200'
-                          : 'transform transition-transform duration-200'
-                      }
-                    />
-                  </button>
+      {/* ------------------------- NAVBAR------------------------- */}
+      <div className="bg-white border-t shadow-md sticky top-0 z-50">
+        <nav>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-20">
 
-                  {/* Dropdown Menu (Desktop) */}
-                  {activeDesktopDropdown === link.type && (
-                    <div className="absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 z-50">
+              {/* Desktop Navigation */}
+              <div className="hidden nav:flex space-x-8 relative">
+                {navLinks.map((link, index) =>
+                  link.dropdown ? (
+                    <div
+                      key={index}
+                      className="relative"
+                      ref={link.type === 'quiz' ? quizDropdownRef : ourCommunitiesDropdownRef}
+                    >
+                      <button
+                        onClick={() =>
+                          setActiveDesktopDropdown(
+                            activeDesktopDropdown === link.type ? '' : link.type
+                          )
+                        }
+                        className="flex items-center space-x-1 text-gray-700 hover:text-primary-600 transition-colors duration-200"
+                      >
+                        <span>{link.name}</span>
+                        <ChevronDown
+                          size={18}
+                          className={
+                            activeDesktopDropdown === link.type
+                              ? 'transform rotate-180 transition-transform duration-200'
+                              : 'transform transition-transform duration-200'
+                          }
+                        />
+                      </button>
+
+                      {activeDesktopDropdown === link.type && (
+                        <div className="absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 z-50">
+                          {(
+                            link.type === 'quiz'
+                              ? quizSubLinks
+                              : link.type === 'about'
+                                ? aboutSubLinks
+                                : ourCommunitiesSubLinks
+                          ).map((sublink) => (
+                            <div key={sublink.path} className="relative group">
+                              <Link
+                                to={sublink.path}
+                                onClick={() => setActiveDesktopDropdown('')}
+                                className={`block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600 ${
+                                  isActive(sublink.path)
+                                    ? 'font-semibold text-primary-600'
+                                    : ''
+                                }`}
+                              >
+                                {sublink.name}
+                              </Link>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <Link
+                      key={link.path}
+                      to={link.path}
+                      className={`${
+                        isActive(link.path)
+                          ? 'text-primary-600 font-semibold'
+                          : 'text-gray-700 hover:text-primary-600'
+                      } transition-colors duration-300 text-base`}
+                    >
+                      {link.name}
+                    </Link>
+                  )
+                )}
+              </div>
+
+              {/* Mobile Toggle */}
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="nav:hidden text-gray-700 hover:text-primary-600 focus:outline-none"
+              >
+                {isOpen ? <X size={28} /> : <Menu size={28} />}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Navigation */}
+          {isOpen && (
+            <div className="block pb-4 nav:hidden">
+              {navLinks.map((link, index) =>
+                link.dropdown ? (
+                  <div key={index} className="px-4">
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveMobileDropdown(
+                          activeMobileDropdown === link.type ? '' : link.type
+                        );
+                      }}
+                      className="flex justify-between items-center w-full text-gray-700 py-3 hover:text-primary-600 cursor-pointer"
+                    >
+                      <span>{link.name}</span>
+                      <ChevronDown
+                        className={`transform transition-transform duration-200 ${
+                          activeMobileDropdown === link.type ? 'rotate-180' : ''
+                        }`}
+                      />
+                    </button>
+
+                    <div
+                      className={`pl-4 overflow-hidden transition-all duration-300 ease-in-out ${
+                        activeMobileDropdown === link.type ? 'max-h-[1000px]' : 'max-h-0'
+                      }`}
+                    >
                       {(
                         link.type === 'quiz'
                           ? quizSubLinks
@@ -144,184 +207,42 @@ const Navbar = () => {
                             ? aboutSubLinks
                             : ourCommunitiesSubLinks
                       ).map((sublink) => (
-                        <div key={sublink.path} className="relative group">
+                        <div key={sublink.path}>
                           <Link
                             to={sublink.path}
-                            onClick={() => setActiveDesktopDropdown('')}
-                            className={`block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600 ${
-                              isActive(sublink.path) ? 'font-semibold text-primary-600' : ''
-                            }`}
+                            onClick={() => {
+                              setIsOpen(false);
+                              setActiveMobileDropdown('');
+                            }}
+                            className="block py-2 text-gray-700 hover:text-primary-600"
                           >
                             {sublink.name}
                           </Link>
-
-                          {sublink.sublinks && (
-                            <div className="absolute left-full top-0 mt-0 w-48 bg-white rounded-lg shadow-lg py-2 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-200">
-                              {sublink.sublinks.map((eventLink) => (
-                                <Link
-                                  key={eventLink.path}
-                                  to={eventLink.path}
-                                  onClick={() => setActiveDesktopDropdown('')}
-                                  className="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600"
-                                >
-                                  {eventLink.name}
-                                </Link>
-                              ))}
-                            </div>
-                          )}
                         </div>
                       ))}
                     </div>
-                  )}
 
-                </div>
-              ) : (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`${
-                    isActive(link.path)
-                      ? 'text-primary-600 font-semibold'
-                      : 'text-gray-700 hover:text-primary-600'
-                  } transition-colors duration-300 text-base`}
-                >
-                  {link.name}
-                </Link>
-              )
-            )}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="nav:hidden text-gray-700 hover:text-primary-600 focus:outline-none"
-          >
-            {isOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="block pb-4 nav:hidden">
-            {navLinks.map((link, index) =>
-              link.dropdown ? (
-                <div key={index} className="px-4">
-                  {/* Main mobile dropdown button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setActiveMobileDropdown(
-                        activeMobileDropdown === link.type ? '' : link.type
-                      );
-                    }}
-                    className="flex justify-between items-center w-full text-gray-700 py-3 hover:text-primary-600 cursor-pointer"
-                  >
-                    <span>{link.name}</span>
-                    <ChevronDown
-                      className={`transform transition-transform duration-200 ${
-                        activeMobileDropdown === link.type ? 'rotate-180' : ''
-                      }`}
-                    />
-                  </button>
-
-                  {/* Mobile dropdown content */}
-                  <div
-                    className={`pl-4 overflow-hidden transition-all duration-300 ease-in-out ${
-                      activeMobileDropdown === link.type ? 'max-h-[1000px]' : 'max-h-0'
-                    }`}
-                  >
-                    {(
-                        link.type === 'quiz'
-                          ? quizSubLinks
-                          : link.type === 'about'
-                            ? aboutSubLinks
-                            : ourCommunitiesSubLinks
-                      ).map(
-                      (sublink) => (
-                        <div key={sublink.path}>
-                          {sublink.sublinks ? (
-                            <>
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setActiveMobileSubDropdown(
-                                    activeMobileSubDropdown === sublink.path
-                                      ? ''
-                                      : sublink.path
-                                  );
-                                }}
-                                className="flex justify-between items-center w-full py-2 text-gray-700 hover:text-primary-600 cursor-pointer"
-                              >
-                                <span>{sublink.name}</span>
-                                <ChevronDown
-                                  className={`transform transition-transform duration-200 ${
-                                    activeMobileSubDropdown === sublink.path
-                                      ? 'rotate-180'
-                                      : ''
-                                  }`}
-                                />
-                              </button>
-
-                              {/* Second-level submenu */}
-                              <div
-                                className={`pl-4 overflow-hidden transition-all duration-300 ease-in-out ${
-                                  activeMobileSubDropdown === sublink.path
-                                    ? 'max-h-[1000px]'
-                                    : 'max-h-0'
-                                }`}
-                              >
-                                {sublink.sublinks.map((eventLink) => (
-                                  <Link
-                                    key={eventLink.path}
-                                    to={eventLink.path}
-                                    onClick={() => {
-                                      setIsOpen(false);
-                                      setActiveMobileDropdown('');
-                                      setActiveMobileSubDropdown('');
-                                    }}
-                                    className="block py-2 text-gray-700 hover:text-primary-600"
-                                  >
-                                    {eventLink.name}
-                                  </Link>
-                                ))}
-                              </div>
-                            </>
-                          ) : (
-                            <Link
-                              to={sublink.path}
-                              onClick={() => {
-                                setIsOpen(false);
-                                setActiveMobileDropdown('');
-                              }}
-                              className="block py-2 text-gray-700 hover:text-primary-600"
-                            >
-                              {sublink.name}
-                            </Link>
-                          )}
-                        </div>
-                      )
-                    )}
                   </div>
-                </div>
-              ) : (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className={`${
-                    isActive(link.path)
-                      ? 'text-primary-600 font-semibold bg-primary-50'
-                      : 'text-gray-700'
-                  } block px-4 py-3 rounded-lg hover:bg-primary-50 transition-colors`}
-                >
-                  {link.name}
-                </Link>
-              )
-            )}
-          </div>
-        )}
+                ) : (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    onClick={() => setIsOpen(false)}
+                    className={`${
+                      isActive(link.path)
+                        ? 'text-primary-600 font-semibold bg-primary-50'
+                        : 'text-gray-700'
+                    } block px-4 py-3 rounded-lg hover:bg-primary-50 transition-colors`}
+                  >
+                    {link.name}
+                  </Link>
+                )
+              )}
+            </div>
+          )}
+        </nav>
       </div>
-    </nav>
+    </>
   );
 };
 
