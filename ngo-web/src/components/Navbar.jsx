@@ -18,6 +18,8 @@ const Navbar = () => {
     { name: 'About Us', dropdown: true, type: 'about' },
     { name: 'Quiz', dropdown: true, type: 'quiz' },
     { name: 'School Stories', path: '/school-stories' },
+    { name: 'Testimonials', path: '/testimonials' },
+    { name: 'Upcoming Engagements', path: '/quiz/upcoming-engagements' },
     { name: 'Our Communities', dropdown: true, type: 'ourcommunities' },
     { name: 'Contact', path: '/contact' },
     { name: 'Donate', path: '/donate' },
@@ -25,8 +27,7 @@ const Navbar = () => {
 
   const aboutSubLinks = [
     { name: 'About the Foundation', path: '/about' },
-    { name: 'Our Team', path: '/ourteam' },
-    { name: 'Testimonials', path: '/testimonials' }
+    { name: 'Our Team', path: '/ourteam' }
   ];
 
   const quizSubLinks = [
