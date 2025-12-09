@@ -6,8 +6,7 @@ import Button from '../components/Button';
 import Card from '../components/Card';
 import SectionHeader from '../components/SectionHeader';
 import Testimonials from '../components/Testimonials';
-import LatestUpdates from '../components/LatestUpdates';
-import FoundationCarousel from '../components/FoundationCarousel';
+// import FoundationCarousel from '../components/FoundationCarousel';
 
 const Home = () => {
   useEffect(() => {

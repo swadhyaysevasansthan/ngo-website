@@ -18,12 +18,16 @@ import CurrentlyActiveEvents from './pages/CurrentlyActiveEvents';
 import UpcomingEngagements from './pages/UpcomingEngagements';
 import TestimonialsPage from './pages/TestimonialsPage';
 
+import LatestUpdatesBar from './components/LatestUpdatesBar';
+
 function App() {
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
         {/* <WelcomeModal /> */}
         <Navbar />
+        
+       <LatestUpdatesBar />
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />

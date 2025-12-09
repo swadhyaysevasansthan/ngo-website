@@ -198,7 +198,7 @@ export const pastEvents = [
   },
   {
   id: 11,
-  school: 'Himachal Public Senior Secondary School',
+  school: 'Himalaya Public Senior Secondary School',
   location: 'Rohini, Delhi',
   date: 'December 4, 2025',
   participants: '29 students',

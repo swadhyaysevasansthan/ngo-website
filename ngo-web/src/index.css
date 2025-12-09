@@ -49,3 +49,65 @@ html {
 .animate-separatorSlide {
   animation: separatorSlide 2.4s linear infinite;
 }
+
+@keyframes updateFade {
+  0%   { opacity: 0; transform: translateY(4px); }
+  15%  { opacity: 1; transform: translateY(0); }
+  85%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-4px); }
+}
+
+.animate-updateFade {
+  animation: updateFade 5s ease-in-out;
+}
+
+/* Hide horizontal scrollbar but keep scrolling */
+.hide-scrollbar {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE and Edge */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari, Opera */
+}
+
+/* Modern thin horizontal scrollbar just for this container */
+.modern-scrollbar {
+  scrollbar-width: thin;              /* Firefox [web:136][web:142] */
+  scrollbar-color: rgba(37, 99, 235, 0.6) transparent; /* thumb + track */
+}
+
+/* Chrome, Edge, Safari */
+.modern-scrollbar::-webkit-scrollbar {
+  height: 4px;                        /* thin horizontal bar [web:140][web:138] */
+}
+
+.modern-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modern-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    to right,
+    rgba(59, 130, 246, 0.7),
+    rgba(37, 99, 235, 0.9)
+  );
+  border-radius: 9999px;
+}
+
+.modern-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    to right,
+    rgba(37, 99, 235, 0.9),
+    rgba(30, 64, 175, 1)
+  );
+}
+
+.hide-native-scrollbar {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE/Edge */
+}
+
+.hide-native-scrollbar::-webkit-scrollbar {
+  display: none;                /* Chrome/Safari/Opera */
+}
