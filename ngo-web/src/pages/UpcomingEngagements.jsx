@@ -10,9 +10,6 @@ const UpcomingEngagements = () => {
   }, []);
 
   const upcomingEvents = [
-  { date: '08/12/2025', school: 'Countrywide Public School, Garur', location: 'UTTARAKHAND' },
-  { date: '09/12/2025', school: 'DAV PUBLIC SCHOOL, MIDNAPUR', location: 'WEST BENGAL' },
-  { date: '09/12/2025', school: 'SACHDEVA PUBLIC SCHOOL, PITAM PURA', location: 'DELHI' },
   { date: '10/12/2025', school: 'St Xavier\'s High School, Cuttack', location: 'ODISHA' },
   { date: '10/12/2025', school: 'Vidya Bharti School', location: 'DELHI' },
   { date: '11/12/2025', school: 'Gita Girl\'s Senior Secondary School', location: 'HARYANA' },

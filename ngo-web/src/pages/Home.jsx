@@ -6,6 +6,8 @@ import Button from '../components/Button';
 import Card from '../components/Card';
 import SectionHeader from '../components/SectionHeader';
 import Testimonials from '../components/Testimonials';
+import LatestUpdates from '../components/LatestUpdates';
+import FoundationCarousel from '../components/FoundationCarousel';
 
 const Home = () => {
   useEffect(() => {
@@ -102,7 +104,8 @@ const Home = () => {
           </svg>
         </div>
       </section>
-
+      {/* <LatestUpdates />
+      <FoundationCarousel /> */}
 
       {/* Mission & Vision Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -284,7 +287,7 @@ const Home = () => {
                 </Button>
               </Link>
               <Link to="/contact">
-                <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-black hover:border-white">
+                <Button variant="outline" className="bg-white text-primary-600 hover:bg-gray-100">
                   Contact Us
                 </Button>
               </Link>

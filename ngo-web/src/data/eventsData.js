@@ -200,7 +200,7 @@ export const pastEvents = [
   id: 11,
   school: 'Himachal Public Senior Secondary School',
   location: 'Rohini, Delhi',
-  date: 'November 4, 2025',
+  date: 'December 4, 2025',
   participants: '29 students',
   description: 'Himachal Public Senior Secondary School in Rohini welcomed our team for an engaging environmental awareness quiz. Forty dedicated students participated, exploring topics such as renewable energy, waste management, and sustainable urban living. The event sparked meaningful conversations about practical environmental solutions that students can implement in their daily lives and communities.',
   highlights: [
@@ -211,16 +211,16 @@ export const pastEvents = [
     'Encouraged students to become environmental advocates in their neighborhoods'
   ],
   images: [
-    '/images/events/himachal-rohini/hp1.jpg',
-    '/images/events/himachal-rohini/hp2.jpg',
-    '/images/events/himachal-rohini/hp3.jpg',
+    '/images/events/hpsss/hpsss1.jpg',
+    '/images/events/hpsss/hpsss2.jpg',
+    '/images/events/hpsss/hpsss3.jpg',
   ]
 },
 {
   id: 12,
   school: 'Akal Academy Ajitsar, Ratia',
   location: 'Ratia, Haryana',
-  date: 'November 4, 2025',
+  date: 'December 4, 2025',
   participants: '25 students',
   description: 'Akal Academy Ajitsar in Ratia, Haryana hosted a vibrant environmental quiz event with 45 enthusiastic students. The quiz covered essential topics including biodiversity conservation, water conservation, and sustainable agricultural practices relevant to rural communities. Students demonstrated remarkable environmental awareness and a strong commitment to protecting natural resources in their region.',
   highlights: [
@@ -231,9 +231,104 @@ export const pastEvents = [
     'Motivated students to initiate local conservation projects'
   ],
   images: [
-    '/images/events/akal-ratia/akal1.jpg',
-    '/images/events/akal-ratia/akal2.jpg',
-    '/images/events/akal-ratia/akal3.jpg',
+    '/images/events/akal/akal1.jpeg',
+    '/images/events/akal/akal2.jpeg',
   ]
 },
+// {
+//   id: 13,
+//   school: 'Mayoor School',
+//   location: 'Noida, Uttar Pradesh',
+//   date: 'December 5, 2025',
+//   participants: '42 students',
+//   description: 'Mayoor School in Noida hosted an environmental awareness quiz with 42 enthusiastic students. The quiz encouraged students to think critically about conservation, responsible resource use, and everyday eco-friendly habits.',
+//   highlights: [
+//     'Interactive environmental quiz for middle and senior school students',
+//     'Questions focused on conservation, waste management, and climate awareness',
+//     'Students discussed how to adopt greener habits at home and in school',
+//     'Participation certificates given to all student participants'
+//   ],
+//   images: [
+//     '/images/events/mayoor/mayoor1.jpg',
+//     '/images/events/mayoor/mayoor2.jpg',
+//     '/images/events/mayoor/mayoor3.jpg',
+//   ]
+// },
+{
+  id: 14,
+  school: 'DAV Public School, ECL, Jhanjra',
+  location: 'Jhanjra, West Bengal',
+  date: 'December 5, 2025',
+  participants: '25 students',
+  description: 'DAV Public School, ECL, Jhanjra organized a focused environmental quiz for 25 students. The event highlighted local issues such as air and water pollution around mining areas and empowered students to think about sustainable solutions.',
+  highlights: [
+    'Quiz rounds on pollution, biodiversity, and local environmental challenges',
+    'Encouraged students to link global climate issues with their local context',
+    'Students shared ideas for cleaner surroundings and responsible resource use',
+    'All participating students received appreciation certificates'
+  ],
+  images: [
+    '/images/events/dav-jhanjra/dav1.jpg',
+    '/images/events/dav-jhanjra/dav2.jpg',
+    '/images/events/dav-jhanjra/dav3.jpg',
+  ]
+},
+{
+  id: 15,
+  school: 'Countrywide Public School',
+  location: 'Garur, Uttarakhand',
+  date: 'December 8, 2025',
+  participants: '12 students',
+  description: 'Countrywide Public School in Garur, Uttarakhand conducted an intimate environmental quiz with 12 motivated students. The quiz emphasized mountain ecosystems, water conservation, and protecting local biodiversity in the Himalayan region.',
+  highlights: [
+    'Discussion-based quiz focusing on Himalayan ecology and water security',
+    'Students reflected on safeguarding forests, rivers, and local wildlife',
+    'Emphasis on individual responsibility in fragile mountain environments',
+    'Certificates awarded to all participants for their enthusiastic involvement'
+  ],
+  images: [
+    '/images/events/countrywide/countrywide1.jpeg',
+    '/images/events/countrywide/countrywide2.jpeg',
+    '/images/events/countrywide/countrywide3.jpeg',
+  ]
+},
+{
+  id: 16,
+  school: 'DAV Public School, Midnapore',
+  location: 'Midnapore, West Bengal',
+  date: 'December 9, 2025',
+  participants: '35 students',
+  description: 'DAV Public School in Midnapore hosted an engaging environmental quiz with 35 students. The sessions explored topics like forests, wildlife protection, and sustainable lifestyles, inspiring students to become ambassadors for nature in their communities.',
+  highlights: [
+    'Multi-round quiz on forests, wildlife, and sustainable living',
+    'Students answered rapid-fire and situation-based questions on conservation',
+    'Reinforced the importance of everyday eco-friendly choices',
+    'All participants received certificates and encouragement to lead green initiatives'
+  ],
+  images: [
+    '/images/events/dav-midnapore/dav1.jpeg',
+    '/images/events/dav-midnapore/dav2.jpeg',
+    '/images/events/dav-midnapore/dav3.jpeg',
+  ]
+},
+{
+  id: 17,
+  school: 'Sachdeva Public School',
+  location: 'Pitampura, Delhi',
+  date: 'December 9, 2025',
+  participants: '39 students',
+  description: 'Sachdeva Public School in Pitampura conducted a dynamic environmental quiz with 39 students. The event focused on urban sustainability, waste segregation, and climate responsibility, motivating students to champion green practices in their school and homes.',
+  highlights: [
+    'Thought-provoking quiz on urban sustainability and waste management',
+    'Group discussions on reducing plastic use and conserving resources',
+    'Students pledged to adopt and promote eco-friendly habits',
+    'Certificates and recognition given to all quiz participants'
+  ],
+  images: [
+    '/images/events/sachdeva/sachdeva1.jpeg',
+    '/images/events/sachdeva/sachdeva2.jpeg',
+    '/images/events/sachdeva/sachdeva3.jpeg',
+  ]
+},
+
 ];
