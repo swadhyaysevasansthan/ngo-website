@@ -307,29 +307,4 @@ export const youngITTeam = [
       </div>
     ),
     },
-    {
-      name: "Govind Goyal",
-      role: "B.Tech (Computer Science)",
-      image: "/images/team/govind.jpg", 
-      description: "Machine Learning & Data Science Engineer, Skilled in Python, TensorFlow & MLOps",
-      details: (
-        <div>
-          <p>
-            Govind Goyal is a dedicated Machine Learning and Data Science professional with a strong foundation in
-            machine learning, deep learning, and MLOps. He has extensive technical expertise in Python, TensorFlow,
-            PyTorch, Scikit-learn, and modern data technologies including Pandas, NumPy, and SQL/NoSQL databases.
-          </p><br />
-          <p>
-            Govind is particularly interested in advanced machine learning and deep learning applications, specializing
-            in areas such as supervised learning, regression, classification, and recommender systems. He also explores
-            the operational side of AI, working with Docker, Kubernetes, and cloud platforms like AWS and GCP for scalable
-            model deployment and monitoring.
-          </p><br />
-          <p>
-            A curious learner and problem-solver, Govind Goyal aims to bridge the gap between machine learning research
-            and production-ready AI systems, delivering efficient, data-driven, and intelligent software solutions.
-          </p>
-        </div>
-      ),
-    }
   ];
