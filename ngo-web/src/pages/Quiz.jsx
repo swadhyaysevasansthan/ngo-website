@@ -40,7 +40,7 @@ const ALL_QUIZZES = [
       'Test your knowledge about environmental conservation, climate change, biodiversity, and sustainable practices. Learn about the importance of protecting our planet.',
     duration: '10 minutes',
     questions: '25 questions',
-    url: 'https://forms.office.com/r/wrVmC81JPb',
+    url: 'https://forms.office.com/r/33Fm6e6tPV',
   },
   {
     id: 2,
@@ -49,7 +49,7 @@ const ALL_QUIZZES = [
       'Test your knowledge about environmental conservation, climate change, biodiversity, and sustainable practices. Learn about the importance of protecting our planet.',
     duration: '10 minutes',
     questions: '25 questions',
-    url: 'https://forms.office.com/r/hn4KLS1p6a',
+    url: 'https://forms.office.com/r/BeueDjQ9WV',
   },
   {
     id: 3,
@@ -58,7 +58,7 @@ const ALL_QUIZZES = [
       'Test your knowledge about environmental conservation, climate change, biodiversity, and sustainable practices. Learn about the importance of protecting our planet.',
     duration: '10 minutes',
     questions: '25 questions',
-    url: 'https://forms.office.com/r/cQFY32eJb6',
+    url: 'https://forms.office.com/r/RFiXJnHUcd',
   },
 ];
 
