@@ -235,25 +235,25 @@ export const pastEvents = [
     '/images/events/akal/akal2.jpeg',
   ]
 },
-// {
-//   id: 13,
-//   school: 'Mayoor School',
-//   location: 'Noida, Uttar Pradesh',
-//   date: 'December 5, 2025',
-//   participants: '42 students',
-//   description: 'Mayoor School in Noida hosted an environmental awareness quiz with 42 enthusiastic students. The quiz encouraged students to think critically about conservation, responsible resource use, and everyday eco-friendly habits.',
-//   highlights: [
-//     'Interactive environmental quiz for middle and senior school students',
-//     'Questions focused on conservation, waste management, and climate awareness',
-//     'Students discussed how to adopt greener habits at home and in school',
-//     'Participation certificates given to all student participants'
-//   ],
-//   images: [
-//     '/images/events/mayoor/mayoor1.jpg',
-//     '/images/events/mayoor/mayoor2.jpg',
-//     '/images/events/mayoor/mayoor3.jpg',
-//   ]
-// },
+{
+  id: 13,
+  school: 'Mayoor School',
+  location: 'Noida, Uttar Pradesh',
+  date: 'December 5, 2025',
+  participants: '42 students',
+  description: 'Mayoor School in Noida hosted an environmental awareness quiz with 42 enthusiastic students. The quiz encouraged students to think critically about conservation, responsible resource use, and everyday eco-friendly habits.',
+  highlights: [
+    'Interactive environmental quiz for middle and senior school students',
+    'Questions focused on conservation, waste management, and climate awareness',
+    'Students discussed how to adopt greener habits at home and in school',
+    'Participation certificates given to all student participants'
+  ],
+  images: [
+    '/images/events/mayoor/1.jpeg',
+    '/images/events/mayoor/2.jpeg',
+    '/images/events/mayoor/3.jpeg',
+  ]
+},
 {
   id: 14,
   school: 'DAV Public School, ECL, Jhanjra',
@@ -330,5 +330,103 @@ export const pastEvents = [
     '/images/events/sachdeva/sachdeva3.jpeg',
   ]
 },
-
+{
+  id: 18,
+  school: 'Vidya Bharati School',
+  location: 'Delhi',
+  date: 'December 10, 2025',
+  participants: '50 students',
+  description:
+    'Vidya Bharati School in Delhi organised a vibrant environmental quiz for 50 students, centering on climate change, pollution control, and responsible citizenship toward nature.',
+  highlights: [
+    'Multi-round quiz on climate change and pollution control',
+    'Students shared ideas on reducing carbon footprint and plastic waste',
+    'Encouraged collaborative problem-solving for local environmental issues',
+    'All participants received certificates and appreciation for active participation'
+  ],
+  images: [
+    '/images/events/vidya-bharati/1.jpeg',
+    '/images/events/vidya-bharati/2.jpeg',
+    '/images/events/vidya-bharati/3.jpeg'
+  ]
+},
+{
+  id: 19,
+  school: 'Gita Girls Senior Secondary School',
+  location: 'Kurukshetra, Haryana',
+  date: 'December 11, 2025',
+  participants: '47 students',
+  description:
+    'Gita Girls Senior Secondary School in Kurukshetra conducted an inspiring quiz with 47 students, focusing on river conservation, soil health, and traditional eco-friendly practices.',
+  highlights: [
+    'Quiz segments on river conservation and soil protection',
+    'Students related environmental concepts to local agricultural practices',
+    'Discussions on reviving traditional eco-friendly habits',
+    'Certificates awarded to participants for their proactive engagement'
+  ],
+  images: [
+    '/images/events/gita-girls/gita1.jpeg',
+    '/images/events/gita-girls/gita2.jpeg'
+  ]
+},
+{
+  id: 20,
+  school: 'Maharishi Vidya Mandir Public School, Nadaun',
+  location: 'Nadaun, Himachal Pradesh',
+  date: 'December 11, 2025',
+  participants: '41 students',
+  description:
+    'Maharishi Vidya Mandir Public School, Nadaun organised an environmental quiz with 41 students, emphasizing hill ecology, waste management, and conservation of local flora and fauna.',
+  highlights: [
+    'Focused quiz rounds on hill ecology and local biodiversity',
+    'Students explored ways to reduce waste in school and community',
+    'Emphasis on protecting nearby forests and river systems',
+    'All participants received certificates recognising their interest in nature'
+  ],
+  images: [
+    '/images/events/mvm/1.jpg',
+    '/images/events/mvm/2.jpg',
+    '/images/events/mvm/3.jpg'
+  ]
+},
+{
+  id: 21,
+  school: 'Prince Public School',
+  location: 'Delhi',
+  date: 'December 11, 2025',
+  participants: '40 students',
+  description:
+    'Prince Public School in Delhi held an energetic environmental quiz with 40 students, covering air quality, urban greenery, and the role of students in improving city environments.',
+  highlights: [
+    'Questions on air pollution, green spaces, and clean transport',
+    'Students proposed ideas for greener, cleaner neighbourhoods',
+    'Activity-based learning to connect theory with real urban issues',
+    'Certificates distributed to all participants as motivation to act green'
+  ],
+  images: [
+    '/images/events/prince/1.jpeg',
+    '/images/events/prince/2.jpeg',
+    '/images/events/prince/3.jpeg'
+  ]
+},
+{
+  id: 22,
+  school: 'Delhi Heritage School',
+  location: 'Delhi',
+  date: 'December 16, 2025',
+  participants: '37 students',
+  description:
+    'Delhi Heritage School conducted a thoughtful environmental quiz with 37 students, linking heritage conservation with environmental protection and sustainable development.',
+  highlights: [
+    'Quiz connected cultural heritage with environmental stewardship',
+    'Students discussed preserving monuments, trees, and public spaces',
+    'Reinforced the link between history, culture, and sustainability',
+    'Participants received certificates and encouragement to lead eco-clubs'
+  ],
+  images: [
+    '/images/events/delhi-heritage/1.jpg',
+    '/images/events/delhi-heritage/2.jpg',
+    '/images/events/delhi-heritage/3.jpg'
+  ]
+},
 ];

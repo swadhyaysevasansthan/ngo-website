@@ -17,7 +17,7 @@ import SchoolStories from './pages/SchoolStories';
 import CurrentlyActiveEvents from './pages/CurrentlyActiveEvents';
 import UpcomingEngagements from './pages/UpcomingEngagements';
 import TestimonialsPage from './pages/TestimonialsPage';
-
+import DonatePage from './pages/DonatePage';
 import LatestUpdatesBar from './components/LatestUpdatesBar';
 
 function App() {
@@ -44,6 +44,7 @@ function App() {
             <Route path="/naturopathy" element={<Naturopathy />} />
             <Route path="/plantation" element={<Plantation />} />
             <Route path="/yoga" element={<Yoga />} />
+            <Route path="/donate" element={<DonatePage />} />
           </Routes>
         </main>
         <Footer />

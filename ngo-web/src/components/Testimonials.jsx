@@ -1,4 +1,3 @@
-// src/components/Testimonials.jsx
 import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Quote, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';

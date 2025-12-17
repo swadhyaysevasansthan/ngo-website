@@ -1,4 +1,3 @@
-// src/components/TeamSection.jsx
 import React from "react";
 import Card from "./Card";
 

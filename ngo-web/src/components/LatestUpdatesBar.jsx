@@ -1,30 +1,19 @@
 // LatestUpdatesBar.jsx
 import React, { useState, useEffect, useMemo } from 'react';
-import { Volume2, ChevronRight } from 'lucide-react';
+import { Volume2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { pastEvents } from '../data/eventsData';
 
 const LatestUpdatesBar = () => {
   const recentItems = useMemo(() => {
-    const now = new Date();
-    const weekAgo = new Date();
-    weekAgo.setDate(now.getDate() - 7);
+    // take latest 5 events by date
+    const latestFive = [...pastEvents]
+      .sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      )
+      .slice(0, 5);
 
-    const withinWeek = pastEvents.filter((story) => {
-      const d = new Date(story.date);
-      return d >= weekAgo && d <= now;
-    });
-
-    const base =
-      withinWeek.length > 0
-        ? withinWeek
-        : [...pastEvents]
-            .sort(
-              (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-            )
-            .slice(0, 3);
-
-    return base.map((s) => ({
+    return latestFive.map((s) => ({
       id: s.id,
       text: `${s.school} (${s.location}) hosted an environmental quiz with ${s.participants}.`,
       link: '/school-stories',
@@ -32,7 +21,7 @@ const LatestUpdatesBar = () => {
   }, []);
 
   const [current, setCurrent] = useState(0);
-  const [fadeKey, setFadeKey] = useState(0); // just to retrigger animation
+  const [fadeKey, setFadeKey] = useState(0);
 
   useEffect(() => {
     if (recentItems.length <= 1) return;
@@ -70,8 +59,6 @@ const LatestUpdatesBar = () => {
             {item.text}
           </Link>
         </div>
-
-       
       </div>
     </div>
   );
