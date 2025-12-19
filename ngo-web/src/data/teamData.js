@@ -234,14 +234,32 @@ export const environmentExperts = [
     {
       name: "Dr. Brij Mohan Pandey",
       role: "Principal Scientist (Agronomy)",
-      description: "Vivekananda Parvatiya Krishi Anusandhan Sansthan (ICAR), Almora",
-      image: "/images/team/user-nobg.png",
+      description: "Principal Scientist & Head, Crop Production Division | Hill Agriculture Expert",
+      image: "/images/team/brij-mohan.jpg",
+      details: (
+      <div>
+         <p>Dr. Brij Mohan Pandey is a senior agricultural scientist with over 25 years of research experience, including 18 years dedicated to hill agriculture. He currently serves as Principal Scientist and Head, Crop Production Division at ICAR–Vivekananda Parvatiya Krishi Anusandhan Sansthan (VPKAS), Almora, where he has made significant contributions to sustainable farming systems in the Himalayan region.</p><br/>
+          <p>Dr. Pandey has successfully handled more than 12 institute projects and 8 externally funded projects, addressing diverse dimensions of crop production and climate-resilient agriculture. His research includes contingent crop planning to mitigate the impacts of climate change, along with efforts to enhance productivity, livelihoods, and nutritional security in hill ecosystems.</p><br/>
+          <p>He has played a key role in the development, commercialization, and popularization of four drudgery-reducing machines and tools, and has contributed to the development of improved crop varieties—rice (3), millets (7), and garden pea (4)—for agronomic evaluation and farmer adoption. His work has also strengthened water harvesting technologies, improving resource efficiency, reducing drudgery, and enhancing farm incomes in Uttarakhand hills.</p><br/>
+          <p>Dr. Pandey has extensive experience in coordinating capacity-building initiatives and national priority programmes such as TSP, SCSP, NEH, NFSM, MGMG, Swachh Bharat Abhiyan, and Azadi Ka Amrit Mahotsav (AKAM). Within ICAR-VPKAS, he has served in key leadership roles including In-charge, Social Science Section, Coordinator, Experimental Farm, and Chairman/Member of various institutional committees.</p><br/>
+          <p>In recognition of his outstanding contributions, Dr. Pandey is a Recipient of the Fakhruddin Ali Ahmed Award of ICAR and a Founder Fellow of the Indian Society of Hill Agriculture. Through his research, leadership, and field-level impact, Dr. Brij Mohan Pandey continues to advance climate-resilient agriculture and sustainable livelihoods in hill regions.</p>
+        </div>
+    ),
     },
     {
-      name: "Dr. Phoolkumari",
-      role: "Subject Matter Specialist",
-      description: "Krishi Vigyan Kendra – Hamirpur, Banda University of Agriculture & Technology",
-      image: "/images/team/user-nobg.png",
+      name: "Dr. Phool Kumari",
+      role: "Senior Scientist & Head, Krishi Vigyan Kendra",
+      description: "Senior Scientist & Head, Krishi Vigyan Kendra | Home Science Specialist | Rural Development Advocate",
+      image: "/images/team/phool-kumari.jpeg",
+      details: (
+      <div>
+         <p>Dr. Phool Kumari is a dedicated agricultural scientist currently serving as Senior Scientist & Head, Krishi Vigyan Kendra (KVK) at ICAR–Research Complex for NEH Region, Medziphema, Nagaland. With a strong academic foundation and extensive field experience, she has made impactful contributions to agricultural extension and rural development, particularly in the North Eastern Region of India.</p><br/>
+          <p>She earned her B.Sc. (Home Science) from Narendra Deva University of Agriculture & Technology, Ayodhya, followed by an M.Sc. and Ph.D. in Family Resource Management from Chandra Shekhar Azad University of Agriculture & Technology, Kanpur. She began her professional career in 2010 as a Subject Matter Specialist (Home Science) at KVK Auraiya, Uttar Pradesh.</p><br/>
+          <p>With over 15 years of experience in the KVK system, Dr. Kumari has worked extensively at the grassroots level, focusing on women empowerment, capacity building, and dissemination of innovative technologies. Her efforts have significantly strengthened livelihoods, resource management, and sustainable practices among farming communities.</p><br/>
+          <p>Her scholarly contributions include 4 books, 8 book chapters, more than 27 research papers, 4 technical bulletins, and numerous popular articles. She has also represented her work at national and international forums, sharing best practices in extension and rural development.</p><br/>
+          <p>Recognized for her academic excellence, administrative leadership, and field-level innovation, Dr. Phool Kumari continues to champion inclusive agricultural growth and sustainable rural transformation, proving the powerful impact of science guided by empathy and vision.</p>
+        </div>
+    ),
     },
   ];
 

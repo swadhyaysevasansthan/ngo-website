@@ -429,4 +429,25 @@ export const pastEvents = [
     '/images/events/delhi-heritage/3.jpg'
   ]
 },
+{
+  id: 24,
+  school: 'Alpine Public School',
+  location: 'Nalagarh, Himachal Pradesh',
+  date: 'December 18, 2025',
+  participants: '48 students',
+  description:
+    'Alpine Public School in Nalagarh organised a spirited environmental quiz with 48 students, encouraging awareness about local ecology, waste reduction, and responsible lifestyle choices.',
+  highlights: [
+    'Quiz rounds on local ecology, pollution, and climate awareness',
+    'Students discussed practical steps to reduce waste in school and at home',
+    'Emphasis on protecting hills, rivers, and biodiversity around Nalagarh',
+    'Certificates and appreciation given to all student participants'
+  ],
+  images: [
+    '/images/events/alpine/1.jpeg',
+    '/images/events/alpine/2.jpeg',
+    '/images/events/alpine/3.jpeg'
+  ]
+},
+
 ];

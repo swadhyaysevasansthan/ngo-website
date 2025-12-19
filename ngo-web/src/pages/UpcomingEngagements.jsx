@@ -11,12 +11,10 @@ const UpcomingEngagements = () => {
 
   const upcomingEvents = [
   { date: '13/12/2025', school: 'Atreyee DAV Public School, Tanda', location: 'WEST BENGAL' },
-  { date: '16/12/2025', school: 'Anant Vidya Niketan Public School (Bir)', location: 'HIMACHAL PRADESH' },
-  { date: '18/12/2025', school: 'Alpine Public School', location: 'HIMACHAL PRADESH' },
   { date: '19/12/2025', school: 'Ryan International School, Rohini', location: 'DELHI' },
   { date: '20/12/2025', school: 'DAV Public School Airoli, Navi Mumbai ', location: 'MAHARASHTRA' },
   { date: '20/12/2025', school: 'B D Academy', location: 'BIHAR' },
-  { date: '21/12/2025', school: 'DAV Public School, Tanda', location: 'UTTAR PRADESH' },
+  { date: '22/12/2025', school: 'DAV Public School, Tanda', location: 'UTTAR PRADESH' },
   { date: '22/12/2025', school: 'Jagannath International School', location: 'DELHI' },
   { date: '24/12/2025', school: 'Sanskar Vidya', location: 'BIHAR' },
   { date: '27/12/2025', school: 'Aman Academy', location: 'BIHAR' },
