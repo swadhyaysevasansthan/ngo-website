@@ -124,5 +124,40 @@ export const testimonials = [
     role: "Adjutant",
     organization: "The Rajputana Rifles Regimental Centre",
     location: "PIN - 900106"
+  },
+  {
+    quote: "We sincerely thank Swadhya Seva Foundation for organizing NEAC 2025–26, a well-structured and impactful program that promoted value-based learning and personal growth among students. We appreciate the dedication and efforts of the entire team in making the initiative successful and enriching.",
+    name: "Vibha Gupta",
+    role: "Principal",
+    organization: "Delhi Heritage School",
+    location: "Rohini, Delhi"
+  },
+  {
+    quote: "SNEAC 2025–2026 provided a well-structured learning platform that positively impacted students’ learning behaviour, motivation, communication skills, and real-world understanding. Teachers observed improved classroom participation and collaboration, making the programme a valuable initiative in developing confident, skilled, and responsible learners.",
+    name: "Principal",
+    role: "Principal",
+    organization: "Akal Academy Ajitsar ,Ratia",
+    location: "Ratia V.P.O Hamjapur Fatehabad Haryana 125051"
+  },
+  {
+    quote: "The Environment Quiz under SNEAC 2025–26, conducted by Swadhya Seva Foundation at Mayoor School, Noida, effectively promoted critical thinking and real-life environmental awareness among students. The team demonstrated high professionalism, punctuality, and coordination, making the event engaging and interactive. Such initiatives foster environmental responsibility, and we look forward to future collaborations.",
+    name: "Alka Awasthi",
+    role: "Principal",
+    organization: "Mayoor School Noida",
+    location: "Noida, Uttar Pradesh"
+  },
+  {
+    quote: "The school proudly participated in the Swadhyay National Environment Awareness Competition 2025–26, which was informative, engaging, and thoughtfully designed. The quiz enhanced students’ understanding of environmental issues while promoting critical thinking and responsible citizenship. We appreciate Swadhyay Seva Foundation’s efforts in fostering environmental awareness and look forward to future participation.",
+    name: "Sovanika Pal",
+    role: "Principal",
+    organization: "Vidya Bharti School",
+    location: "Rohini, Delhi"
+  },
+  {
+    quote: "Maharishi Vidya Mandir School, Nadaun appreciates Swadhyay Seva Foundation for conducting a meaningful, well-organized, and educational programme. The initiative effectively promoted environmental awareness and social responsibility among students through engaging activities. The team’s dedication and professionalism are commendable, and we look forward to future collaborations.",
+    name: "Sh. Sushil Kumar Awasthi",
+    role: "Principal",
+    organization: "Maharishi Vidya Mandir School",
+    location: "Nadaun, Himachal Pradesh"
   }
 ];
