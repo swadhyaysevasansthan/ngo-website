@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // import WelcomeModal from './components/WelcomeModal';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import About from './pages/About';
 import Quiz from './pages/Quiz';
@@ -19,12 +20,14 @@ import UpcomingEngagements from './pages/UpcomingEngagements';
 import TestimonialsPage from './pages/TestimonialsPage';
 import DonatePage from './pages/DonatePage';
 import LatestUpdatesBar from './components/LatestUpdatesBar';
+import BookDonation from './pages/BookDonation';
 
 function App() {
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
         {/* <WelcomeModal /> */}
+        <ScrollToTop />
         <Navbar />
         
        <LatestUpdatesBar />
@@ -45,6 +48,7 @@ function App() {
             <Route path="/plantation" element={<Plantation />} />
             <Route path="/yoga" element={<Yoga />} />
             <Route path="/donate" element={<DonatePage />} />
+            <Route path="/book-donation" element={<BookDonation />} />
           </Routes>
         </main>
         <Footer />

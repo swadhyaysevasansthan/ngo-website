@@ -41,6 +41,7 @@ const Navbar = () => {
     { name: 'Naturopathy', path: '/naturopathy' },
     { name: 'Plantation', path: '/plantation' },
     { name: 'Yoga', path: '/yoga' },
+    { name: 'Pustak Daan', path: '/book-donation' }
   ];
 
   const isActive = (path) => location.pathname === path;

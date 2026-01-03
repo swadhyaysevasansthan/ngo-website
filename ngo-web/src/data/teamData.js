@@ -42,7 +42,7 @@ export const coreMembers = [
       name: "Nitin Goel",
       role: "Co-Founder & Treasurer",
       description: "Supporting organizational growth and resource management",
-      image: "/images/team/user-nobg.png",
+      image: "/images/team/nitin-goel.jpeg",
     },
     {
       name: "Dr. Ruchi Rawal",
@@ -96,7 +96,7 @@ export const patrons = [
   {
     name: "Sandeep Marodia",
     description: "Industrialist & Social Activist",
-    image: "/images/team/user-nobg.png",
+    image: "/images/team/sandeep-marodia.jpeg",
   },
 ];
 
@@ -264,9 +264,9 @@ export const environmentExperts = [
   ];
 
 export const generalBodyTeam = [
-    { name: "Rajiv Kumar Garg", role: "Member", image: "/images/team/user-nobg.png", },
+    { name: "Rajiv Kumar Garg", role: "Member", image: "/images/team/rajiv-garg.jpeg", },
     { name: "Tushar Goel", role: "Member", image: "/images/team/tushar-goel.jpg", },
-    { name: "Ishita Goel", role: "Member", image: "/images/team/user-nobg.png", },
+    { name: "Ishita Goel", role: "Member", image: "/images/team/ishita-goel.jpeg", },
     { name: "Mansi Goel", role: "Member", image: "/images/team/mansi-goel.jpg", description: "Naturopath and Yoga Trainer"},
   ];
 
@@ -290,7 +290,7 @@ export const youngITTeam = [
       name: "Tushar Jain",
       role: "B.Tech (CSAI)",
       description: "Java Developer, Oracle Certified in Generative AI, Creative Technologist",
-      image: "/images/team/user-nobg.png",
+      image: "/images/team/tushar-jain.jpeg",
       details: (
         <div>
           <p>
