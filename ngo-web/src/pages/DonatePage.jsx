@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const DonatePage = () => {
 
     useEffect(() => {
-    document.title = 'Testimonials - Swadhyay Seva Foundation';
+    document.title = 'Donate - Swadhyay Seva Foundation';
   }, []);
 
   return (

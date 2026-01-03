@@ -60,6 +60,33 @@ const ALL_QUIZZES = [
     questions: '25 questions',
     url: 'https://forms.office.com/r/RFiXJnHUcd',
   },
+  {
+    id: 4,
+    title: 'Environmental Awareness Quiz',
+    description:
+      'Test your knowledge about environmental conservation, climate change, biodiversity, and sustainable practices. Learn about the importance of protecting our planet.',
+    duration: '10 minutes',
+    questions: '25 questions',
+    url: 'https://forms.office.com/r/cQFY32eJb6',
+  },
+  {
+    id: 5,
+    title: 'Environmental Awareness Quiz',
+    description:
+      'Test your knowledge about environmental conservation, climate change, biodiversity, and sustainable practices. Learn about the importance of protecting our planet.',
+    duration: '10 minutes',
+    questions: '25 questions',
+    url: 'https://forms.office.com/r/wrVmC81JPb',
+  },
+  {
+    id: 6,
+    title: 'Environmental Awareness Quiz',
+    description:
+      'Test your knowledge about environmental conservation, climate change, biodiversity, and sustainable practices. Learn about the importance of protecting our planet.',
+    duration: '10 minutes',
+    questions: '25 questions',
+    url: 'https://forms.office.com/r/hn4KLS1p6a',
+  },
 ];
 
 
@@ -68,6 +95,9 @@ const ACCESS_CODE_MAP = {
   [process.env.REACT_APP_QUIZ_ACCESS_CODE_1]: 0, // Maps to quiz at index 0
   [process.env.REACT_APP_QUIZ_ACCESS_CODE_2]: 1, // Maps to quiz at index 1
   [process.env.REACT_APP_QUIZ_ACCESS_CODE_3]: 2, // Maps to quiz at index 2
+  [process.env.REACT_APP_QUIZ_ACCESS_CODE_4]: 3, // Maps to quiz at index 2
+  [process.env.REACT_APP_QUIZ_ACCESS_CODE_5]: 4, // Maps to quiz at index 2
+  [process.env.REACT_APP_QUIZ_ACCESS_CODE_6]: 5, // Maps to quiz at index 2
 };
 
 

@@ -1,8 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Book, Heart, Library, Sparkles, GraduationCap, CheckCircle2, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const BookDonation = () => {
+
+    useEffect(() => {
+      document.title = 'Pustak Daan - Swadhyay Seva Foundation';
+    }, []);
+
   return (
     <main className="min-h-screen bg-white">
       {/* Campaign Hero Section */}
