@@ -102,7 +102,7 @@ const ACCESS_CODE_MAP = {
 
 
 // Access/lock configuration at module scope
-const ACCESS_DURATION_MIN = 13; // 12 minutes for both access and lock
+const ACCESS_DURATION_MIN = 13; // 13 minutes for both access and lock
 const ACCESS_KEY = 'sss_quiz_access_granted';
 const CLICK_KEY = 'sss_quiz_taken_at';
 
