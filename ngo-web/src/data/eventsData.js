@@ -449,5 +449,63 @@ export const pastEvents = [
     '/images/events/alpine/3.jpeg'
   ]
 },
+{
+  id: 25,
+  school: 'DAV Public School Airoli',
+  location: 'Navi Mumbai, Maharashtra',
+  date: 'December 20, 2025',
+  participants: '37 students',
+  description:
+    'A spirited environmental quiz was conducted at DAV Public School, Airoli with 37 students. The event highlighted coastal biodiversity, water conservation, and the role of young citizens in reducing plastic pollution.',
+  highlights: [
+    'Quiz segments focused on marine life and mangrove conservation',
+    'Students shared innovative ideas for community-level water recycling',
+    'Emphasis on the "Zero Waste" lifestyle and sustainable daily habits',
+    'Participants received certificates and were encouraged to lead eco-club activities'
+  ],
+  images: [
+    '/images/events/dav-airoli/1.jpeg',
+    '/images/events/dav-airoli/2.jpeg'
+  ]
+},
+{
+  id: 26,
+  school: 'DAV BR Public School',
+  location: 'Bina, Madhya Pradesh',
+  date: 'December 23, 2025',
+  participants: '48 students',
+  description:
+    'DAV BR Public School in Bina organised a highly interactive environmental quiz for 48 students. The session focused on the importance of industrial sustainability, clean energy, and protecting the local ecosystem.',
+  highlights: [
+    'Deep dive into renewable energy sources and their benefits',
+    'Interactive session on industrial waste management and its impact',
+    'Students discussed ways to increase green cover in urban areas',
+    'All 48 participants were recognized with certificates for their proactive learning'
+  ],
+  images: [
+    '/images/events/dav-br/1.jpeg',
+    '/images/events/dav-br/2.jpeg'
+  ]
+},
 
+{
+  id: 27,
+  school: "St. Xavier's High School",
+  location: 'Cuttack, Odisha',
+  date: 'January 6, 2026',
+  participants: '49 students',
+  description:
+    "St. Xavier's High School in Cuttack kicked off the new year with an engaging environmental quiz for 49 students. The event explored topics ranging from wetland preservation to climate resilience and traditional conservation methods.",
+  highlights: [
+    'Focused discussion on the preservation of local wetlands and water bodies',
+    'Students proposed strategies for local-level climate adaptation',
+    'Explored the link between cultural heritage and nature conservation',
+    'All participating students were awarded certificates for their enthusiastic participation'
+  ],
+  images: [
+    '/images/events/stxhs/1.jpg',
+    '/images/events/stxhs/2.jpg',
+    '/images/events/stxhs/3.jpg'
+  ]
+}
 ];
