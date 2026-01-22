@@ -110,9 +110,6 @@ html {
 
 .hide-native-scrollbar::-webkit-scrollbar {
   display: none;                /* Chrome/Safari/Opera */
-<<<<<<< HEAD
-}
-=======
 }
 
 
@@ -157,4 +154,3 @@ html {
     animation: none;
   }
 }
->>>>>>> f2d062dd9de6fc65cfcbc922ebc2286d2486123e
