@@ -1,52 +1,17 @@
-<<<<<<< HEAD
-import React, { useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Calendar, MapPin, ArrowRight } from 'lucide-react';
-=======
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, MapPin, ArrowRight, ChevronDown, ChevronUp, Award, Camera, Clock } from 'lucide-react';
->>>>>>> f2d062dd9de6fc65cfcbc922ebc2286d2486123e
 import Card from '../components/Card';
 import SectionHeader from '../components/SectionHeader';
 
 const UpcomingEngagements = () => {
-<<<<<<< HEAD
-=======
   const [isAnnouncementExpanded, setIsAnnouncementExpanded] = useState(true);
 
->>>>>>> f2d062dd9de6fc65cfcbc922ebc2286d2486123e
   useEffect(() => {
     document.title = 'Upcoming Engagements - Swadhyay Seva Foundation';
   }, []);
 
   const upcomingEvents = [
-<<<<<<< HEAD
-  // { date: '16/01/2026', school: 'South Eastern Railway Mixed Higher Secondary School, Adra (Campus-2)', location: 'WEST BENGAL' },
-  // { date: '17/01/2026', school: 'JK Public School, Kathua', location: 'JAMMU AND KASHMIR' },
-  // { date: '18/01/2026', school: 'Jhabban Lal DAV Public School', location: 'DELHI' },
-  // { date: '19/01/2026', school: 'Bloomz International School', location: 'GOA' },
-  // { date: '19/01/2026', school: 'GND DAV Public School, Bhikhiwind', location: 'PUNJAB' },
-  // { date: '19/01/2026', school: 'Vedantic International School', location: 'UTTAR PRADESH' },
-  // { date: '21/01/2026', school: 'Brainy Blooms Lecole Internationale', location: 'PUDUCHERRY' },
-  // { date: '22/01/2026', school: 'Delhi Public Senior Secondary School, Barmer', location: 'RAJASTHAN' },
-  // { date: '22/01/2026', school: 'DAV Public School, Hamirpur', location: 'HIMACHAL PRADESH' },
-  { date: '27/01/2026', school: 'Akal Academy, Chogawan', location: 'PUNJAB' },
-  { date: '27/01/2026', school: 'Delhi Public School HRIT Campus', location: 'UTTAR PRADESH' },
-  { date: '28/01/2026', school: 'The Mother\'s International School', location: 'DELHI' },
-  { date: '29/01/2026', school: 'The Mann School', location: 'DELHI' },
-  { date: '02/02/2026', school: 'Holy Public School', location: 'UTTAR PRADESH' },
-  { date: '04/02/2026', school: 'Brainy Blooms Concept School', location: 'PUDUCHERRY' },
-  { date: '05/02/2026', school: 'Bal Bharati Public School, Nabinagar', location: 'BIHAR' },
-  { date: '09/02/2026', school: 'Army Public School, Ranikhet', location: 'UTTARAKHAND' },
-  { date: '20/02/2026', school: 'Eklavya Model Residential School, Gamnom Sapormeina', location: 'MANIPUR' },
-  { date: '15/03/2026', school: 'Dalhousie Public School', location: 'HIMACHAL PRADESH' },
-];
-
-
-  return (
-    <div className="bg-gray-50">
-=======
     { date: '16/01/2026', school: 'South Eastern Railway Mixed Higher Secondary School, Adra (Campus-2)', location: 'WEST BENGAL' },
     { date: '17/01/2026', school: 'JK Public School, Kathua', location: 'JAMMU AND KASHMIR' },
     { date: '18/01/2026', school: 'Jhabban Lal DAV Public School', location: 'DELHI' },
@@ -234,7 +199,6 @@ const UpcomingEngagements = () => {
         </div>
       </div>
 
->>>>>>> f2d062dd9de6fc65cfcbc922ebc2286d2486123e
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-primary-600 to-saffron-600 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
