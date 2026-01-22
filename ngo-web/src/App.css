@@ -1,1 +1,47 @@
+<<<<<<< HEAD
 @import "tailwindcss";
+=======
+@import "tailwindcss";
+
+/* Marquee Animation - Scrolling from Right to Left */
+.marquee-container {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  width: 100%;
+}
+
+.marquee-content {
+  display: flex;
+  animation: marquee 30s linear infinite;
+  gap: 3rem;
+  will-change: transform;
+}
+
+.marquee-text {
+  white-space: nowrap;
+  padding: 0 2rem;
+  flex-shrink: 0;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Pause animation on hover - optional */
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused;
+}
+
+/* Ensure smooth performance */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-content {
+    animation: none;
+  }
+}
+>>>>>>> f2d062dd9de6fc65cfcbc922ebc2286d2486123e
