@@ -40,7 +40,7 @@ const Plantation = () => {
   ];
 
   const stats = [
-    { icon: <Trees size={32} />, number: '10,000+', label: 'Saplings Planted' },
+    { icon: <Trees size={32} />, number: '50,000+', label: 'Saplings Planted' },
     { icon: <Users size={32} />, number: '5,000+', label: 'Volunteers Engaged' },
     { icon: <Leaf size={32} />, number: '100+', label: 'Green Zones Created' },
   ];
