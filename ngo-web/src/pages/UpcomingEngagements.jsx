@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, MapPin, ArrowRight, ChevronDown, ChevronUp, Award } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, ChevronDown, ChevronUp, Award, Camera, Clock } from 'lucide-react';
 import Card from '../components/Card';
 import SectionHeader from '../components/SectionHeader';
 
@@ -44,9 +44,9 @@ const UpcomingEngagements = () => {
             className="w-full py-4 flex items-center justify-between text-white hover:bg-white/5 transition-colors rounded-lg px-2"
           >
             <div className="flex items-center gap-3">
-              <Award className="w-6 h-6 text-yellow-300" />
+              <Camera className="w-6 h-6 text-yellow-300" />
               <h2 className="text-xl md:text-2xl font-bold">
-                Photography Competition - WORLD WETLANDS DAY
+                📸 Photography Competition - World Wetlands Day 2026
               </h2>
             </div>
             <div className="flex items-center gap-2">
@@ -71,58 +71,124 @@ const UpcomingEngagements = () => {
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
                 className="overflow-hidden"
               >
-                <div className="pb-6">
+                <div className="pb-6 space-y-4">
                   {/* Competition Details */}
                   <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-white">
+                    {/* Eligibility Badge */}
+                    <div className="mb-4 inline-block bg-yellow-400 text-gray-900 px-4 py-2 rounded-full font-semibold">
+                      Open to All College & University Students
+                    </div>
+
                     <div className="grid md:grid-cols-2 gap-6">
                       {/* Left Column */}
-                      <div className="space-y-3">
+                      <div className="space-y-4">
                         <div>
-                          <p className="text-sm text-white/80 mb-1">Open to:</p>
-                          <p className="text-lg font-semibold">All College & University Students</p>
+                          <p className="text-sm text-white/80 mb-1 flex items-center gap-2">
+                            <Calendar className="w-4 h-4" />
+                            Competition Duration:
+                          </p>
+                          <p className="text-lg font-semibold">23rd January to 29th January 2026</p>
+                          <p className="text-sm text-yellow-300 mt-1">⏰ Upload deadline: 29th Jan, 5:00 PM</p>
                         </div>
                         
                         <div>
                           <p className="text-sm text-white/80 mb-1">Theme:</p>
-                          <p className="text-lg font-semibold">Wetlands and Traditional Knowledge: Celebrating Cultural Heritage</p>
+                          <p className="text-lg font-semibold leading-tight">
+                            Wetlands and Traditional Knowledge: Celebrating Cultural Heritage
+                          </p>
                         </div>
 
                         <div>
-                          <p className="text-sm text-white/80 mb-1">Submission Period:</p>
-                          <p className="text-lg font-semibold">23rd to 29th January 2026 (till 5:00 PM)</p>
-                          <p className="text-sm text-yellow-300 mt-1">📸 Photos to be taken ONLY at DDA Yamuna Biodiversity Park</p>
+                          <p className="text-sm text-white/80 mb-1 flex items-center gap-2">
+                            <MapPin className="w-4 h-4" />
+                            Venue:
+                          </p>
+                          <p className="text-base">DDA Yamuna Biodiversity Park</p>
+                          <p className="text-sm">Main Jagatpur Road, Wazirabad, Delhi-110084</p>
+                        </div>
+
+                        <div>
+                          <p className="text-sm text-white/80 mb-1 flex items-center gap-2">
+                            <Clock className="w-4 h-4" />
+                            Timings:
+                          </p>
+                          <p className="text-base">Morning: 10:30 AM - 12:30 PM</p>
+                          <p className="text-base">Evening: 2:30 PM - 4:30 PM</p>
                         </div>
                       </div>
 
                       {/* Right Column */}
-                      <div className="space-y-3">
-                        <div>
-                          <p className="text-sm text-white/80 mb-1">Results & Prize Distribution:</p>
-                          <p className="text-lg font-semibold">2nd February 2026</p>
-                        </div>
-
-                        <div>
-                          <p className="text-sm text-white/80 mb-1">Venue:</p>
-                          <p className="text-base">DDA Yamuna Biodiversity Park, Main Jagatpur Rd, Wazirabad, Delhi-110084</p>
-                        </div>
-
-                        <div>
-                          <p className="text-sm text-white/80 mb-2">Prizes:</p>
-                          <ul className="space-y-1 text-sm">
-                            <li>🥇 1st Prize: ₹2000 Cash + Pen Drive + Earthenware Glasses</li>
-                            <li>🥈 2nd Prize: ₹1500 Cash + Pen Drive + Earthenware Glasses</li>
-                            <li>🥉 3rd Prize: ₹1000 Cash + Pen Drive + Earthenware Glasses</li>
-                            <li>🎖️ 5 Consolation Prizes: Earthenware Glasses</li>
+                      <div className="space-y-4">
+                        <div className="bg-white/10 rounded-lg p-4">
+                          <p className="text-sm text-white/80 mb-2 flex items-center gap-2">
+                            <Award className="w-4 h-4" />
+                            Prizes:
+                          </p>
+                          <ul className="space-y-1.5 text-sm">
+                            <li className="flex items-start gap-2">
+                              <span className="text-yellow-300">🥇</span>
+                              <span><strong>1st Prize:</strong> ₹2,000 Cash + Pen Drive + Earthenware Glasses</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <span className="text-gray-300">🥈</span>
+                              <span><strong>2nd Prize:</strong> ₹1,500 Cash + Pen Drive + Earthenware Glasses</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <span className="text-orange-300">🥉</span>
+                              <span><strong>3rd Prize:</strong> ₹1,000 Cash + Pen Drive + Earthenware Glasses</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <span>🎖️</span>
+                              <span><strong>5 Consolation Prizes:</strong> Earthenware Glasses</span>
+                            </li>
                           </ul>
+                        </div>
+
+                        <div>
+                          <p className="text-sm text-white/80 mb-1">Result Announcement:</p>
+                          <p className="text-lg font-semibold">2nd February 2026 (World Wetlands Day)</p>
+                          <p className="text-sm">@ DDA Yamuna Biodiversity Park | 10:00 AM onwards</p>
                         </div>
                       </div>
                     </div>
 
+                    {/* Important Guidelines */}
+                    <div className="mt-6 pt-4 border-t border-white/20">
+                      <p className="text-sm font-semibold mb-2">📋 Important Guidelines:</p>
+                      <ul className="text-sm space-y-1 list-disc list-inside">
+                        <li>All photographs must be captured ONLY at DDA Yamuna Biodiversity Park during competition period</li>
+                        <li>Previously taken or off-site photographs will NOT be accepted</li>
+                        <li>Editing allowed: Contrast, Brightness, Cropping ONLY</li>
+                        <li>Submit ONE photograph (Max. 20MB)</li>
+                        <li>Registration is mandatory before submission</li>
+                      </ul>
+                    </div>
+
+                    {/* Registration & Submission Links */}
+                    <div className="mt-6 grid sm:grid-cols-2 gap-4">
+                      <a
+                        href="https://forms.gle/bPiTHvjtbuiT6n9m6"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block bg-white text-green-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-100 transition-colors text-center shadow-lg"
+                      >
+                        📝 Register Now
+                      </a>
+                      <a
+                        href="https://forms.gle/TpZKLLjSSf2mLcie9"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block bg-yellow-400 text-gray-900 font-semibold py-3 px-6 rounded-lg hover:bg-yellow-300 transition-colors text-center shadow-lg"
+                      >
+                        📤 Submit Photograph
+                      </a>
+                    </div>
+
                     {/* Organizers */}
-                    <div className="mt-4 pt-4 border-t border-white/20">
+                    <div className="mt-6 pt-4 border-t border-white/20">
                       <p className="text-sm text-white/80 mb-2">Organized by:</p>
                       <p className="text-base">
-                        DDA Yamuna Biodiversity Park | Gardening Committee, Rajdhani College (DU) | Swadhyay Seva Foundation
+                        DDA Yamuna Biodiversity Park • Gardening Committee, Rajdhani College (DU) • Swadhyay Seva Foundation, Delhi
                       </p>
                     </div>
                   </div>
