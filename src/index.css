@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes headerFromTop {
+  0%   { opacity: 0; transform: translateY(-24px); }
+  60%  { opacity: 1; transform: translateY(3px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes headerFromBottom {
+  0%   { opacity: 0; transform: translateY(24px); }
+  60%  { opacity: 1; transform: translateY(-3px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-headerFromTop {
+  animation: headerFromTop 0.9s ease-out;
+}
+
+.animate-headerFromBottom {
+  animation: headerFromBottom 0.9s ease-out;
+}
+
+/* moving line between name and quotes */
+@keyframes separatorSlide {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+.animate-separatorSlide {
+  animation: separatorSlide 2.4s linear infinite;
+}
+
+@keyframes updateFade {
+  0%   { opacity: 0; transform: translateY(4px); }
+  15%  { opacity: 1; transform: translateY(0); }
+  85%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-4px); }
+}
+
+.animate-updateFade {
+  animation: updateFade 5s ease-in-out;
+}
+
+/* Hide horizontal scrollbar but keep scrolling */
+.hide-scrollbar {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE and Edge */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari, Opera */
+}
+
+/* Modern thin horizontal scrollbar just for this container */
+.modern-scrollbar {
+  scrollbar-width: thin;              /* Firefox [web:136][web:142] */
+  scrollbar-color: rgba(37, 99, 235, 0.6) transparent; /* thumb + track */
+}
+
+/* Chrome, Edge, Safari */
+.modern-scrollbar::-webkit-scrollbar {
+  height: 4px;                        /* thin horizontal bar [web:140][web:138] */
+}
+
+.modern-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modern-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    to right,
+    rgba(59, 130, 246, 0.7),
+    rgba(37, 99, 235, 0.9)
+  );
+  border-radius: 9999px;
+}
+
+.modern-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    to right,
+    rgba(37, 99, 235, 0.9),
+    rgba(30, 64, 175, 1)
+  );
+}
+
+.hide-native-scrollbar {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE/Edge */
+}
+
+.hide-native-scrollbar::-webkit-scrollbar {
+  display: none;                /* Chrome/Safari/Opera */
+}
+
+
+/* Marquee Animation - Scrolling from Right to Left */
+.marquee-container {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  width: 100%;
+}
+
+.marquee-content {
+  display: flex;
+  animation: marquee 30s linear infinite;
+  gap: 3rem;
+  will-change: transform;
+}
+
+.marquee-text {
+  white-space: nowrap;
+  padding: 0 2rem;
+  flex-shrink: 0;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Pause animation on hover - optional */
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused;
+}
+
+/* Ensure smooth performance */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-content {
+    animation: none;
+  }
+}
