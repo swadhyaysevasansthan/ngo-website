@@ -109,9 +109,9 @@ const UpcomingEngagements = () => {
                         <div>
                           <p className="text-sm text-white/80 mb-2">Prizes:</p>
                           <ul className="space-y-1 text-sm">
-                            <li>🥇 1st Prize: ₹2000 Cash + Pen Drive</li>
-                            <li>🥈 2nd Prize: ₹1500 Cash + Pen Drive</li>
-                            <li>🥉 3rd Prize: ₹1000 Cash + Pen Drive</li>
+                            <li>🥇 1st Prize: ₹2000 Cash + Pen Drive + Earthenware Glasses</li>
+                            <li>🥈 2nd Prize: ₹1500 Cash + Pen Drive + Earthenware Glasses</li>
+                            <li>🥉 3rd Prize: ₹1000 Cash + Pen Drive + Earthenware Glasses</li>
                             <li>🎖️ 5 Consolation Prizes: Earthenware Glasses</li>
                           </ul>
                         </div>
