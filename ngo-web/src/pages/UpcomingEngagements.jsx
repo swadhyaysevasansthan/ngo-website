@@ -54,7 +54,7 @@ const UpcomingEngagements = () => {
             Photography Competition - World Wetlands Day 2026
           </h2>
           <p className="text-xs md:text-sm text-emerald-100 mt-0.5">
-            23-29 January • Open to all students • Win up to ₹2,000
+            23-29 January • Open to all university & college students • Win up to ₹2,000
           </p>
         </div>
       </div>
