@@ -39,7 +39,7 @@ function App() {
             <Route path="/question-bank" element={<QuestionBank />} /> 
             <Route path="/school-stories" element={<SchoolStories />} />
             <Route path="/quiz/currently-active" element={<CurrentlyActiveEvents />} />
-            <Route path="/quiz/upcoming-engagements" element={<UpcomingEngagements />} />
+            <Route path="/upcoming-engagements" element={<UpcomingEngagements />} />
             <Route path="/ourteam" element={<OurTeam />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/testimonials" element={<TestimonialsPage />} />

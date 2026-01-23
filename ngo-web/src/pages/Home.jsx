@@ -64,7 +64,7 @@ const Home = () => {
   return (
     <div className="bg-gray-50">
 {/* Scrolling Announcement Banner */}
-<Link to="/quiz/upcoming-engagements" className="block">
+<Link to="/upcoming-engagements" className="block">
   <div className="bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 py-3 overflow-hidden cursor-pointer hover:from-green-700 hover:via-emerald-700 hover:to-teal-700 transition-all">
     <div className="marquee-container">
       <div className="marquee-content">

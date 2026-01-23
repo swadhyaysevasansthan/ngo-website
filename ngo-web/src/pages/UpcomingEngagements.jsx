@@ -35,169 +35,246 @@ const UpcomingEngagements = () => {
 
   return (
     <div className="bg-gray-50">
-      {/* Collapsible Announcement Banner */}
-      <div className="bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 sticky top-0 z-50 shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header - Always Visible */}
-          <button
-            onClick={() => setIsAnnouncementExpanded(!isAnnouncementExpanded)}
-            className="w-full py-4 flex items-center justify-between text-white hover:bg-white/5 transition-colors rounded-lg px-2"
-          >
-            <div className="flex items-center gap-3">
-              <Camera className="w-6 h-6 text-yellow-300" />
-              <h2 className="text-xl md:text-2xl font-bold">
-                📸 Photography Competition - World Wetlands Day 2026
-              </h2>
+      {/* Professional Collapsible Announcement Banner */}
+<div className="bg-gradient-to-br from-emerald-600 via-teal-600 to-green-700 sticky top-0 z-50 shadow-2xl border-b-4 border-emerald-800">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    {/* Compact Header - Always Visible */}
+    <button
+      onClick={() => setIsAnnouncementExpanded(!isAnnouncementExpanded)}
+      className="w-full py-4 flex items-center justify-between group transition-all duration-200 hover:bg-white/10 rounded-lg px-3"
+      aria-expanded={isAnnouncementExpanded}
+      aria-label="Toggle announcement details"
+    >
+      <div className="flex items-center gap-3 md:gap-4">
+        <div className="bg-white/20 p-2 rounded-lg backdrop-blur-sm">
+          <Camera className="w-5 h-5 md:w-6 md:h-6 text-yellow-300" />
+        </div>
+        <div className="text-left">
+          <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-white leading-tight">
+            Photography Competition - World Wetlands Day 2026
+          </h2>
+          <p className="text-xs md:text-sm text-emerald-100 mt-0.5">
+            23-29 January • Open to all students • Win up to ₹2,000
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-3 flex-shrink-0">
+        <span className="hidden sm:block text-xs md:text-sm text-emerald-100 font-medium">
+          {isAnnouncementExpanded ? 'Show less' : 'View details'}
+        </span>
+        {isAnnouncementExpanded ? (
+          <ChevronUp className="w-5 h-5 md:w-6 md:h-6 text-white group-hover:translate-y-[-2px] transition-transform" />
+        ) : (
+          <ChevronDown className="w-5 h-5 md:w-6 md:h-6 text-white group-hover:translate-y-[2px] transition-transform" />
+        )}
+      </div>
+    </button>
+
+    {/* Expandable Content with Smooth Animation */}
+    <AnimatePresence>
+      {isAnnouncementExpanded && (
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: 'auto', opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+          className="overflow-hidden"
+        >
+          <div className="pb-8 pt-2">
+            {/* Eligibility Badge - Prominent Placement */}
+            <div className="mb-6 flex justify-center">
+              <div className="bg-gradient-to-r from-yellow-400 to-amber-400 text-gray-900 px-6 py-3 rounded-full font-bold text-sm md:text-base shadow-lg inline-flex items-center gap-2">
+                <Award className="w-5 h-5" />
+                Open to All College & University Students
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-white/80 hidden sm:block">
-                {isAnnouncementExpanded ? 'Click to minimize' : 'Click for details'}
-              </span>
-              {isAnnouncementExpanded ? (
-                <ChevronUp className="w-6 h-6" />
-              ) : (
-                <ChevronDown className="w-6 h-6" />
-              )}
-            </div>
-          </button>
 
-          {/* Expandable Content */}
-          <AnimatePresence>
-            {isAnnouncementExpanded && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
-                className="overflow-hidden"
-              >
-                <div className="pb-6 space-y-4">
-                  {/* Competition Details */}
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-white">
-                    {/* Eligibility Badge */}
-                    <div className="mb-4 inline-block bg-yellow-400 text-gray-900 px-4 py-2 rounded-full font-semibold">
-                      Open to All College & University Students
+            {/* Main Content Card */}
+            <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
+              {/* Key Info Grid - Enhanced Visual Hierarchy */}
+              <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-200">
+                {/* Duration */}
+                <div className="p-6 bg-gradient-to-br from-blue-50 to-cyan-50">
+                  <div className="flex items-start gap-3">
+                    <div className="bg-blue-600 p-2 rounded-lg">
+                      <Calendar className="w-5 h-5 text-white" />
                     </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                      {/* Left Column */}
-                      <div className="space-y-4">
-                        <div>
-                          <p className="text-sm text-white/80 mb-1 flex items-center gap-2">
-                            <Calendar className="w-4 h-4" />
-                            Competition Duration:
-                          </p>
-                          <p className="text-lg font-semibold">23rd January to 29th January 2026</p>
-                          <p className="text-sm text-yellow-300 mt-1">⏰ Upload deadline: 29th Jan, 5:00 PM</p>
-                        </div>
-                        
-                        <div>
-                          <p className="text-sm text-white/80 mb-1">Theme:</p>
-                          <p className="text-lg font-semibold leading-tight">
-                            Wetlands and Traditional Knowledge: Celebrating Cultural Heritage
-                          </p>
-                        </div>
-
-                        <div>
-                          <p className="text-sm text-white/80 mb-1 flex items-center gap-2">
-                            <MapPin className="w-4 h-4" />
-                            Venue:
-                          </p>
-                          <p className="text-base">DDA Yamuna Biodiversity Park</p>
-                          <p className="text-sm">Main Jagatpur Road, Wazirabad, Delhi-110084</p>
-                        </div>
-
-                        <div>
-                          <p className="text-sm text-white/80 mb-1 flex items-center gap-2">
-                            <Clock className="w-4 h-4" />
-                            Timings:
-                          </p>
-                          <p className="text-base">Morning: 10:30 AM - 12:30 PM</p>
-                          <p className="text-base">Evening: 2:30 PM - 4:30 PM</p>
-                        </div>
-                      </div>
-
-                      {/* Right Column */}
-                      <div className="space-y-4">
-                        <div className="bg-white/10 rounded-lg p-4">
-                          <p className="text-sm text-white/80 mb-2 flex items-center gap-2">
-                            <Award className="w-4 h-4" />
-                            Prizes:
-                          </p>
-                          <ul className="space-y-1.5 text-sm">
-                            <li className="flex items-start gap-2">
-                              <span className="text-yellow-300">🥇</span>
-                              <span><strong>1st Prize:</strong> ₹2,000 Cash + Pen Drive + Earthenware Glasses</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="text-gray-300">🥈</span>
-                              <span><strong>2nd Prize:</strong> ₹1,500 Cash + Pen Drive + Earthenware Glasses</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span className="text-orange-300">🥉</span>
-                              <span><strong>3rd Prize:</strong> ₹1,000 Cash + Pen Drive + Earthenware Glasses</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <span>🎖️</span>
-                              <span><strong>5 Consolation Prizes:</strong> Earthenware Glasses</span>
-                            </li>
-                          </ul>
-                        </div>
-
-                        <div>
-                          <p className="text-sm text-white/80 mb-1">Result Announcement:</p>
-                          <p className="text-lg font-semibold">2nd February 2026 (World Wetlands Day)</p>
-                          <p className="text-sm">@ DDA Yamuna Biodiversity Park | 10:00 AM onwards</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Important Guidelines */}
-                    <div className="mt-6 pt-4 border-t border-white/20">
-                      <p className="text-sm font-semibold mb-2">📋 Important Guidelines:</p>
-                      <ul className="text-sm space-y-1 list-disc list-inside">
-                        <li>All photographs must be captured ONLY at DDA Yamuna Biodiversity Park during competition period</li>
-                        <li>Previously taken or off-site photographs will NOT be accepted</li>
-                        <li>Editing allowed: Contrast, Brightness, Cropping ONLY</li>
-                        <li>Submit ONE photograph (Max. 20MB)</li>
-                        <li>Registration is mandatory before submission</li>
-                      </ul>
-                    </div>
-
-                    {/* Registration & Submission Links */}
-                    <div className="mt-6 grid sm:grid-cols-2 gap-4">
-                      <a
-                        href="https://forms.gle/bPiTHvjtbuiT6n9m6"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block bg-white text-green-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-100 transition-colors text-center shadow-lg"
-                      >
-                        📝 Register Now
-                      </a>
-                      <a
-                        href="https://forms.gle/TpZKLLjSSf2mLcie9"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block bg-yellow-400 text-gray-900 font-semibold py-3 px-6 rounded-lg hover:bg-yellow-300 transition-colors text-center shadow-lg"
-                      >
-                        📤 Submit Photograph
-                      </a>
-                    </div>
-
-                    {/* Organizers */}
-                    <div className="mt-6 pt-4 border-t border-white/20">
-                      <p className="text-sm text-white/80 mb-2">Organized by:</p>
-                      <p className="text-base">
-                        DDA Yamuna Biodiversity Park • Gardening Committee, Rajdhani College (DU) • Swadhyay Seva Foundation, Delhi
+                    <div>
+                      <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">Duration</p>
+                      <p className="text-base md:text-lg font-bold text-gray-900 leading-tight">23-29 January 2026</p>
+                      <p className="text-sm text-red-600 font-semibold mt-2 flex items-center gap-1">
+                        <Clock className="w-4 h-4" />
+                        Deadline: 29 Jan, 5:00 PM
                       </p>
                     </div>
                   </div>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
+
+                {/* Venue */}
+                <div className="p-6 bg-gradient-to-br from-green-50 to-emerald-50">
+                  <div className="flex items-start gap-3">
+                    <div className="bg-green-600 p-2 rounded-lg">
+                      <MapPin className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">Venue</p>
+                      <p className="text-base font-bold text-gray-900">DDA Yamuna Biodiversity Park</p>
+                      <p className="text-sm text-gray-600 mt-1">Main Jagatpur Road, Wazirabad</p>
+                      <p className="text-sm text-gray-600">Delhi-110084</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Timings */}
+                <div className="p-6 bg-gradient-to-br from-purple-50 to-pink-50">
+                  <div className="flex items-start gap-3">
+                    <div className="bg-purple-600 p-2 rounded-lg">
+                      <Clock className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">Visit Hours</p>
+                      <p className="text-base font-semibold text-gray-900">Morning Session</p>
+                      <p className="text-sm text-gray-700">10:30 AM - 12:30 PM</p>
+                      <p className="text-base font-semibold text-gray-900 mt-2">Evening Session</p>
+                      <p className="text-sm text-gray-700">2:30 PM - 4:30 PM</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Theme Section */}
+              <div className="px-6 py-5 bg-gradient-to-r from-teal-600 to-emerald-600 text-white">
+                <p className="text-sm font-semibold uppercase tracking-wide mb-2 opacity-90">Competition Theme</p>
+                <p className="text-xl md:text-2xl font-bold leading-tight">
+                  Wetlands and Traditional Knowledge: Celebrating Cultural Heritage
+                </p>
+              </div>
+
+              {/* Prizes Section - Enhanced Design */}
+              <div className="p-6 md:p-8 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="bg-yellow-500 p-2 rounded-lg">
+                    <Award className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">Prizes & Recognition</h3>
+                </div>
+                
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {/* 1st Prize */}
+                  <div className="bg-white rounded-lg p-5 shadow-md border-2 border-yellow-400 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 bg-yellow-400 text-gray-900 text-xs font-bold px-3 py-1 rounded-bl-lg">
+                      1ST PLACE
+                    </div>
+                    <div className="text-5xl mb-3">🥇</div>
+                    <p className="text-2xl font-bold text-gray-900 mb-2">₹2,000</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">+ Pen Drive + Earthenware Glasses</p>
+                  </div>
+
+                  {/* 2nd Prize */}
+                  <div className="bg-white rounded-lg p-5 shadow-md border-2 border-gray-300 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 bg-gray-400 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                      2ND PLACE
+                    </div>
+                    <div className="text-5xl mb-3">🥈</div>
+                    <p className="text-2xl font-bold text-gray-900 mb-2">₹1,500</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">+ Pen Drive + Earthenware Glasses</p>
+                  </div>
+
+                  {/* 3rd Prize */}
+                  <div className="bg-white rounded-lg p-5 shadow-md border-2 border-orange-400 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 bg-orange-400 text-gray-900 text-xs font-bold px-3 py-1 rounded-bl-lg">
+                      3RD PLACE
+                    </div>
+                    <div className="text-5xl mb-3">🥉</div>
+                    <p className="text-2xl font-bold text-gray-900 mb-2">₹1,000</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">+ Pen Drive + Earthenware Glasses</p>
+                  </div>
+
+                  {/* Consolation */}
+                  <div className="bg-white rounded-lg p-5 shadow-md border-2 border-blue-300 relative overflow-hidden">
+                    <div className="text-5xl mb-3">🎖️</div>
+                    <p className="text-lg font-bold text-gray-900 mb-2">5 Consolation Prizes</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">Earthenware Glasses</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Guidelines Section */}
+              <div className="p-6 md:p-8 bg-gray-50">
+                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <span className="text-2xl">📋</span>
+                  Important Guidelines
+                </h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="flex gap-3">
+                    <div className="flex-shrink-0 w-6 h-6 bg-emerald-600 text-white rounded-full flex items-center justify-center text-sm font-bold">✓</div>
+                    <p className="text-sm text-gray-700">Photographs must be captured ONLY at DDA Yamuna Biodiversity Park during 23-29 Jan 2026</p>
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="flex-shrink-0 w-6 h-6 bg-emerald-600 text-white rounded-full flex items-center justify-center text-sm font-bold">✓</div>
+                    <p className="text-sm text-gray-700">Editing allowed: Contrast, Brightness, Cropping ONLY - no filters or heavy manipulation</p>
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="flex-shrink-0 w-6 h-6 bg-red-600 text-white rounded-full flex items-center justify-center text-sm font-bold">✗</div>
+                    <p className="text-sm text-gray-700">Previously taken or off-site photographs will NOT be accepted</p>
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="flex-shrink-0 w-6 h-6 bg-emerald-600 text-white rounded-full flex items-center justify-center text-sm font-bold">✓</div>
+                    <p className="text-sm text-gray-700">Submit ONE photograph (Maximum 20MB) - Registration mandatory before submission</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Result Announcement */}
+              <div className="p-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-wide mb-1 opacity-90">Results Announcement</p>
+                    <p className="text-2xl font-bold">2nd February 2026 (World Wetlands Day)</p>
+                    <p className="text-sm mt-1 opacity-90">📍 DDA Yamuna Biodiversity Park • 🕙 10:00 AM onwards</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA Buttons - Prominent */}
+              <div className="p-6 md:p-8 bg-white border-t-4 border-emerald-600">
+                <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+                  <a
+                    href="https://forms.gle/bPiTHvjtbuiT6n9m6"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative bg-emerald-600 text-white font-bold py-4 px-8 rounded-lg hover:bg-emerald-700 transition-all duration-200 text-center shadow-lg hover:shadow-xl hover:scale-105 flex items-center justify-center gap-2"
+                  >
+                    <span className="text-xl">📝</span>
+                    <span>Register Now</span>
+                  </a>
+                  <a
+                    href="https://forms.gle/TpZKLLjSSf2mLcie9"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative bg-yellow-400 text-gray-900 font-bold py-4 px-8 rounded-lg hover:bg-yellow-500 transition-all duration-200 text-center shadow-lg hover:shadow-xl hover:scale-105 flex items-center justify-center gap-2"
+                  >
+                    <span className="text-xl">📤</span>
+                    <span>Submit Photograph</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Organizers Footer */}
+              <div className="px-6 py-4 bg-gray-100 text-center border-t border-gray-200">
+                <p className="text-xs text-gray-500 uppercase tracking-wide mb-2 font-semibold">Organized by</p>
+                <p className="text-sm text-gray-700">
+                  DDA Yamuna Biodiversity Park • Gardening Committee, Rajdhani College (DU) • Swadhyay Seva Foundation, Delhi
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </div>
+</div>
+
 
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-primary-600 to-saffron-600 text-white py-20">
