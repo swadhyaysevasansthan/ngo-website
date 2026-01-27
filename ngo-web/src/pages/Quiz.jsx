@@ -40,7 +40,7 @@ const ALL_QUIZZES = [
       'Test your knowledge about environmental conservation, climate change, biodiversity, and sustainable practices. Learn about the importance of protecting our planet.',
     duration: '10 minutes',
     questions: '25 questions',
-    url: 'https://forms.office.com/r/33Fm6e6tPV',
+    url: 'https://forms.office.com/r/txK4sTkaH0',
   },
   {
     id: 2,
@@ -49,7 +49,7 @@ const ALL_QUIZZES = [
       'Test your knowledge about environmental conservation, climate change, biodiversity, and sustainable practices. Learn about the importance of protecting our planet.',
     duration: '10 minutes',
     questions: '25 questions',
-    url: 'https://forms.office.com/r/BeueDjQ9WV',
+    url: 'https://forms.office.com/r/yzYgSSymwi',
   },
   {
     id: 3,
@@ -58,7 +58,7 @@ const ALL_QUIZZES = [
       'Test your knowledge about environmental conservation, climate change, biodiversity, and sustainable practices. Learn about the importance of protecting our planet.',
     duration: '10 minutes',
     questions: '25 questions',
-    url: 'https://forms.office.com/r/RFiXJnHUcd',
+    url: 'https://forms.office.com/r/2wg712yyez',
   },
   {
     id: 4,
@@ -67,7 +67,7 @@ const ALL_QUIZZES = [
       'Test your knowledge about environmental conservation, climate change, biodiversity, and sustainable practices. Learn about the importance of protecting our planet.',
     duration: '10 minutes',
     questions: '25 questions',
-    url: 'https://forms.office.com/r/cQFY32eJb6',
+    url: 'https://forms.office.com/r/mnC4kzj354',
   },
   {
     id: 5,
@@ -76,7 +76,7 @@ const ALL_QUIZZES = [
       'Test your knowledge about environmental conservation, climate change, biodiversity, and sustainable practices. Learn about the importance of protecting our planet.',
     duration: '10 minutes',
     questions: '25 questions',
-    url: 'https://forms.office.com/r/wrVmC81JPb',
+    url: 'https://forms.office.com/r/EaijAT2Mvp',
   },
   {
     id: 6,
@@ -85,7 +85,7 @@ const ALL_QUIZZES = [
       'Test your knowledge about environmental conservation, climate change, biodiversity, and sustainable practices. Learn about the importance of protecting our planet.',
     duration: '10 minutes',
     questions: '25 questions',
-    url: 'https://forms.office.com/r/hn4KLS1p6a',
+    url: 'https://forms.office.com/r/XKp6WJHZST',
   },
 ];
 

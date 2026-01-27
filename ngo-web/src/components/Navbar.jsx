@@ -20,6 +20,7 @@ const Navbar = () => {
     { name: 'School Stories', path: '/school-stories' },
     { name: 'Testimonials', path: '/testimonials' },
     { name: 'Upcoming Engagements', path: '/upcoming-engagements' },
+    // { name: 'Certificates', path: '/certificates' },
     { name: 'Our Communities', dropdown: true, type: 'ourcommunities' },
     { name: 'Contact', path: '/contact' },
     { name: 'Donate', path: '/donate', emphasis: true },

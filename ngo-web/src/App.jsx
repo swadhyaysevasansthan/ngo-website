@@ -13,6 +13,7 @@ import OurTeam from './pages/OurTeam';
 import NaturalFarming from './pages/NaturalFarming';
 import Naturopathy from './pages/Naturopathy';
 import Plantation from './pages/Plantation';
+// import CertificateDownload from './pages/CertificateDownload';
 import Yoga from './pages/Yoga';
 import SchoolStories from './pages/SchoolStories';
 import CurrentlyActiveEvents from './pages/CurrentlyActiveEvents';
@@ -46,6 +47,7 @@ function App() {
             <Route path="/natural-farming" element={<NaturalFarming />} />
             <Route path="/naturopathy" element={<Naturopathy />} />
             <Route path="/plantation" element={<Plantation />} />
+            {/* <Route path="/certificates" element={<CertificateDownload />} />   */}
             <Route path="/yoga" element={<Yoga />} />
             <Route path="/donate" element={<DonatePage />} />
             <Route path="/book-donation" element={<BookDonation />} />
