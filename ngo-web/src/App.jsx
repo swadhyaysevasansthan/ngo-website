@@ -10,6 +10,7 @@ import Quiz from './pages/Quiz';
 import Contact from './pages/Contact';
 import QuestionBank from './pages/QuestionBank'; 
 import OurTeam from './pages/OurTeam';
+import PartnerWithUs from './pages/PartnerWithUs';
 import NaturalFarming from './pages/NaturalFarming';
 import Naturopathy from './pages/Naturopathy';
 import Plantation from './pages/Plantation';
@@ -50,6 +51,7 @@ function App() {
             {/* <Route path="/certificates" element={<CertificateDownload />} />   */}
             <Route path="/yoga" element={<Yoga />} />
             <Route path="/donate" element={<DonatePage />} />
+            <Route path="/partner-with-us" element={<PartnerWithUs />} />
             <Route path="/book-donation" element={<BookDonation />} />
           </Routes>
         </main>
