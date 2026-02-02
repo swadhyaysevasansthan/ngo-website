@@ -63,27 +63,7 @@ const Home = () => {
 
   return (
     <div className="bg-gray-50">
-{/* Scrolling Announcement Banner */}
-<Link to="/upcoming-engagements" className="block">
-  <div className="bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 py-3 overflow-hidden cursor-pointer hover:from-green-700 hover:via-emerald-700 hover:to-teal-700 transition-all">
-    <div className="marquee-container">
-      <div className="marquee-content">
-        <span className="marquee-text text-white font-semibold text-lg flex items-center gap-2">
-          🏆 Photography Competition - WORLD WETLANDS DAY | Submit by January 29, 2026 | Click for Details 📸
-        </span>
-        <span className="marquee-text text-white font-semibold text-lg flex items-center gap-2">
-          🏆 Photography Competition - WORLD WETLANDS DAY | Submit by January 29, 2026 | Click for Details 📸
-        </span>
-        <span className="marquee-text text-white font-semibold text-lg flex items-center gap-2">
-          🏆 Photography Competition - WORLD WETLANDS DAY | Submit by January 29, 2026 | Click for Details 📸
-        </span>
-        <span className="marquee-text text-white font-semibold text-lg flex items-center gap-2">
-          🏆 Photography Competition - WORLD WETLANDS DAY | Submit by January 29, 2026 | Click for Details 📸
-        </span>
-      </div>
-    </div>
-  </div>
-</Link>
+
 
 
       {/* Hero Section */}
@@ -154,41 +134,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Highlights Section */}
-      <section className="bg-white py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <SectionHeader title="Highlights"/>
-
-          <div className="relative overflow-hidden rounded-2xl shadow-lg max-w-4xl mx-auto">
-            <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-              {images.map((src, index) => (
-                <img
-                  key={index}
-                  src={src}
-                  alt={`Highlight ${index + 1}`}
-                  className={`absolute top-0 left-0 w-full h-full object-contain transition-opacity duration-1000 ease-in-out ${
-                    index === currentIndex ? 'opacity-100' : 'opacity-0'
-                  }`}
-                />
-              ))}
-
-              <button
-                onClick={prevSlide}
-                className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-80 rounded-full p-2 md:p-3 shadow-md text-gray-800 z-10"
-              >
-                &#10094;
-              </button>
-
-              <button
-                onClick={nextSlide}
-                className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-80 rounded-full p-2 md:p-3 shadow-md text-gray-800 z-10"
-              >
-                &#10095;
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+ 
 
       {/* What We Do Section */}
       <section className="bg-white py-16">
@@ -252,7 +198,7 @@ const Home = () => {
             <div className="p-6">
               <h4 className="font-semibold text-lg text-primary-700 mb-3">Plantation & Environment</h4>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>• 10,000+ saplings planted</li>
+                <li>• 50,000+ saplings planted</li>
                 <li>• Community green zones created</li>
                 <li>• Medicinal gardens established</li>
                 <li>• "One Person, One Tree" campaigns</li>
