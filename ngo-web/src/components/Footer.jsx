@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Heart, Instagram, Linkedin } from 'lucide-react';
+import { Mail, Phone, MapPin, Heart, Instagram, Linkedin, Youtube } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -90,6 +90,14 @@ const Footer = () => {
                   className="hover:text-blue-400 transition-colors"
                 >
                   <Linkedin size={20} />
+                </a>
+                <a
+                  href="https://www.youtube.com/@swadhyaysevafoundation"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-red-500 transition-colors"
+                >
+                  <Youtube size={20} />
                 </a>
               </li>
             </ul>
