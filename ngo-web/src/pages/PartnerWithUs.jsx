@@ -111,19 +111,19 @@ const PartnerWithUs = () => {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center pb-3 border-b">
                     <span className="font-semibold text-gray-700">Individual</span>
-                    <span className="text-emerald-600 font-bold">₹1,000/year</span>
+                    {/* <span className="text-emerald-600 font-bold">₹1,000/year</span> */}
                   </div>
                   <div className="flex justify-between items-center pb-3 border-b">
                     <span className="font-semibold text-gray-700">Student</span>
-                    <span className="text-emerald-600 font-bold">₹500/year</span>
+                    {/* <span className="text-emerald-600 font-bold">₹500/year</span> */}
                   </div>
                   <div className="flex justify-between items-center pb-3 border-b">
                     <span className="font-semibold text-gray-700">Institutional</span>
-                    <span className="text-emerald-600 font-bold">₹5,000/year</span>
+                    {/* <span className="text-emerald-600 font-bold">₹5,000/year</span> */}
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="font-semibold text-gray-700">Corporate</span>
-                    <span className="text-emerald-600 font-bold">₹25,000/year</span>
+                    {/* <span className="text-emerald-600 font-bold">₹25,000/year</span> */}
                   </div>
                 </div>
               </div>
