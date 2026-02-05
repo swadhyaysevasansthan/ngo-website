@@ -23,7 +23,16 @@ module.exports = {
       },
       screens: {
         'nav': '1250px', // custom breakpoint called 'nav'
-      }
+      },
+      animation: {
+        scroll: 'scroll 30s linear infinite',
+      },
+      keyframes: {
+        scroll: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-33.333%)' }, // Moves one-third since we have 3 copies
+        },
+      },
     },
   },
   plugins: [],

@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // import WelcomeModal from './components/WelcomeModal';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import AnnouncementBanner from './components/AnnouncementBanner';
+import LatestUpdatesBar from './components/LatestUpdatesBar';
 import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -12,6 +14,7 @@ import QuestionBank from './pages/QuestionBank';
 import OurTeam from './pages/OurTeam';
 import PartnerWithUs from './pages/PartnerWithUs';
 import NaturalFarming from './pages/NaturalFarming';
+import PhotographyCompetition from './pages/PhotographyCompetition';
 import Naturopathy from './pages/Naturopathy';
 import Plantation from './pages/Plantation';
 // import CertificateDownload from './pages/CertificateDownload';
@@ -21,7 +24,6 @@ import CurrentlyActiveEvents from './pages/CurrentlyActiveEvents';
 import UpcomingEngagements from './pages/UpcomingEngagements';
 import TestimonialsPage from './pages/TestimonialsPage';
 import DonatePage from './pages/DonatePage';
-import LatestUpdatesBar from './components/LatestUpdatesBar';
 import BookDonation from './pages/BookDonation';
 
 function App() {
@@ -31,8 +33,8 @@ function App() {
         {/* <WelcomeModal /> */}
         <ScrollToTop />
         <Navbar />
-        
-       <LatestUpdatesBar />
+        <AnnouncementBanner />
+        <LatestUpdatesBar />
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -53,6 +55,7 @@ function App() {
             <Route path="/donate" element={<DonatePage />} />
             <Route path="/partner-with-us" element={<PartnerWithUs />} />
             <Route path="/book-donation" element={<BookDonation />} />
+            <Route path="/photography-competition" element={<PhotographyCompetition />} />
           </Routes>
         </main>
         <Footer />

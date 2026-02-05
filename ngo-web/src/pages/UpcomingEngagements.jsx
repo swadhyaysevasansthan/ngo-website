@@ -12,10 +12,8 @@ const UpcomingEngagements = () => {
   }, []);
 
     const upcomingEvents = [
-      { date: '03/02/2026', school: 'Sukhjinder Memorial Public School', location: 'PUNJAB' },
-      { date: '04/02/2026', school: 'Brainy Blooms Concept School', location: 'PUDUCHERRY' },
-      { date: '05/02/2026', school: 'Bal Bharati Public School, Nabinagar', location: 'BIHAR' },
       { date: '09/02/2026', school: 'Army Public School, Ranikhet', location: 'UTTARAKHAND' },
+      { date: '18/02/2026', school: 'Chanakaya International School ', location: 'PUNJAB' },
       { date: '20/02/2026', school: 'Eklavya Model Residential School, Gamnom Sapormeina', location: 'MANIPUR' },
       { date: '15/03/2026', school: 'Dalhousie Public School', location: 'HIMACHAL PRADESH' },
     ];
