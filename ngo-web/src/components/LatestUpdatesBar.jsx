@@ -15,7 +15,7 @@ const LatestUpdatesBar = () => {
 
     return latestFive.map((s) => ({
       id: s.id,
-      text: `${s.school} (${s.location}) hosted an environmental quiz with ${s.participants}.`,
+      text: `${s.school} (${s.city}, ${s.state}) hosted an environmental quiz with ${s.participants}.`,
       link: '/school-stories',
     }));
   }, []);

@@ -26,7 +26,7 @@ const EventModalCard = ({ selectedEvent, onClose }) => {
               </div>
               <div className="flex items-center">
                 <MapPin className="w-4 h-4 mr-2 text-primary-600" />
-                <span>{selectedEvent.location}</span>
+                <span>{selectedEvent.city}, {selectedEvent.state}</span>
               </div>
               <div className="flex items-center">
                 <Users className="w-4 h-4 mr-2 text-primary-600" />

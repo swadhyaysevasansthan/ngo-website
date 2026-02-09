@@ -12,7 +12,8 @@ const UpcomingEngagements = () => {
   }, []);
 
     const upcomingEvents = [
-      { date: '09/02/2026', school: 'Army Public School, Ranikhet', location: 'UTTARAKHAND' },
+      { date: '10/02/2026', school: 'Brainy Blooms Concept School-Higher Secondary ', location: 'PUDUCHERRY' },
+      { date: '11/02/2026', school: 'Ajmera Mukesh Nemichandbhai English Medium School', location: 'MADHYA PRADESh' },
       { date: '18/02/2026', school: 'Chanakaya International School ', location: 'PUNJAB' },
       { date: '20/02/2026', school: 'Eklavya Model Residential School, Gamnom Sapormeina', location: 'MANIPUR' },
       { date: '15/03/2026', school: 'Dalhousie Public School', location: 'HIMACHAL PRADESH' },
