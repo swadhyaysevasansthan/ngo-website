@@ -22,7 +22,7 @@ const AnnouncementBanner = () => {
                 </span>
                 <span className="text-amber-100">✨</span>
                 <span className="font-semibold">
-                  Theme: Nature & Wildlife | Registration Fee: ₹100
+                  Click here for more details
                 </span>
                 <span className="text-amber-100">✨</span>
               </div>
