@@ -134,7 +134,7 @@ const PhotographyCompetition = () => {
             <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
               <Calendar className="text-emerald-600 mb-3" size={32} />
               <h3 className="font-bold text-gray-900 mb-2">Registration Period</h3>
-              <p className="text-sm text-gray-600">10 Feb - 15 Apr 2026</p>
+              <p className="text-sm text-gray-600">12 Feb - 15 Apr 2026</p>
             </div>
             <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
               <Users className="text-emerald-600 mb-3" size={32} />
