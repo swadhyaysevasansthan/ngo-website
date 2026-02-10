@@ -12,6 +12,7 @@ const Navbar = () => {
   const quizDropdownRef = useRef(null);
   const ourCommunitiesDropdownRef = useRef(null);
   const aboutDropdownRef = useRef(null);
+  const supportDropdownRef = useRef(null);
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -20,11 +21,13 @@ const Navbar = () => {
     { name: 'School Stories', path: '/school-stories' },
     { name: 'Testimonials', path: '/testimonials' },
     { name: 'Upcoming Engagements', path: '/upcoming-engagements' },
+    { name: 'Photgraphy Competition', path: '/photography-competition' },
     // { name: 'Certificates', path: '/certificates' },
     { name: 'Our Communities', dropdown: true, type: 'ourcommunities' },
     { name: 'Contact', path: '/contact' },
-    { name: 'Partner With Us', path: '/partner-with-us' },
-    { name: 'Donate', path: '/donate', emphasis: true },
+    { name: 'Support Us', dropdown: true, type: 'support' },
+    
+    
   ];
 
   const aboutSubLinks = [
@@ -44,6 +47,11 @@ const Navbar = () => {
     { name: 'Plantation', path: '/plantation' },
     { name: 'Yoga', path: '/yoga' },
     { name: 'Pustak Daan', path: '/book-donation' }
+  ];
+
+  const supportSublinks = [
+    { name: 'Partner With Us', path: '/partner-with-us' },
+    { name: 'Donate', path: '/donate', emphasis: true },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -71,6 +79,13 @@ const Navbar = () => {
       ) {
         setActiveDesktopDropdown('');
       }
+      if (
+        activeDesktopDropdown === 'support' &&
+        supportDropdownRef.current &&
+        !supportDropdownRef.current.contains(event.target)
+      ) {
+        setActiveDesktopDropdown('');
+      }
     }
 
     if (activeDesktopDropdown) {
@@ -79,18 +94,23 @@ const Navbar = () => {
     }
   }, [activeDesktopDropdown]);
 
+
   const getDropdownRef = (type) => {
     if (type === 'quiz') return quizDropdownRef;
     if (type === 'ourcommunities') return ourCommunitiesDropdownRef;
     if (type === 'about') return aboutDropdownRef;
+    if (type === 'support') return supportDropdownRef;
     return null;
   };
+
 
   const getSubLinks = (type) => {
     if (type === 'quiz') return quizSubLinks;
     if (type === 'about') return aboutSubLinks;
+    if (type === 'support') return supportSublinks;
     return ourCommunitiesSubLinks;
   };
+
 
   return (
     <>

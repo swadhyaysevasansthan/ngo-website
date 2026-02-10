@@ -97,10 +97,6 @@ const PhotographyCompetition = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500 text-white text-sm font-bold mb-6 tracking-wide uppercase animate-pulse">
-                <Clock size={16} />
-                Coming Soon
-              </div>
               <h1 className="text-4xl sm:text-6xl font-extrabold mb-6 leading-tight">
                 Swadhyay National Photography Competition
               </h1>
@@ -266,7 +262,7 @@ const PhotographyCompetition = () => {
             {/* Ethical */}
             <div 
               className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 flex flex-col justify-between cursor-pointer hover:shadow-md hover:border-emerald-200 transition"
-              onClick={() => setOpenRulesModal('technical')}
+              onClick={() => setOpenRulesModal('ethical')}
             >
               <div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
@@ -285,7 +281,7 @@ const PhotographyCompetition = () => {
             {/* Judging */}
             <div 
               className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 flex flex-col justify-between cursor-pointer hover:shadow-md hover:border-emerald-200 transition"
-              onClick={() => setOpenRulesModal('technical')}
+              onClick={() => setOpenRulesModal('judging')}
             >
               <div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
@@ -304,7 +300,7 @@ const PhotographyCompetition = () => {
             {/* Registration */}
             <div 
               className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 flex flex-col justify-between cursor-pointer hover:shadow-md hover:border-emerald-200 transition"
-              onClick={() => setOpenRulesModal('technical')}
+              onClick={() => setOpenRulesModal('registration')}
             >
               <div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
@@ -567,6 +563,10 @@ const PhotographyCompetition = () => {
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Tie Situation</h4>
                   <p>In the event of a tie, the <b>cash prize will be equally shared</b> among the winners of that category.</p>
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-900 mb-2">Jurisdiction</h4>
+                  <p>Any disputes arising from the competition shall be subject to the jurisdiction of Delhi courts only.</p>
                 </div>
         </div>
       </RulesModal>
