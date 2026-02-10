@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { Calendar, Users, Award, FileText, Camera, CheckCircle2, AlertCircle, ChevronDown, Clock, Mail, ArrowRight } from 'lucide-react';
+import { Calendar, Users, Award, FileText, Camera, CheckCircle2, AlertCircle, Mail, ArrowRight } from 'lucide-react';
 import competitionPoster from '../assets/SNPC 2026 poster.png';
 
 const RulesModal = ({ isOpen, onClose, title, children }) => {
@@ -53,42 +53,8 @@ const PhotographyCompetition = () => {
   useEffect(() => {
     document.title = 'Swadhyay National Photography Competition';
   }, []);
-
-  const [openSection, setOpenSection] = useState(null);
+  
   const [openRulesModal, setOpenRulesModal] = useState(null); 
-
-  const toggleSection = (section) => {
-    setOpenSection(openSection === section ? null : section);
-  };
-
-  const CollapsibleSection = ({ title, children, sectionKey, icon: Icon }) => (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-      <button
-        onClick={() => toggleSection(sectionKey)}
-        className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition"
-      >
-        <div className="flex items-center gap-3">
-          {Icon && <Icon className="text-emerald-600" size={24} />}
-          <h3 className="text-lg font-bold text-gray-900 text-left">{title}</h3>
-        </div>
-        <ChevronDown
-          size={24}
-          className={`text-gray-600 transition-transform duration-300 ${
-            openSection === sectionKey ? 'rotate-180' : ''
-          }`}
-        />
-      </button>
-      <div
-        className={`overflow-hidden transition-all duration-300 ${
-          openSection === sectionKey ? 'max-h-[2000px]' : 'max-h-0'
-        }`}
-      >
-        <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-          {children}
-        </div>
-      </div>
-    </div>
-  );
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
