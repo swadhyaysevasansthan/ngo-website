@@ -212,7 +212,7 @@ const PhotographyCompetition = () => {
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Important Dates</h2>
           <div className="space-y-4">
             {[
-              { date: '10 February - 15 April 2026', event: 'Registration Period' },
+              { date: '12 February - 15 April 2026', event: 'Registration Period' },
               { date: '23 April 2026', event: 'Last Date of Photograph Submission' },
               { date: '30 May 2026', event: 'Result Declaration' },
               { date: 'To Be Announced (TBA)', event: 'Prize Distribution' }
