@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { Calendar, Users, Award, FileText, Camera, CheckCircle2, AlertCircle, ChevronDown, Clock, Mail } from 'lucide-react';
-import competitionPoster from '../assets/SNPC 2026.png';
+import { Calendar, Users, Award, FileText, Camera, CheckCircle2, AlertCircle, ChevronDown, Clock, Mail, ArrowRight } from 'lucide-react';
+import competitionPoster from '../assets/SNPC 2026 poster.png';
 
 const RulesModal = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
@@ -109,6 +109,14 @@ const PhotographyCompetition = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <a
+                  href="https://forms.gle/w1CjkXz5o6x9zJGr6"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-8 py-4 bg-amber-500 hover:bg-amber-600 rounded-full font-bold text-lg shadow-xl transition text-center"
+                >
+                  Register Now
+                </a>
+                <a
                   href="#details"
                   className="px-8 py-4 bg-amber-500 hover:bg-amber-600 rounded-full font-bold text-lg shadow-xl transition text-center"
                 >
@@ -116,11 +124,11 @@ const PhotographyCompetition = () => {
                 </a>
               </div>
             </div>
-            <div className="relative">
+            <div className="relative flex justify-center">
               <img
                 src={competitionPoster}
                 alt="SNPC 2026 Poster"
-                className="rounded-2xl shadow-2xl border-4 border-white/20"
+                className="rounded-2xl shadow-2xl border-4 border-white/20 max-w-xs sm:max-w-sm lg:max-w-md h-auto"
               />
             </div>
           </div>
@@ -134,7 +142,7 @@ const PhotographyCompetition = () => {
             <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
               <Calendar className="text-emerald-600 mb-3" size={32} />
               <h3 className="font-bold text-gray-900 mb-2">Registration Period</h3>
-              <p className="text-sm text-gray-600">12 Feb - 15 Apr 2026</p>
+              <p className="text-sm text-gray-600">10 Feb - 15 Apr 2026</p>
             </div>
             <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
               <Users className="text-emerald-600 mb-3" size={32} />
@@ -158,7 +166,7 @@ const PhotographyCompetition = () => {
       {/* Theme Section */}
       <section className="py-16 px-4 bg-white" id="details">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Competition Themes</h2>
+          <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">Competition Themes</h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-2xl border-2 border-emerald-200">
               <h3 className="text-2xl font-bold text-emerald-900 mb-4"> Nature</h3>
@@ -179,7 +187,7 @@ const PhotographyCompetition = () => {
       {/* Prizes Section */}
       <section className="py-16 px-4 bg-gradient-to-br from-amber-50 to-orange-50">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Prizes & Awards</h2>
+          <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">Prizes & Awards</h2>
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             <div className="bg-gradient-to-br from-yellow-400 to-amber-500 p-8 rounded-2xl text-center shadow-xl transform hover:scale-105 transition">
               <div className="text-6xl mb-4">🥇</div>
@@ -209,18 +217,17 @@ const PhotographyCompetition = () => {
       {/* Important Dates */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Important Dates</h2>
+          <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">Important Dates</h2>
           <div className="space-y-4">
             {[
-              { date: '12 February - 15 April 2026', event: 'Registration Period' },
+              { date: '10 February - 15 April 2026', event: 'Registration Period' },
               { date: '23 April 2026', event: 'Last Date of Photograph Submission' },
               { date: '30 May 2026', event: 'Result Declaration' },
               { date: 'To Be Announced (TBA)', event: 'Prize Distribution' }
             ].map((item, idx) => (
               <div key={idx} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
-                <Calendar className="text-emerald-600 flex-shrink-0" size={24} />
                 <div className="flex-1">
-                  <p className="font-bold text-gray-900">{item.event}</p>
+                  <p className="text-xl font-bold text-gray-900">{item.event}</p>
                   <p className="text-sm text-gray-600">{item.date}</p>
                 </div>
               </div>
@@ -232,15 +239,18 @@ const PhotographyCompetition = () => {
       {/* Rules Overview Section */}
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+          <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">
             Rules & Guidelines
           </h2>
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* Technical */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 flex flex-col justify-between">
+            <div 
+              className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 flex flex-col justify-between cursor-pointer hover:shadow-md hover:border-emerald-200 transition"
+              onClick={() => setOpenRulesModal('technical')}
+            >
               <div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
+                <h3 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
                   <Camera className="text-emerald-600" size={20} />
                   Technical Specifications
                 </h3>
@@ -248,18 +258,18 @@ const PhotographyCompetition = () => {
                   File format, size, dimensions, image integrity, and other technical requirements.
                 </p>
               </div>
-              <button
-                onClick={() => setOpenRulesModal('technical')}
-                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800"
-              >
+              <button className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-700">
                 Read more
               </button>
             </div>
 
             {/* Ethical */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 flex flex-col justify-between">
+            <div 
+              className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 flex flex-col justify-between cursor-pointer hover:shadow-md hover:border-emerald-200 transition"
+              onClick={() => setOpenRulesModal('technical')}
+            >
               <div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
+                <h3 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
                   <AlertCircle className="text-amber-600" size={20} />
                   Ethical Standards
                 </h3>
@@ -267,18 +277,18 @@ const PhotographyCompetition = () => {
                   Wildlife safety, fair practices, legal compliance, and ethical conduct.
                 </p>
               </div>
-              <button
-                onClick={() => setOpenRulesModal('ethical')}
-                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800"
-              >
+              <button className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800">
                 Read more
               </button>
             </div>
 
             {/* Judging */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 flex flex-col justify-between">
+            <div 
+              className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 flex flex-col justify-between cursor-pointer hover:shadow-md hover:border-emerald-200 transition"
+              onClick={() => setOpenRulesModal('technical')}
+            >
               <div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
+                <h3 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
                   <CheckCircle2 className="text-emerald-600" size={20} />
                   Evaluation & Judging
                 </h3>
@@ -286,18 +296,18 @@ const PhotographyCompetition = () => {
                   Jury panel, judging criteria, shortlisting, and final decision process.
                 </p>
               </div>
-              <button
-                onClick={() => setOpenRulesModal('judging')}
-                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800"
-              >
+              <button className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800">
                 Read more
               </button>
             </div>
 
             {/* Registration */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 flex flex-col justify-between">
+            <div 
+              className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 flex flex-col justify-between cursor-pointer hover:shadow-md hover:border-emerald-200 transition"
+              onClick={() => setOpenRulesModal('technical')}
+            >
               <div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
+                <h3 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
                   <FileText className="text-emerald-600" size={20} />
                   Registration & Submission
                 </h3>
@@ -305,10 +315,7 @@ const PhotographyCompetition = () => {
                   Timelines, process, categories, fees, and usage rights.
                 </p>
               </div>
-              <button
-                onClick={() => setOpenRulesModal('registration')}
-                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800"
-              >
+              <button className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800">
                 Read more
               </button>
             </div>
@@ -322,7 +329,7 @@ const PhotographyCompetition = () => {
         onClose={() => setOpenRulesModal(null)}
         title="Technical Specifications"
       >
-        <div className="space-y-4 text-gray-700 text-sm">
+        <div className="space-y-8 text-gray-700 text-sm">
           <div>
                   <h4 className="font-bold text-gray-900 mb-2">Eligibility of Photographs</h4>
                   <p>All photographs must have been captured between <b>01 Sep 2025 to 23 April 2026</b>.</p>
@@ -389,7 +396,7 @@ const PhotographyCompetition = () => {
         onClose={() => setOpenRulesModal(null)}
         title="Ethical Standards"
       >
-        <div className="space-y-4 text-gray-700 text-sm">
+        <div className="space-y-8 text-gray-700 text-sm">
           <div>
                   <h4 className="font-bold text-gray-900 mb-2">Animal Welfare</h4>
                   <p>Participants must prioritize the <b>safety and well-being of wildlife</b> at all times. No photograph should cause harm, injury, stress, or disturbance to animals or their natural habitats.</p>
@@ -447,7 +454,7 @@ const PhotographyCompetition = () => {
         onClose={() => setOpenRulesModal(null)}
         title="Evaluation & Judging Process"
       >
-        <div className="space-y-4 text-gray-700 text-sm">
+        <div className="space-y-8 text-gray-700 text-sm">
           <div>
                   <h4 className="font-bold text-gray-900 mb-2">Jury Panel</h4>
                   <p>Entries will be evaluated by an independent jury comprising <b>renowned professionals from the fields of photography, wildlife research, and conservation</b>.</p>
@@ -503,10 +510,10 @@ const PhotographyCompetition = () => {
         onClose={() => setOpenRulesModal(null)}
         title="Registration & Submission Guidelines"
       >
-        <div className="space-y-10 text-gray-700 text-sm">
+        <div className="space-y-8 text-gray-700 text-sm">
           <div>
                   <h4 className="font-bold text-gray-900 mb-2">Registration Period</h4>
-                  <p>Registrations will remain open from <b>12 February 2026 to 15 April 2026</b>.</p>
+                  <p>Registrations will remain open from <b>10 February 2026 to 15 April 2026</b>.</p>
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Registration Process</h4>
@@ -566,34 +573,51 @@ const PhotographyCompetition = () => {
 
     {/* Coming Soon CTA */}
     <section className="py-8 px-4 bg-gradient-to-r from-saffron-600 to-blue-800 text-white">
-    <div className="max-w-4xl mx-auto text-center">
-        <h2 className="text-4xl font-bold mb-6">Registration Opening Soon!</h2>
-        <p className="text-xl text-emerald-100 mb-8">
-        Stay tuned! Registration portal will be live soon. Get ready to showcase your photography talent!
+      <div className="max-w-4xl mx-auto text-center">
+        <h2 className="text-4xl font-bold mb-4">Registration Open Now!</h2>
+        <p className="text-xl text-emerald-100 mb-6">
+          The registration form is live. Register now to showcase your photography talent at the national level!
         </p>
-        <div className="bg-white/10 backdrop-blur rounded-2xl p-8">
-        <p className="text-lg mb-6">For updates and information, keep visiting our website:</p>
-        <a
-            href="http://www.swadhyayseva.org"
+
+        {/* Register Now button */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
+          <a
+            href="https://forms.gle/w1CjkXz5o6x9zJGr6"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block text-2xl font-bold text-amber-300 hover:text-amber-200 underline mb-8"
-        >
+            className="px-8 py-4 bg-white text-emerald-700 hover:bg-emerald-100 rounded-full font-bold text-lg shadow-xl transition text-center"
+          >
+            Register Now <ArrowRight className="inline ml-2" size={20} />
+          </a>
+        </div>
+
+        <div className="bg-white/10 backdrop-blur rounded-2xl p-8">
+          <p className="text-lg mb-4">
+            For updates and detailed information, keep visiting our website:
+          </p>
+          <a
+            href="https://www.swadhyayseva.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block text-2xl font-bold text-amber-300 hover:text-amber-200 underline mb-6"
+          >
             www.swadhyayseva.org
-        </a>
-        <div className="mt-8 pt-4 border-t border-white/20">
+          </a>
+
+          <div className="mt-6 pt-4 border-t border-white/20">
             <p className="text-lg text-emerald-100 mb-4">Have questions?</p>
             <Link
-            to="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-white text-emerald-700 rounded-full font-bold text-lg hover:bg-emerald-50 transition shadow-xl"
+              to="/contact"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-emerald-700 rounded-full font-bold text-lg hover:bg-emerald-50 transition shadow-xl"
             >
-            <Mail size={20} />
-            Contact Us
+              <Mail size={20} />
+              Contact Us
             </Link>
+          </div>
         </div>
-        </div>
-    </div>
+      </div>
     </section>
+
     </main>
   );
 };
