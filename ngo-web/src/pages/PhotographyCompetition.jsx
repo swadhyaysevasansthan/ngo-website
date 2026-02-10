@@ -53,7 +53,7 @@ const PhotographyCompetition = () => {
   useEffect(() => {
     document.title = 'Swadhyay National Photography Competition';
   }, []);
-  
+
   const [openRulesModal, setOpenRulesModal] = useState(null); 
 
   return (
@@ -511,7 +511,7 @@ const PhotographyCompetition = () => {
                   <p className="ml-4">Registration fees are <b>non-refundable</b>, and cancellations or withdrawals will not be entertained once registration is completed.</p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Entry Limit & File Size</h4>
+                  <h4 className="font-bold text-gray-900 mb-2">Entry Limit </h4>
                   <p>Each participant may submit <b>only one photograph</b> in <b>any one category</b>.</p>
                 </div>
                 <div>
