@@ -19,13 +19,7 @@ const RulesModal = ({ isOpen, onClose, title, children }) => {
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50">
           <h3 className="text-xl font-bold text-gray-900">{title}</h3>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-800 rounded-full p-1.5 hover:bg-gray-100 transition"
-            aria-label="Close rules"
-          >
-            ✕
-          </button>
+          
         </div>
 
         {/* Body */}
@@ -47,6 +41,68 @@ const RulesModal = ({ isOpen, onClose, title, children }) => {
   );
 };
 
+const SimpleModal = ({ isOpen, onClose, title, role, photo, paragraphs }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center">
+      <div className="fixed inset-0 bg-black/50" onClick={onClose} />
+
+      <div className="relative z-[70] max-h-[90vh] w-full max-w-4xl mx-4 bg-white rounded-2xl shadow-2xl overflow-hidden">
+        {/* Header */}
+        <div className="flex items-start justify-between px-6 py-4 border-b border-gray-100 bg-gray-50">
+          <div className="flex-1 text-center pr-8">
+            <h3 className="text-2xl font-bold text-gray-900">{title}</h3>
+            {role && (
+              <p className="text-lg text-gray-500 mt-0.5">
+                {role}
+              </p>
+            )}
+          </div>
+          
+        </div>
+
+        {/* Body */}
+        <div className="px-6 py-5 overflow-y-auto max-h-[80vh]">
+          <div className="grid md:grid-cols-[1fr,2fr] gap-6 items-stretch">
+            {/* Image block */}
+            <div className="w-full max-w-sm mx-auto md:mx-0 md:h-full">
+              <div className="w-full h-full rounded-2xl overflow-hidden bg-slate-100">
+                <img
+                  src={photo}
+                  alt={title}
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+            </div>
+
+            {/* Text block */}
+            <div className="text-gray-700 leading-relaxed text-sm md:text-base">
+              {paragraphs.map((p, idx) => (
+                <p key={idx} className={idx < paragraphs.length - 1 ? 'mb-4' : ''}>
+                  {p}
+                </p>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-3 border-t border-gray-100 bg-gray-50 flex justify-end">
+          <button
+            onClick={onClose}
+            className="px-5 py-2 rounded-full bg-emerald-600 text-white font-semibold text-sm hover:bg-emerald-700 transition"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+
 
 const PhotographyCompetition = () => {
 
@@ -55,6 +111,29 @@ const PhotographyCompetition = () => {
   }, []);
 
   const [openRulesModal, setOpenRulesModal] = useState(null); 
+  const [openJury, setOpenJury] = useState(null);
+  
+
+  const juryMembers = [
+    {
+      id: 'anup-sah',
+      name: 'Anup Sah',
+      role: 'Photographer • Environmentalist • Mountaineer',
+      shortRole: 'Padma Shri Awardee, Nature Photographer',
+      photo: '/images/jury/anup-sah.jpeg', // update path
+      details: [
+        `A multifaceted personality, Anup Sah is a highly acclaimed photographer who has won numerous national and international awards, including the President's Padma Shri.`,
+        `Born in Nainital on 6 August 1949, his love for nature led to extensive travel, many treks, and the scaling of several Himalayan peaks, including four trips to the Nanda Devi Sanctuary. He is a member of the Indian Mountaineering Federation and President of the Nainital Mountaineering Club.`,
+        `He has also worked in horticulture, wildlife conservation, apiculture, and floriculture. His photographs span wildlife, festivals, folk life, and landscapes, supporting tourism and helping explorers and researchers while highlighting environmental and wildlife issues.`,
+        `Throughout his life, he has contributed immensely to the Himalayas and their communities, sharing his knowledge with anyone sensitive to nature. He has popularised nature photography across Uttarakhand and beyond, and is an expert in mycology and wild mushrooms, promoting mushroom farming.`,
+        `He is also active in education in Nainital as Chairman of Mohan Lal Sah Bal Vidya Mandir and Manager of Chet Ram Sah Inter College.`
+      ],
+
+    },
+    // add more jury members here later
+  ];
+
+  const currentJury = juryMembers.find((j) => j.id === openJury);
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -175,6 +254,67 @@ const PhotographyCompetition = () => {
           </div>
         </div>
       </section>
+
+      {/* Jury Section */}
+      <section className="py-16 px-4 bg-gray-100">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">
+            Jury Members
+          </h2>
+          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+            Our jury brings together leading voices from photography and conservation.
+          </p>
+
+        
+          <div className="flex flex-wrap justify-center gap-8">
+            {juryMembers.map((member) => (
+              <button
+                onClick={() => setOpenJury(member.id)}
+                className="group w-full max-w-md cursor-pointer"
+              >
+                <div
+                  className="bg-white border border-slate-200 rounded-[18px] shadow-[0_15px_30px_rgba(15,23,42,0.12)] px-3 pt-3 pb-6 
+                            flex flex-col items-center transform transition 
+                            group-hover:-translate-y-2 group-hover:shadow-[0_20px_40px_rgba(15,23,42,0.18)] 
+                            rotate-0 group-hover:rotate-0"
+                >
+                  {/* Photo area */}
+                  <div className="w-full h-80 overflow-hidden bg-slate-100 rounded-[12px]">
+                    <img
+                      src={member.photo}
+                      alt={member.name}
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </div>
+
+                  {/* Polaroid “caption” under photo */}
+                  <div className="mt-3 text-center">
+                    <h3 className="text-2xl font-semibold text-slate-900">
+                      {member.name}
+                    </h3>
+                    <p className="text-md text-slate-500 mt-1">
+                      {member.role}
+                    </p>
+                  </div>
+                </div>
+              </button>
+
+
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <SimpleModal
+        isOpen={Boolean(currentJury)}
+        onClose={() => setOpenJury(null)}
+        title={currentJury?.name || ''}
+        role={currentJury?.role || ''} 
+        photo={currentJury?.photo || ''}
+        paragraphs={currentJury?.details || []}
+      />
+
+
 
       {/* Important Dates */}
       <section className="py-16 px-4 bg-white">

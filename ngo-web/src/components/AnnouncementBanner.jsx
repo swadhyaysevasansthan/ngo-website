@@ -14,7 +14,7 @@ const AnnouncementBanner = () => {
               <div key={index} className="flex items-center gap-8 px-8">
                 <Camera size={20} className="flex-shrink-0" />
                 <span className="font-bold text-lg">
-                  📸 Swadhyay National Photography Competition 2026
+                  📸 Swadhyay National Photography Competition (SNPC) 2026
                 </span>
                 <Award size={20} className="flex-shrink-0" />
                 <span className="font-semibold">
