@@ -9,15 +9,12 @@ const RulesModal = ({ isOpen, onClose, title, children }) => {
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center">
       {/* Overlay */}
-      <div
-        className="fixed inset-0 bg-black/50"
-        onClick={onClose}
-      />
+      <div className="fixed inset-0 bg-black/50" onClick={onClose} />
 
       {/* Modal card */}
-      <div className="relative z-[70] max-h-[90vh] w-full max-w-3xl mx-4 bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <div className="relative z-[70] w-full max-w-4xl mx-3 my-4 bg-white rounded-2xl shadow-2xl max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50">
+        <div className="flex items-center px-4 py-3 border-b border-gray-100 bg-gray-50">
           <h3 className="text-xl font-bold text-gray-900">{title}</h3>
           
         </div>
@@ -41,6 +38,8 @@ const RulesModal = ({ isOpen, onClose, title, children }) => {
   );
 };
 
+
+
 const SimpleModal = ({ isOpen, onClose, title, role, photo, paragraphs }) => {
   if (!isOpen) return null;
 
@@ -48,7 +47,11 @@ const SimpleModal = ({ isOpen, onClose, title, role, photo, paragraphs }) => {
     <div className="fixed inset-0 z-[60] flex items-center justify-center">
       <div className="fixed inset-0 bg-black/50" onClick={onClose} />
 
-      <div className="relative z-[70] max-h-[90vh] w-full max-w-4xl mx-4 bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <div
+        className="relative z-[70] w-full max-w-4xl mx-4 my-4
+                   bg-white rounded-2xl shadow-2xl
+                   max-h-[90vh] flex flex-col"
+      >
         {/* Header */}
         <div className="flex items-start justify-between px-6 py-4 border-b border-gray-100 bg-gray-50">
           <div className="flex-1 text-center pr-8">
@@ -59,15 +62,14 @@ const SimpleModal = ({ isOpen, onClose, title, role, photo, paragraphs }) => {
               </p>
             )}
           </div>
-          
         </div>
 
-        {/* Body */}
-        <div className="px-6 py-5 overflow-y-auto max-h-[80vh]">
+        {/* Body (scrollable) */}
+        <div className="px-6 py-5 overflow-y-auto">
           <div className="grid md:grid-cols-[1fr,2fr] gap-6 items-stretch">
             {/* Image block */}
             <div className="w-full max-w-sm mx-auto md:mx-0 md:h-full">
-              <div className="w-full h-full rounded-2xl overflow-hidden bg-slate-100">
+              <div className="w-full h-56 md:h-full rounded-2xl overflow-hidden bg-slate-100">
                 <img
                   src={photo}
                   alt={title}
@@ -100,8 +102,6 @@ const SimpleModal = ({ isOpen, onClose, title, role, photo, paragraphs }) => {
     </div>
   );
 };
-
-
 
 
 const PhotographyCompetition = () => {
@@ -256,30 +256,29 @@ const PhotographyCompetition = () => {
       </section>
 
       {/* Jury Section */}
-      <section className="py-16 px-4 bg-gray-100">
+      <section className="py-10 sm:py-16 px-3 sm:px-4 bg-gray-100">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-3 sm:mb-4">
             Jury Members
           </h2>
-          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+          <p className="text-center text-gray-600 mb-8 sm:mb-12 max-w-2xl mx-auto text-sm sm:text-base">
             Our jury brings together leading voices from photography and conservation.
           </p>
 
-        
-          <div className="flex flex-wrap justify-center gap-8">
+          <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
             {juryMembers.map((member) => (
               <button
+                key={member.id}
                 onClick={() => setOpenJury(member.id)}
-                className="group w-full max-w-md cursor-pointer"
+                className="group w-full max-w-xs sm:max-w-md cursor-pointer"
               >
                 <div
-                  className="bg-white border border-slate-200 rounded-[18px] shadow-[0_15px_30px_rgba(15,23,42,0.12)] px-3 pt-3 pb-6 
-                            flex flex-col items-center transform transition 
-                            group-hover:-translate-y-2 group-hover:shadow-[0_20px_40px_rgba(15,23,42,0.18)] 
-                            rotate-0 group-hover:rotate-0"
+                  className="bg-white border border-slate-200 rounded-[18px] shadow-[0_15px_30px_rgba(15,23,42,0.12)] 
+                            px-3 pt-3 pb-5 flex flex-col items-center transform transition 
+                            group-hover:-translate-y-2 group-hover:shadow-[0_20px_40px_rgba(15,23,42,0.18)]"
                 >
                   {/* Photo area */}
-                  <div className="w-full h-80 overflow-hidden bg-slate-100 rounded-[12px]">
+                  <div className="w-full h-64 sm:h-80 overflow-hidden bg-slate-100 rounded-[12px]">
                     <img
                       src={member.photo}
                       alt={member.name}
@@ -287,23 +286,22 @@ const PhotographyCompetition = () => {
                     />
                   </div>
 
-                  {/* Polaroid “caption” under photo */}
+                  {/* Caption */}
                   <div className="mt-3 text-center">
-                    <h3 className="text-2xl font-semibold text-slate-900">
+                    <h3 className="text-lg sm:text-2xl font-semibold text-slate-900">
                       {member.name}
                     </h3>
-                    <p className="text-md text-slate-500 mt-1">
+                    <p className="text-sm sm:text-md text-slate-500 mt-1">
                       {member.role}
                     </p>
                   </div>
                 </div>
               </button>
-
-
             ))}
           </div>
         </div>
       </section>
+
 
       <SimpleModal
         isOpen={Boolean(currentJury)}
