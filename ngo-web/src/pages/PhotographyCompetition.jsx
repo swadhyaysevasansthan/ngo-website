@@ -68,15 +68,16 @@ const SimpleModal = ({ isOpen, onClose, title, role, photo, paragraphs }) => {
         <div className="px-6 py-5 overflow-y-auto">
           <div className="grid md:grid-cols-[1fr,2fr] gap-6 items-stretch">
             {/* Image block */}
-            <div className="w-full max-w-sm mx-auto md:mx-0 md:h-full">
-              <div className="w-full h-56 md:h-full rounded-2xl overflow-hidden bg-slate-100">
+            <div className="w-full max-w-sm mx-auto md:mx-0">
+              <div className="w-full rounded-2xl overflow-hidden bg-slate-100">
                 <img
                   src={photo}
                   alt={title}
-                  className="w-full h-full object-cover object-top"
+                  className="w-full max-h-100 md:max-h-150 object-cover object-top"
                 />
               </div>
             </div>
+
 
             {/* Text block */}
             <div className="text-gray-700 leading-relaxed text-sm md:text-base">
@@ -120,16 +121,39 @@ const PhotographyCompetition = () => {
       name: 'Anup Sah',
       role: 'Photographer • Environmentalist • Mountaineer',
       shortRole: 'Padma Shri Awardee, Nature Photographer',
-      photo: '/images/jury/anup-sah.jpeg', // update path
+      photo: '/images/jury/anup-sah.jpeg', 
       details: [
-        `A multifaceted personality, Anup Sah is a highly acclaimed photographer who has won numerous national and international awards, including the President's Padma Shri.`,
-        `Born in Nainital on 6 August 1949, his love for nature led to extensive travel, many treks, and the scaling of several Himalayan peaks, including four trips to the Nanda Devi Sanctuary. He is a member of the Indian Mountaineering Federation and President of the Nainital Mountaineering Club.`,
-        `He has also worked in horticulture, wildlife conservation, apiculture, and floriculture. His photographs span wildlife, festivals, folk life, and landscapes, supporting tourism and helping explorers and researchers while highlighting environmental and wildlife issues.`,
-        `Throughout his life, he has contributed immensely to the Himalayas and their communities, sharing his knowledge with anyone sensitive to nature. He has popularised nature photography across Uttarakhand and beyond, and is an expert in mycology and wild mushrooms, promoting mushroom farming.`,
+        `A multifaceted personality, Anup Sah is a highly acclaimed photographer who has won numerous national and international awards, 
+        including the President's Padma Shri.`,
+        `Born in Nainital on 6 August 1949, his love for nature led to extensive travel, many treks, and the scaling of several Himalayan 
+        peaks, including four trips to the Nanda Devi Sanctuary. He is a member of the Indian Mountaineering Federation and President of 
+        the Nainital Mountaineering Club.`,
+        `He has also worked in horticulture, wildlife conservation, apiculture, and floriculture. His photographs span wildlife, festivals, 
+        folk life, and landscapes, supporting tourism and helping explorers and researchers while highlighting environmental and 
+        wildlife issues.`,
+        `Throughout his life, he has contributed immensely to the Himalayas and their communities, sharing his knowledge with anyone 
+        sensitive to nature. He has popularised nature photography across Uttarakhand and beyond, and is an expert in mycology and 
+        wild mushrooms, promoting mushroom farming.`,
         `He is also active in education in Nainital as Chairman of Mohan Lal Sah Bal Vidya Mandir and Manager of Chet Ram Sah Inter College.`
       ],
 
     },
+    {
+      id: 'bhupesh-little',
+      name: 'Prof. Bhupesh C. Little',
+      role: 'Fine Art Photographer • Educator • Researcher',
+      shortRole: 'Internationally awarded photography educator',
+      photo: '/images/jury/bhupesh.jpg',
+      details: [
+        `Prof. Bhupesh C. Little is an internationally acclaimed fine art photographer and one of India's pioneering photography educators, with a career of over three decades.`,
+        `Beginning photography formally in 1987 during his BFA in Graphic Design, he has since received more than 50 international awards, 14 foreign fellowships, and several national honours from Government of India ministries.`,
+        `He has been instrumental in establishing advanced photography education in India, helping start the first MFA in Photography at Lucknow University, drafting PhD regulations, and guiding landmark research including the first Indian woman PhD in Photography.`,
+        `Prof. Little has taught at leading institutions in India and abroad, including heading the Institute of Creative Arts in the South Pacific and later the Department at Jamia Millia Islamia University, New Delhi.`,
+        `He has served on juries for numerous international and national exhibitions, chaired the Horizon International Circuit for many years, and his works are held in prestigious collections such as the Metropolitan Museum, the Photographic Society of America, and major cultural institutions.`
+      ],
+    }
+
+
     // add more jury members here later
   ];
 
