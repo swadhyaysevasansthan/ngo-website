@@ -143,7 +143,7 @@ const PhotographyCompetition = () => {
       name: 'Prof. Bhupesh C. Little',
       role: 'Fine Art Photographer • Educator • Researcher',
       shortRole: 'Internationally awarded photography educator',
-      photo: '/images/jury/bhupesh.jpg',
+      photo: '/images/jury/bhupesh.JPG',
       details: [
         `Prof. Bhupesh C. Little is an internationally acclaimed fine art photographer and one of India's pioneering photography educators, with a career of over three decades.`,
         `Beginning photography formally in 1987 during his BFA in Graphic Design, he has since received more than 50 international awards, 14 foreign fellowships, and several national honours from Government of India ministries.`,
