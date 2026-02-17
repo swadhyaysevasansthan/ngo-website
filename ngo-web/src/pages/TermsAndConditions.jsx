@@ -14,7 +14,7 @@ const TermsAndConditions = () => {
         title="Terms & Conditions"
         subtitle="Guidelines for using our website, donations, quizzes, and programmes."
       />
-      <div className="max-w-3xl mx-auto px-4 py-10 md:py-14">
+      <div className="max-w-5xl mx-auto px-4 py-10 md:py-14">
         <p className="text-sm text-slate-500 mb-8">
           Last updated: 17 February 2026
         </p>
