@@ -59,9 +59,9 @@ function App() {
             <Route path="/partner-with-us" element={<PartnerWithUs />} />
             <Route path="/book-donation" element={<BookDonation />} />
             <Route path="/photography-competition" element={<PhotographyCompetition />} />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
-            <Route path="/refunds" element={<RefundPolicy />} />
-            <Route path="/terms" element={<TermsAndConditions />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/refund-policy" element={<RefundPolicy />} />
+            <Route path="/terms-conditions" element={<TermsAndConditions />} />
           </Routes>
         </main>
         <Footer />
