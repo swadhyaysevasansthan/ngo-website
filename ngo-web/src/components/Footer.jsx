@@ -49,6 +49,21 @@ const Footer = () => {
                   Contact Us
                 </Link>
               </li>
+              <li>
+                <Link to="/privacy" className="hover:text-primary-400 transition-colors text-sm">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/refunds" className="hover:text-primary-400 transition-colors text-sm">
+                  Refund & Cancellation Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/terms" className="hover:text-primary-400 transition-colors text-sm">
+                  Terms & Conditions
+                </Link>
+              </li>
             </ul>
           </div>
 

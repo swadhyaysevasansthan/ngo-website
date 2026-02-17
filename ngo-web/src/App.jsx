@@ -25,6 +25,9 @@ import UpcomingEngagements from './pages/UpcomingEngagements';
 import TestimonialsPage from './pages/TestimonialsPage';
 import DonatePage from './pages/DonatePage';
 import BookDonation from './pages/BookDonation';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import RefundPolicy from './pages/RefundPolicy';
+import TermsAndConditions from './pages/TermsAndConditions';
 
 function App() {
   return (
@@ -56,6 +59,9 @@ function App() {
             <Route path="/partner-with-us" element={<PartnerWithUs />} />
             <Route path="/book-donation" element={<BookDonation />} />
             <Route path="/photography-competition" element={<PhotographyCompetition />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/refunds" element={<RefundPolicy />} />
+            <Route path="/terms" element={<TermsAndConditions />} />
           </Routes>
         </main>
         <Footer />

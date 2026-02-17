@@ -26,8 +26,6 @@ const Navbar = () => {
     { name: 'Our Communities', dropdown: true, type: 'ourcommunities' },
     { name: 'Contact', path: '/contact' },
     { name: 'Support Us', dropdown: true, type: 'support' },
-    
-    
   ];
 
   const aboutSubLinks = [
