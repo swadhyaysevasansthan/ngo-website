@@ -285,32 +285,6 @@ export const youngITTeam = [
       </div>
     ),
     },
-
-    {
-      name: "Tushar Jain",
-      role: "B.Tech (CSAI)",
-      description: "Java Developer, Oracle Certified in Generative AI, Creative Technologist",
-      image: "/images/team/tushar-jain.jpeg",
-      details: (
-        <div>
-          <p>
-            Tushar Jain is an aspiring Software Developer with a strong focus on backend development using Java and Spring Boot.
-            With a deep understanding of object-oriented programming, data structures, and algorithms, he has built several real-world applications
-            ranging from interactive desktop games to full-scale backend systems.
-          </p><br />
-          <p>
-            Having started his journey as a graphic designer, Tushar brings a unique blend of technical precision and design thinking to his development approach.
-            He has completed multiple internships — including roles as a Java Developer, where he developed many real-world projects and Management Systems,
-            and earlier as a Graphic Designer for few startups.
-          </p><br />
-          <p>
-            Recently certified by <b>Oracle in Generative AI</b>, Tushar continues to expand his expertise in Java technologies while exploring the intersection of
-            AI and backend systems. He is passionate about building scalable, efficient, and user-centric software solutions that bridge creativity with technology.
-          </p>
-        </div>
-      ),
-    },
-
     {
       name: "Tushar Goel",
       role: "B.Tech (Computer Science)",
