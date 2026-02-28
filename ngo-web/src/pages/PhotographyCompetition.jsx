@@ -1,7 +1,13 @@
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { Calendar, Users, Award, FileText, Camera, CheckCircle2, AlertCircle, Mail, ArrowRight } from 'lucide-react';
-import competitionPoster from '../assets/SNPC 2026 poster.png';
+import { Users, Award, FileText, Camera, CheckCircle2, AlertCircle, Mail, ArrowRight } from 'lucide-react';
+import Button from "../components/Button1";
+import Card from "../components/Card1";
+
+import hero1 from "../assets/hero/1.jpg";
+import hero2 from "../assets/hero/2.jpg";
+import hero3 from "../assets/hero/3.jpg";
+import hero4 from "../assets/hero/4.jpg";
 
 const RulesModal = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
@@ -160,76 +166,199 @@ const PhotographyCompetition = () => {
   const currentJury = juryMembers.find((j) => j.id === openJury);
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      {/* Hero Section */}
-      <section className="relative py-16 bg-gradient-to-br from-emerald-900 via-emerald-600 to-emerald-900 text-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-4xl sm:text-6xl font-extrabold mb-6 leading-tight">
-                Swadhyay National Photography Competition
-              </h1>
-              <p className="text-xl text-emerald-100 mb-8">
-                Capture the beauty of nature and wildlife through your lens. Win exciting prizes up to ₹21,000!
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <a
-                  href="https://forms.gle/w1CjkXz5o6x9zJGr6"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-8 py-4 bg-amber-500 hover:bg-amber-600 rounded-full font-bold text-lg shadow-xl transition text-center"
-                >
-                  Register Now
-                </a>
-                <a
-                  href="#details"
-                  className="px-8 py-4 bg-amber-500 hover:bg-amber-600 rounded-full font-bold text-lg shadow-xl transition text-center"
-                >
-                  View Details
-                </a>
+    <main className="min-h-screen bg-gradient-to-b from-amber-50 via-white to-emerald-50">
+      {/* HERO SECTION – full width bg, content in container */}
+      <section className="relative overflow-hidden">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 py-16 md:py-24 grid md:grid-cols-2 gap-12 items-center">
+          {/* Left: Copy */}
+          <div className="space-y-6 animate-slide-down">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 text-green-800 text-xs font-semibold uppercase tracking-[0.2em]">
+              <span className="text-lg">📸</span>
+              National Level Photography Competition
+            </span>
+
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-forest leading-tight">
+              Capture the Story of{" "}
+              <span className="text-primary">Nature & Wildlife</span>
+            </h1>
+
+            <p className="text-lg text-gray-700 max-w-xl">
+              <b>
+                Swadhyay National Photography Competition (SNPC) 2026 invites
+                young photographers across India (17–23 years) to showcase
+                their eye for wild places, wild lives, and the delicate balance
+                of our natural world.
+              </b>
+            </p>
+
+            {/* Key Info Strip */}
+            <div className="grid sm:grid-cols-3 gap-4 text-sm">
+              <Card className="bg-white/80 border border-green-100">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                  Themes
+                </p>
+                <p className="font-bold text-gray-900 mt-1">
+                  Nature • Wildlife
+                </p>
+              </Card>
+              <Card className="bg-white/80 border border-green-100">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                  Registration Fee
+                </p>
+                <p className="font-bold text-gray-900 mt-1">₹100</p>
+                <p className="text-xs text-gray-500">
+                  Non-refundable • 1 photo per participant
+                </p>
+              </Card>
+              <Card className="bg-white/80 border border-green-100">
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                  Prizes
+                </p>
+                <p className="font-bold text-gray-900 mt-1">
+                  ₹42,000 + E‑Certificates
+                </p>
+              </Card>
+            </div>
+
+            {/* CTAs */}
+            <div className="flex flex-wrap gap-4 items-center">
+              <Link to="/register">
+                <Button size="large" variant="fancy">
+                  Register for ₹100
+                </Button>
+              </Link>
+          
+            </div>
+
+            <p className="text-xs text-gray-500">
+              <b>
+                Age group: 17-23 years • Open to college and university students
+                across India.
+              </b>
+            </p>
+          </div>
+
+          {/* Right: Visual / Highlights */}
+          <div className="relative animate-slide-up">
+            <div className="absolute -top-10 -right-6 w-32 h-32 bg-gradient-to-br from-amber-400/60 to-orange-500/60 rounded-full blur-3xl opacity-70" />
+            <div className="absolute -bottom-10 -left-6 w-40 h-40 bg-gradient-to-br from-green-400/60 to-emerald-500/60 rounded-full blur-3xl opacity-70" />
+
+            <Card className="relative bg-black/90 text-white overflow-hidden p-0 shadow-2xl">
+              {/* Simulated photo collage */}
+              <div className="grid grid-cols-2 gap-1 h-64 md:h-80">
+                <div
+                  className="bg-cover bg-center"
+                  style={{ backgroundImage: `url(${hero1})` }}
+                />
+                <div
+                  className="bg-cover bg-center"
+                  style={{ backgroundImage: `url(${hero2})` }}
+                />
+                <div
+                  className="bg-cover bg-center"
+                  style={{ backgroundImage: `url(${hero3})` }}
+                />
+                <div
+                  className="bg-cover bg-center"
+                  style={{ backgroundImage: `url(${hero4})` }}
+                />
+              </div>
+
+              <div className="p-5 border-t border-white/10 bg-gradient-to-r from-black/80 via-black/70 to-black/60">
+                <p className="text-xs font-semibold text-green-300 uppercase tracking-[0.25em] mb-1">
+                  SNPC 2026 • Nature & Wildlife
+                </p>
+                <p className="text-sm text-gray-100">
+                  Celebrate forests, rivers, mountains, birds, mammals, and the
+                  quiet moments of the wild. No heavy edits, no composites –
+                  just honest storytelling through your lens.
+                </p>
+              </div>
+            </Card>
+
+            {/* Floating badge */}
+            <div className="absolute -bottom-6 right-4 bg-white rounded-xl shadow-lg px-4 py-3 flex items-center gap-3">
+              <div className="bg-green-100 text-green-700 w-9 h-9 flex items-center justify-center rounded-full text-xl">
+                🏆
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                  Top Awards
+                </p>
+                <p className="text-sm font-bold text-gray-800">
+                  ₹21,000 • ₹11,000 • ₹5,000
+                </p>
               </div>
             </div>
-            <div className="relative flex justify-center">
-              <img
-                src={competitionPoster}
-                alt="SNPC 2026 Poster"
-                className="rounded-2xl shadow-2xl border-4 border-white/20 max-w-xs sm:max-w-sm lg:max-w-md h-auto"
-              />
-            </div>
           </div>
         </div>
       </section>
-
-      {/* Quick Info Cards */}
-      <section className="py-12 px-4 -mt-8 relative z-10">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-              <Calendar className="text-emerald-600 mb-3" size={32} />
-              <h3 className="font-bold text-gray-900 mb-2">Registration Period</h3>
-              <p className="text-sm text-gray-600">10 Feb - 15 Apr 2026</p>
-            </div>
-            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-              <Users className="text-emerald-600 mb-3" size={32} />
-              <h3 className="font-bold text-gray-900 mb-2">Eligibility</h3>
-              <p className="text-sm text-gray-600">Age 17-23, College Students</p>
-            </div>
-            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-              <Award className="text-emerald-600 mb-3" size={32} />
-              <h3 className="font-bold text-gray-900 mb-2">Total Prizepool</h3>
-              <p className="text-sm text-gray-600">₹42,000 </p>
-            </div>
-            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-              <FileText className="text-emerald-600 mb-3" size={32} />
-              <h3 className="font-bold text-gray-900 mb-2">Registration Fee</h3>
-              <p className="text-sm text-gray-600">₹100 only</p>
-            </div>
+      {/* ABOUT SECTION – white strip full width */}
+      <section id="about" className="bg-white/80">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 py-14 grid md:grid-cols-2 gap-10 items-start">
+          <div>
+            <h2 className="text-3xl font-bold text-forest mb-3">
+              About SNPC 2026
+            </h2>
+            <p className="text-gray-700 mb-4">
+              Swadhyay National Photography Competition is a national-level
+              initiative by Swadhyay Seva Foundation to encourage young
+              photographers to observe, document, and celebrate India’s rich
+              natural heritage.
+            </p>
+            <p className="text-gray-700 mb-4">
+              The 2026 edition focuses on two powerful themes –{" "}
+              <strong>Nature</strong> and <strong>Wildlife</strong>. From misty
+              mountain ranges and ancient forests to birds, mammals, and tiny
+              insects, your frame should tell a story that is ethical, honest,
+              and visually compelling.
+            </p>
+            <ul className="space-y-2 text-gray-700 text-sm">
+              <li>• Open to students aged 17–23 years (college/university)</li>
+              <li>• Only one photograph per participant</li>
+              <li>• No heavy editing or digital manipulation allowed</li>
+              <li>
+                • Photographs must be taken in India on or after 5 February 2026
+              </li>
+            </ul>
           </div>
+
+          <Card className="bg-emerald-50/70 border-emerald-100">
+            <h3 className="text-xl font-bold text-forest mb-4">
+              Registration & Fee
+            </h3>
+            <div className="space-y-3 text-sm text-gray-700">
+              <p>
+                <strong>Registration Fee:</strong> ₹100 (non-refundable)
+              </p>
+              <p>
+                The fee supports organization costs, jury honorarium, digital
+                infrastructure, and e-certificates for all participants.
+              </p>
+              <ul className="space-y-1">
+                <li>
+                  • Single registration covers one entry in either Nature or
+                  Wildlife category
+                </li>
+                <li>
+                  • Payment details / gateway will be provided on the
+                  registration form
+                </li>
+                <li>• No additional charges for evaluation or certificates</li>
+              </ul>
+              <div className="mt-5">
+                <Link to="/register">
+                  <Button fullWidth variant="fancy">
+                    Register Now for ₹100
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </Card>
         </div>
       </section>
-
       {/* Theme Section */}
-      <section className="py-16 px-4 bg-white" id="details">
+      <section className="py-16 px-4 bg-emerald-50/60">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">Competition Themes</h2>
           <div className="grid md:grid-cols-2 gap-8">
@@ -280,7 +409,7 @@ const PhotographyCompetition = () => {
       </section>
 
       {/* Jury Section */}
-      <section className="py-10 sm:py-16 px-3 sm:px-4 bg-gray-100">
+      <section className="py-10 sm:py-16 px-3 sm:px-4 bg-white/80">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-3 sm:mb-4">
             Jury Members
@@ -339,7 +468,7 @@ const PhotographyCompetition = () => {
 
 
       {/* Important Dates */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-16 px-4 bg-emerald-50/60">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">Important Dates</h2>
           <div className="space-y-4">
@@ -699,52 +828,26 @@ const PhotographyCompetition = () => {
         </div>
       </RulesModal>
 
-    {/* Coming Soon CTA */}
-    <section className="py-8 px-4 bg-gradient-to-r from-saffron-600 to-blue-800 text-white">
-      <div className="max-w-4xl mx-auto text-center">
-        <h2 className="text-4xl font-bold mb-4">Registration Open Now!</h2>
-        <p className="text-xl text-emerald-100 mb-6">
-          The registration form is live. Register now to showcase your photography talent at the national level!
-        </p>
-
-        {/* Register Now button */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
-          <a
-            href="https://forms.gle/w1CjkXz5o6x9zJGr6"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-8 py-4 bg-white text-emerald-700 hover:bg-emerald-100 rounded-full font-bold text-lg shadow-xl transition text-center"
-          >
-            Register Now <ArrowRight className="inline ml-2" size={20} />
-          </a>
-        </div>
-
-        <div className="bg-white/10 backdrop-blur rounded-2xl p-8">
-          <p className="text-lg mb-4">
-            For updates and detailed information, keep visiting our website:
-          </p>
-          <a
-            href="https://www.swadhyayseva.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block text-2xl font-bold text-amber-300 hover:text-amber-200 underline mb-6"
-          >
-            www.swadhyayseva.org
-          </a>
-
-          <div className="mt-6 pt-4 border-t border-white/20">
-            <p className="text-lg text-emerald-100 mb-4">Have questions?</p>
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-emerald-700 rounded-full font-bold text-lg hover:bg-emerald-50 transition shadow-xl"
-            >
-              <Mail size={20} />
-              Contact Us
-            </Link>
+    {/* CONTACT / FOOTER CTA */}
+      <section className="bg-emerald-900">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <h3 className="text-2xl font-bold text-white mb-1">
+              Need more information?
+            </h3>
+            <p className="text-sm text-emerald-100 max-w-xl">
+              Schools, colleges, and photography clubs can reach out for bulk
+              registrations, orientation sessions, or collaborations.
+            </p>
           </div>
+          <a
+            href="/contact"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-emerald-900 text-sm font-semibold shadow hover:bg-emerald-50 transition"
+          >
+            Contact the SNPC Team
+          </a>
         </div>
-      </div>
-    </section>
+      </section>
 
     </main>
   );

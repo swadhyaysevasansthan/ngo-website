@@ -1,0 +1,8 @@
+# backend/.gitignore
+node_modules/
+dist/
+build/
+logs/
+*.log
+.env
+uploads/
