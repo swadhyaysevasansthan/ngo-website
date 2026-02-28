@@ -70,10 +70,10 @@ export const registerParticipant = async (req, res) => {
       `INSERT INTO participants 
        (participant_id, full_name, email, phone, date_of_birth, age,
         gender, city, state, college_name, course, year_of_study,
-        category, payment_status, declaration_accepted) 
+        category, payment_status, declaration_accepted, has_submitted) 
        VALUES ($1, $2, $3, $4, $5, $6,
                $7, $8, $9, $10, $11, $12,
-               $13, $14, $16)
+               $13, $14, $15, $16)
        RETURNING *`,
       [
         participantId,

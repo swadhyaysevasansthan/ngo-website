@@ -1,6 +1,8 @@
 import crypto from 'crypto';
 import razorpay from '../config/razorpay.js';
 import pool from '../config/database.js';
+import { sendEmail } from '../config/email.js';
+import { registrationEmailTemplate } from '../utils/emailTemplates.js';
 
 // 1) Create an order for registration
 export const createRegistrationOrder = async (req, res) => {
@@ -28,7 +30,7 @@ export const createRegistrationOrder = async (req, res) => {
       });
     }
 
-    const amount = Number(process.env.REGISTRATION_AMOUNT || 19900); // in paise
+    const amount = Number(process.env.REGISTRATION_AMOUNT || 19900);
     const currency = 'INR';
 
     const options = {
@@ -54,7 +56,6 @@ export const createRegistrationOrder = async (req, res) => {
 
     const order = await razorpay.orders.create(options);
 
-    // Send back everything needed for verify step
     res.json({
       success: true,
       key: process.env.RAZORPAY_KEY_ID,
@@ -171,10 +172,10 @@ export const verifyRegistrationPayment = async (req, res) => {
         registration.category
           ? registration.category.toLowerCase()
           : null,
-        true, // payment_status
+        true,              // payment_status
         razorpay_payment_id,
         !!registration.declarationAccepted,
-        false, // has_submitted (initially pending)
+        false,             // has_submitted
       ]);
 
       const logPayment = `
@@ -200,6 +201,49 @@ export const verifyRegistrationPayment = async (req, res) => {
       ]);
 
       await client.query('COMMIT');
+
+      // ✅ Send confirmation email after successful DB commit
+      if (process.env.ENABLE_EMAILS === 'true') {
+        try {
+          const emailTemplate = registrationEmailTemplate({
+            fullName: registration.fullName,
+            participantId,
+            email: registration.email,
+            category: registration.category,
+          });
+
+          const emailResult = await sendEmail({
+            to: registration.email,
+            subject: emailTemplate.subject,
+            html: emailTemplate.html,
+            text: emailTemplate.text,
+          });
+
+          // Log email result
+          await pool.query(
+            `INSERT INTO email_logs
+               (participant_id, email_type, recipient_email, subject, status, error_message)
+             VALUES ($1, $2, $3, $4, $5, $6)`,
+            [
+              participantId,
+              'registration',
+              registration.email,
+              emailTemplate.subject,
+              emailResult.success ? 'sent' : 'failed',
+              emailResult.error || null,
+            ]
+          );
+
+          console.log(
+            emailResult.success
+              ? `✅ Registration email sent to ${registration.email}`
+              : `❌ Email failed for ${registration.email}: ${emailResult.error}`
+          );
+        } catch (emailErr) {
+          // Never fail registration because of email error
+          console.error('Registration email error (skipped):', emailErr);
+        }
+      }
 
       res.json({
         success: true,
