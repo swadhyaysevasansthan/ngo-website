@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { Users, Award, FileText, Camera, CheckCircle2, AlertCircle, Mail, ArrowRight } from 'lucide-react';
+import {FileText, Camera, CheckCircle2, AlertCircle} from 'lucide-react';
 import Button from "../components/Button1";
 import Card from "../components/Card1";
 
@@ -362,7 +362,7 @@ const PhotographyCompetition = () => {
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">Competition Themes</h2>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-2xl border-2 border-emerald-200">
+            <div className="bg-white p-8 rounded-2xl border-2 border-emerald-200">
               <h3 className="text-2xl font-bold text-emerald-900 mb-4"> Nature</h3>
               <p className="text-gray-700">
                 Capture the breathtaking beauty of landscapes, flora, ecosystems, and natural phenomena across India.

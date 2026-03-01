@@ -715,6 +715,10 @@ console.log('Register loading state:', loading);
               </p>
             </div>
 
+            <p className="text-sm text-gray-700 mb-4">
+              <span className="font-semibold">Check your Email for more details.</span>
+            </p>
+
             <div className="flex justify-end">
               <Button
                 variant="primary"
