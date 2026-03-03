@@ -157,9 +157,21 @@ const PhotographyCompetition = () => {
         `Prof. Little has taught at leading institutions in India and abroad, including heading the Institute of Creative Arts in the South Pacific and later the Department at Jamia Millia Islamia University, New Delhi.`,
         `He has served on juries for numerous international and national exhibitions, chaired the Horizon International Circuit for many years, and his works are held in prestigious collections such as the Metropolitan Museum, the Photographic Society of America, and major cultural institutions.`
       ],
+    },
+    {
+      id: 'narayan-thiagarajan',
+      name: 'T. Narayan',
+      role: 'Photojournalist • Photo Editor • Educator',
+      shortRole: 'Renowned Photojournalist & National Photo Editor',
+      photo: '/images/jury/narayan-thiagarajan2.jpg',
+      details: [
+        `T. Narayan is a renowned figure in photojournalism with over three decades of diverse experience, capturing subjects ranging from politics and wildlife to arts, lifestyle, and sports.`,
+        `He has covered several pivotal socio-political events in India, including the Kashmir conflict, Punjab militancy, communal riots, the Babri Masjid demolition, the Mandal Commission aftermath, major natural disasters like cyclones and tsunamis, multiple Lok Sabha and Assembly Elections, Cricket World Cups, and the COVID-19 pandemic.`,
+        `Narayan began his career in 1989 as a Staff Photographer at The Times of India, and rose through the ranks to become National Photo Editor at several leading Indian publications, including Outlook, India Today, The Week, and Hindustan Times.`,
+        `He has served on juries for numerous prestigious national and international photography competitions, further cementing his authority and expertise in the field.`,
+        `Currently, Narayan channels his passion for photography into education through his initiative, PhotoRoutes, where he conducts workshops aimed at nurturing the next generation of photographers.`
+      ],
     }
-
-
     // add more jury members here later
   ];
 
@@ -418,7 +430,7 @@ const PhotographyCompetition = () => {
             Our jury brings together leading voices from photography and conservation.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {juryMembers.map((member) => (
               <button
                 key={member.id}
