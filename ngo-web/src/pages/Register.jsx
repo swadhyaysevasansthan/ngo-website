@@ -253,7 +253,7 @@ console.log('Register loading state:', loading);
                 Fee: ₹100 · Non‑refundable
               </div>
               <div className="bg-white px-4 py-2 rounded-full shadow-sm border border-indigo-100">
-                 Total Prizes: ₹43,000 + E‑Certificates
+                 Total Prizes: ₹42,000 + E‑Certificates
               </div>
             </div>
           </div>

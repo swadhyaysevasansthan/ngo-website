@@ -181,7 +181,7 @@ const PhotographyCompetition = () => {
     <main className="min-h-screen bg-gradient-to-b from-amber-50 via-white to-emerald-50">
       {/* HERO SECTION – full width bg, content in container */}
       <section className="relative overflow-hidden">
-        <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 py-16 md:py-24 grid md:grid-cols-2 gap-12 items-center">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-6 py-16 md:py-12 grid md:grid-cols-2 gap-12 items-center">
           {/* Left: Copy */}
           <div className="space-y-6 animate-slide-down">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 text-green-800 text-xs font-semibold uppercase tracking-[0.2em]">
@@ -247,7 +247,8 @@ const PhotographyCompetition = () => {
                 Age group: 17-23 years • Open to college and university students
                 across India.
               </b>
-            </p>
+              </p>
+              
           </div>
 
           {/* Right: Visual / Highlights */}
@@ -326,12 +327,11 @@ const PhotographyCompetition = () => {
               and visually compelling.
             </p>
             <ul className="space-y-2 text-gray-700 text-sm">
-              <li>• Open to students aged 17–23 years (college/university)</li>
+              <li>• Open to students aged 17-23 years (college/university)</li>
               <li>• Only one photograph per participant</li>
               <li>• No heavy editing or digital manipulation allowed</li>
-              <li>
-                • Photographs must be taken in India on or after 5 February 2026
-              </li>
+              <li>• Photographs must be taken in India on or after 5 February 2026 </li>
+              <li>• Photograph Submission link and details will be provided through E-mail after you complete your registration.</li>
             </ul>
           </div>
 
