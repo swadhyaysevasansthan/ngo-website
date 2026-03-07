@@ -171,8 +171,36 @@ const PhotographyCompetition = () => {
         `He has served on juries for numerous prestigious national and international photography competitions, further cementing his authority and expertise in the field.`,
         `Currently, Narayan channels his passion for photography into education through his initiative, PhotoRoutes, where he conducts workshops aimed at nurturing the next generation of photographers.`
       ],
-    }
-    // add more jury members here later
+    },
+    {
+  id: 'tulika-sahu',
+  name: 'Dr. Tulika Sahu',
+  role: 'Photographer • Educator • Researcher',
+  shortRole: 'First Woman PhD in Photography in India, NIFT Faculty',
+  photo: '/images/jury/tulika.jpg',
+  details: [
+    `Dr. Tulika Sahu is an Assistant Professor & Head of the Fashion Communication Department at the National Institute of Fashion Technology (NIFT), Raebareli, with over 13 years of teaching experience across Amity University and NIFT.`,
+    `She holds a BFA, MFA, and PhD in Photography — all from the University of Lucknow — and holds the national record for being the first woman in India to be awarded a PhD in Photography, recognised by the Limca Book of Records (2015) and India Book of Records (2016).`,
+    `An internationally exhibited photographer, she has over 200 photographs accepted in national and international competitions across countries including the USA, UK, Singapore, Romania, Azerbaijan, and Australia, and has received prestigious awards such as the IPN Gold, Club Gold, and multiple PSA honours.`,
+    `She has been a resource person and jury member for numerous national and international forums, including the India International Science Festival (Ministry of Science & Technology), State Lalit Kala Akademi, and Jawahar Navodaya Vidyalaya, among others.`,
+    `Recipient of the Hindustan Times Woman Culture Master Award, Prathama Woman Achiever (Amar Ujala), and Amrita Sher-Gil Woman Artist of the Year 2022, she has also received a Junior Research Fellowship in Visual Arts by the Ministry of Culture, Government of India.`
+  ],
+},
+{
+  id: 'parveen-gahlot',
+  name: 'Parveen Gahlot',
+  role: 'Photographer • Tour Operator • Adventurer',
+  shortRole: 'Independent Photographer & Photo Tour Specialist',
+  photo: '/images/jury/parveen.jpeg',
+  details: [
+    `Parveen Gahlot is an independent photographer and professional tour operator with over 10 years of active photography experience, combining an Electronics Engineering background with a deep passion for visual storytelling across diverse genres.`,
+    `His photographic work spans Wildlife, Birds, Street, Macro, Travel, Landscape, Aviation, and Astrophotography — blending engineering precision with an explorer's instinct for spontaneous, high-impact moments in the field.`,
+    `A motorcyclist for over 30 years, Parveen uses the open road as both inspiration and logistics — leading photo-focused expeditions to remote and off-grid locations that most photographers rarely access.`,
+    `As a tour operator, he designs and leads guided photography journeys, mentoring enthusiasts and amateurs through practical, hands-on instruction in real field conditions — covering everything from night-sky exposures to wildlife fieldcraft.`,
+    `His visual signature balances technical clarity with narrative warmth, producing images that are precise in craft yet rich in context, from intimate macro close-ups to sweeping celestial and landscape vistas.`
+  ],
+},
+
   ];
 
   const currentJury = juryMembers.find((j) => j.id === openJury);
@@ -430,12 +458,12 @@ const PhotographyCompetition = () => {
             Our jury brings together leading voices from photography and conservation.
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
             {juryMembers.map((member) => (
               <button
                 key={member.id}
                 onClick={() => setOpenJury(member.id)}
-                className="group w-full max-w-xs sm:max-w-md cursor-pointer"
+                className="group w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] max-w-sm cursor-pointer"
               >
                 <div
                   className="bg-white border border-slate-200 rounded-[18px] shadow-[0_15px_30px_rgba(15,23,42,0.12)] 
