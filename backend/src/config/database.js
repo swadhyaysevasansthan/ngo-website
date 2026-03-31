@@ -5,12 +5,10 @@ dotenv.config();
 
 const { Pool } = pg;
 
-const isProduction = process.env.NODE_ENV === 'production';
-
 // PostgreSQL connection pool
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: isProduction ? { rejectUnauthorized: false } : false,
+  ssl: { rejectUnauthorized: false },
 });
 // Test database connection
 pool.on('connect', () => {
