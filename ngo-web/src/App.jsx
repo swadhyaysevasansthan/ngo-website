@@ -31,6 +31,7 @@ import TermsAndConditions from './pages/TermsAndConditions';
 import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
+import RegistrationMaintenance from "./pages/RegistrationMaintenance";
 
 function App() {
   return (
@@ -65,7 +66,8 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/refund-policy" element={<RefundPolicy />} />
             <Route path="/terms-conditions" element={<TermsAndConditions />} />
-            <Route path="/register" element={<Register />} />
+            {/* <Route path="/register" element={<Register />} /> */}
+            <Route path="/register" element={<RegistrationMaintenance />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
           </Routes>
