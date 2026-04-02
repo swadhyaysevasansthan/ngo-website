@@ -17,7 +17,7 @@ const OurTeam = () => {
   const [selectedMember, setSelectedMember] = useState(null);
 
   useEffect(() => {
-    document.title = 'Our Team - Swadhyay Seva Foundation';
+    document.title = 'Our Team';
   }, []);
 
   return (

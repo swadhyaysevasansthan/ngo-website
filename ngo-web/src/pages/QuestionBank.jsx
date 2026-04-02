@@ -82,7 +82,7 @@ const PdfJsViewer = ({ src }) => {
 const QuestionBank = () => {
 
   useEffect(() => {
-    document.title = 'Question Bank - Swadhyay Seva Foundation';
+    document.title = 'Question Bank';
   }, []);
 
   const [code, setCode] = useState("");

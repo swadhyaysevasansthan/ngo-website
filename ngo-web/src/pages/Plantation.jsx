@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 const Plantation = () => {
   useEffect(() => {
-    document.title = 'Plantation - Swadhyay Seva Foundation';
+    document.title = 'Plantation';
   }, []);
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);

@@ -447,7 +447,7 @@ export const pastEvents = [
     ]
   },
   {
-    id: 24,
+    id: 23,
     school: 'Alpine Public School',
     city: 'Nalagarh',
     state: 'Himachal Pradesh',
@@ -467,7 +467,7 @@ export const pastEvents = [
     ]
   },
   {
-    id: 25,
+    id: 24,
     school: 'DAV Public School Airoli',
     city: 'Navi Mumbai',
     state: 'Maharashtra',
@@ -485,6 +485,25 @@ export const pastEvents = [
       '/images/events/dav-airoli/2.jpeg'
     ]
   },
+   {
+  id: 25,
+  school: 'B.D. Academy',
+  city: 'Amarpur',
+  state: 'Bihar',
+  date: 'December 20, 2025',
+  participants: '45 students',
+  description: 'B.D. Academy in Amarpur hosted an engaging environmental quiz bringing together 45 enthusiastic students. The event highlighted pressing ecological concerns of Bihar\'s rural heartland, including river conservation, soil health, and sustainable land use. Students demonstrated remarkable curiosity and commitment toward understanding and addressing local environmental issues.',
+  highlights: [
+    'Quiz focused on river conservation and soil health in Bihar',
+    'Students engaged with topics on sustainable land use and rural ecology',
+    'Interactive discussions on local environmental challenges and community solutions',
+    'Certificates distributed to all participants for their enthusiasm and environmental awareness'
+  ],
+  images: [
+    '/images/events/bd-academy/1.jpg',
+    '/images/events/bd-academy/2.jpg',
+  ]
+},
   {
     id: 26,
     school: 'DAV BR Public School',
@@ -704,7 +723,27 @@ export const pastEvents = [
     ]
   },
   {
-    id: 37,
+  id: 37,
+  school: 'Brainy Blooms Lecole International Senior Secondary CBSE School',
+  city: 'Puducherry',
+  state: 'Puducherry',
+  date: 'January 21, 2026',
+  participants: '49 students',
+  description: 'Brainy Blooms Lecole International Senior Secondary CBSE School in Puducherry welcomed 49 spirited students for a vibrant environmental quiz. The event explored coastal ecosystem conservation, marine biodiversity, and climate resilience — topics deeply relevant to Puducherry\'s unique coastal geography. Students showed impressive awareness of both local and global environmental challenges.',
+  highlights: [
+    'Quiz centered on coastal ecosystems and marine biodiversity conservation',
+    'Discussions on climate resilience and sustainable coastal living',
+    'Students explored the environmental significance of Puducherry\'s mangroves and shoreline',
+    'Certificates distributed to all participants for their enthusiasm and environmental awareness'
+  ],
+  images: [
+    '/images/events/brainy-blooms/1.jpeg',
+    '/images/events/brainy-blooms/2.jpeg',
+    '/images/events/brainy-blooms/3.jpeg',
+  ]
+},
+  {
+    id: 38,
     school: 'Delhi Public Sr. Sec. School, Barmer',
     city: 'Barmer',
     state: 'Rajasthan',
@@ -724,7 +763,7 @@ export const pastEvents = [
     ]
   },
   {
-    id: 38,
+    id: 39,
     school: 'DAV Public School, Hamirpur',
     city: 'Hamirpur',
     state: 'Himachal Pradesh',
@@ -744,7 +783,7 @@ export const pastEvents = [
     ]
   },
   {
-    id: 39,
+    id: 40,
     school: 'Akal academy Chogawan',
     city: 'Amritsar',
     state: 'Punjab',
@@ -764,7 +803,7 @@ export const pastEvents = [
     ]
   },
   {
-    id: 40,
+    id: 41,
     school: 'Delhi Public School HRIT Campus',
     city: 'Ghaziabad',
     state: 'Uttar Pradesh',
@@ -784,7 +823,7 @@ export const pastEvents = [
     ]
   },
   {
-    id: 41,
+    id: 42,
     school: "The Mother's International School",
     city: 'New Delhi',
     state: 'Delhi',
@@ -804,7 +843,7 @@ export const pastEvents = [
     ]
   },
   {
-    id: 42,
+    id: 43,
     school: 'EMRS Guna',
     city: 'Guna',
     state: 'Madhya Pradesh',
@@ -824,7 +863,7 @@ export const pastEvents = [
     ]
   },
   {
-    id: 43,
+    id: 44,
     school: 'Jagannath International School',
     city: 'New Delhi',
     state: 'Delhi',
@@ -832,10 +871,10 @@ export const pastEvents = [
     participants: '45 students',
     description: 'Jagannath International School in New Delhi hosted a dynamic environmental quiz with 45 students. The event covered urban ecology, pollution control, and sustainable development goals. Students actively engaged in discussions about practical environmental solutions and pledged to become environmental ambassadors in their school and community.',
     highlights: [
-      'Interactive quiz linking SDGs with local environmental action',
-      'Focus on urban pollution reduction and green infrastructure',
-      'Students developed action plans for school-level sustainability initiatives',
-      'All 45 participants received certificates celebrating their environmental awareness'
+      'Collaborative quiz emphasizing teamwork and environmental awareness',
+      'Discussions about local conservation strategies in Himachal',
+      'All attendees received certificates for their participation',
+      'Encouraged students to launch small-scale sustainability projects'
     ],
     images: [
       '/images/events/jagannath/1.jpeg',
@@ -844,7 +883,7 @@ export const pastEvents = [
     ]
   },
   {
-    id: 44,
+    id: 45,
     school: 'JK Public School, Kathua',
     city: 'Kathua',
     state: 'Jammu and Kashmir',
@@ -864,7 +903,7 @@ export const pastEvents = [
     ]
   },
   {
-   id: 45,
+   id: 46,
    school: 'Jhabban Lal DAV Public School',
    city: 'New Delhi',
     state: 'Delhi',
@@ -884,7 +923,7 @@ export const pastEvents = [
     ]
   },
   {
-    id: 46,
+    id: 47,
     school: 'The Mann School',
     city: 'New Delhi',
     state: 'Delhi',
@@ -905,7 +944,7 @@ export const pastEvents = [
     ]
   },
   {
-    id: 47,
+    id: 48,
     school: 'DAV Model School, Sankarpur',
     city: 'Durgapur',
     state: 'West Bengal',
@@ -925,7 +964,7 @@ export const pastEvents = [
     ]
   },
   {
-    id: 48,
+    id: 49,
     school: 'Holy Public School',
     city: 'Agra',
     state: 'Uttar Pradesh',
@@ -945,7 +984,7 @@ export const pastEvents = [
     ]
   },
   {
-    id: 49,
+    id: 50,
     school: 'Sukhjinder Memorial Public School',
     city: 'Gurdaspur',
     state: 'Punjab',
@@ -953,17 +992,141 @@ export const pastEvents = [
     participants: '17 students',
     description: 'Sukhjinder Memorial Public School in Gurdaspur organized an intimate environmental quiz with 17 dedicated students. The event covered water conservation, agricultural sustainability, and biodiversity protection in Punjab\'s border regions. The personalized setting allowed for in-depth discussions and meaningful engagement with each student about environmental challenges and solutions.',
     highlights: [
-      'Focused quiz on water conservation and sustainable agriculture',
-      'Personalized discussion on local environmental challenges',
-      'Students explored organic farming and natural resource management',
-      'Certificates distributed to all participants for their enthusiasm and environmental awareness'
+      'Comprehensive quiz covering sustainable living and eco-friendly practices',
+      'Strong participation from students in a remote mountain region',
+      'Interactive sessions on local environmental challenges and solutions',
+      'Distribution of educational materials and certificates to all participants',
+      'Emphasis on the role of youth in climate action'
     ],
     images: [
       '/images/events/sukhjinder/1.jpeg',
      '/images/events/sukhjinder/2.jpeg',
       '/images/events/sukhjinder/3.jpeg',
     ]
-  }
+  },
+ 
+
+{
+  id: 51,
+  school: 'Sainik School Mandsaur',
+  city: 'Mandsaur',
+  state: 'Madhya Pradesh',
+  date: 'February 4, 2026',
+  participants: '20 students',
+  description: 'Sainik School Mandsaur organized a focused environmental quiz with 20 disciplined and attentive students. The event addressed environmental stewardship, forest conservation, and water resource management in the Malwa plateau region of Madhya Pradesh. The intimate setting encouraged thoughtful dialogue on the role of responsible citizens in protecting natural resources.',
+  highlights: [
+      'Engaging quiz sessions with creative rounds',
+      'Focus on urban sustainability, recycling, and water conservation',
+      'Participation certificates presented to all students',
+      'Facilitated group discussion on local eco-friendly initiatives'
+    ],
+  images: [
+    '/images/events/sainik-mandsaur/1.jpg',
+    '/images/events/sainik-mandsaur/2.jpg',
+  ]
+},
+{
+  id: 52,
+  school: 'Bal Bharati Public School, Nabinagar',
+  city: 'Aurangabad',
+  state: 'Bihar',
+  date: 'February 5, 2026',
+  participants: '32 students',
+  description: 'Bal Bharati Public School in Nabinagar, Aurangabad hosted an enriching environmental quiz with 32 engaged students. The event brought focus to Bihar\'s agrarian environment, covering topics such as groundwater conservation, crop diversity, and sustainable farming practices. Students participated actively, reflecting a strong sense of environmental responsibility rooted in their local context.',
+  highlights: [
+      'Interactive quiz encouraging teamwork and sharing of ideas',
+      'Special focus on biodiversity and climate resilience in mountain ecosystems',
+      'Distribution of participation certificates and eco-awareness materials',
+      'Students developed action points for conservation in their local surroundings'
+    ],
+  images: [
+    '/images/events/bal-bharati-nabinagar/1.jpeg',
+    '/images/events/bal-bharati-nabinagar/2.jpeg',
+    '/images/events/bal-bharati-nabinagar/3.jpeg',
+  ]
+},
+{
+  id: 53,
+  school: 'Army Public School Ranikhet',
+  city: 'Ranikhet',
+  state: 'Uttarakhand',
+  date: 'February 9, 2026',
+  participants: '22 students',
+  description: 'Army Public School Ranikhet organized a focused environmental quiz with 22 disciplined and enthusiastic students nestled in the serene hills of Uttarakhand. The event highlighted the ecological significance of the Kumaon Himalayas, covering topics such as forest conservation, wildlife protection, and sustainable water management in mountain communities. The intimate setting encouraged thoughtful discussions on preserving the fragile highland environment.',
+  highlights: [
+      'Comprehensive quiz covering sustainable living and eco-friendly practices',
+      'Strong participation from students in a remote mountain region',
+      'Interactive sessions on local environmental challenges and solutions',
+      'Distribution of educational materials and certificates to all participants',
+      'Emphasis on the role of youth in climate action'
+    ],
+  images: [
+    '/images/events/aps-ranikhet/1.jpg',
+    '/images/events/aps-ranikhet/2.jpg',
+    '/images/events/aps-ranikhet/3.jpg',
+  ]
+},
+{
+  id: 54,
+  school: 'Ajmera Mukesh Nemichandbhai English Medium School',
+  city: 'Indore',
+  state: 'Madhya Pradesh',
+  date: 'February 11, 2026',
+  participants: '42 students',
+  description: 'Ajmera Mukesh Nemichandbhai English Medium School in Indore hosted a lively environmental quiz with 42 enthusiastic students. The event addressed urban environmental challenges, including air quality, waste management, and green urban planning — issues directly relevant to one of Madhya Pradesh\'s fastest-growing cities. Students engaged with practical solutions and innovative ideas for a sustainable urban future.',
+  highlights: [
+      'Personalized quiz and discussion event with every participant',
+      'Special emphasis on biodiversity in the Himalayan region',
+      'Encouraged creative thinking on local environmental protection',
+      'Distributed certificates and resource materials to all students'
+    ],
+  images: [
+    '/images/events/ajmera-indore/1.jpeg',
+    '/images/events/ajmera-indore/2.jpeg',
+    '/images/events/ajmera-indore/3.jpeg',
+  ]
+},
+{
+  id: 55,
+  school: 'Chanakya International School',
+  city: 'Jalandhar',
+  state: 'Punjab',
+  date: 'February 18, 2026',
+  participants: '19 students',
+  description: 'Chanakya International School in Jalandhar organized an intimate yet impactful environmental quiz with 19 dedicated students. The event explored Punjab\'s environmental landscape, with particular attention to stubble burning, soil degradation, and the conservation of the Beas and Sutlej river systems. The focused group setting fostered meaningful conversations about actionable environmental solutions.',
+  highlights: [
+      'Interactive quiz encouraging teamwork and sharing of ideas',
+      'Special focus on biodiversity and climate resilience in mountain ecosystems',
+      'Distribution of participation certificates and eco-awareness materials',
+      'Students developed action points for conservation in their local surroundings'
+    ],
+  images: [
+    '/images/events/chanakya-jalandhar/1.jpg',
+    '/images/events/chanakya-jalandhar/2.jpg',
+    '/images/events/chanakya-jalandhar/3.jpg',
+  ]
+},
+{
+  id: 56,
+  school: 'Dalhousie Public School',
+  city: 'Dalhousie',
+  state: 'Himachal Pradesh',
+  date: 'March 16, 2026',
+  participants: '50 students',
+  description: 'Dalhousie Public School welcomed 50 enthusiastic students for a vibrant environmental quiz set amidst the scenic hills of Himachal Pradesh. The event delved into mountain ecosystem conservation, glacier health, deforestation, and the fragile ecology of the Western Himalayas. Students demonstrated exceptional awareness of how climate change is reshaping their highland environment and discussed community-driven conservation efforts.',
+  highlights: [
+      'Interactive quiz covering climate change, pollution, and sustainability',
+      'Strong student engagement with creative problem-solving approaches',
+      'Emphasis on practical environmental solutions for local communities',
+      'Certificates and recognition awarded to all participants',
+      'Inspired students to take environmental initiatives in their school and homes'
+    ],
+  images: [
+    '/images/events/dalhousie-public/1.jpeg',
+    '/images/events/dalhousie-public/2.jpeg',
+    '/images/events/dalhousie-public/3.jpeg',
+  ]
+},
 ];
 
 // Helper function to get unique states

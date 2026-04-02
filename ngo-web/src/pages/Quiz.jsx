@@ -117,7 +117,7 @@ const minutesSince = (timestamp) => (Date.now() - timestamp) / (1000 * 60);
 const Quiz = () => {
 
   useEffect(() => {
-    document.title = 'Quiz - Swadhyay Seva Foundation';
+    document.title = 'Quiz';
   }, []);
 
 

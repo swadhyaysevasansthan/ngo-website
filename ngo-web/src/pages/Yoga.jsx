@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 const Yoga = () => {
   useEffect(() => {
-    document.title = 'Yoga - Swadhyay Seva Foundation';
+    document.title = 'Yoga';
   }, []);
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);

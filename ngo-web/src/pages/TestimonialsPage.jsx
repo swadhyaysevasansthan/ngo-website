@@ -7,7 +7,7 @@ import { testimonials } from '../data/testimonialsData';
 
 const TestimonialsPage = () => {
   useEffect(() => {
-    document.title = 'Testimonials - Swadhyay Seva Foundation';
+    document.title = 'Testimonials';
   }, []);
 
   return (

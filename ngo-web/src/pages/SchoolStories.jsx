@@ -8,7 +8,7 @@ import { pastEvents, getUniqueStates, filterEventsByState, getEventCountByState 
 
 const SchoolStories = () => {
   useEffect(() => {
-    document.title = 'School Stories - Swadhyay Seva Foundation';
+    document.title = 'School Stories';
   }, []);
 
   const [selectedEvent, setSelectedEvent] = useState(null);

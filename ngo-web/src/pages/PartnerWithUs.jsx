@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const PartnerWithUs = () => {
 
       useEffect(() => {
-        document.title = 'Partner With Us - Swadhyay Seva Foundation';
+        document.title = 'Partner With Us';
       }, []);
   return (
     <main className="min-h-screen bg-white">
