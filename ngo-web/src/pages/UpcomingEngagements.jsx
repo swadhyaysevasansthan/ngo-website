@@ -297,7 +297,7 @@ const UpcomingEngagements = () => {
                     {/* Competition highlights */}
                     <div className="grid grid-cols-2 gap-4 mb-6">
                       {[
-                        { icon: Brush,    label: 'Painting',  value: 'Classes 3rd – 5th',  sub: 'Up to 100 students/school', color: 'border-orange-200 bg-orange-50' },
+                        { icon: Brush,    label: 'Painting',  value: 'Classes 3rd – 5th',  sub: 'Up to 200 students/school', color: 'border-orange-200 bg-orange-50' },
                         { icon: BookOpen, label: 'Quiz',       value: 'Classes 6th – 8th',  sub: 'Up to 50 students/school',  color: 'border-emerald-200 bg-emerald-50/80' },
                       ].map(s => (
                         <div key={s.label} className={`rounded-xl p-4 shadow-sm border ${s.color}`}>
