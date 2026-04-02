@@ -190,7 +190,7 @@ const UpcomingEngagements = () => {
                 href="/contact"
                 className="px-7 py-3 rounded-full bg-white/15 border border-white/30 text-white font-semibold text-sm hover:bg-white/25 transition-colors"
               >
-                Registrations Open Soon
+                Registrations Opening Soon
               </a>
             </motion.div>
           </motion.div>
@@ -332,13 +332,13 @@ const UpcomingEngagements = () => {
                       onClick={() => setActiveTab('painting')}
                       className="flex-1 py-3 rounded-2xl font-bold text-white text-sm bg-gradient-to-r from-orange-400 to-amber-500 hover:opacity-90 transition-opacity shadow-md"
                     >
-                      🎨 Painting Details
+                      Painting Details
                     </button>
                     <button
                       onClick={() => setActiveTab('quiz')}
                       className="flex-1 py-3 rounded-2xl font-bold text-white text-sm bg-gradient-to-r from-emerald-500 to-teal-600 hover:opacity-90 transition-opacity shadow-md"
                     >
-                      📖 Quiz Details
+                      Quiz Details
                     </button>
                   </div>
                 </div>
@@ -424,7 +424,7 @@ const UpcomingEngagements = () => {
                       href="/contact"
                       className={`inline-flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl font-bold text-white bg-gradient-to-r ${comp.accentDark} hover:opacity-90 transition-opacity shadow-md`}
                     >
-                      Registrations Open Soon
+                      Registrations Opening Soon
                     </a>
                   </div>
                 </div>
