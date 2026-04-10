@@ -40,7 +40,7 @@ const Contact = () => {
     {
       icon: <MapPin className="w-6 h-6" />,
       title: "Our Address",
-      content: "B-3/2, 1st floor ,Sector 16, Rohini, Delhi, 110089",
+      content: "A-5/44, Pocket 5, Sector 18, Rohini, Delhi, 110089",
     },
     {
       icon: <Phone className="w-6 h-6" />,
