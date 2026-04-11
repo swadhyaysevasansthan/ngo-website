@@ -74,7 +74,7 @@ const Footer = () => {
               <li className="flex items-start space-x-3">
                 <MapPin size={18} className="text-primary-400 mt-1 flex-shrink-0" />
                 <span className="text-sm">
-                   B-3/2, 1st floor ,Sector 16, Rohini, Delhi, 110089
+                   A-5/44, Pocket 5, Sector 18, Rohini, Delhi, 110089
 
                 </span>
               </li>
