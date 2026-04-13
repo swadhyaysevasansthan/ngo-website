@@ -247,7 +247,7 @@ console.log('Register loading state:', loading);
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3 text-xs md:text-sm">
               <div className="bg-white px-4 py-2 rounded-full shadow-sm border border-amber-100">
-                Registration: 10 Feb – 15 Apr 2026
+                Registration: Till 7 May 2026
               </div>
               <div className="bg-white px-4 py-2 rounded-full shadow-sm border border-emerald-100">
                 Fee: ₹100 · Non‑refundable
@@ -270,8 +270,8 @@ console.log('Register loading state:', loading);
                   <ul className="space-y-1 text-sm text-gray-700">
                     <li>✓ Registration fee: ₹100 (non‑refundable)</li>
                     <li>✓ Age limit: 17–23 years (as on 1 February 2026)</li>
-                    <li>✓ Registration deadline: 15 April 2026</li>
-                    <li>✓ Submission deadline: 23 April 2026</li>
+                    <li>✓ Registration deadline: 7 May 2026</li>
+                    <li>✓ Submission deadline: 15 May 2026</li>
                   </ul>
                 </div>
 
