@@ -285,4 +285,18 @@ export const youngITTeam = [
       </div>
     ),
     },
+    // {
+    //   name: "Tushar Goel",
+    //   role: "B.Tech (Computer Science)",
+    //   image: "/images/team/tushar-goel.jpg",
+    //   description: "Java Developer, Full Stack Engineer, Problem Solver, Tech Enthusiast",
+    //   details: (
+    //   <div>
+    //     <p>Tushar Goel is a dedicated and forward-thinking Computer Science & Engineering undergraduate from Guru Tegh Bahadur 4th Centenary Engineering College, New Delhi. With a strong command over Java Development, Spring Boot, Web Technologies, and Data Structures & Algorithms, he is committed to building efficient, scalable, and impactful software solutions.</p><br/>
+    //     <p>Tushar has completed professional training in Java Full Stack Development and DSA from Ducat Institute, gaining hands-on experience across frontend and backend technologies including Java, React.js, Hibernate, MySQL, and REST APIs. His work reflects a balance between robust backend logic and modern, responsive interfaces.</p><br/>
+    //     <p>He recently served as a Software Engineer Intern at FaithCode Technologies, where he gained hands-on experience in Java, Spring Boot, React.js, and SQL. During his tenure, he contributed to real-world software development projects, enhancing his technical skills and understanding of end-to-end development workflows.</p><br/>
+    //     <p>Beyond academics, Tushar is an active and disciplined individual with over three years in NCC earlier, representing his college at national-level camps, and has also participated in intercollegiate badminton tournaments. His combination of technical skill, problem-solving mindset, and team spirit positions him as a promising young professional ready to contribute to innovative technology-driven environments.</p>
+    //   </div>
+    // ),
+    // },
   ];

@@ -358,7 +358,7 @@ const PhotographyCompetition = () => {
               <li>• Open to students aged 17-23 years (college/university)</li>
               <li>• Only one photograph per participant</li>
               <li>• No heavy editing or digital manipulation allowed</li>
-              <li>• Photographs must be taken in India on or after 5 February 2026 </li>
+              <li>• Photographs must be taken in India on or after 1 September 2025 </li>
               <li>• Photograph Submission link and details will be provided through E-mail after you complete your registration.</li>
             </ul>
           </div>
@@ -515,7 +515,7 @@ const PhotographyCompetition = () => {
             {[
               { date: '10 February - 7 May 2026', event: 'Registration Period' },
               { date: '15 May 2026', event: 'Last Date of Photograph Submission' },
-              { date: '30 May 2026', event: 'Result Declaration' },
+              { date: 'To Be Announced (TBA)', event: 'Result Declaration' },
               { date: 'To Be Announced (TBA)', event: 'Prize Distribution' }
             ].map((item, idx) => (
               <div key={idx} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
@@ -806,7 +806,7 @@ const PhotographyCompetition = () => {
         <div className="space-y-8 text-gray-700 text-sm">
           <div>
                   <h4 className="font-bold text-gray-900 mb-2">Registration Period</h4>
-                  <p>Registrations will remain open from <b>10 February 2026 to 15 April 2026</b>.</p>
+                  <p>Registrations will remain open from <b>10 February 2026 to 7 May 2026</b>.</p>
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Registration Process</h4>
@@ -814,7 +814,7 @@ const PhotographyCompetition = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Submission Period</h4>
-                  <p>Photograph submissions will be accepted from <b>12 February 2026 until 11:59 PM (IST) on 23 April 2026</b>.</p>
+                  <p>Photograph submissions will be accepted from <b>12 February 2026 until 11:59 PM (IST) on 15 May 2026</b>.</p>
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Submission Platform</h4>
