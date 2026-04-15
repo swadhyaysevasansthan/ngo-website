@@ -355,6 +355,8 @@ const AdminDashboard = () => {
                     <tr>
                       <th className="px-4 py-3 text-left">Participant ID</th>
                       <th className="px-4 py-3 text-left">Name</th>
+                      <th className="px-4 py-3 text-left">Submitted?</th>
+                      <th className="px-4 py-3 text-left">Actions</th>
                       <th className="px-4 py-3 text-left">Email</th>
                       <th className="px-4 py-3 text-left">Phone</th>
                       <th className="px-4 py-3 text-left">Category</th>
@@ -362,8 +364,7 @@ const AdminDashboard = () => {
                       <th className="px-4 py-3 text-left">City</th>
                       <th className="px-4 py-3 text-left">State</th>
                       <th className="px-4 py-3 text-left">Paid?</th>
-                      <th className="px-4 py-3 text-left">Submitted?</th>
-                      <th className="px-4 py-3 text-left">Actions</th>
+                      
                     </tr>
                   </thead>
                   <tbody>
@@ -373,23 +374,6 @@ const AdminDashboard = () => {
                           {p.participant_id}
                         </td>
                         <td className="px-4 py-3">{p.full_name}</td>
-                        <td className="px-4 py-3">{p.email}</td>
-                        <td className="px-4 py-3">{p.phone}</td>
-                        <td className="px-4 py-3">{p.category}</td>
-                        <td className="px-4 py-3">{p.college_name}</td>
-                        <td className="px-4 py-3">{p.city}</td>
-                        <td className="px-4 py-3">{p.state}</td>
-                        <td className="px-4 py-3">
-                          {p.payment_status ? (
-                            <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs">
-                              Paid
-                            </span>
-                          ) : (
-                            <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs">
-                              Unpaid
-                            </span>
-                          )}
-                        </td>
                         <td className="px-4 py-3">
                           <button
                             onClick={() => handleToggleSubmitted(p)}
@@ -411,6 +395,23 @@ const AdminDashboard = () => {
                           >
                             Copy ID
                           </button>
+                        </td>
+                        <td className="px-4 py-3">{p.email}</td>
+                        <td className="px-4 py-3">{p.phone}</td>
+                        <td className="px-4 py-3">{p.category}</td>
+                        <td className="px-4 py-3">{p.college_name}</td>
+                        <td className="px-4 py-3">{p.city}</td>
+                        <td className="px-4 py-3">{p.state}</td>
+                        <td className="px-4 py-3">
+                          {p.payment_status ? (
+                            <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs">
+                              Paid
+                            </span>
+                          ) : (
+                            <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs">
+                              Unpaid
+                            </span>
+                          )}
                         </td>
                       </tr>
                     ))}
