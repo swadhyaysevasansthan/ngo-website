@@ -166,9 +166,9 @@ const UpcomingEngagements = () => {
                 SNEAC 2025-26 · 1st Edition
               </p>
               {[
-                { label: 'Students participated', value: 3000, suffix: '+' },
-                { label: 'Schools participated', value: 70, suffix: '+' },
-                { label: 'States represented', value: 20, suffix: '+' },
+                { label: 'Students participated', value: 4500, suffix: '+' },
+                { label: 'Schools participated', value: 80, suffix: '+' },
+                { label: 'States represented', value: 18, suffix: '+' },
               ].map(s => (
                 <div key={s.label} className="bg-white/10 backdrop-blur rounded-2xl px-6 py-3 text-center">
                   <p className="text-2xl font-extrabold text-yellow-300">
