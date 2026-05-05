@@ -45,7 +45,7 @@ function App() {
         <ScrollToTop />
         <Navbar />
         <AnnouncementBanner />
-        <LatestUpdatesBar />
+        {/*   */}
         <main className="flex-grow">
           <Routes>
             {/* 🔥 EXISTING ROUTES - UNCHANGED */}

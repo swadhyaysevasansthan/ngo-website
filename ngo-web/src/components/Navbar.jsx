@@ -13,13 +13,14 @@ const Navbar = () => {
   const ourCommunitiesDropdownRef = useRef(null);
   const aboutDropdownRef = useRef(null);
   const supportDropdownRef = useRef(null);
+  const voicesDropdownRef = useRef(null);
 
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About Us', dropdown: true, type: 'about' },
     { name: 'Quiz', dropdown: true, type: 'quiz' },
     { name: 'School Stories', path: '/school-stories' },
-    { name: 'Testimonials', path: '/testimonials' },
+    { name: 'Voices', dropdown: true, type: 'voices' }, // updated
     { name: 'Upcoming Engagements', path: '/upcoming-engagements' },
     { name: 'SNPC 2026', path: '/photography-competition' },
     { name: 'Our Communities', dropdown: true, type: 'ourcommunities' },
@@ -50,6 +51,13 @@ const Navbar = () => {
     { name: 'Donate', path: '/donate', emphasis: true },
   ];
 
+  // NEW: Voices sublinks
+  const voicesSubLinks = [
+    { name: 'Community Reviews', path: '/reviews' },
+    { name: 'Letters of Appreciation', path: '/testimonials' },
+    { name: 'Share Your Experience', path: '/submit-review' },
+  ];
+
   const isActive = (path) => location.pathname === path;
 
   // Close drawer on route change
@@ -61,20 +69,46 @@ const Navbar = () => {
   // Lock body scroll when drawer is open
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [isOpen]);
 
+  // Close desktop dropdowns on outside click
   useEffect(() => {
     function handleClickOutside(event) {
-      if (activeDesktopDropdown === 'quiz' && quizDropdownRef.current && !quizDropdownRef.current.contains(event.target))
+      if (
+        activeDesktopDropdown === 'quiz' &&
+        quizDropdownRef.current &&
+        !quizDropdownRef.current.contains(event.target)
+      )
         setActiveDesktopDropdown('');
-      if (activeDesktopDropdown === 'ourcommunities' && ourCommunitiesDropdownRef.current && !ourCommunitiesDropdownRef.current.contains(event.target))
+      if (
+        activeDesktopDropdown === 'ourcommunities' &&
+        ourCommunitiesDropdownRef.current &&
+        !ourCommunitiesDropdownRef.current.contains(event.target)
+      )
         setActiveDesktopDropdown('');
-      if (activeDesktopDropdown === 'about' && aboutDropdownRef.current && !aboutDropdownRef.current.contains(event.target))
+      if (
+        activeDesktopDropdown === 'about' &&
+        aboutDropdownRef.current &&
+        !aboutDropdownRef.current.contains(event.target)
+      )
         setActiveDesktopDropdown('');
-      if (activeDesktopDropdown === 'support' && supportDropdownRef.current && !supportDropdownRef.current.contains(event.target))
+      if (
+        activeDesktopDropdown === 'support' &&
+        supportDropdownRef.current &&
+        !supportDropdownRef.current.contains(event.target)
+      )
+        setActiveDesktopDropdown('');
+      if (
+        activeDesktopDropdown === 'voices' &&
+        voicesDropdownRef.current &&
+        !voicesDropdownRef.current.contains(event.target)
+      )
         setActiveDesktopDropdown('');
     }
+
     if (activeDesktopDropdown) {
       document.addEventListener('mousedown', handleClickOutside);
       return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -86,6 +120,7 @@ const Navbar = () => {
     if (type === 'ourcommunities') return ourCommunitiesDropdownRef;
     if (type === 'about') return aboutDropdownRef;
     if (type === 'support') return supportDropdownRef;
+    if (type === 'voices') return voicesDropdownRef;
     return null;
   };
 
@@ -93,6 +128,7 @@ const Navbar = () => {
     if (type === 'quiz') return quizSubLinks;
     if (type === 'about') return aboutSubLinks;
     if (type === 'support') return supportSublinks;
+    if (type === 'voices') return voicesSubLinks;
     return ourCommunitiesSubLinks;
   };
 
@@ -131,9 +167,8 @@ const Navbar = () => {
             </div>
           </Link>
 
-          {/* RIGHT: hamburger on mobile / badge on desktop */}
+          {/* RIGHT: hamburger / badge */}
           <div className="flex items-center gap-3">
-            {/* Registered NGO badge — desktop only */}
             <div className="hidden md:flex flex-col items-end text-xs text-orange-100 animate-headerFromBottom">
               <span className="uppercase tracking-[0.25em] text-[10px]">Registered NGO</span>
               <span className="mt-1 text-sm font-semibold group-hover:text-white transition-colors duration-300">
@@ -141,7 +176,6 @@ const Navbar = () => {
               </span>
             </div>
 
-            {/* Hamburger — mobile only, lives in header */}
             <button
               onClick={() => setIsOpen(true)}
               className="nav:hidden flex items-center justify-center w-10 h-10 rounded-md bg-white/80 text-black hover:bg-white/100 active:scale-95 transition-all duration-200 focus:outline-none"
@@ -152,7 +186,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* ─── NAVBAR — desktop only ─── */}
+      {/* ─── NAVBAR — desktop ─── */}
       <div className="hidden nav:block bg-white/95 backdrop-blur sticky top-0 z-40 shadow-sm border-b border-gray-100">
         <nav>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -162,7 +196,9 @@ const Navbar = () => {
                   <div key={index} className="relative" ref={getDropdownRef(link.type)}>
                     <button
                       onClick={() =>
-                        setActiveDesktopDropdown(activeDesktopDropdown === link.type ? '' : link.type)
+                        setActiveDesktopDropdown(
+                          activeDesktopDropdown === link.type ? '' : link.type
+                        )
                       }
                       className={`flex items-center gap-1 px-3 py-1.5 rounded-full transition-all duration-200 whitespace-nowrap ${
                         activeDesktopDropdown === link.type
@@ -238,7 +274,8 @@ const Navbar = () => {
           <div className="flex items-center gap-2">
             <img src={ngoLogo} alt="logo" className="w-8 h-8 rounded-full border border-white/80" />
             <span className="text-white font-bold text-sm leading-tight">
-              Swadhyay Seva<br />
+              Swadhyay Seva
+              <br />
               <span className="font-normal text-orange-100 text-xs">Foundation</span>
             </span>
           </div>
@@ -257,7 +294,9 @@ const Navbar = () => {
               <div key={index} className="border-b border-gray-100">
                 <button
                   onClick={() =>
-                    setActiveMobileDropdown(activeMobileDropdown === link.type ? '' : link.type)
+                    setActiveMobileDropdown(
+                      activeMobileDropdown === link.type ? '' : link.type
+                    )
                   }
                   className="flex justify-between items-center w-full px-5 py-3.5 text-sm font-bold text-gray-800 hover:bg-gray-50 transition-colors"
                 >

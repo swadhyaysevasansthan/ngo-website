@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getPublicReviews } from '../utils/api';
 import { ChevronRight } from 'lucide-react';
 import ReviewCard from './ReviewCard';
+import SectionHeader from './SectionHeader';
 
 const TestimonialCarousel = () => {
   const { data, isLoading, error } = useQuery({
@@ -45,31 +46,22 @@ const TestimonialCarousel = () => {
   }
 
   return (
-    <section className="py-20 bg-gradient-to-r from-indigo-50 to-purple-50">
+    <section className="py-20 bg-white">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 to-indigo-900 bg-clip-text text-transparent mb-4">
-            Trusted by Our Community
-          </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Real stories from real people who&apos;ve experienced transformation
-          </p>
-        </div>
+        <SectionHeader
+          title="Trusted by Our Community"
+          subtitle="Real stories from real people who&apos;ve experienced transformation"
+        />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="flex flex-wrap justify-center gap-8">
           {featuredReviews.map((review) => (
-            <ReviewCard key={review.id} review={review} />
+            <div
+              key={review.id}
+              className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.34rem)] max-w-sm"
+            >
+              <ReviewCard review={review} />
+            </div>
           ))}
-        </div>
-
-        <div className="text-center mt-16">
-          <a
-            href="/submit-review"
-            className="inline-flex items-center bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-2xl text-lg shadow-xl hover:shadow-2xl transition-all"
-          >
-            Share Your Story
-            <ChevronRight className="w-5 h-5 ml-2" />
-          </a>
         </div>
       </div>
     </section>

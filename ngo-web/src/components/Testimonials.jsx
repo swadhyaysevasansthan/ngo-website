@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Quote, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -46,7 +46,7 @@ const Testimonials = () => {
       role: 'Principal',
       school: 'Himalaya Public Sr. Sec. School',
       location: 'Rohini, Delhi',
-    }, // from SNEAC testimonial [file:128]
+    },
     {
       quote:
         'The Swadhyay National Environment Awareness online quiz gave our students a valuable learning experience that strengthened awareness, speed, and analytical thinking.',
@@ -54,7 +54,7 @@ const Testimonials = () => {
       role: 'Headmistress',
       school: 'D.A.V. Public School, Jhanjra Area',
       location: 'Paschim Bardhaman, West Bengal',
-    }, // from DAV Jhanjra report [file:129]
+    },
     {
       quote:
         'Conducting the Swadhyay National Environment Awareness Quiz at our school reflected sincere dedication and hard work, and strongly supported our efforts to build environmental consciousness.',
@@ -62,39 +62,67 @@ const Testimonials = () => {
       role: 'Principal',
       school: 'DAV Public School BSPS Surangani',
       location: 'District Chamba, Himachal Pradesh',
-    }, // from DAV Surangani letter [file:130]
+    },
   ];
 
   const scrollRef = useRef(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
-  // step index for bar & arrows: 0,1,2,3 (4 positions)
-  const totalSteps = 2;
-  const [currentStep, setCurrentStep] = useState(0);
+  // Recalculate pages on resize
+  useEffect(() => {
+    const calculatePages = () => {
+      const container = scrollRef.current;
+      if (!container) return;
 
-  const scroll = (direction) => {
+      // approximate single-card width (same as your min-w on the card wrapper)
+      const cardWidth = 320; // px, between 280–360
+      const visibleWidth = container.offsetWidth;
+      const cardsPerPage = Math.max(1, Math.floor(visibleWidth / cardWidth));
+      const pages = Math.max(
+        1,
+        Math.ceil(featuredTestimonials.length / cardsPerPage)
+      );
+      setTotalPages(pages);
+      setCurrentPage((prev) => Math.min(prev, pages - 1));
+    };
+
+    calculatePages();
+    window.addEventListener('resize', calculatePages);
+    return () => window.removeEventListener('resize', calculatePages);
+  }, [featuredTestimonials.length]);
+
+  const scrollToPage = (pageIndex) => {
     const container = scrollRef.current;
     if (!container) return;
 
-    const nextStep =
-      direction === 'next'
-        ? Math.min(currentStep + 1, totalSteps)
-        : Math.max(currentStep - 1, 0);
+    const maxScrollLeft = container.scrollWidth - container.clientWidth;
+    const target =
+      totalPages <= 1
+        ? 0
+        : Math.min(maxScrollLeft, (maxScrollLeft / (totalPages - 1)) * pageIndex);
 
-    setCurrentStep(nextStep);
-
-    // scroll amount per step (tweak if needed)
-    const stepWidth = container.offsetWidth * 0.9;
-
-    container.scrollBy({
-      left: direction === 'next' ? stepWidth : -stepWidth,
+    container.scrollTo({
+      left: target,
       behavior: 'smooth',
     });
   };
 
-  // thin position bar: 4 discrete positions
-  const thumbWidthPercent = 20;
-  const positions = [0, 40, 80]; // left offsets for steps 0–3
-  const barLeft = positions[currentStep] ?? positions[0];
+  const handleArrowClick = (direction) => {
+    if (direction === 'next') {
+      const next = Math.min(currentPage + 1, totalPages - 1);
+      setCurrentPage(next);
+      scrollToPage(next);
+    } else {
+      const prev = Math.max(currentPage - 1, 0);
+      setCurrentPage(prev);
+      scrollToPage(prev);
+    }
+  };
+
+  // indicator width & position based on pages
+  const thumbWidthPercent = totalPages > 0 ? 100 / totalPages : 100;
+  const barLeftPercent = thumbWidthPercent * currentPage;
 
   return (
     <section className="bg-gradient-to-br from-gray-50 to-blue-50 py-16">
@@ -106,22 +134,28 @@ const Testimonials = () => {
 
         <div className="relative mt-12">
           {/* Arrows */}
-          <button
-            onClick={() => scroll('prev')}
-            className="hidden md:flex absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-primary-50 text-gray-700 hover:text-primary-600"
-            aria-label="Previous testimonial"
-          >
-            <ChevronLeft size={20} />
-          </button>
-          <button
-            onClick={() => scroll('next')}
-            className="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-primary-50 text-gray-700 hover:text-primary-600"
-            aria-label="Next testimonial"
-          >
-            <ChevronRight size={20} />
-          </button>
+          {totalPages > 1 && (
+            <>
+              <button
+                onClick={() => handleArrowClick('prev')}
+                className="hidden md:flex absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-primary-50 text-gray-700 hover:text-primary-600 disabled:opacity-40 disabled:cursor-not-allowed"
+                aria-label="Previous testimonial"
+                disabled={currentPage === 0}
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button
+                onClick={() => handleArrowClick('next')}
+                className="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-primary-50 text-gray-700 hover:text-primary-600 disabled:opacity-40 disabled:cursor-not-allowed"
+                aria-label="Next testimonial"
+                disabled={currentPage === totalPages - 1}
+              >
+                <ChevronRight size={20} />
+              </button>
+            </>
+          )}
 
-          {/* Horizontal row, scrollbar hidden */}
+          {/* Scrollable row */}
           <div
             ref={scrollRef}
             className="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory hide-native-scrollbar"
@@ -165,16 +199,18 @@ const Testimonials = () => {
             ))}
           </div>
 
-          {/* Position bar with 4 steps */}
-          <div className="mx-auto mt-2 h-[4px] w-40 rounded-full bg-blue-200/60 relative overflow-hidden">
-            <div
-              className="absolute inset-y-0 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-orange-400 transition-all duration-300"
-              style={{
-                width: `${thumbWidthPercent}%`,
-                left: `${barLeft}%`,
-              }}
-            />
-          </div>
+          {/* Position bar */}
+          {totalPages > 1 && (
+            <div className="mx-auto mt-3 h-[4px] w-40 rounded-full bg-blue-200/60 relative overflow-hidden">
+              <div
+                className="absolute inset-y-0 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-orange-400 transition-all duration-300"
+                style={{
+                  width: `${thumbWidthPercent}%`,
+                  left: `${barLeftPercent}%`,
+                }}
+              />
+            </div>
+          )}
         </div>
 
         {/* View All Button */}
@@ -183,7 +219,7 @@ const Testimonials = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-2 bg-primary-600 text-white px-8 py-4 rounded-lg font-semibold shadow-lg hover:bg-primary-700 transition-colors"
+              className="inline-flex items-center gap-2 bg-primary-600 text-white px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-primary-700 transition-colors"
             >
               View All Testimonials
               <ArrowRight size={20} />
