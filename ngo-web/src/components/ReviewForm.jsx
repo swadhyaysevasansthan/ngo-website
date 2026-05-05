@@ -32,12 +32,22 @@ const ReviewForm = () => {
 
   const validateForm = () => {
     const newErrors = {};
+
     if (!formData.name.trim()) newErrors.name = 'Name is required';
     if (!formData.email.trim()) newErrors.email = 'Email is required';
     else if (!/^\S+@\S+\.\S+$/.test(formData.email)) newErrors.email = 'Invalid email';
-    if (formData.review_text.trim().length < 20) newErrors.review_text = 'Review must be at least 20 characters';
-    if (formData.review_text.trim().length > 500) newErrors.review_text = 'Review must be less than 500 characters';
+
+    if (!formData.designation.trim()) {
+      newErrors.designation = 'Organization & Designation is required';
+    }
+
+    if (formData.review_text.trim().length < 20)
+      newErrors.review_text = 'Review must be at least 20 characters';
+    if (formData.review_text.trim().length > 500)
+      newErrors.review_text = 'Review must be less than 500 characters';
+
     if (!captchaToken) newErrors.captcha = 'Please complete reCAPTCHA';
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -94,7 +104,9 @@ const ReviewForm = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Phone (optional)</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Phone (optional)
+          </label>
           <input
             type="tel"
             value={formData.phone}
@@ -103,15 +115,23 @@ const ReviewForm = () => {
             placeholder="+91 98765 43210"
           />
         </div>
+
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Organization/Designation (optional)</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Organization & Designation <span className="text-red-500">*</span>
+          </label>
           <input
             type="text"
             value={formData.designation}
             onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
-            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ${
+              errors.designation ? 'border-red-300 bg-red-50' : 'border-gray-200'
+            }`}
             placeholder="Software Developer at Swadhyay"
           />
+          {errors.designation && (
+            <p className="mt-1 text-sm text-red-600">{errors.designation}</p>
+          )}
         </div>
       </div>
 
