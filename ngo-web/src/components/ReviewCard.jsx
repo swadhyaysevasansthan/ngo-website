@@ -50,7 +50,7 @@ const ReviewCard = ({ review }) => {
 
         {/* Review text */}
         <div className="flex-1">
-          <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+          <p className="text-gray-700 leading-relaxed line-clamp-5 min-h-[7.5rem]">
             “{review.review_text || review.refined_review_text || review.original_review_text}”
           </p>
         </div>

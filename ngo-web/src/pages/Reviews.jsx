@@ -95,12 +95,9 @@ const Reviews = () => {
         )}
 
         {/* Reviews Grid */}
-        <div className="flex flex-wrap justify-center gap-8 mb-16 max-w-6xl mx-auto mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 mt-12 mb-16 max-w-6xl mx-auto justify-items-center">
           {reviews.map((review) => (
-            <div
-              key={review.id}
-              className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.34rem)] max-w-sm"
-            >
+            <div key={review.id} className="w-full max-w-sm h-full">
               <ReviewCard review={review} />
             </div>
           ))}
