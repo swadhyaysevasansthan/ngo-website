@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { adminAPI } from '../utils/api';
 import Card from '../components/Card1';
 import Button from '../components/Button1';
+import AdminReviewCard from '../components/AdminReviewCard';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -16,6 +17,10 @@ const AdminDashboard = () => {
     message: '',
     recipients: 'all',
   });
+  const [reviews, setReviews] = useState([]);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
+  const [reviewsTab, setReviewsTab] = useState('pending'); // pending, approved
+  const pendingReviewsCount = reviews.filter(r => r.status === 'pending').length;
 
   const adminUsername = localStorage.getItem('adminUsername');
 
@@ -32,13 +37,23 @@ const AdminDashboard = () => {
 
   const fetchData = async () => {
     try {
-      const [statsRes, participantsRes] = await Promise.all([
+      const [statsRes, participantsRes, pendingRes, approvedRes] = await Promise.all([
         adminAPI.getStats(),
         adminAPI.getParticipants(),
+        adminAPI.getAdminReviews('pending'),
+        adminAPI.getAdminReviews('approved'),
       ]);
 
       setStats(statsRes.data.data);
       setParticipants(participantsRes.data.data);
+
+      const pending = pendingRes.data.data || [];
+      const approved = approvedRes.data.data || [];
+
+      // merge lists; if you want newest first, you can sort after merge
+      const merged = [...pending, ...approved];
+
+      setReviews(merged);
     } catch (error) {
       toast.error('Failed to load data');
       if (error.response?.status === 401) {
@@ -170,25 +185,31 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Navigation Tabs */}
+      {/* Navigation Tabs - UPDATED */}
       <div className="bg-white border-b">
         <div className="container-custom">
-          <div className="flex gap-4 overflow-x-auto">
+          <div className="flex gap-4 overflow-x-auto pb-2">
             {[
               { id: 'dashboard', label: '📊 Dashboard' },
               { id: 'participants', label: '👥 Participants' },
+              { id: 'reviews', label: '💬 Reviews', badge: pendingReviewsCount },
               { id: 'email', label: '✉️ Send Email' },
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-6 py-4 font-semibold transition-all border-b-2 whitespace-nowrap ${
+                className={`px-6 py-4 font-semibold transition-all border-b-2 whitespace-nowrap flex items-center space-x-2 ${
                   activeTab === tab.id
                     ? 'text-primary border-primary'
                     : 'text-gray-600 border-transparent hover:text-primary'
                 }`}
               >
-                {tab.label}
+                <span>{tab.label}</span>
+                {tab.badge && tab.badge > 0 && (
+                  <span className="ml-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full font-bold">
+                    {tab.badge}
+                  </span>
+                )}
               </button>
             ))}
           </div>
@@ -501,6 +522,63 @@ const AdminDashboard = () => {
                 </Button>
               </form>
             </Card>
+          </div>
+        )}
+        {/* REVIEWS TAB - NEW */}
+        {activeTab === 'reviews' && (
+          <div className="animate-fade-in">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-2xl font-bold">💬 Review Moderation</h2>
+              <div className="flex space-x-3">
+                <button
+                  onClick={() => setReviewsTab('pending')}
+                  className={`px-6 py-2 font-semibold rounded-xl transition-all ${
+                    reviewsTab === 'pending'
+                      ? 'bg-primary text-white shadow-lg'
+                      : 'bg-gray-100 hover:bg-gray-200'
+                  }`}
+                >
+                  ⏳ Pending ({reviews.filter(r => r.status === 'pending').length})
+                </button>
+                <button
+                  onClick={() => setReviewsTab('approved')}
+                  className={`px-6 py-2 font-semibold rounded-xl transition-all ${
+                    reviewsTab === 'approved'
+                      ? 'bg-green-500 text-white shadow-lg'
+                      : 'bg-gray-100 hover:bg-gray-200'
+                  }`}
+                >
+                  ✅ Approved ({reviews.filter(r => r.status === 'approved').length})
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {reviews
+                .filter(review => review.status === reviewsTab)
+                .map((review) => (
+                  <AdminReviewCard 
+                    key={review.id} 
+                    review={review}
+                    onRefresh={() => fetchData()}
+                  />
+                ))}
+            </div>
+
+            {reviews.filter(r => r.status === reviewsTab).length === 0 && (
+              <Card className="text-center py-16">
+                <div className="text-6xl mb-4 opacity-25">💬</div>
+                <h3 className="text-2xl font-bold text-gray-700 mb-2">
+                  {reviewsTab === 'pending' ? 'No pending reviews' : 'No approved reviews'}
+                </h3>
+                <p className="text-gray-500 mb-6">
+                  {reviewsTab === 'pending' 
+                    ? 'Reviews will appear here when users submit them.'
+                    : 'Approved reviews will appear here.'
+                  }
+                </p>
+              </Card>
+            )}
           </div>
         )}
       </div>

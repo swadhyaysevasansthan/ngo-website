@@ -6,6 +6,7 @@ import Button from '../components/Button';
 import Card from '../components/Card';
 import SectionHeader from '../components/SectionHeader';
 import Testimonials from '../components/Testimonials';
+import TestimonialCarousel from '../components/TestimonialCarousel';
 // import FoundationCarousel from '../components/FoundationCarousel';
 
 const Home = () => {
@@ -207,7 +208,7 @@ const Home = () => {
           </Card>
         </div>
       </section>
-
+      <TestimonialCarousel/>
       <Testimonials />
 
       {/* CTA Section */}

@@ -33,6 +33,10 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
 import RegistrationMaintenance from "./pages/RegistrationMaintenance";
 
+// 🔥 NEW REVIEW PAGES
+import ReviewsPage from './pages/Reviews';
+import SubmitReview from './pages/SubmitReview';
+
 function App() {
   return (
     <Router>
@@ -44,6 +48,7 @@ function App() {
         <LatestUpdatesBar />
         <main className="flex-grow">
           <Routes>
+            {/* 🔥 EXISTING ROUTES - UNCHANGED */}
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/quiz" element={<Quiz />} />
@@ -68,8 +73,15 @@ function App() {
             <Route path="/terms-conditions" element={<TermsAndConditions />} />
             <Route path="/register" element={<Register />} />
             {/* <Route path="/register" element={<RegistrationMaintenance />} /> */}
+
+            {/* 🔥 NEW PUBLIC REVIEW ROUTES */}
+            <Route path="/reviews" element={<ReviewsPage />} />
+            <Route path="/submit-review" element={<SubmitReview />} />
+
+            {/* 🔥 NEW ADMIN ROUTES */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/reviews" element={<AdminDashboard />} /> {/* Integrated tab */}
           </Routes>
         </main>
         <Footer />

@@ -4,9 +4,8 @@ const API_BASE_URL = `${
   process.env.REACT_APP_API_URL || 'http://localhost:5000'
 }/api`;
 
-
 // Create axios instance
-const api = axios.create({
+export const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -14,7 +13,7 @@ const api = axios.create({
 });
 
 // Request interceptor
-api.interceptors.request.use(
+apiClient.interceptors.request.use(
   (config) => {
     // Add auth token if available
     const token = localStorage.getItem('token');
@@ -29,44 +28,60 @@ api.interceptors.request.use(
 );
 
 // Response interceptor
-api.interceptors.response.use(
+apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     const message = error.response?.data?.message || 'Something went wrong';
-    return Promise.reject({ message, ...error.response?.data });
+    apiClient.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
   }
 );
 
-// API methods
+// 🔥 EXISTING APIs (your original code)
 export const participantAPI = {
-  register: (data) => api.post('/participants/register', data),
-  verify: (data) => api.post('/participants/verify', data),
-  getById: (participantId) => api.get(`/participants/${participantId}`),
+  register: (data) => apiClient.post('/participants/register', data),
+  verify: (data) => apiClient.post('/participants/verify', data),
+  getById: (participantId) => apiClient.get(`/participants/${participantId}`),
 };
 
 export const submissionAPI = {
-  submit: (formData) => api.post('/submissions/submit', formData, {
+  submit: (formData) => apiClient.post('/submissions/submit', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }),
-  getByParticipant: (participantId) => api.get(`/submissions/${participantId}`),
+  getByParticipant: (participantId) => apiClient.get(`/submissions/${participantId}`),
 };
 
 export const paymentAPI = {
-  createOrder: (data) => api.post('/payments/create-order', data),
-  verify: (payload) => api.post('/payments/verify', payload),
+  createOrder: (data) => apiClient.post('/payments/create-order', data),
+  verify: (payload) => apiClient.post('/payments/verify', payload),
 };
 
-
 export const adminAPI = {
-  login: (data) => api.post('/admin/login', data),
-  getStats: () => api.get('/admin/stats'),
-  getParticipants: () => api.get('/admin/participants'),
+  login: (data) => apiClient.post('/admin/login', data),
+  getStats: () => apiClient.get('/admin/stats'),
+  getParticipants: () => apiClient.get('/admin/participants'),
   updateSubmissionStatus: (participantId, hasSubmitted) =>
-    api.patch(`/admin/participants/${participantId}/submission-status`, {
+    apiClient.patch(`/admin/participants/${participantId}/submission-status`, {
       hasSubmitted,
     }),
-  getSubmissions: () => api.get('/admin/submissions'),
-  sendBulkEmail: (data) => api.post('/admin/bulk-email', data),
+  getSubmissions: () => apiClient.get('/admin/submissions'),
+  sendBulkEmail: (data) => apiClient.post('/admin/bulk-email', data),
+
+  getAdminReviews: (status = 'pending') =>
+    apiClient.get(`/admin/reviews?status=${status}`),
+  approveReview: (id) => apiClient.put(`/admin/reviews/${id}/approve`),
+  rejectReview: (id) => apiClient.put(`/admin/reviews/${id}/reject`),
+  refineReview: (id, text) =>
+    apiClient.put(`/admin/reviews/${id}/refine`, { refined_review_text: text }),
+  featureReview: (id, featured) =>
+    apiClient.put(`/admin/reviews/${id}/feature`, { is_featured: featured }),
+  pinReview: (id, pinned) =>
+    apiClient.put(`/admin/reviews/${id}/pin`, { is_pinned: pinned }),
+  deleteReview: (id) => apiClient.delete(`/admin/reviews/${id}`),
 };
 
 export const downloadAPI = {
@@ -92,4 +107,37 @@ export const downloadAPI = {
   },
 };
 
-export default api;
+// 🔥 NEW REVIEW API
+export const reviewAPI = {
+  submitReview: (data) => apiClient.post('/reviews', data),
+  getPublicReviews: ({ limit = 5, page = 1 } = {}) =>
+    apiClient.get('/reviews', { params: { limit, page } }),
+  getAdminReviews: (status = 'pending') =>
+    apiClient.get(`/admin/reviews?status=${status}`),
+  approveReview: (id) => apiClient.put(`/admin/reviews/${id}/approve`),
+  rejectReview: (id) => apiClient.put(`/admin/reviews/${id}/reject`),
+  refineReview: (id, text) =>
+    apiClient.put(`/admin/reviews/${id}/refine`, { refined_review_text: text }),
+  featureReview: (id, featured) =>
+    apiClient.put(`/admin/reviews/${id}/feature`, { is_featured: featured }),
+  pinReview: (id, pinned) =>
+    apiClient.put(`/admin/reviews/${id}/pin`, { is_pinned: pinned }),
+  deleteReview: (id) => apiClient.delete(`/admin/reviews/${id}`),
+  getReviewVersions: (id) => apiClient.get(`/admin/reviews/${id}/versions`),
+};
+
+// 🔥 INDIVIDUAL EXPORTS for direct imports
+export const {
+  submitReview,
+  getPublicReviews,
+  getAdminReviews,
+  approveReview,
+  rejectReview,
+  refineReview,
+  featureReview,
+  pinReview,
+  deleteReview,
+  getReviewVersions
+} = reviewAPI;
+
+export default apiClient;
