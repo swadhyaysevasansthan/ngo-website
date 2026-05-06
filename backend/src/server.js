@@ -135,12 +135,12 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`
-  ╔════════════════════════════════════════╗
-  ║   🌿 SNPC 2026 Backend Server 🦁      ║
-  ║   Server running on port ${PORT}         ║
-  ║   Environment: ${process.env.NODE_ENV || 'development'}           ║
-  ║   Frontend URL: ${process.env.FRONTEND_URL}  ║
-  ╚════════════════════════════════════════╝
+  ╔════════════════════════════════════════════════════════╗
+  ║   Swadhyay Seva Foundation Backend Server              ║
+  ║   Server running on port ${PORT}                       ║
+  ║   Environment: ${process.env.NODE_ENV || 'development'}║
+  ║   Frontend URL: ${process.env.FRONTEND_URL}            ║
+  ╚════════════════════════════════════════════════════════╝
   `);
 });
 
