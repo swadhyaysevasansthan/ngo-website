@@ -78,7 +78,7 @@ const UpcomingEngagements = () => {
 
   const competitions = {
     overview: {
-      title: 'All India Environment Awareness Competitions',
+      title: 'National Environment Awareness Competitions',
       subtitle: '2026–2027 · Painting & Quiz',
       poster: '/images/competitions/quiznpaint.png', // path to QuiznPaint-5.jpg
       tabActive: 'bg-emerald-700 text-white',
@@ -146,7 +146,7 @@ const UpcomingEngagements = () => {
               variants={fadeUp}
               className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-4"
             >
-              All India Environment<br />
+              National Environment<br />
               <span className="text-yellow-300">Awareness Competitions</span>
             </motion.h1>
 
@@ -184,13 +184,14 @@ const UpcomingEngagements = () => {
                 href="#competitions"
                 className="px-7 py-3 rounded-full bg-yellow-400 text-gray-900 font-bold text-sm hover:bg-yellow-300 transition-colors shadow-lg"
               >
-                View Competitions 
+                View Competitions
               </a>
               <a
-                href="/contact"
-                className="px-7 py-3 rounded-full bg-white/15 border border-white/30 text-white font-semibold text-sm hover:bg-white/25 transition-colors"
+                href="/school-competition"
+                className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-white/15 border border-white/30 text-white font-semibold text-sm hover:bg-white/25 transition-colors"
               >
-                Registrations Opening Soon
+                Register Now
+                <ArrowRight size={16} />
               </a>
             </motion.div>
           </motion.div>
@@ -314,7 +315,7 @@ const UpcomingEngagements = () => {
                       <TimelineBadge
                         icon={Calendar}
                         label="School Level Participation"
-                        date="1 May 2026 – 28 Feb 2027"
+                        date="May 2026 – 28 Feb 2027"
                         color="border-emerald-200 bg-emerald-50 text-gray-800"
                       />
                       <TimelineBadge
@@ -408,7 +409,7 @@ const UpcomingEngagements = () => {
                         <TimelineBadge
                           icon={Calendar}
                           label="School Level Participation"
-                          date="1 May 2026 – 28 Feb 2027"
+                          date="May 2026 – 28 Feb 2027"
                           color={`${comp.border} ${comp.bg} text-gray-800`}
                         />
                         <TimelineBadge
@@ -421,10 +422,11 @@ const UpcomingEngagements = () => {
                     </div>
 
                     <a
-                      href="/contact"
+                      href="/school-competition"
                       className={`inline-flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl font-bold text-white bg-gradient-to-r ${comp.accentDark} hover:opacity-90 transition-opacity shadow-md`}
                     >
-                      Registrations Opening Soon
+                      Register now
+                      <ArrowRight size={20} />
                     </a>
                   </div>
                 </div>

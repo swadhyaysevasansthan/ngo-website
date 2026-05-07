@@ -21,7 +21,7 @@ const Navbar = () => {
     { name: 'Quiz', dropdown: true, type: 'quiz' },
     { name: 'School Stories', path: '/school-stories' },
     { name: 'Voices', dropdown: true, type: 'voices' }, // updated
-    { name: 'Upcoming Engagements', path: '/upcoming-engagements' },
+    { name: 'SNEAC 2026-27', path: '/upcoming-engagements' },
     { name: 'SNPC 2026', path: '/photography-competition' },
     { name: 'Our Communities', dropdown: true, type: 'ourcommunities' },
     { name: 'Contact', path: '/contact' },
