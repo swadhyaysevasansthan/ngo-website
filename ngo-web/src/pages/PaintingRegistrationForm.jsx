@@ -77,10 +77,11 @@ const PaintingRegistrationForm = () => {
     if (!formData.primaryTeacherPhone.trim()) e.primaryTeacherPhone = 'Primary teacher phone is required';
     else if (!/^[6-9]\d{9}$/.test(formData.primaryTeacherPhone)) e.primaryTeacherPhone = 'Invalid 10-digit number';
 
-    if (formData.altTeacherEmail && !/\S+@\S+\.\S+/.test(formData.altTeacherEmail))
-      e.altTeacherEmail = 'Invalid email';
-    if (formData.altTeacherPhone && !/^[6-9]\d{9}$/.test(formData.altTeacherPhone))
-      e.altTeacherPhone = 'Invalid 10-digit number';
+    if (!formData.altTeacherName.trim()) e.altTeacherName = 'Alternate teacher name is required';
+    if (!formData.altTeacherEmail.trim()) e.altTeacherEmail = 'Alternate teacher email is required';
+    else if (!/\S+@\S+\.\S+/.test(formData.altTeacherEmail)) e.altTeacherEmail = 'Invalid email';
+    if (!formData.altTeacherPhone.trim()) e.altTeacherPhone = 'Alternate teacher phone is required';
+    else if (!/^[6-9]\d{9}$/.test(formData.altTeacherPhone)) e.altTeacherPhone = 'Invalid 10-digit number';
 
     const c3 = parseInt(formData.class3) || 0;
     const c4 = parseInt(formData.class4) || 0;
@@ -114,9 +115,9 @@ const PaintingRegistrationForm = () => {
         primaryTeacherName: formData.primaryTeacherName,
         primaryTeacherEmail: formData.primaryTeacherEmail,
         primaryTeacherPhone: formData.primaryTeacherPhone,
-        altTeacherName: formData.altTeacherName || null,
-        altTeacherEmail: formData.altTeacherEmail || null,
-        altTeacherPhone: formData.altTeacherPhone || null,
+        altTeacherName: formData.altTeacherName,
+        altTeacherEmail: formData.altTeacherEmail,
+        altTeacherPhone: formData.altTeacherPhone,
         classCounts: {
           3: parseInt(formData.class3) || 0,
           4: parseInt(formData.class4) || 0,
@@ -209,7 +210,7 @@ const PaintingRegistrationForm = () => {
                     SECTION 1 · Supervising Teachers
                   </h2>
                   <p className="text-sm text-gray-600 mb-4">
-                    Primary teacher will be the main contact. Alternate teacher is optional but recommended.
+                    Primary teacher will be the main contact. Alternate teacher is recommended in case of primary teacher's absence.
                   </p>
 
                   <div className="grid md:grid-cols-2 gap-4">
@@ -229,17 +230,17 @@ const PaintingRegistrationForm = () => {
                   <div className="grid md:grid-cols-2 gap-4 mt-6">
                     <div className="md:col-span-2">
                       <p className="text-sm font-semibold text-gray-700 mb-3">
-                        Alternate Teacher <span className="text-gray-400 font-normal">(optional)</span>
+                        Alternate Teacher 
                       </p>
                     </div>
                     <Input label="Full Name" name="altTeacherName" value={formData.altTeacherName}
-                      onChange={handleChange} placeholder="Full name" error={errors.altTeacherName} />
+                      onChange={handleChange} placeholder="Full name" error={errors.altTeacherName} required/>
                     <Input label="Email Address" name="altTeacherEmail" type="email"
                       value={formData.altTeacherEmail} onChange={handleChange}
-                      placeholder="teacher@school.com" error={errors.altTeacherEmail} />
+                      placeholder="teacher@school.com" error={errors.altTeacherEmail} required/>
                     <Input label="Mobile Number" name="altTeacherPhone" value={formData.altTeacherPhone}
                       onChange={handleChange} placeholder="10-digit number" error={errors.altTeacherPhone}
-                      maxLength="10" />
+                      maxLength="10" required/>
                   </div>
                 </section>
 
