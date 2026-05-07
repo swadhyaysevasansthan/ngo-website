@@ -513,8 +513,8 @@ const PhotographyCompetition = () => {
           <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">Important Dates</h2>
           <div className="space-y-4">
             {[
-              { date: '10 February - 7 May 2026', event: 'Registration Period' },
-              { date: '15 May 2026', event: 'Last Date of Photograph Submission' },
+              { date: '10 February - 30 June 2026', event: 'Registration Period' },
+              { date: '7 June 2026', event: 'Last Date of Photograph Submission' },
               { date: 'To Be Announced (TBA)', event: 'Result Declaration' },
               { date: 'To Be Announced (TBA)', event: 'Prize Distribution' }
             ].map((item, idx) => (
@@ -625,7 +625,7 @@ const PhotographyCompetition = () => {
         <div className="space-y-8 text-gray-700 text-sm">
           <div>
                   <h4 className="font-bold text-gray-900 mb-2">Eligibility of Photographs</h4>
-                  <p>All photographs must have been captured between <b>01 Sep 2025 to 15 May 2026</b>.</p>
+                  <p>All photographs must have been captured between <b>01 Sep 2025 to 7 June 2026</b>.</p>
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Location</h4>
@@ -806,7 +806,7 @@ const PhotographyCompetition = () => {
         <div className="space-y-8 text-gray-700 text-sm">
           <div>
                   <h4 className="font-bold text-gray-900 mb-2">Registration Period</h4>
-                  <p>Registrations will remain open from <b>10 February 2026 to 7 May 2026</b>.</p>
+                  <p>Registrations will remain open from <b>10 February 2026 to 30 June 2026</b>.</p>
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Registration Process</h4>
@@ -814,7 +814,7 @@ const PhotographyCompetition = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Submission Period</h4>
-                  <p>Photograph submissions will be accepted from <b>12 February 2026 until 11:59 PM (IST) on 15 May 2026</b>.</p>
+                  <p>Photograph submissions will be accepted from <b>12 February 2026 until 11:59 PM (IST) on 7 June 2026</b>.</p>
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Submission Platform</h4>

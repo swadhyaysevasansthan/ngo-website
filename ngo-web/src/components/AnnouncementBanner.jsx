@@ -18,7 +18,7 @@ const AnnouncementBanner = () => {
                 </span>
                 <Award size={20} className="flex-shrink-0" />
                 <span className="font-semibold">
-                  Win prizes up to ₹21,000 | Registration Open: Till 7th May 2026
+                  Win prizes up to ₹21,000 | Registration Open: Till 30th June 2026
                 </span>
                 <span className="text-amber-100">✨</span>
                 <span className="font-semibold">
