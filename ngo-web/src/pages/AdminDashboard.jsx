@@ -5,6 +5,7 @@ import { adminAPI } from '../utils/api';
 import Card from '../components/Card1';
 import Button from '../components/Button1';
 import AdminReviewCard from '../components/AdminReviewCard';
+import SneacAdminTab from '../components/SneacAdminTab';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -193,6 +194,7 @@ const AdminDashboard = () => {
               { id: 'dashboard', label: '📊 Dashboard' },
               { id: 'participants', label: '👥 Participants' },
               { id: 'reviews', label: '💬 Reviews', badge: pendingReviewsCount },
+              { id: 'sneac', label: '🏫 SNEAC Schools' },
               { id: 'email', label: '✉️ Send Email' },
             ].map((tab) => (
               <button
@@ -580,6 +582,10 @@ const AdminDashboard = () => {
               </Card>
             )}
           </div>
+        )}
+        {/* SNEAC SCHOOLS TAB */}
+        {activeTab === 'sneac' && (
+          <SneacAdminTab />
         )}
       </div>
     </div>

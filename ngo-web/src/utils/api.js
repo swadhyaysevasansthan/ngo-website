@@ -126,6 +126,39 @@ export const reviewAPI = {
   getReviewVersions: (id) => apiClient.get(`/admin/reviews/${id}/versions`),
 };
 
+// 🔥 SNEAC — School Access API
+export const schoolAccessAPI = {
+  submitRequest: (data) => apiClient.post('/school-access/request', data),
+
+  // Admin
+  listRequests: (params = {}) => apiClient.get('/school-access/admin/requests', { params }),
+  getRequestById: (id) => apiClient.get(`/school-access/admin/requests/${id}`),
+  approveRequest: (id) => apiClient.patch(`/school-access/admin/requests/${id}/approve`),
+  rejectRequest: (id, rejectionReason) =>
+    apiClient.patch(`/school-access/admin/requests/${id}/reject`, { rejectionReason }),
+  resendLink: (id) => apiClient.post(`/school-access/admin/requests/${id}/resend-link`),
+};
+
+// 🔥 SNEAC — School Registration API
+export const schoolRegistrationAPI = {
+  validateToken: (token) =>
+    apiClient.get('/school-registration/validate', { params: { token } }),
+  submitPainting: (token, data) =>
+    apiClient.post(`/school-registration/painting?token=${token}`, data),
+  submitQuiz: (token, data) =>
+    apiClient.post(`/school-registration/quiz?token=${token}`, data),
+
+  // Admin
+  listRegistrations: (competitionType) =>
+    apiClient.get(`/school-registration/admin/${competitionType}`),
+  getRegistrationById: (id) =>
+    apiClient.get(`/school-registration/admin/detail/${id}`),
+  allotDate: (id, allottedDate) =>
+    apiClient.patch(`/school-registration/admin/${id}/allot-date`, { allottedDate }),
+  sendConfirmation: (id) =>
+    apiClient.post(`/school-registration/admin/${id}/send-confirmation`),
+};
+
 // 🔥 INDIVIDUAL EXPORTS for direct imports
 export const {
   submitReview,

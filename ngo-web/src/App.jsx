@@ -37,6 +37,11 @@ import RegistrationMaintenance from "./pages/RegistrationMaintenance";
 import ReviewsPage from './pages/Reviews';
 import SubmitReview from './pages/SubmitReview';
 
+import SchoolAccessRequest from './pages/SchoolAccessRequest';
+import SchoolRegistrationHome from './pages/SchoolRegistrationHome';
+import PaintingRegistrationForm from './pages/PaintingRegistrationForm';
+import QuizRegistrationForm from './pages/QuizRegistrationForm';
+
 function App() {
   return (
     <Router>
@@ -77,6 +82,12 @@ function App() {
             {/* 🔥 NEW PUBLIC REVIEW ROUTES */}
             <Route path="/reviews" element={<ReviewsPage />} />
             <Route path="/submit-review" element={<SubmitReview />} />
+
+            {/* 🔥 SNEAC — School Competition Routes */}
+            <Route path="/school-competition" element={<SchoolAccessRequest />} />
+            <Route path="/school-registration" element={<SchoolRegistrationHome />} />
+            <Route path="/school-registration/painting" element={<PaintingRegistrationForm />} />
+            <Route path="/school-registration/quiz" element={<QuizRegistrationForm />} />
 
             {/* 🔥 NEW ADMIN ROUTES */}
             <Route path="/admin/login" element={<AdminLogin />} />

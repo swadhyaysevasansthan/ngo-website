@@ -514,7 +514,7 @@ const PhotographyCompetition = () => {
           <div className="space-y-4">
             {[
               { date: '10 February - 30 June 2026', event: 'Registration Period' },
-              { date: '7 June 2026', event: 'Last Date of Photograph Submission' },
+              { date: '7 July 2026', event: 'Last Date of Photograph Submission' },
               { date: 'To Be Announced (TBA)', event: 'Result Declaration' },
               { date: 'To Be Announced (TBA)', event: 'Prize Distribution' }
             ].map((item, idx) => (
@@ -625,7 +625,7 @@ const PhotographyCompetition = () => {
         <div className="space-y-8 text-gray-700 text-sm">
           <div>
                   <h4 className="font-bold text-gray-900 mb-2">Eligibility of Photographs</h4>
-                  <p>All photographs must have been captured between <b>01 Sep 2025 to 7 June 2026</b>.</p>
+                  <p>All photographs must have been captured between <b>01 Sep 2025 to 7 July 2026</b>.</p>
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Location</h4>
@@ -814,7 +814,7 @@ const PhotographyCompetition = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Submission Period</h4>
-                  <p>Photograph submissions will be accepted from <b>12 February 2026 until 11:59 PM (IST) on 7 June 2026</b>.</p>
+                  <p>Photograph submissions will be accepted from <b>12 February 2026 until 11:59 PM (IST) on 7 July 2026</b>.</p>
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 mb-2">Submission Platform</h4>

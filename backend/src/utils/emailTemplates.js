@@ -587,3 +587,627 @@ Swadhyay Seva Foundation
     `,
   };
 };
+
+// ============================================================
+// SNEAC 2026-27 — School Access & Competition Registration
+// ============================================================
+
+// 1. Access request received (sent to school after submitting request)
+export const schoolAccessRequestReceivedTemplate = (data) => {
+  const { schoolName, teacherName } = data;
+
+  return {
+    subject: 'Access Request Received – SNEAC 2026–27',
+    html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <title>SNEAC 2026–27 – Access Request Received</title>
+        <style>
+          body { margin: 0; padding: 0; background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; color: #111827; }
+          .wrapper { width: 100%; padding: 24px 12px; background-color: #f3f4f6; }
+          .container { max-width: 640px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12); }
+          .header { padding: 24px 28px; background: linear-gradient(135deg, #0369a1 0%, #1e3a5f 100%); color: #f9fafb; text-align: left; }
+          .header-title { margin: 0; font-size: 18px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.95; color: #ffffff; }
+          .header-subtitle { margin: 6px 0 0 0; font-size: 15px; font-weight: 500; opacity: 0.96; color: #f9fafb; }
+          .content { padding: 26px 28px 30px 28px; }
+          h2 { margin: 0 0 10px 0; font-size: 20px; font-weight: 600; color: #0f172a; }
+          p { margin: 0 0 10px 0; font-size: 14px; line-height: 1.7; color: #374151; }
+          .pill { display: inline-block; margin-top: 6px; padding: 5px 12px; border-radius: 999px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; background-color: #dbeafe; color: #1d4ed8; }
+          .info-box { margin: 20px 0 18px 0; padding: 16px 18px; border-radius: 12px; border: 1px solid #bfdbfe; background-color: #eff6ff; }
+          .meta-item-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af; margin-bottom: 2px; }
+          .meta-item-value { font-size: 13px; color: #111827; margin-bottom: 10px; }
+          .section-title { margin: 22px 0 6px 0; font-size: 14px; font-weight: 600; color: #111827; }
+          ul { padding-left: 18px; margin: 4px 0 12px 0; }
+          li { margin: 5px 0; font-size: 13px; color: #374151; }
+          .note-box { margin-top: 18px; padding: 12px 14px; border-radius: 12px; background-color: #fefce8; border: 1px solid #facc15; font-size: 12px; color: #854d0e; }
+          .divider { margin: 24px 0 16px 0; height: 1px; background: linear-gradient(to right, transparent, #e5e7eb, transparent); }
+          .footer { padding: 14px 20px 10px 20px; text-align: center; font-size: 11px; color: #9ca3af; background-color: #f9fafb; }
+          .footer a { color: #4b5563; text-decoration: none; }
+          @media (max-width: 600px) { .container { border-radius: 12px; } .header, .content { padding: 20px 18px; } }
+        </style>
+      </head>
+      <body>
+        <div class="wrapper">
+          <div class="container">
+            <div class="header">
+              <p class="header-title">National Environment Awareness Competitions 2026–27</p>
+              <p class="header-subtitle">Access request received</p>
+            </div>
+            <div class="content">
+              <h2>Dear ${teacherName},</h2>
+              <p>We have received your school's access request for the <strong>Swadhyay National Environment Awareness Competitions 2026–27</strong>.</p>
+              <span class="pill">Request under review</span>
+              <div class="info-box">
+                <div class="meta-item-label">School</div>
+                <div class="meta-item-value">${schoolName}</div>
+                <div class="meta-item-label">Status</div>
+                <div class="meta-item-value">Pending review</div>
+              </div>
+              <div class="section-title">What happens next</div>
+              <ul>
+                <li>Our team will review your request within a few working days.</li>
+                <li>If approved, you will receive a private registration link on this email address.</li>
+                <li>If we need any additional information, we will reach out to you directly.</li>
+              </ul>
+              <div class="note-box">
+                Please do not submit multiple requests for the same school. If you have any urgent queries, contact us directly using the details below.
+              </div>
+              <div class="divider"></div>
+              <p style="font-size: 12px; margin-bottom: 4px;"><strong>Support</strong></p>
+              <p style="font-size: 12px;">
+                Email: swadhyaysevafoundation@gmail.com<br/>
+                WhatsApp: +91&nbsp;9599224323 | +91&nbsp;9837042298
+              </p>
+            </div>
+            <div class="footer">
+              <p style="margin: 0 0 4px 0;"><strong>Swadhyay Seva Foundation</strong></p>
+              <p style="margin: 0 0 4px 0;">This is an automated message. Please do not reply.</p>
+              <p style="margin: 0;">Website: <a href="https://www.swadhyayseva.org">www.swadhyayseva.org</a></p>
+            </div>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+    text: `
+SNEAC 2026–27 – Access Request Received
+
+Dear ${teacherName},
+
+We have received your school's access request for the Swadhyay National Environment Awareness Competitions 2026–27.
+
+School: ${schoolName}
+Status: Pending review
+
+What happens next:
+- Our team will review your request within a few working days.
+- If approved, you will receive a private registration link on this email address.
+- If we need any additional information, we will reach out to you directly.
+
+Please do not submit multiple requests for the same school.
+
+Support:
+Email: swadhyaysevafoundation@gmail.com
+WhatsApp: +91 9599224323 | +91 9837042298
+
+Swadhyay Seva Foundation
+www.swadhyayseva.org
+    `,
+  };
+};
+
+
+// 2. Access approved — magic link sent to school
+export const schoolAccessApprovedTemplate = (data) => {
+  const { schoolName, teacherName, registrationLink, expiresAt } = data;
+
+  const formattedExpiry = new Date(expiresAt).toLocaleDateString('en-IN', {
+    day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata',
+  });
+
+  return {
+    subject: 'Access Approved – Complete Your Registration for SNEAC 2026–27',
+    html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <title>SNEAC 2026–27 – Access Approved</title>
+        <style>
+          body { margin: 0; padding: 0; background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; color: #111827; }
+          .wrapper { width: 100%; padding: 24px 12px; background-color: #f3f4f6; }
+          .container { max-width: 640px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12); }
+          .header { padding: 24px 28px; background: linear-gradient(135deg, #2f855a 0%, #166534 60%, #14532d 100%); color: #f9fafb; text-align: left; }
+          .header-title { margin: 0; font-size: 18px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.95; color: #ffffff; }
+          .header-subtitle { margin: 6px 0 0 0; font-size: 15px; font-weight: 500; opacity: 0.96; color: #f9fafb; }
+          .content { padding: 26px 28px 30px 28px; }
+          h2 { margin: 0 0 10px 0; font-size: 20px; font-weight: 600; color: #0f172a; }
+          p { margin: 0 0 10px 0; font-size: 14px; line-height: 1.7; color: #374151; }
+          .pill { display: inline-block; margin-top: 6px; padding: 5px 12px; border-radius: 999px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; background-color: #dcfce7; color: #166534; }
+          .id-box { margin: 20px 0 18px 0; padding: 16px 18px; border-radius: 12px; border: 1px solid #d1fae5; background-color: #f0fdf4; }
+          .id-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #6b7280; margin-bottom: 6px; }
+          .id-help { margin-top: 6px; font-size: 12px; color: #4b5563; }
+          .meta-item-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af; margin-bottom: 2px; }
+          .meta-item-value { font-size: 13px; color: #111827; margin-bottom: 10px; }
+          .section-title { margin: 22px 0 6px 0; font-size: 14px; font-weight: 600; color: #111827; }
+          ul, ol { padding-left: 18px; margin: 4px 0 12px 0; }
+          li { margin: 5px 0; font-size: 13px; color: #374151; }
+          .button-wrapper { text-align: center; margin: 20px 0 8px 0; }
+          .button { display: inline-block; padding: 13px 32px; border-radius: 999px; background: linear-gradient(135deg, #2f855a 0%, #166534 100%); color: #ffffff !important; text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: 0.04em; }
+          .note-box { margin-top: 18px; padding: 12px 14px; border-radius: 12px; background-color: #fefce8; border: 1px solid #facc15; font-size: 12px; color: #854d0e; }
+          .divider { margin: 24px 0 16px 0; height: 1px; background: linear-gradient(to right, transparent, #e5e7eb, transparent); }
+          .footer { padding: 14px 20px 10px 20px; text-align: center; font-size: 11px; color: #9ca3af; background-color: #f9fafb; }
+          .footer a { color: #4b5563; text-decoration: none; }
+          @media (max-width: 600px) { .container { border-radius: 12px; } .header, .content { padding: 20px 18px; } }
+        </style>
+      </head>
+      <body>
+        <div class="wrapper">
+          <div class="container">
+            <div class="header">
+              <p class="header-title">National Environment Awareness Competitions 2026–27</p>
+              <p class="header-subtitle">Access approved — complete your registration</p>
+            </div>
+            <div class="content">
+              <h2>Dear ${teacherName},</h2>
+              <p>Great news! Your school's access request has been <strong>approved</strong>. You can now register <strong>${schoolName}</strong> for the Swadhyay National Environment Awareness Competitions 2026–27.</p>
+              <span class="pill">Access approved</span>
+              <div class="id-box">
+                <div class="id-label">Your private registration link</div>
+                <p class="id-help">Click the button below to open your registration page. This link is unique to your school and is valid until <strong>${formattedExpiry}</strong>.</p>
+                <div class="meta-item-label">School</div>
+                <div class="meta-item-value">${schoolName}</div>
+                <div class="meta-item-label">Link valid until</div>
+                <div class="meta-item-value">${formattedExpiry}</div>
+              </div>
+              <div class="button-wrapper">
+                <a href="${registrationLink}" class="button">Open Registration Page</a>
+              </div>
+              <p style="text-align:center; font-size: 11px; color: #9ca3af; margin-top: 6px;">
+                Or copy this link: ${registrationLink}
+              </p>
+              <div class="section-title">Available competitions</div>
+              <ul>
+                <li><strong>National Painting Competition</strong> — Classes 3rd to 5th, max 200 students per school.</li>
+                <li><strong>National Environment Awareness Quiz (SNEAC)</strong> — Classes 6th to 8th, max 50 students per school.</li>
+              </ul>
+              <div class="section-title">Important instructions</div>
+              <ol>
+                <li>Use the registration link above — do not share it with others.</li>
+                <li>You can register for one or both competitions.</li>
+                <li>Keep all teacher and student details ready before filling the form.</li>
+                <li>Provide four preferred dates for conducting the competition at your school.</li>
+                <li>Submit before the registration deadline: <strong>28 February 2027</strong>.</li>
+              </ol>
+              <div class="note-box">
+                This link is private and unique to your school. Do not share it publicly. It will expire on <strong>${formattedExpiry}</strong>. If your link expires before registration, please contact us to request a new one.
+              </div>
+              <div class="divider"></div>
+              <p style="font-size: 12px; margin-bottom: 4px;"><strong>Support</strong></p>
+              <p style="font-size: 12px;">
+                Email: swadhyaysevafoundation@gmail.com<br/>
+                WhatsApp: +91&nbsp;9599224323 | +91&nbsp;9837042298
+              </p>
+            </div>
+            <div class="footer">
+              <p style="margin: 0 0 4px 0;"><strong>Swadhyay Seva Foundation</strong></p>
+              <p style="margin: 0 0 4px 0;">This is an automated message. Please do not reply.</p>
+              <p style="margin: 0;">Website: <a href="https://www.swadhyayseva.org">www.swadhyayseva.org</a></p>
+            </div>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+    text: `
+SNEAC 2026–27 – Access Approved
+
+Dear ${teacherName},
+
+Your school's access request has been approved. You can now complete your registration.
+
+School: ${schoolName}
+Link valid until: ${formattedExpiry}
+
+Open your registration page here:
+${registrationLink}
+
+Available competitions:
+- National Painting Competition — Classes 3rd to 5th, max 200 students.
+- National Environment Awareness Quiz (SNEAC) — Classes 6th to 8th, max 50 students.
+
+Important instructions:
+1. Use the link above — do not share it with others.
+2. You can register for one or both competitions.
+3. Keep all teacher and student details ready before filling the form.
+4. Provide four preferred dates for conducting the competition at your school.
+5. Submit before the registration deadline: 28 February 2027.
+
+Support:
+Email: swadhyaysevafoundation@gmail.com
+WhatsApp: +91 9599224323 | +91 9837042298
+
+Swadhyay Seva Foundation
+www.swadhyayseva.org
+    `,
+  };
+};
+
+
+// 3. Access rejected
+export const schoolAccessRejectedTemplate = (data) => {
+  const { schoolName, teacherName, rejectionReason } = data;
+
+  return {
+    subject: 'Access Request Update – SNEAC 2026–27',
+    html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <title>SNEAC 2026–27 – Access Request Update</title>
+        <style>
+          body { margin: 0; padding: 0; background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; color: #111827; }
+          .wrapper { width: 100%; padding: 24px 12px; background-color: #f3f4f6; }
+          .container { max-width: 640px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12); }
+          .header { padding: 24px 28px; background: linear-gradient(135deg, #6b7280 0%, #374151 100%); color: #f9fafb; text-align: left; }
+          .header-title { margin: 0; font-size: 18px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.95; color: #ffffff; }
+          .header-subtitle { margin: 6px 0 0 0; font-size: 15px; font-weight: 500; opacity: 0.96; color: #f9fafb; }
+          .content { padding: 26px 28px 30px 28px; }
+          h2 { margin: 0 0 10px 0; font-size: 20px; font-weight: 600; color: #0f172a; }
+          p { margin: 0 0 10px 0; font-size: 14px; line-height: 1.7; color: #374151; }
+          .pill { display: inline-block; margin-top: 6px; padding: 5px 12px; border-radius: 999px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; background-color: #fee2e2; color: #991b1b; }
+          .info-box { margin: 20px 0 18px 0; padding: 16px 18px; border-radius: 12px; border: 1px solid #fecaca; background-color: #fff1f2; }
+          .meta-item-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af; margin-bottom: 2px; }
+          .meta-item-value { font-size: 13px; color: #111827; margin-bottom: 10px; }
+          .section-title { margin: 22px 0 6px 0; font-size: 14px; font-weight: 600; color: #111827; }
+          .note-box { margin-top: 18px; padding: 12px 14px; border-radius: 12px; background-color: #eff6ff; border: 1px solid #bfdbfe; font-size: 12px; color: #1d4ed8; }
+          .divider { margin: 24px 0 16px 0; height: 1px; background: linear-gradient(to right, transparent, #e5e7eb, transparent); }
+          .footer { padding: 14px 20px 10px 20px; text-align: center; font-size: 11px; color: #9ca3af; background-color: #f9fafb; }
+          .footer a { color: #4b5563; text-decoration: none; }
+          @media (max-width: 600px) { .container { border-radius: 12px; } .header, .content { padding: 20px 18px; } }
+        </style>
+      </head>
+      <body>
+        <div class="wrapper">
+          <div class="container">
+            <div class="header">
+              <p class="header-title">National Environment Awareness Competitions 2026–27</p>
+              <p class="header-subtitle">Access request update</p>
+            </div>
+            <div class="content">
+              <h2>Dear ${teacherName},</h2>
+              <p>Thank you for your interest in the Swadhyay National Environment Awareness Competitions 2026–27. After reviewing your request, we are unable to approve the registration for <strong>${schoolName}</strong> at this time.</p>
+              <span class="pill">Request not approved</span>
+              ${rejectionReason ? `
+              <div class="info-box">
+                <div class="meta-item-label">Reason</div>
+                <div class="meta-item-value">${rejectionReason}</div>
+              </div>` : ''}
+              <div class="note-box">
+                If you believe this is an error or would like to provide additional information, please reach out to us directly. We are happy to assist and reconsider your request.
+              </div>
+              <div class="divider"></div>
+              <p style="font-size: 12px; margin-bottom: 4px;"><strong>Support</strong></p>
+              <p style="font-size: 12px;">
+                Email: swadhyaysevafoundation@gmail.com<br/>
+                WhatsApp: +91&nbsp;9599224323 | +91&nbsp;9837042298
+              </p>
+            </div>
+            <div class="footer">
+              <p style="margin: 0 0 4px 0;"><strong>Swadhyay Seva Foundation</strong></p>
+              <p style="margin: 0 0 4px 0;">This is an automated message. Please do not reply.</p>
+              <p style="margin: 0;">Website: <a href="https://www.swadhyayseva.org">www.swadhyayseva.org</a></p>
+            </div>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+    text: `
+SNEAC 2026–27 – Access Request Update
+
+Dear ${teacherName},
+
+Thank you for your interest in the Swadhyay National Environment Awareness Competitions 2026–27.
+
+After reviewing your request, we are unable to approve the registration for ${schoolName} at this time.
+${rejectionReason ? `\nReason: ${rejectionReason}\n` : ''}
+If you believe this is an error or would like to provide additional information, please reach out to us directly.
+
+Support:
+Email: swadhyaysevafoundation@gmail.com
+WhatsApp: +91 9599224323 | +91 9837042298
+
+Swadhyay Seva Foundation
+www.swadhyayseva.org
+    `,
+  };
+};
+
+
+// 4. Competition registration confirmed (sent after school submits painting or quiz form)
+export const schoolCompetitionRegistrationTemplate = (data) => {
+  const {
+    schoolName, teacherName, competitionType,
+    classCounts, totalParticipants, availableComputers,
+    preferredDates, submittedAt,
+  } = data;
+
+  const competitionLabel = competitionType === 'painting'
+    ? 'National Painting Competition'
+    : 'National Environment Awareness Quiz (SNEAC)';
+
+  const classLabel = competitionType === 'painting'
+    ? 'Classes 3rd – 5th'
+    : 'Classes 6th – 8th';
+
+  const formattedDate = new Date(submittedAt).toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata', day: 'numeric', month: 'long', year: 'numeric',
+    hour: '2-digit', minute: '2-digit',
+  });
+
+  const classRows = Object.entries(classCounts)
+    .map(([cls, count]) => `<tr><td style="padding:6px 0; font-size:13px; color:#374151;">Class ${cls}</td><td style="padding:6px 0; font-size:13px; color:#111827; font-weight:500;">${count} students</td></tr>`)
+    .join('');
+
+  const classText = Object.entries(classCounts)
+    .map(([cls, count]) => `  Class ${cls}: ${count} students`)
+    .join('\n');
+
+  const datesHtml = preferredDates
+    .map((d, i) => `<li>${i === 0 ? 'Preferred' : `Alternate ${i}`}: <strong>${new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' })}</strong></li>`)
+    .join('');
+
+  const datesText = preferredDates
+    .map((d, i) => `  ${i === 0 ? 'Preferred' : `Alternate ${i}`}: ${new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' })}`)
+    .join('\n');
+
+  return {
+    subject: `Registration Confirmed – ${competitionLabel} | SNEAC 2026–27`,
+    html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <title>SNEAC 2026–27 – Registration Confirmed</title>
+        <style>
+          body { margin: 0; padding: 0; background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; color: #111827; }
+          .wrapper { width: 100%; padding: 24px 12px; background-color: #f3f4f6; }
+          .container { max-width: 640px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12); }
+          .header { padding: 24px 28px; background: linear-gradient(135deg, #2f855a 0%, #166534 60%, #14532d 100%); color: #f9fafb; text-align: left; }
+          .header-title { margin: 0; font-size: 18px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.95; color: #ffffff; }
+          .header-subtitle { margin: 6px 0 0 0; font-size: 15px; font-weight: 500; opacity: 0.96; color: #f9fafb; }
+          .content { padding: 26px 28px 30px 28px; }
+          h2 { margin: 0 0 10px 0; font-size: 20px; font-weight: 600; color: #0f172a; }
+          p { margin: 0 0 10px 0; font-size: 14px; line-height: 1.7; color: #374151; }
+          .pill { display: inline-block; margin-top: 6px; padding: 5px 12px; border-radius: 999px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; background-color: #dcfce7; color: #166534; }
+          .id-box { margin: 20px 0 18px 0; padding: 16px 18px; border-radius: 12px; border: 1px solid #d1fae5; background-color: #f0fdf4; }
+          .id-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #6b7280; margin-bottom: 10px; }
+          .meta-item-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af; margin-bottom: 2px; }
+          .meta-item-value { font-size: 13px; color: #111827; margin-bottom: 10px; }
+          .section-title { margin: 22px 0 6px 0; font-size: 14px; font-weight: 600; color: #111827; }
+          ul, ol { padding-left: 18px; margin: 4px 0 12px 0; }
+          li { margin: 5px 0; font-size: 13px; color: #374151; }
+          table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+          .note-box { margin-top: 18px; padding: 12px 14px; border-radius: 12px; background-color: #fefce8; border: 1px solid #facc15; font-size: 12px; color: #854d0e; }
+          .divider { margin: 24px 0 16px 0; height: 1px; background: linear-gradient(to right, transparent, #e5e7eb, transparent); }
+          .footer { padding: 14px 20px 10px 20px; text-align: center; font-size: 11px; color: #9ca3af; background-color: #f9fafb; }
+          .footer a { color: #4b5563; text-decoration: none; }
+          @media (max-width: 600px) { .container { border-radius: 12px; } .header, .content { padding: 20px 18px; } }
+        </style>
+      </head>
+      <body>
+        <div class="wrapper">
+          <div class="container">
+            <div class="header">
+              <p class="header-title">National Environment Awareness Competitions 2026–27</p>
+              <p class="header-subtitle">${competitionLabel} — Registration confirmed</p>
+            </div>
+            <div class="content">
+              <h2>Dear ${teacherName},</h2>
+              <p>Your school's registration for the <strong>${competitionLabel}</strong> has been successfully submitted.</p>
+              <span class="pill">Registration submitted</span>
+              <div class="id-box">
+                <div class="id-label">Registration summary</div>
+                <div class="meta-item-label">School</div>
+                <div class="meta-item-value">${schoolName}</div>
+                <div class="meta-item-label">Competition</div>
+                <div class="meta-item-value">${competitionLabel} (${classLabel})</div>
+                <div class="meta-item-label">Total participants</div>
+                <div class="meta-item-value">${totalParticipants} students</div>
+                ${competitionType === 'quiz' ? `
+                <div class="meta-item-label">Available computers</div>
+                <div class="meta-item-value">${availableComputers}</div>` : ''}
+                <div class="meta-item-label">Submitted on</div>
+                <div class="meta-item-value">${formattedDate}</div>
+              </div>
+              <div class="section-title">Class-wise participation</div>
+              <table>
+                ${classRows}
+              </table>
+              <div class="section-title">Preferred dates submitted</div>
+              <ul>${datesHtml}</ul>
+              <div class="note-box">
+                Our team will review your preferred dates and send a separate confirmation email with the allotted date for the competition at your school. Please keep these dates available.
+              </div>
+              <div class="divider"></div>
+              <p style="font-size: 12px; margin-bottom: 4px;"><strong>Support</strong></p>
+              <p style="font-size: 12px;">
+                Email: swadhyaysevafoundation@gmail.com<br/>
+                WhatsApp: +91&nbsp;9599224323 | +91&nbsp;9837042298
+              </p>
+            </div>
+            <div class="footer">
+              <p style="margin: 0 0 4px 0;"><strong>Swadhyay Seva Foundation</strong></p>
+              <p style="margin: 0 0 4px 0;">This is an automated message. Please do not reply.</p>
+              <p style="margin: 0;">Website: <a href="https://www.swadhyayseva.org">www.swadhyayseva.org</a></p>
+            </div>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+    text: `
+SNEAC 2026–27 – Registration Confirmed
+
+Dear ${teacherName},
+
+Your school's registration for the ${competitionLabel} has been successfully submitted.
+
+School: ${schoolName}
+Competition: ${competitionLabel} (${classLabel})
+Total participants: ${totalParticipants} students
+${competitionType === 'quiz' ? `Available computers: ${availableComputers}\n` : ''}Submitted on: ${formattedDate}
+
+Class-wise participation:
+${classText}
+
+Preferred dates submitted:
+${datesText}
+
+Our team will review your preferred dates and send a separate confirmation email with the allotted date.
+
+Support:
+Email: swadhyaysevafoundation@gmail.com
+WhatsApp: +91 9599224323 | +91 9837042298
+
+Swadhyay Seva Foundation
+www.swadhyayseva.org
+    `,
+  };
+};
+
+
+// 5. Date allotment confirmation (sent by admin after allotting a date)
+export const schoolDateAllotmentTemplate = (data) => {
+  const {
+    schoolName, teacherName, competitionType,
+    allottedDate, totalParticipants,
+  } = data;
+
+  const competitionLabel = competitionType === 'painting'
+    ? 'National Painting Competition'
+    : 'National Environment Awareness Quiz (SNEAC)';
+
+  const formattedAllottedDate = new Date(allottedDate).toLocaleDateString('en-IN', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata',
+  });
+
+  return {
+    subject: `Date Confirmed – ${competitionLabel} | SNEAC 2026–27`,
+    html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <title>SNEAC 2026–27 – Date Confirmed</title>
+        <style>
+          body { margin: 0; padding: 0; background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; color: #111827; }
+          .wrapper { width: 100%; padding: 24px 12px; background-color: #f3f4f6; }
+          .container { max-width: 640px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12); }
+          .header { padding: 24px 28px; background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%); color: #f9fafb; text-align: left; }
+          .header-title { margin: 0; font-size: 18px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.95; color: #ffffff; }
+          .header-subtitle { margin: 6px 0 0 0; font-size: 15px; font-weight: 500; opacity: 0.96; color: #f9fafb; }
+          .content { padding: 26px 28px 30px 28px; }
+          h2 { margin: 0 0 10px 0; font-size: 20px; font-weight: 600; color: #0f172a; }
+          p { margin: 0 0 10px 0; font-size: 14px; line-height: 1.7; color: #374151; }
+          .pill { display: inline-block; margin-top: 6px; padding: 5px 12px; border-radius: 999px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; background-color: #ede9fe; color: #6d28d9; }
+          .date-box { margin: 22px 0 18px 0; padding: 20px 22px; border-radius: 12px; border: 1px solid #ddd6fe; background-color: #f5f3ff; text-align: center; }
+          .date-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #7c3aed; margin-bottom: 8px; }
+          .date-value { font-size: 22px; font-weight: 700; color: #4c1d95; }
+          .id-box { margin: 20px 0 18px 0; padding: 16px 18px; border-radius: 12px; border: 1px solid #ddd6fe; background-color: #faf5ff; }
+          .meta-item-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af; margin-bottom: 2px; }
+          .meta-item-value { font-size: 13px; color: #111827; margin-bottom: 10px; }
+          .section-title { margin: 22px 0 6px 0; font-size: 14px; font-weight: 600; color: #111827; }
+          ul { padding-left: 18px; margin: 4px 0 12px 0; }
+          li { margin: 5px 0; font-size: 13px; color: #374151; }
+          .note-box { margin-top: 18px; padding: 12px 14px; border-radius: 12px; background-color: #fefce8; border: 1px solid #facc15; font-size: 12px; color: #854d0e; }
+          .divider { margin: 24px 0 16px 0; height: 1px; background: linear-gradient(to right, transparent, #e5e7eb, transparent); }
+          .footer { padding: 14px 20px 10px 20px; text-align: center; font-size: 11px; color: #9ca3af; background-color: #f9fafb; }
+          .footer a { color: #4b5563; text-decoration: none; }
+          @media (max-width: 600px) { .container { border-radius: 12px; } .header, .content { padding: 20px 18px; } }
+        </style>
+      </head>
+      <body>
+        <div class="wrapper">
+          <div class="container">
+            <div class="header">
+              <p class="header-title">National Environment Awareness Competitions 2026–27</p>
+              <p class="header-subtitle">${competitionLabel} — Date confirmed</p>
+            </div>
+            <div class="content">
+              <h2>Dear ${teacherName},</h2>
+              <p>We are pleased to confirm the date for the <strong>${competitionLabel}</strong> at <strong>${schoolName}</strong>.</p>
+              <span class="pill">Date confirmed</span>
+              <div class="date-box">
+                <div class="date-label">Allotted date</div>
+                <div class="date-value">${formattedAllottedDate}</div>
+              </div>
+              <div class="id-box">
+                <div class="meta-item-label">School</div>
+                <div class="meta-item-value">${schoolName}</div>
+                <div class="meta-item-label">Competition</div>
+                <div class="meta-item-value">${competitionLabel}</div>
+                <div class="meta-item-label">Total participants</div>
+                <div class="meta-item-value">${totalParticipants} students</div>
+              </div>
+              <div class="section-title">Preparation checklist</div>
+              <ul>
+                <li>Ensure all registered students are informed about the scheduled date.</li>
+                <li>Arrange the required infrastructure (hall, computers if applicable) in advance.</li>
+                <li>Brief the coordinating teacher on competition rules and conduct.</li>
+                <li>Keep this email for reference on the day of the competition.</li>
+              </ul>
+              <div class="note-box">
+                If the confirmed date presents a conflict, please contact us immediately. We will try our best to accommodate a change, subject to availability.
+              </div>
+              <div class="divider"></div>
+              <p style="font-size: 12px; margin-bottom: 4px;"><strong>Support</strong></p>
+              <p style="font-size: 12px;">
+                Email: swadhyaysevafoundation@gmail.com<br/>
+                WhatsApp: +91&nbsp;9599224323 | +91&nbsp;9837042298
+              </p>
+            </div>
+            <div class="footer">
+              <p style="margin: 0 0 4px 0;"><strong>Swadhyay Seva Foundation</strong></p>
+              <p style="margin: 0 0 4px 0;">This is an automated message. Please do not reply.</p>
+              <p style="margin: 0;">Website: <a href="https://www.swadhyayseva.org">www.swadhyayseva.org</a></p>
+            </div>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+    text: `
+SNEAC 2026–27 – Date Confirmed
+
+Dear ${teacherName},
+
+We are pleased to confirm the date for the ${competitionLabel} at ${schoolName}.
+
+Allotted date: ${formattedAllottedDate}
+
+School: ${schoolName}
+Competition: ${competitionLabel}
+Total participants: ${totalParticipants} students
+
+Preparation checklist:
+- Ensure all registered students are informed about the scheduled date.
+- Arrange the required infrastructure in advance.
+- Brief the coordinating teacher on competition rules and conduct.
+- Keep this email for reference on the day of the competition.
+
+If the confirmed date presents a conflict, please contact us immediately.
+
+Support:
+Email: swadhyaysevafoundation@gmail.com
+WhatsApp: +91 9599224323 | +91 9837042298
+
+Swadhyay Seva Foundation
+www.swadhyayseva.org
+    `,
+  };
+};

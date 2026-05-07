@@ -18,6 +18,9 @@ import paymentRoutes from './routes/paymentRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 import adminReviewRoutes from './routes/adminReviewRoutes.js';
 
+import schoolAccessRoutes from './routes/schoolAccessRoutes.js';
+import schoolRegistrationRoutes from './routes/schoolRegistrationRoutes.js';
+
 // Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -113,6 +116,8 @@ app.use('/api/download', downloadRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/admin/reviews', adminReviewRoutes);
+app.use('/api/school-access', schoolAccessRoutes);
+app.use('/api/school-registration', schoolRegistrationRoutes);
 
 // 404 handler
 app.use((req, res) => {
