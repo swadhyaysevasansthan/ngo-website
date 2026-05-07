@@ -127,7 +127,7 @@ const ReviewForm = () => {
             className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all ${
               errors.designation ? 'border-red-300 bg-red-50' : 'border-gray-200'
             }`}
-            placeholder="Software Developer at Swadhyay"
+            placeholder="Eg:- Software Developer at Swadhyay"
           />
           {errors.designation && (
             <p className="mt-1 text-sm text-red-600">{errors.designation}</p>
