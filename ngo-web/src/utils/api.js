@@ -173,4 +173,29 @@ export const {
   getReviewVersions
 } = reviewAPI;
 
+// 🔥 COMMUNITIES API
+export const communityAPI = {
+  getAll: () => apiClient.get('/communities'),
+  getBySlug: (slug) => apiClient.get(`/communities/${slug}`),
+  adminGetAll: () => apiClient.get('/admin/communities'),
+  adminGetById: (id) => apiClient.get(`/admin/communities/${id}`),
+  adminCreate: (data) => apiClient.post('/admin/communities', data),
+  adminUpdate: (id, data) => apiClient.put(`/admin/communities/${id}`, data),
+  adminDelete: (id) => apiClient.delete(`/admin/communities/${id}`),
+  uploadImages: (topicId, formData) => apiClient.post(`/admin/communities/${topicId}/images`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  uploadHeroImage: (topicId, formData) => apiClient.post(`/admin/communities/${topicId}/hero-image`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  deleteHeroImage: (topicId) => apiClient.delete(`/admin/communities/${topicId}/hero-image`),
+  updateImage: (imageId, data) => apiClient.put(`/admin/communities/images/${imageId}`, data),
+  deleteImage: (imageId) => apiClient.delete(`/admin/communities/images/${imageId}`),
+  createEvent: (topicId, data) => apiClient.post(`/admin/communities/${topicId}/events`, data),
+  updateEvent: (eventId, data) => apiClient.put(`/admin/communities/events/${eventId}`, data),
+  deleteEvent: (eventId) => apiClient.delete(`/admin/communities/events/${eventId}`),
+  createSection: (topicId, data) => apiClient.post(`/admin/communities/${topicId}/sections`, data),
+  updateSection: (sectionId, data) => apiClient.put(`/admin/communities/sections/${sectionId}`, data),
+  deleteSection: (sectionId) => apiClient.delete(`/admin/communities/sections/${sectionId}`),
+  createStat: (topicId, data) => apiClient.post(`/admin/communities/${topicId}/stats`, data),
+  updateStat: (statId, data) => apiClient.put(`/admin/communities/stats/${statId}`, data),
+  deleteStat: (statId) => apiClient.delete(`/admin/communities/stats/${statId}`),
+};
+
 export default apiClient;

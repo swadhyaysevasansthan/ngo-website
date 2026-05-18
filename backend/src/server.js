@@ -20,6 +20,8 @@ import adminReviewRoutes from './routes/adminReviewRoutes.js';
 
 import schoolAccessRoutes from './routes/schoolAccessRoutes.js';
 import schoolRegistrationRoutes from './routes/schoolRegistrationRoutes.js';
+import communityRoutes from './routes/communityRoutes.js';
+import adminCommunityRoutes from './routes/adminCommunityRoutes.js';
 
 // Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -62,7 +64,12 @@ app.use(cors({
 
 app.options('/participants/register', cors());
 
-app.use(express.json()); // Parse JSON bodies
+app.use((req, res, next) => {
+  if (req.headers['content-type'] && req.headers['content-type'].startsWith('multipart/form-data')) {
+    return next();
+  }
+  express.json()(req, res, next);
+});
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
 // Serve uploaded files statically
@@ -118,6 +125,8 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/admin/reviews', adminReviewRoutes);
 app.use('/api/school-access', schoolAccessRoutes);
 app.use('/api/school-registration', schoolRegistrationRoutes);
+app.use('/api/communities', communityRoutes);
+app.use('/api/admin/communities', adminCommunityRoutes);
 
 // 404 handler
 app.use((req, res) => {

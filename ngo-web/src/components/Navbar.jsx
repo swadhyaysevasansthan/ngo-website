@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import ngoLogo from '../assets/ngo-logo.png';
+import { communityAPI } from '../utils/api';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,6 +46,14 @@ const Navbar = () => {
     { name: 'Yoga', path: '/yoga' },
     { name: 'Pustak Daan', path: '/book-donation' },
   ];
+
+  const [dynamicCommunities, setDynamicCommunities] = useState([]);
+
+  useEffect(() => {
+    communityAPI.getAll()
+      .then((res) => { if (res.data?.data?.length > 0) setDynamicCommunities(res.data.data); })
+      .catch(() => {});
+  }, []);
 
   const supportSublinks = [
     { name: 'Partner With Us', path: '/partner-with-us' },
@@ -129,7 +138,12 @@ const Navbar = () => {
     if (type === 'about') return aboutSubLinks;
     if (type === 'support') return supportSublinks;
     if (type === 'voices') return voicesSubLinks;
-    return ourCommunitiesSubLinks;
+    // Merge static + dynamic community topics
+    const staticPaths = new Set(ourCommunitiesSubLinks.map(l => l.path));
+    const dynamicLinks = dynamicCommunities
+      .filter(t => !staticPaths.has(`/${t.slug}`) && !staticPaths.has(`/community/${t.slug}`))
+      .map(t => ({ name: t.title, path: `/community/${t.slug}` }));
+    return [...ourCommunitiesSubLinks, ...dynamicLinks];
   };
 
   return (

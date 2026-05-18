@@ -41,6 +41,8 @@ import SchoolAccessRequest from './pages/SchoolAccessRequest';
 import SchoolRegistrationHome from './pages/SchoolRegistrationHome';
 import PaintingRegistrationForm from './pages/PaintingRegistrationForm';
 import QuizRegistrationForm from './pages/QuizRegistrationForm';
+import CommunityPage from './pages/CommunityPage';
+import CommunityAdmin from './pages/CommunityAdmin';
 
 function App() {
   return (
@@ -64,14 +66,14 @@ function App() {
             <Route path="/ourteam" element={<OurTeam />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/testimonials" element={<TestimonialsPage />} />
-            <Route path="/natural-farming" element={<NaturalFarming />} />
-            <Route path="/naturopathy" element={<Naturopathy />} />
-            <Route path="/plantation" element={<Plantation />} />
+            <Route path="/natural-farming" element={<CommunityPage />} />
+            <Route path="/naturopathy" element={<CommunityPage />} />
+            <Route path="/plantation" element={<CommunityPage />} />
             {/* <Route path="/certificates" element={<CertificateDownload />} />   */}
-            <Route path="/yoga" element={<Yoga />} />
+            <Route path="/yoga" element={<CommunityPage />} />
             <Route path="/donate" element={<DonatePage />} />
             <Route path="/partner-with-us" element={<PartnerWithUs />} />
-            <Route path="/book-donation" element={<BookDonation />} />
+            <Route path="/book-donation" element={<CommunityPage />} />
             <Route path="/photography-competition" element={<PhotographyCompetition />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/refund-policy" element={<RefundPolicy />} />
@@ -93,6 +95,10 @@ function App() {
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/reviews" element={<AdminDashboard />} /> {/* Integrated tab */}
+
+            {/* 🔥 COMMUNITIES */}
+            <Route path="/community/:slug" element={<CommunityPage />} />
+            <Route path="/admin/communities" element={<CommunityAdmin />} />
           </Routes>
         </main>
         <Footer />
