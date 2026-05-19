@@ -15,12 +15,13 @@ const Navbar = () => {
   const aboutDropdownRef = useRef(null);
   const supportDropdownRef = useRef(null);
   const voicesDropdownRef = useRef(null);
+  const schoolStoriesDropdownRef = useRef(null);
 
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About Us', dropdown: true, type: 'about' },
     { name: 'Quiz', dropdown: true, type: 'quiz' },
-    { name: 'School Stories', path: '/school-stories' },
+    { name: 'School Stories', dropdown: true, type: 'schoolstories' },
     { name: 'Voices', dropdown: true, type: 'voices' }, // updated
     { name: 'SNEAC 2026-27', path: '/upcoming-engagements' },
     { name: 'SNPC 2026', path: '/photography-competition' },
@@ -38,6 +39,9 @@ const Navbar = () => {
     { name: 'Question Bank', path: '/question-bank' },
     { name: 'Online Quiz', path: '/quiz' },
   ];
+  const schoolStoriesSubLinks = [
+  { name: 'SNEAC 2025-26', path: '/sneac2025-26' },
+];
 
   const ourCommunitiesSubLinks = [
     { name: 'Natural Farming', path: '/natural-farming' },
@@ -116,6 +120,12 @@ const Navbar = () => {
         !voicesDropdownRef.current.contains(event.target)
       )
         setActiveDesktopDropdown('');
+      if (
+        activeDesktopDropdown === 'schoolstories' &&
+        schoolStoriesDropdownRef.current &&
+        !schoolStoriesDropdownRef.current.contains(event.target)
+      )
+        setActiveDesktopDropdown('');
     }
 
     if (activeDesktopDropdown) {
@@ -130,6 +140,7 @@ const Navbar = () => {
     if (type === 'about') return aboutDropdownRef;
     if (type === 'support') return supportDropdownRef;
     if (type === 'voices') return voicesDropdownRef;
+    if (type === 'schoolstories') return schoolStoriesDropdownRef;
     return null;
   };
 
@@ -138,6 +149,7 @@ const Navbar = () => {
     if (type === 'about') return aboutSubLinks;
     if (type === 'support') return supportSublinks;
     if (type === 'voices') return voicesSubLinks;
+    if (type === 'schoolstories') return schoolStoriesSubLinks;
     // Merge static + dynamic community topics
     const staticPaths = new Set(ourCommunitiesSubLinks.map(l => l.path));
     const dynamicLinks = dynamicCommunities

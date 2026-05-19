@@ -54,9 +54,8 @@ const SchoolAccessRequest = () => {
     if (!formData.schoolEmail1.trim()) e.schoolEmail1 = 'Primary email is required';
     else if (!/\S+@\S+\.\S+/.test(formData.schoolEmail1)) e.schoolEmail1 = 'Invalid email address';
 
-    if (formData.schoolEmail2.trim() && !/\S+@\S+\.\S+/.test(formData.schoolEmail2)) {
-      e.schoolEmail2 = 'Invalid email address';
-    }
+    if (!formData.schoolEmail2.trim()) e.schoolEmail2 = 'Primary email is required';
+    else if (!/\S+@\S+\.\S+/.test(formData.schoolEmail2)) e.schoolEmail2 = 'Invalid email address';
 
     if (!formData.schoolAddress.trim()) e.schoolAddress = 'School address is required';
     if (!formData.city.trim()) e.city = 'City is required';
@@ -186,7 +185,7 @@ const SchoolAccessRequest = () => {
                     </div>
 
                     <Input
-                      label="Primary School Email Address"
+                      label="School Email Address"
                       name="schoolEmail1"
                       type="email"
                       value={formData.schoolEmail1}
@@ -197,13 +196,14 @@ const SchoolAccessRequest = () => {
                     />
 
                     <Input
-                      label="Secondary School Email Address"
+                      label="Alternate School Email Address"
                       name="schoolEmail2"
                       type="email"
                       value={formData.schoolEmail2}
                       onChange={handleChange}
                       placeholder="optional alternate email"
                       error={errors.schoolEmail2}
+                      required
                     />
 
                     <Input
