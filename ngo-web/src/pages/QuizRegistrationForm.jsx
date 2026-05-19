@@ -117,22 +117,39 @@ const QuizRegistrationForm = () => {
     setLoading(true);
     try {
       await schoolRegistrationAPI.submitQuiz(token, {
-        primaryTeacherName: formData.primaryTeacherName,
-        primaryTeacherEmail: formData.primaryTeacherEmail,
-        primaryTeacherPhone: formData.primaryTeacherPhone,
-        altTeacherName: formData.altTeacherName,
-        altTeacherEmail: formData.altTeacherEmail,
-        altTeacherPhone: formData.altTeacherPhone,
+        teachers: [
+          {
+            category: 'primary',
+            role: 'coordinator',
+            name: formData.primaryTeacherName,
+            email: formData.primaryTeacherEmail,
+            phone: formData.primaryTeacherPhone,
+          },
+
+          {
+            category: 'alternate',
+            role: 'alternate',
+            name: formData.altTeacherName,
+            email: formData.altTeacherEmail,
+            phone: formData.altTeacherPhone,
+          },
+        ],
+
         classCounts: {
           6: parseInt(formData.class6) || 0,
           7: parseInt(formData.class7) || 0,
           8: parseInt(formData.class8) || 0,
         },
+
         totalParticipants,
+
         availableComputers: parseInt(formData.availableComputers),
+
         preferredDates: [
-          formData.preferredDate1, formData.preferredDate2,
-          formData.preferredDate3, formData.preferredDate4,
+          formData.preferredDate1,
+          formData.preferredDate2,
+          formData.preferredDate3,
+          formData.preferredDate4,
         ],
       });
       setSubmitted(true);

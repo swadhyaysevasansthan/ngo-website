@@ -184,22 +184,44 @@ const PaintingRegistrationForm = () => {
     setLoading(true);
     try {
       await schoolRegistrationAPI.submitPainting(token, {
-        primaryTeacher1Name: formData.primaryTeacher1Name,
-        primaryTeacher1Email: formData.primaryTeacher1Email,
-        primaryTeacher1Phone: formData.primaryTeacher1Phone,
-        primaryTeacher1Designation: formData.primaryTeacher1Designation,
-        primaryTeacher2Name: formData.primaryTeacher2Name,
-        primaryTeacher2Email: formData.primaryTeacher2Email,
-        primaryTeacher2Phone: formData.primaryTeacher2Phone,
-        primaryTeacher2Designation: formData.primaryTeacher2Designation,
-        secondaryTeacher1Name: formData.secondaryTeacher1Name,
-        secondaryTeacher1Email: formData.secondaryTeacher1Email,
-        secondaryTeacher1Phone: formData.secondaryTeacher1Phone,
-        secondaryTeacher1Designation: formData.secondaryTeacher1Designation,
-        secondaryTeacher2Name: formData.secondaryTeacher2Name,
-        secondaryTeacher2Email: formData.secondaryTeacher2Email,
-        secondaryTeacher2Phone: formData.secondaryTeacher2Phone,
-        secondaryTeacher2Designation: formData.secondaryTeacher2Designation,
+        teachers: [
+          {
+            category: 'primary',
+            role: 'coordinator',
+            name: formData.primaryTeacher1Name,
+            email: formData.primaryTeacher1Email,
+            phone: formData.primaryTeacher1Phone,
+            designation: formData.primaryTeacher1Designation,
+          },
+
+          {
+            category: 'primary',
+            role: 'coordinator',
+            name: formData.primaryTeacher2Name,
+            email: formData.primaryTeacher2Email,
+            phone: formData.primaryTeacher2Phone,
+            designation: formData.primaryTeacher2Designation,
+          },
+
+          {
+            category: 'secondary',
+            role: 'coordinator',
+            name: formData.secondaryTeacher1Name,
+            email: formData.secondaryTeacher1Email,
+            phone: formData.secondaryTeacher1Phone,
+            designation: formData.secondaryTeacher1Designation,
+          },
+
+          {
+            category: 'secondary',
+            role: 'coordinator',
+            name: formData.secondaryTeacher2Name,
+            email: formData.secondaryTeacher2Email,
+            phone: formData.secondaryTeacher2Phone,
+            designation: formData.secondaryTeacher2Designation,
+          },
+        ],
+
         classCounts: {
           3: getNum(formData.class3),
           4: getNum(formData.class4),
@@ -208,9 +230,13 @@ const PaintingRegistrationForm = () => {
           7: getNum(formData.class7),
           8: getNum(formData.class8),
         },
+
         primaryCategoryTotal,
+
         secondaryCategoryTotal,
+
         totalParticipants,
+
         preferredDates: [
           formData.preferredDate1,
           formData.preferredDate2,

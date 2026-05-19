@@ -352,8 +352,52 @@ const SneacAdminTab = () => {
                       <p className="text-xs text-gray-500">{reg.school_email}</p>
                     </td>
                     <td className="px-4 py-3">
-                      <p>{reg.primary_teacher_name}</p>
-                      <p className="text-xs text-gray-500">{reg.primary_teacher_phone}</p>
+                      <div className="space-y-2 min-w-[240px]">
+                        {reg.teachers?.length > 0 ? (
+                          reg.teachers.map((teacher, index) => (
+                            <div
+                              key={teacher.id || index}
+                              className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2"
+                            >
+                              <div className="font-semibold text-sm text-gray-800">
+                                {teacher.teacher_name}
+                              </div>
+
+                              <div className="text-xs text-gray-500 mt-1">
+                                {teacher.teacher_email}
+                              </div>
+
+                              <div className="text-xs text-gray-500">
+                                {teacher.teacher_phone}
+                              </div>
+
+                              {teacher.designation && (
+                                <div className="text-xs text-gray-600 mt-1">
+                                  {teacher.designation}
+                                </div>
+                              )}
+
+                              <div className="mt-1 flex gap-2 flex-wrap">
+                                {teacher.category && (
+                                  <span className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 text-[10px] font-semibold uppercase">
+                                    {teacher.category}
+                                  </span>
+                                )}
+
+                                {teacher.role && (
+                                  <span className="px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 text-[10px] font-semibold uppercase">
+                                    {teacher.role}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          ))
+                        ) : (
+                          <span className="text-xs text-gray-400">
+                            No teacher data
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="px-4 py-3">{reg.city}, {reg.state}</td>
                     <td className="px-4 py-3 text-center font-semibold">{reg.total_participants}</td>
