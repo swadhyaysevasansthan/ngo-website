@@ -24,8 +24,10 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  const allowed = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-  cb(null, allowed.includes(file.mimetype));
+  const allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
+  const allowedExts = ['.jpg', '.jpeg', '.png', '.webp', '.heic', '.heif'];
+  const ext = file.originalname.toLowerCase().slice(file.originalname.lastIndexOf('.'));
+  cb(null, allowedMimes.includes(file.mimetype) || allowedExts.includes(ext));
 };
 
 const upload = multer({ storage, fileFilter, limits: { fileSize: 10 * 1024 * 1024 } });
