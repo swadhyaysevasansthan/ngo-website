@@ -6,6 +6,7 @@ import {
   submitPaintingRegistration,
   submitQuizRegistration,
   listRegistrations,
+  allotDate,
 } from '../controllers/schoolRegistrationController.js';
 
 import { validateRequest } from '../middleware/validation.js';
@@ -142,6 +143,23 @@ router.get(
 
   validateRequest,
   listRegistrations
+);
+
+router.patch(
+  '/admin/:id/allot-date',
+  verifyAdmin,
+
+  param('id')
+    .isInt({ min: 1 })
+    .withMessage('Invalid registration ID'),
+
+  body('allottedDate')
+    .notEmpty()
+    .withMessage('Allotted date is required'),
+
+  validateRequest,
+
+  allotDate
 );
 
 export default router;

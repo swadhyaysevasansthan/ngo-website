@@ -403,3 +403,41 @@ export const listRegistrations = async (req, res) => {
     });
   }
 };
+
+export const allotDate = async (req, res) => {
+  const { id } = req.params;
+  const { allottedDate } = req.body;
+
+  try {
+    const result = await pool.query(
+      `UPDATE school_competition_registrations
+       SET allotted_date = $1,
+           updated_at = NOW()
+       WHERE id = $2
+       RETURNING *`,
+      [allottedDate, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Registration not found.',
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: 'Date allotted successfully.',
+      data: result.rows[0],
+    });
+
+  } catch (error) {
+    console.error('Allot date error:', error);
+
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to allot date.',
+      error: error.message,
+    });
+  }
+};
