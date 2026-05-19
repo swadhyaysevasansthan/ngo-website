@@ -110,26 +110,34 @@ export const uploadImages = async (req, res) => {
     const uploaded = [];
     const fs = (await import('fs')).default;
     const sharp = (await import('sharp')).default;
+    const heicConvert = (await import('heic-convert')).default;
     for (const file of req.files) {
       let uploadPath = file.path;
-      const stats = fs.statSync(file.path);
       const ext = file.originalname.toLowerCase().slice(file.originalname.lastIndexOf('.'));
       const isHeic = ext === '.heic' || ext === '.heif';
 
-      // Compress non-HEIC files over 9MB locally
-      if (stats.size > 9 * 1024 * 1024 && !isHeic) {
-        const compressedPath = file.path + '_compressed.jpg';
-        await sharp(file.path).resize(2000, 2000, { fit: 'inside', withoutEnlargement: true }).jpeg({ quality: 85 }).toFile(compressedPath);
+      // Convert HEIC to JPG first
+      if (isHeic) {
+        const inputBuffer = fs.readFileSync(file.path);
+        const outputBuffer = await heicConvert({ buffer: inputBuffer, format: 'JPEG', quality: 0.85 });
+        const jpgPath = file.path + '_converted.jpg';
+        fs.writeFileSync(jpgPath, outputBuffer);
         fs.unlinkSync(file.path);
+        uploadPath = jpgPath;
+      }
+
+      // Compress if still over 9MB
+      const stats = fs.statSync(uploadPath);
+      if (stats.size > 9 * 1024 * 1024) {
+        const compressedPath = uploadPath + '_compressed.jpg';
+        await sharp(uploadPath).resize(2000, 2000, { fit: 'inside', withoutEnlargement: true }).jpeg({ quality: 90 }).toFile(compressedPath);
+        fs.unlinkSync(uploadPath);
         uploadPath = compressedPath;
       }
 
-      // Use upload_large for big files (chunked upload bypasses 10MB limit)
-      const uploadMethod = stats.size > 9 * 1024 * 1024 ? 'upload_large' : 'upload';
-      const r = await cloudinary.uploader[uploadMethod](uploadPath, {
+      const r = await cloudinary.uploader.upload(uploadPath, {
         folder: `communities/${slug}`,
         resource_type: 'image',
-        chunk_size: 6000000,
       });
       const db = await pool.query(`INSERT INTO community_images (topic_id, image_url, public_id, caption, display_order) VALUES (\$1,\$2,\$3,\$4,\$5) RETURNING *`, [id, r.secure_url, r.public_id, req.body.caption || null, req.body.display_order || 0]);
       uploaded.push(db.rows[0]);
