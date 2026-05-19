@@ -30,7 +30,7 @@ const fileFilter = (req, file, cb) => {
   cb(null, allowedMimes.includes(file.mimetype) || allowedExts.includes(ext));
 };
 
-const upload = multer({ storage, fileFilter, limits: { fileSize: 10 * 1024 * 1024 } });
+const upload = multer({ storage, fileFilter, limits: { fileSize: 25 * 1024 * 1024 } });
 
 const router = express.Router();
 
