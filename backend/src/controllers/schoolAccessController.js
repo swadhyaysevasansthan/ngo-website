@@ -15,10 +15,10 @@ import {
 // ─── Shared helper ──────────────────────────────────────────
 
 /**
- * Build deduplicated recipient list from school email + teacher email.
+ * Build deduplicated recipient list from multiple emails.
  */
-const getRecipients = (schoolEmail, teacherEmail) =>
-  [...new Set([schoolEmail, teacherEmail].filter(Boolean))];
+const getRecipients = (...emails) =>
+  [...new Set(emails.flat().filter(Boolean))];
 
 // ─── Public ────────────────────────────────────────────────
 
@@ -27,16 +27,27 @@ const getRecipients = (schoolEmail, teacherEmail) =>
  */
 export const createAccessRequest = async (req, res) => {
   const {
-    schoolName, schoolEmail, schoolAddress, city, state,
-    boardOfEducation, hasEcoClub, teacherName, teacherEmail,
-    teacherPhone, notes,
+    schoolName,
+    schoolEmail1,
+    schoolEmail2,
+    schoolAddress,
+    city,
+    state,
+    boardOfEducation,
+    hasEcoClub,
+    principalName,
+    principalEmail,
+    principalPhone,
+    notes,
   } = req.body;
 
   try {
+    const primaryEmail = schoolEmail1.toLowerCase().trim();
+
     const existing = await pool.query(
       `SELECT id, status FROM school_access_requests
        WHERE school_email = $1 AND status IN ('pending', 'approved')`,
-      [schoolEmail.toLowerCase().trim()]
+      [primaryEmail]
     );
 
     if (existing.rows.length > 0) {
@@ -52,37 +63,41 @@ export const createAccessRequest = async (req, res) => {
 
     const result = await pool.query(
       `INSERT INTO school_access_requests
-         (school_name, school_email, school_address, city, state,
-          board_of_education, has_eco_club, teacher_name, teacher_email,
-          teacher_phone, notes, status)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, 'pending')
+        (school_name, school_email, school_email_2, school_address, city, state,
+         board_of_education, has_eco_club, principal_name, principal_email,
+         principal_phone, notes, status)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'pending')
        RETURNING *`,
       [
         schoolName.trim(),
-        schoolEmail.toLowerCase().trim(),
+        primaryEmail,
+        schoolEmail2?.toLowerCase().trim() || null,
         schoolAddress.trim(),
         city.trim(),
         state.trim(),
         boardOfEducation.trim(),
         hasEcoClub === true || hasEcoClub === 'true',
-        teacherName.trim(),
-        teacherEmail.toLowerCase().trim(),
-        teacherPhone.trim(),
+        principalName.trim(),
+        principalEmail?.toLowerCase().trim() || null,
+        principalPhone?.trim() || null,
         notes?.trim() || null,
       ]
     );
 
     const request = result.rows[0];
 
-    // Send acknowledgement to both school email and teacher email
     if (process.env.ENABLE_EMAILS === 'true') {
       try {
         const template = schoolAccessRequestReceivedTemplate({
           schoolName: request.school_name,
-          teacherName: request.teacher_name,
+          teacherName: request.principal_name,
         });
 
-        const recipients = getRecipients(request.school_email, request.teacher_email);
+        const recipients = getRecipients(
+          request.school_email,
+          request.school_email_2,
+          request.principal_email
+        );
 
         const emailResult = await sendEmail({
           to: recipients,
@@ -151,7 +166,7 @@ export const listAccessRequests = async (req, res) => {
     }
     if (search) {
       conditions.push(
-        `(LOWER(school_name) LIKE $${idx} OR LOWER(school_email) LIKE $${idx})`
+        `(LOWER(school_name) LIKE $${idx} OR LOWER(school_email) LIKE $${idx} OR LOWER(school_email_2) LIKE $${idx})`
       );
       values.push(`%${search.toLowerCase()}%`);
       idx++;
@@ -161,9 +176,9 @@ export const listAccessRequests = async (req, res) => {
 
     const result = await pool.query(
       `SELECT
-         id, school_name, school_email, city, state,
+         id, school_name, school_email, school_email_2, city, state,
          board_of_education, has_eco_club,
-         teacher_name, teacher_email, teacher_phone,
+         principal_name, principal_email, principal_phone,
          notes, status, rejection_reason,
          created_at, updated_at
        FROM school_access_requests
@@ -293,17 +308,20 @@ export const approveAccessRequest = async (req, res) => {
       [id, tokenHash, expiresAt]
     );
 
-    // Send to both school email and teacher email
     if (process.env.ENABLE_EMAILS === 'true') {
       try {
         const template = schoolAccessApprovedTemplate({
           schoolName: request.school_name,
-          teacherName: request.teacher_name,
+          teacherName: request.principal_name,
           registrationLink,
           expiresAt,
         });
 
-        const recipients = getRecipients(request.school_email, request.teacher_email);
+        const recipients = getRecipients(
+          request.school_email,
+          request.school_email_2,
+          request.principal_email
+        );
 
         const emailResult = await sendEmail({
           to: recipients,
@@ -383,16 +401,19 @@ export const rejectAccessRequest = async (req, res) => {
       [id]
     );
 
-    // Send rejection to both school email and teacher email
     if (process.env.ENABLE_EMAILS === 'true') {
       try {
         const template = schoolAccessRejectedTemplate({
           schoolName: request.school_name,
-          teacherName: request.teacher_name,
+          teacherName: request.principal_name,
           rejectionReason: rejectionReason?.trim() || null,
         });
 
-        const recipients = getRecipients(request.school_email, request.teacher_email);
+        const recipients = getRecipients(
+          request.school_email,
+          request.school_email_2,
+          request.principal_email
+        );
 
         const emailResult = await sendEmail({
           to: recipients,
@@ -479,17 +500,20 @@ export const resendMagicLink = async (req, res) => {
       [id, tokenHash, expiresAt]
     );
 
-    // Send to both school email and teacher email
     if (process.env.ENABLE_EMAILS === 'true') {
       try {
         const template = schoolAccessApprovedTemplate({
           schoolName: request.school_name,
-          teacherName: request.teacher_name,
+          teacherName: request.principal_name,
           registrationLink,
           expiresAt,
         });
 
-        const recipients = getRecipients(request.school_email, request.teacher_email);
+        const recipients = getRecipients(
+          request.school_email,
+          request.school_email_2,
+          request.principal_email
+        );
 
         const emailResult = await sendEmail({
           to: recipients,

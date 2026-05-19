@@ -27,15 +27,16 @@ const SchoolAccessRequest = () => {
 
   const [formData, setFormData] = useState({
     schoolName: '',
-    schoolEmail: '',
+    schoolEmail1: '',
+    schoolEmail2: '',
     schoolAddress: '',
     city: '',
     state: '',
     boardOfEducation: '',
     hasEcoClub: '',
-    teacherName: '',
-    teacherEmail: '',
-    teacherPhone: '',
+    principalName: '',
+    principalPhone: '',
+    principalEmail: '',
     notes: '',
   });
 
@@ -47,19 +48,32 @@ const SchoolAccessRequest = () => {
 
   const validate = () => {
     const e = {};
+
     if (!formData.schoolName.trim()) e.schoolName = 'School name is required';
-    if (!formData.schoolEmail.trim()) e.schoolEmail = 'School email is required';
-    else if (!/\S+@\S+\.\S+/.test(formData.schoolEmail)) e.schoolEmail = 'Invalid email address';
+
+    if (!formData.schoolEmail1.trim()) e.schoolEmail1 = 'Primary email is required';
+    else if (!/\S+@\S+\.\S+/.test(formData.schoolEmail1)) e.schoolEmail1 = 'Invalid email address';
+
+    if (formData.schoolEmail2.trim() && !/\S+@\S+\.\S+/.test(formData.schoolEmail2)) {
+      e.schoolEmail2 = 'Invalid email address';
+    }
+
     if (!formData.schoolAddress.trim()) e.schoolAddress = 'School address is required';
     if (!formData.city.trim()) e.city = 'City is required';
     if (!formData.state) e.state = 'State is required';
     if (!formData.boardOfEducation) e.boardOfEducation = 'Board of education is required';
     if (formData.hasEcoClub === '') e.hasEcoClub = 'Please select an option';
-    if (!formData.teacherName.trim()) e.teacherName = 'Coordinating teacher name is required';
-    if (!formData.teacherEmail.trim()) e.teacherEmail = 'Teacher email is required';
-    else if (!/\S+@\S+\.\S+/.test(formData.teacherEmail)) e.teacherEmail = 'Invalid email address';
-    if (!formData.teacherPhone.trim()) e.teacherPhone = 'Teacher phone is required';
-    else if (!/^[6-9]\d{9}$/.test(formData.teacherPhone)) e.teacherPhone = 'Invalid 10-digit mobile number';
+
+    if (!formData.principalName.trim()) e.principalName = 'Principal name is required';
+    if (formData.principalPhone.trim() && !/^[6-9]\d{9}$/.test(formData.principalPhone)) {
+      e.principalPhone = 'Invalid 10-digit mobile number';
+    }
+    if (formData.principalEmail.trim() && !/\S+@\S+\.\S+/.test(formData.principalEmail)) {
+      e.principalEmail = 'Invalid email address';
+    }
+
+    if (formData.notes.length > 1000) e.notes = 'Notes must not exceed 1000 characters';
+
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -70,6 +84,7 @@ const SchoolAccessRequest = () => {
       toast.error('Please fix the errors in the form');
       return;
     }
+
     setLoading(true);
     try {
       await schoolAccessAPI.submitRequest({
@@ -96,13 +111,13 @@ const SchoolAccessRequest = () => {
           <p className="text-gray-600 mb-6 text-base leading-relaxed">
             Your school's access request has been received. Our team will review it
             within a few working days. If approved, you will receive a private
-            registration link at <strong>{formData.schoolEmail}</strong>.
+            registration link at <strong>{formData.schoolEmail1}</strong>.
           </p>
           <div className="bg-amber-50 border border-amber-100 rounded-xl p-4 text-sm text-amber-800 text-left">
             <p className="font-semibold mb-1">What happens next?</p>
             <ul className="list-disc list-inside space-y-1">
               <li>Our team reviews your request (usually within 2–3 working days).</li>
-              <li>If approved, a unique registration link is sent to your school email.</li>
+              <li>If approved, a unique registration link is sent to your school email(s).</li>
               <li>Use that link to register for the painting and/or quiz competitions.</li>
             </ul>
           </div>
@@ -115,7 +130,6 @@ const SchoolAccessRequest = () => {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-slate-50">
       <div className="py-12 px-4">
         <div className="container-custom">
-          {/* Header */}
           <div className="text-center mb-10 animate-slide-down">
             <h1 className="text-4xl md:text-5xl font-extrabold text-forest mb-3">
               Request School Access
@@ -125,7 +139,7 @@ const SchoolAccessRequest = () => {
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3 text-xs md:text-sm">
               <div className="bg-white px-4 py-2 rounded-full shadow-sm border border-blue-100">
-                🎨 Painting · Classes 3rd–5th
+                🎨 Painting · Classes 3rd–8th
               </div>
               <div className="bg-white px-4 py-2 rounded-full shadow-sm border border-emerald-100">
                 🧠 Quiz · Classes 6th–8th
@@ -140,18 +154,16 @@ const SchoolAccessRequest = () => {
             <Card className="shadow-lg border border-slate-100">
               <form onSubmit={handleSubmit} className="space-y-10">
 
-                {/* Info strip */}
                 <div className="bg-blue-50 rounded-xl p-5 border border-blue-100">
                   <h3 className="font-semibold text-gray-800 mb-2">Before you apply</h3>
                   <ul className="space-y-1 text-sm text-gray-700">
                     <li>✓ This form is for school coordinators only — not for individual students.</li>
                     <li>✓ Submit one request per school. Duplicate requests will be rejected.</li>
                     <li>✓ Once approved, you will receive a unique private link to complete registration.</li>
-                    <li>✓ The link will be sent to the school email provided below.</li>
+                    <li>✓ The link will be sent to the school email(s) provided below.</li>
                   </ul>
                 </div>
 
-                {/* SECTION 1 — School Details */}
                 <section>
                   <h2 className="text-lg md:text-xl font-bold text-forest mb-1">
                     SECTION 1 · School Details
@@ -172,16 +184,28 @@ const SchoolAccessRequest = () => {
                         required
                       />
                     </div>
+
                     <Input
-                      label="School Email Address"
-                      name="schoolEmail"
+                      label="Primary School Email Address"
+                      name="schoolEmail1"
                       type="email"
-                      value={formData.schoolEmail}
+                      value={formData.schoolEmail1}
                       onChange={handleChange}
                       placeholder="school@example.com"
-                      error={errors.schoolEmail}
+                      error={errors.schoolEmail1}
                       required
                     />
+
+                    <Input
+                      label="Secondary School Email Address"
+                      name="schoolEmail2"
+                      type="email"
+                      value={formData.schoolEmail2}
+                      onChange={handleChange}
+                      placeholder="optional alternate email"
+                      error={errors.schoolEmail2}
+                    />
+
                     <Input
                       label="City"
                       name="city"
@@ -191,6 +215,7 @@ const SchoolAccessRequest = () => {
                       error={errors.city}
                       required
                     />
+
                     <div className="md:col-span-2">
                       <Input
                         label="School Address"
@@ -203,7 +228,6 @@ const SchoolAccessRequest = () => {
                       />
                     </div>
 
-                    {/* State */}
                     <div>
                       <label className="block mb-2 font-semibold text-gray-700 text-sm">
                         State <span className="text-red-500 ml-1">*</span>
@@ -224,7 +248,6 @@ const SchoolAccessRequest = () => {
                       {errors.state && <p className="mt-1 text-sm text-red-500">{errors.state}</p>}
                     </div>
 
-                    {/* Board */}
                     <div>
                       <label className="block mb-2 font-semibold text-gray-700 text-sm">
                         Board of Education <span className="text-red-500 ml-1">*</span>
@@ -248,7 +271,6 @@ const SchoolAccessRequest = () => {
                     </div>
                   </div>
 
-                  {/* Eco Club */}
                   <div className="mt-5">
                     <label className="block mb-2 font-semibold text-gray-700 text-sm">
                       Does your school have an Eco Club? <span className="text-red-500 ml-1">*</span>
@@ -281,49 +303,47 @@ const SchoolAccessRequest = () => {
                   </div>
                 </section>
 
-                {/* SECTION 2 — Coordinating Teacher */}
                 <section>
                   <h2 className="text-lg md:text-xl font-bold text-forest mb-1">
-                    SECTION 2 · Coordinating Teacher
+                    SECTION 2 · Principal Details
                   </h2>
                   <p className="text-sm text-gray-600 mb-4">
-                    This person will be the primary point of contact for all competition-related communication.
+                    Provide the principal's details. Only name and phone number are mandatory.
                   </p>
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <Input
-                      label="Teacher's Full Name"
-                      name="teacherName"
-                      value={formData.teacherName}
+                      label="Principal Name"
+                      name="principalName"
+                      value={formData.principalName}
                       onChange={handleChange}
                       placeholder="Full name"
-                      error={errors.teacherName}
+                      error={errors.principalName}
                       required
                     />
+
                     <Input
-                      label="Teacher's Email Address"
-                      name="teacherEmail"
-                      type="email"
-                      value={formData.teacherEmail}
-                      onChange={handleChange}
-                      placeholder="teacher@school.com"
-                      error={errors.teacherEmail}
-                      required
-                    />
-                    <Input
-                      label="Teacher's WhatsApp / Mobile"
-                      name="teacherPhone"
-                      value={formData.teacherPhone}
+                      label="Principal Phone Number"
+                      name="principalPhone"
+                      value={formData.principalPhone}
                       onChange={handleChange}
                       placeholder="10-digit mobile number"
-                      error={errors.teacherPhone}
+                      error={errors.principalPhone}
                       maxLength="10"
-                      required
+                    />
+
+                    <Input
+                      label="Principal Email Address"
+                      name="principalEmail"
+                      type="email"
+                      value={formData.principalEmail}
+                      onChange={handleChange}
+                      placeholder="optional@example.com"
+                      error={errors.principalEmail}
                     />
                   </div>
                 </section>
 
-                {/* SECTION 3 — Additional Notes */}
                 <section>
                   <h2 className="text-lg md:text-xl font-bold text-forest mb-1">
                     SECTION 3 · Additional Notes <span className="text-gray-400 font-normal text-sm">(optional)</span>
@@ -341,7 +361,6 @@ const SchoolAccessRequest = () => {
                   />
                 </section>
 
-                {/* Submit */}
                 <div className="pt-2 border-t border-slate-100">
                   <Button type="submit" fullWidth size="large" loading={loading} disabled={loading}>
                     {loading ? 'Submitting...' : 'Submit Access Request'}
