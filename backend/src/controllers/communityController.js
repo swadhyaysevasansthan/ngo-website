@@ -111,18 +111,25 @@ export const uploadImages = async (req, res) => {
     const fs = (await import('fs')).default;
     const sharp = (await import('sharp')).default;
     for (const file of req.files) {
-      // Compress large files before uploading to Cloudinary (free plan: 10MB limit)
       let uploadPath = file.path;
       const stats = fs.statSync(file.path);
-      if (stats.size > 9 * 1024 * 1024) {
+      const ext = file.originalname.toLowerCase().slice(file.originalname.lastIndexOf('.'));
+      const isHeic = ext === '.heic' || ext === '.heif';
+
+      // Compress non-HEIC files over 9MB locally
+      if (stats.size > 9 * 1024 * 1024 && !isHeic) {
         const compressedPath = file.path + '_compressed.jpg';
         await sharp(file.path).resize(2000, 2000, { fit: 'inside', withoutEnlargement: true }).jpeg({ quality: 85 }).toFile(compressedPath);
         fs.unlinkSync(file.path);
         uploadPath = compressedPath;
       }
-      const r = await cloudinary.uploader.upload(uploadPath, {
+
+      // Use upload_large for big files (chunked upload bypasses 10MB limit)
+      const uploadMethod = stats.size > 9 * 1024 * 1024 ? 'upload_large' : 'upload';
+      const r = await cloudinary.uploader[uploadMethod](uploadPath, {
         folder: `communities/${slug}`,
         resource_type: 'image',
+        chunk_size: 6000000,
       });
       const db = await pool.query(`INSERT INTO community_images (topic_id, image_url, public_id, caption, display_order) VALUES (\$1,\$2,\$3,\$4,\$5) RETURNING *`, [id, r.secure_url, r.public_id, req.body.caption || null, req.body.display_order || 0]);
       uploaded.push(db.rows[0]);
