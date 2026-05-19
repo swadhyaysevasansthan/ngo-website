@@ -110,23 +110,18 @@ export const uploadImages = async (req, res) => {
     const uploaded = [];
     const fs = (await import('fs')).default;
     const sharp = (await import('sharp')).default;
-    const heicConvert = (await import('heic-convert')).default;
     for (const file of req.files) {
       let uploadPath = file.path;
       const ext = file.originalname.toLowerCase().slice(file.originalname.lastIndexOf('.'));
       const isHeic = ext === '.heic' || ext === '.heif';
 
-      // Convert HEIC to JPG first
+      // Reject HEIC files — ask admin to convert to JPG first
       if (isHeic) {
-        const inputBuffer = fs.readFileSync(file.path);
-        const outputBuffer = await heicConvert({ buffer: inputBuffer, format: 'JPEG', quality: 0.85 });
-        const jpgPath = file.path + '_converted.jpg';
-        fs.writeFileSync(jpgPath, outputBuffer);
         fs.unlinkSync(file.path);
-        uploadPath = jpgPath;
+        return res.status(400).json({ success: false, message: 'HEIC files are not supported. Please convert to JPG before uploading (iPhone: Settings → Camera → Formats → Most Compatible).' });
       }
 
-      // Compress if still over 9MB
+      // Compress if over 9MB
       const stats = fs.statSync(uploadPath);
       if (stats.size > 9 * 1024 * 1024) {
         const compressedPath = uploadPath + '_compressed.jpg';

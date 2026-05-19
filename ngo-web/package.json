@@ -11,6 +11,7 @@
     "@use-gesture/react": "^10.3.1",
     "axios": "^1.13.6",
     "framer-motion": "^10.16.4",
+    "heic2any": "^0.0.4",
     "lucide-react": "^0.294.0",
     "pdfjs-dist": "^3.11.174",
     "react": "^18.2.0",

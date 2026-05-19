@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { communityAPI } from '../utils/api';
+import heic2any from 'heic2any';
 import { Plus, Trash2, Save, X, Upload, Eye, EyeOff } from 'lucide-react';
 
 const CommunityAdminTab = () => {
@@ -31,8 +32,18 @@ const CommunityAdminTab = () => {
   const handleUpdateTopic = async () => { if (!topicDetail) return; try { await communityAPI.adminUpdate(topicDetail.id, { title: topicDetail.title, description: topicDetail.description, is_active: topicDetail.is_active, display_order: topicDetail.display_order }); toast.success('Updated!'); fetchTopics(); } catch (err) { toast.error('Failed to update'); } };
   const handleDeleteTopic = async (id) => { if (!window.confirm('Delete this topic and ALL its data?')) return; try { await communityAPI.adminDelete(id); toast.success('Deleted'); setTopicDetail(null); fetchTopics(); } catch (err) { toast.error('Failed'); } };
 
-  const handleImageUpload = async (e) => { const files = e.target.files; if (!files?.length || !topicDetail) return; setUploading(true); const fd = new FormData(); for (let i = 0; i < files.length; i++) fd.append('images', files[i]); try { await communityAPI.uploadImages(topicDetail.id, fd); toast.success(`${files.length} image(s) uploaded!`); fetchTopicDetail(topicDetail.id); } catch (err) { toast.error('Upload failed'); } finally { setUploading(false); if (fileInputRef.current) fileInputRef.current.value = ''; } };
-  const handleHeroUpload = async (e) => { const file = e.target.files?.[0]; if (!file || !topicDetail) return; setUploading(true); const fd = new FormData(); fd.append('image', file); try { await communityAPI.uploadHeroImage(topicDetail.id, fd); toast.success('Hero updated!'); fetchTopicDetail(topicDetail.id); } catch (err) { toast.error('Upload failed'); } finally { setUploading(false); if (heroInputRef.current) heroInputRef.current.value = ''; } };
+  const convertHeicIfNeeded = async (file) => {
+    const name = file.name.toLowerCase();
+    if (name.endsWith('.heic') || name.endsWith('.heif')) {
+      const blob = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.9 });
+      const converted = new File([blob], file.name.replace(/\.heic|\.heif/i, '.jpg'), { type: 'image/jpeg' });
+      return converted;
+    }
+    return file;
+  };
+
+  const handleImageUpload = async (e) => { const files = e.target.files; if (!files?.length || !topicDetail) return; setUploading(true); try { const fd = new FormData(); for (let i = 0; i < files.length; i++) { const converted = await convertHeicIfNeeded(files[i]); fd.append('images', converted); } await communityAPI.uploadImages(topicDetail.id, fd); toast.success(`${files.length} image(s) uploaded!`); fetchTopicDetail(topicDetail.id); } catch (err) { toast.error(err.response?.data?.message || 'Upload failed'); } finally { setUploading(false); if (fileInputRef.current) fileInputRef.current.value = ''; } };
+  const handleHeroUpload = async (e) => { const file = e.target.files?.[0]; if (!file || !topicDetail) return; setUploading(true); try { const converted = await convertHeicIfNeeded(file); const fd = new FormData(); fd.append('image', converted); await communityAPI.uploadHeroImage(topicDetail.id, fd); toast.success('Hero updated!'); fetchTopicDetail(topicDetail.id); } catch (err) { toast.error('Upload failed'); } finally { setUploading(false); if (heroInputRef.current) heroInputRef.current.value = ''; } };
   const handleRemoveHero = async () => { if (!window.confirm('Remove hero image?')) return; try { await communityAPI.deleteHeroImage(topicDetail.id); toast.success('Hero removed'); fetchTopicDetail(topicDetail.id); } catch (err) { toast.error('Failed'); } };
   const handleDeleteImage = async (imageId) => { if (!window.confirm('Delete?')) return; try { await communityAPI.deleteImage(imageId); toast.success('Deleted'); fetchTopicDetail(topicDetail.id); } catch (err) { toast.error('Failed'); } };
 
