@@ -118,7 +118,7 @@ export const uploadImages = async (req, res) => {
     res.status(201).json({ success: true, data: uploaded });
   } catch (error) {
     console.error('Upload images error:', error);
-    res.status(500).json({ success: false, message: 'Failed to upload images.' });
+    res.status(500).json({ success: false, message: 'Failed to upload images.', error: error.message || String(error) });
   }
 };
 
