@@ -109,11 +109,24 @@ export const uploadImages = async (req, res) => {
     const slug = topicCheck.rows[0].slug;
     const uploaded = [];
     const fs = (await import('fs')).default;
+    const sharp = (await import('sharp')).default;
     for (const file of req.files) {
-      const r = await cloudinary.uploader.upload(file.path, { folder: `communities/${slug}`, transformation: [{ quality: 'auto', fetch_format: 'auto' }] });
+      // Compress large files before uploading to Cloudinary (free plan: 10MB limit)
+      let uploadPath = file.path;
+      const stats = fs.statSync(file.path);
+      if (stats.size > 9 * 1024 * 1024) {
+        const compressedPath = file.path + '_compressed.jpg';
+        await sharp(file.path).resize(2000, 2000, { fit: 'inside', withoutEnlargement: true }).jpeg({ quality: 85 }).toFile(compressedPath);
+        fs.unlinkSync(file.path);
+        uploadPath = compressedPath;
+      }
+      const r = await cloudinary.uploader.upload(uploadPath, {
+        folder: `communities/${slug}`,
+        resource_type: 'image',
+      });
       const db = await pool.query(`INSERT INTO community_images (topic_id, image_url, public_id, caption, display_order) VALUES (\$1,\$2,\$3,\$4,\$5) RETURNING *`, [id, r.secure_url, r.public_id, req.body.caption || null, req.body.display_order || 0]);
       uploaded.push(db.rows[0]);
-      fs.unlinkSync(file.path);
+      if (fs.existsSync(uploadPath)) fs.unlinkSync(uploadPath);
     }
     res.status(201).json({ success: true, data: uploaded });
   } catch (error) {
