@@ -18,9 +18,14 @@ const resolveToken = async (rawToken, res) => {
 
   const tokenResult = await pool.query(
     `SELECT t.*, r.id AS request_id, r.school_name, r.school_email,
-            r.school_address, r.city, r.state, r.board_of_education,
-            r.has_eco_club, r.teacher_name, r.teacher_email,
-            r.teacher_phone, r.status AS request_status
+       r.school_address, r.city, r.state, r.board_of_education,
+       r.has_eco_club,
+
+       r.principal_name,
+       r.principal_email,
+       r.principal_phone,
+
+       r.status AS request_status
      FROM school_access_tokens t
      JOIN school_access_requests r ON r.id = t.request_id
      WHERE t.token_hash = $1`,
@@ -80,9 +85,9 @@ export const validateToken = async (req, res) => {
           state: row.state,
           boardOfEducation: row.board_of_education,
           hasEcoClub: row.has_eco_club,
-          teacherName: row.teacher_name,
-          teacherEmail: row.teacher_email,
-          teacherPhone: row.teacher_phone,
+          principalName: row.principal_name,
+          principalEmail: row.principal_email,
+          principalPhone: row.principal_phone,
         },
         tokenExpiresAt: row.expires_at,
         registrations: {
