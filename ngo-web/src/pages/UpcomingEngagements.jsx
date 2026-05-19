@@ -80,7 +80,7 @@ const UpcomingEngagements = () => {
     overview: {
       title: 'National Environment Awareness Competitions',
       subtitle: '2026–2027 · Painting & Quiz',
-      poster: '/images/competitions/quiznpaint.png', // path to QuiznPaint-5.jpg
+      poster: '/images/competitions/quiznpaint1.png', // path to QuiznPaint-5.jpg
       tabActive: 'bg-emerald-700 text-white',
       tabHover: 'hover:bg-gray-50 text-gray-600',
       icon: Globe,
@@ -88,8 +88,8 @@ const UpcomingEngagements = () => {
     painting: {
       title: 'National Painting Competition',
       subtitle: 'Express Your Ideas on Nature & Sustainability!',
-      classes: 'Classes 3rd – 5th',
-      max: '200 students / school',
+      classes: 'Classes 3rd – 8th',
+      max: '300 students / school (upto 150 students per category)',
       accentLight: 'from-orange-400 to-amber-500',
       accentDark: 'from-orange-500 to-amber-600',
       border: 'border-orange-300',
@@ -98,9 +98,9 @@ const UpcomingEngagements = () => {
       tabActive: 'bg-orange-500 text-white',
       tabHover: 'hover:bg-orange-50 text-orange-600',
       icon: Brush,
-      poster: '/images/competitions/paint.png', 
+      poster: '/images/competitions/paint1.jpeg', 
       description:
-        'Students creatively express their ideas and concerns about nature, environmental protection, and sustainable living through artwork.',
+        'Students creatively express their ideas and concerns about nature, environmental protection, and sustainable living through artwork. The competition includes two categories for students: Primary Category (Classes 3rd–5th) and Secondary Category (Classes 6th–8th).',
     },
     quiz: {
       title: 'National Environment Awareness Quiz',
@@ -115,7 +115,7 @@ const UpcomingEngagements = () => {
       tabActive: 'bg-emerald-600 text-white',
       tabHover: 'hover:bg-emerald-50 text-emerald-600',
       icon: BookOpen,
-      poster: '/images/competitions/quiz.png', 
+      poster: '/images/competitions/quiz1.jpeg', 
       description:
         'Students participate in a knowledge-based quiz covering important environmental topics and sustainability issues at a national level.',
     },
@@ -292,13 +292,13 @@ const UpcomingEngagements = () => {
                     </h3>
                     <p className="text-sm font-semibold text-gray-500 mb-4">2026–2027 · Painting & Quiz</p>
                     <p className="text-gray-700 leading-relaxed mb-6">
-                      Two national-level competitions — a Painting Competition for Classes 3rd–5th and an Environment Awareness Quiz for Classes 6th–8th — united by the theme of Environment & Sustainability.
+                      Two national-level competitions — a Painting Competition for Classes 3rd–8th and an Environment Awareness Quiz for Classes 6th–8th — united by the theme of Environment & Sustainability.
                     </p>
 
                     {/* Competition highlights */}
                     <div className="grid grid-cols-2 gap-4 mb-6">
                       {[
-                        { icon: Brush,    label: 'Painting',  value: 'Classes 3rd – 5th',  sub: 'Up to 200 students/school', color: 'border-orange-200 bg-orange-50' },
+                        { icon: Brush,    label: 'Painting',  value: 'Classes 3rd – 8th',  sub: 'Up to 300 students/school', color: 'border-orange-200 bg-orange-50' },
                         { icon: BookOpen, label: 'Quiz',       value: 'Classes 6th – 8th',  sub: 'Up to 50 students/school',  color: 'border-emerald-200 bg-emerald-50/80' },
                       ].map(s => (
                         <div key={s.label} className={`rounded-xl p-4 shadow-sm border ${s.color}`}>

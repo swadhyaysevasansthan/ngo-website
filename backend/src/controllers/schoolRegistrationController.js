@@ -8,10 +8,6 @@ import {
 
 // ─── Shared helper ──────────────────────────────────────────
 
-/**
- * Fetch and validate a token from the DB.
- * Returns { valid, tokenRow, requestRow } or sends error response.
- */
 const resolveToken = async (rawToken, res) => {
   if (!rawToken) {
     res.status(400).json({ success: false, message: 'Registration token is required.' });
@@ -54,10 +50,6 @@ const resolveToken = async (rawToken, res) => {
 
 // ─── Public ────────────────────────────────────────────────
 
-/**
- * GET /api/school-registration/validate?token=...
- * Public — validate token and return school info + registration statuses
- */
 export const validateToken = async (req, res) => {
   const { token } = req.query;
 
@@ -65,7 +57,6 @@ export const validateToken = async (req, res) => {
     const row = await resolveToken(token, res);
     if (!row) return;
 
-    // Fetch existing registrations for this school
     const regResult = await pool.query(
       `SELECT competition_type, total_participants, submitted_at, allotted_date, confirmation_sent
        FROM school_competition_registrations
@@ -110,30 +101,37 @@ export const validateToken = async (req, res) => {
   }
 };
 
-/**
- * POST /api/school-registration/painting?token=...
- * Public — submit painting competition registration
- */
 export const submitPaintingRegistration = async (req, res) => {
   const { token } = req.query;
 
   const {
-    primaryTeacherName,
-    primaryTeacherEmail,
-    primaryTeacherPhone,
-    altTeacherName,
-    altTeacherEmail,
-    altTeacherPhone,
-    classCounts,       // { "3": n, "4": n, "5": n }
+    primaryTeacher1Name,
+    primaryTeacher1Email,
+    primaryTeacher1Phone,
+    primaryTeacher1Designation,
+    primaryTeacher2Name,
+    primaryTeacher2Email,
+    primaryTeacher2Phone,
+    primaryTeacher2Designation,
+    secondaryTeacher1Name,
+    secondaryTeacher1Email,
+    secondaryTeacher1Phone,
+    secondaryTeacher1Designation,
+    secondaryTeacher2Name,
+    secondaryTeacher2Email,
+    secondaryTeacher2Phone,
+    secondaryTeacher2Designation,
+    classCounts,
     totalParticipants,
-    preferredDates,    // ["2026-10-15", "2026-11-02", "2026-12-10", "2027-01-20"]
+    primaryCategoryTotal,
+    secondaryCategoryTotal,
+    preferredDates,
   } = req.body;
 
   try {
     const row = await resolveToken(token, res);
     if (!row) return;
 
-    // Check not already registered
     const existing = await pool.query(
       `SELECT id FROM school_competition_registrations
        WHERE request_id = $1 AND competition_type = 'painting'`,
@@ -147,44 +145,111 @@ export const submitPaintingRegistration = async (req, res) => {
       });
     }
 
-    // Validate total <= 200
-    if (totalParticipants > 200) {
+    const primaryTotal =
+      (parseInt(classCounts?.[3]) || 0) +
+      (parseInt(classCounts?.[4]) || 0) +
+      (parseInt(classCounts?.[5]) || 0);
+
+    const secondaryTotal =
+      (parseInt(classCounts?.[6]) || 0) +
+      (parseInt(classCounts?.[7]) || 0) +
+      (parseInt(classCounts?.[8]) || 0);
+
+    const grandTotal = primaryTotal + secondaryTotal;
+
+    if (primaryTotal > 150) {
       return res.status(400).json({
         success: false,
-        message: 'Total participants for the painting competition cannot exceed 200.',
+        message: 'Primary category participants cannot exceed 150.',
+      });
+    }
+
+    if (secondaryTotal > 150) {
+      return res.status(400).json({
+        success: false,
+        message: 'Secondary category participants cannot exceed 150.',
+      });
+    }
+
+    if (grandTotal > 300) {
+      return res.status(400).json({
+        success: false,
+        message: 'Total participants for the painting competition cannot exceed 300.',
+      });
+    }
+
+    if (Number(totalParticipants) !== grandTotal) {
+      return res.status(400).json({
+        success: false,
+        message: 'Total participants does not match class-wise counts.',
+      });
+    }
+
+    if (Number(primaryCategoryTotal) !== primaryTotal) {
+      return res.status(400).json({
+        success: false,
+        message: 'Primary category total does not match class-wise counts.',
+      });
+    }
+
+    if (Number(secondaryCategoryTotal) !== secondaryTotal) {
+      return res.status(400).json({
+        success: false,
+        message: 'Secondary category total does not match class-wise counts.',
       });
     }
 
     const result = await pool.query(
       `INSERT INTO school_competition_registrations
-         (request_id, competition_type,
-          primary_teacher_name, primary_teacher_email, primary_teacher_phone,
-          alt_teacher_name, alt_teacher_email, alt_teacher_phone,
-          class_counts, total_participants, preferred_dates)
-       VALUES ($1, 'painting', $2, $3, $4, $5, $6, $7, $8, $9, $10)
+        (request_id, competition_type,
+         primary_teacher1_name, primary_teacher1_email, primary_teacher1_phone, primary_teacher1_designation,
+         primary_teacher2_name, primary_teacher2_email, primary_teacher2_phone, primary_teacher2_designation,
+         secondary_teacher1_name, secondary_teacher1_email, secondary_teacher1_phone, secondary_teacher1_designation,
+         secondary_teacher2_name, secondary_teacher2_email, secondary_teacher2_phone, secondary_teacher2_designation,
+         class_counts, primary_category_total, secondary_category_total, total_participants, preferred_dates)
+       VALUES
+        ($1, 'painting',
+         $2, $3, $4, $5,
+         $6, $7, $8, $9,
+         $10, $11, $12, $13,
+         $14, $15, $16, $17,
+         $18, $19, $20, $21, $22)
        RETURNING *`,
       [
         row.request_id,
-        primaryTeacherName.trim(),
-        primaryTeacherEmail.toLowerCase().trim(),
-        primaryTeacherPhone.trim(),
-        altTeacherName?.trim() || null,
-        altTeacherEmail?.toLowerCase().trim() || null,
-        altTeacherPhone?.trim() || null,
+        primaryTeacher1Name.trim(),
+        primaryTeacher1Email.toLowerCase().trim(),
+        primaryTeacher1Phone.trim(),
+        primaryTeacher1Designation.trim(),
+        primaryTeacher2Name.trim(),
+        primaryTeacher2Email.toLowerCase().trim(),
+        primaryTeacher2Phone.trim(),
+        primaryTeacher2Designation.trim(),
+        secondaryTeacher1Name.trim(),
+        secondaryTeacher1Email.toLowerCase().trim(),
+        secondaryTeacher1Phone.trim(),
+        secondaryTeacher1Designation.trim(),
+        secondaryTeacher2Name.trim(),
+        secondaryTeacher2Email.toLowerCase().trim(),
+        secondaryTeacher2Phone.trim(),
+        secondaryTeacher2Designation.trim(),
         JSON.stringify(classCounts),
-        totalParticipants,
+        primaryTotal,
+        secondaryTotal,
+        grandTotal,
         JSON.stringify(preferredDates),
       ]
     );
 
     const registration = result.rows[0];
 
-    // Send confirmation emails
     if (process.env.ENABLE_EMAILS === 'true') {
       const recipients = [
         row.school_email,
-        primaryTeacherEmail.toLowerCase().trim(),
-        altTeacherEmail?.toLowerCase().trim(),
+        primaryTeacher1Email?.toLowerCase().trim(),
+        primaryTeacher2Email?.toLowerCase().trim(),
+        secondaryTeacher1Email?.toLowerCase().trim(),
+        secondaryTeacher2Email?.toLowerCase().trim(),
       ].filter(Boolean);
 
       const uniqueRecipients = [...new Set(recipients)];
@@ -192,10 +257,10 @@ export const submitPaintingRegistration = async (req, res) => {
       try {
         const template = schoolCompetitionRegistrationTemplate({
           schoolName: row.school_name,
-          teacherName: primaryTeacherName,
+          teacherName: primaryTeacher1Name,
           competitionType: 'painting',
           classCounts,
-          totalParticipants,
+          totalParticipants: grandTotal,
           availableComputers: null,
           preferredDates,
           submittedAt: registration.submitted_at,
@@ -235,7 +300,7 @@ export const submitPaintingRegistration = async (req, res) => {
         registrationId: registration.id,
         schoolName: row.school_name,
         competitionType: 'painting',
-        totalParticipants,
+        totalParticipants: grandTotal,
         submittedAt: registration.submitted_at,
       },
     });
@@ -249,10 +314,6 @@ export const submitPaintingRegistration = async (req, res) => {
   }
 };
 
-/**
- * POST /api/school-registration/quiz?token=...
- * Public — submit quiz competition registration
- */
 export const submitQuizRegistration = async (req, res) => {
   const { token } = req.query;
 
@@ -263,7 +324,7 @@ export const submitQuizRegistration = async (req, res) => {
     altTeacherName,
     altTeacherEmail,
     altTeacherPhone,
-    classCounts,         // { "6": n, "7": n, "8": n }
+    classCounts,
     totalParticipants,
     availableComputers,
     preferredDates,
@@ -273,7 +334,6 @@ export const submitQuizRegistration = async (req, res) => {
     const row = await resolveToken(token, res);
     if (!row) return;
 
-    // Check not already registered
     const existing = await pool.query(
       `SELECT id FROM school_competition_registrations
        WHERE request_id = $1 AND competition_type = 'quiz'`,
@@ -287,7 +347,6 @@ export const submitQuizRegistration = async (req, res) => {
       });
     }
 
-    // Validate total <= 50
     if (totalParticipants > 50) {
       return res.status(400).json({
         success: false,
@@ -297,10 +356,10 @@ export const submitQuizRegistration = async (req, res) => {
 
     const result = await pool.query(
       `INSERT INTO school_competition_registrations
-         (request_id, competition_type,
-          primary_teacher_name, primary_teacher_email, primary_teacher_phone,
-          alt_teacher_name, alt_teacher_email, alt_teacher_phone,
-          class_counts, total_participants, available_computers, preferred_dates)
+        (request_id, competition_type,
+         primary_teacher_name, primary_teacher_email, primary_teacher_phone,
+         alt_teacher_name, alt_teacher_email, alt_teacher_phone,
+         class_counts, total_participants, available_computers, preferred_dates)
        VALUES ($1, 'quiz', $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
        RETURNING *`,
       [
@@ -320,7 +379,6 @@ export const submitQuizRegistration = async (req, res) => {
 
     const registration = result.rows[0];
 
-    // Send confirmation emails
     if (process.env.ENABLE_EMAILS === 'true') {
       const recipients = [
         row.school_email,
@@ -390,13 +448,6 @@ export const submitQuizRegistration = async (req, res) => {
   }
 };
 
-// ─── Admin ─────────────────────────────────────────────────
-
-/**
- * GET /api/admin/school-registration/painting
- * GET /api/admin/school-registration/quiz
- * Admin — list all registrations for a competition type
- */
 export const listRegistrations = async (req, res) => {
   const { competitionType } = req.params;
 
@@ -404,9 +455,12 @@ export const listRegistrations = async (req, res) => {
     const result = await pool.query(
       `SELECT
          scr.id, scr.competition_type,
-         scr.primary_teacher_name, scr.primary_teacher_email, scr.primary_teacher_phone,
-         scr.alt_teacher_name, scr.alt_teacher_email, scr.alt_teacher_phone,
-         scr.class_counts, scr.total_participants, scr.available_computers,
+         scr.primary_teacher1_name, scr.primary_teacher1_email, scr.primary_teacher1_phone, scr.primary_teacher1_designation,
+         scr.primary_teacher2_name, scr.primary_teacher2_email, scr.primary_teacher2_phone, scr.primary_teacher2_designation,
+         scr.secondary_teacher1_name, scr.secondary_teacher1_email, scr.secondary_teacher1_phone, scr.secondary_teacher1_designation,
+         scr.secondary_teacher2_name, scr.secondary_teacher2_email, scr.secondary_teacher2_phone, scr.secondary_teacher2_designation,
+         scr.class_counts, scr.primary_category_total, scr.secondary_category_total,
+         scr.total_participants, scr.available_computers,
          scr.preferred_dates, scr.allotted_date,
          scr.confirmation_sent, scr.confirmation_sent_at,
          scr.submitted_at,
@@ -434,10 +488,6 @@ export const listRegistrations = async (req, res) => {
   }
 };
 
-/**
- * GET /api/admin/school-registration/:id
- * Admin — get full details of a single registration
- */
 export const getRegistrationById = async (req, res) => {
   const { id } = req.params;
 
@@ -474,10 +524,6 @@ export const getRegistrationById = async (req, res) => {
   }
 };
 
-/**
- * PATCH /api/admin/school-registration/:id/allot-date
- * Admin — save an allotted date for a registration
- */
 export const allotDate = async (req, res) => {
   const { id } = req.params;
   const { allottedDate } = req.body;
@@ -513,10 +559,6 @@ export const allotDate = async (req, res) => {
   }
 };
 
-/**
- * POST /api/admin/school-registration/:id/send-confirmation
- * Admin — send date confirmation email to school + teachers
- */
 export const sendConfirmationEmail = async (req, res) => {
   const { id } = req.params;
 
@@ -547,18 +589,19 @@ export const sendConfirmationEmail = async (req, res) => {
       });
     }
 
-    // Build recipient list: school email + primary teacher + alt teacher (deduplicated)
     const recipients = [
       reg.school_email,
-      reg.primary_teacher_email,
-      reg.alt_teacher_email,
+      reg.primary_teacher1_email,
+      reg.primary_teacher2_email,
+      reg.secondary_teacher1_email,
+      reg.secondary_teacher2_email,
     ].filter(Boolean);
 
     const uniqueRecipients = [...new Set(recipients)];
 
     const template = schoolDateAllotmentTemplate({
       schoolName: reg.school_name,
-      teacherName: reg.primary_teacher_name,
+      teacherName: reg.primary_teacher1_name,
       competitionType: reg.competition_type,
       allottedDate: reg.allotted_date,
       totalParticipants: reg.total_participants,
@@ -596,7 +639,6 @@ export const sendConfirmationEmail = async (req, res) => {
       }
     }
 
-    // Mark confirmation sent
     await pool.query(
       `UPDATE school_competition_registrations
        SET confirmation_sent = true, confirmation_sent_at = NOW(), updated_at = NOW()

@@ -15,8 +15,6 @@ import { verifyAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// ─── Shared validation ──────────────────────────────────────
-
 const tokenQueryValidation = [
   query('token')
     .notEmpty().withMessage('Registration token is required')
@@ -28,13 +26,11 @@ const teacherValidation = [
     .trim()
     .notEmpty().withMessage('Primary teacher name is required')
     .isLength({ min: 3, max: 255 }).withMessage('Teacher name must be between 3 and 255 characters'),
-
   body('primaryTeacherEmail')
     .trim()
     .notEmpty().withMessage('Primary teacher email is required')
     .isEmail().withMessage('Please provide a valid teacher email')
     .normalizeEmail(),
-
   body('primaryTeacherPhone')
     .trim()
     .notEmpty().withMessage('Primary teacher phone is required')
@@ -44,23 +40,20 @@ const teacherValidation = [
     .optional({ nullable: true })
     .trim()
     .isLength({ min: 3, max: 255 }).withMessage('Alternate teacher name must be between 3 and 255 characters'),
-
   body('altTeacherEmail')
     .optional({ nullable: true })
     .trim()
     .isEmail().withMessage('Please provide a valid alternate teacher email')
     .normalizeEmail(),
-
   body('altTeacherPhone')
     .optional({ nullable: true })
     .trim()
-    .matches(/^[6-9]\d{9}$/).withMessage('Please provide a valid 10-digit Indian mobile number for alternate teacher'),
+    .matches(/^[6-9]\d{9}$/).withMessage('Please provide a valid alternate teacher phone'),
 ];
 
 const preferredDatesValidation = [
   body('preferredDates')
     .isArray({ min: 4, max: 4 }).withMessage('Please provide exactly 4 preferred dates'),
-
   body('preferredDates.*')
     .isISO8601().withMessage('Each preferred date must be a valid date (YYYY-MM-DD)')
     .custom((date) => {
@@ -76,25 +69,45 @@ const preferredDatesValidation = [
 
 const paintingValidation = [
   ...tokenQueryValidation,
-  ...teacherValidation,
+  body('primaryTeacher1Name').trim().notEmpty().withMessage('Primary teacher 1 name is required'),
+  body('primaryTeacher1Email').trim().notEmpty().isEmail().withMessage('Valid primary teacher 1 email is required').normalizeEmail(),
+  body('primaryTeacher1Phone').trim().notEmpty().matches(/^[6-9]\d{9}$/).withMessage('Valid primary teacher 1 phone is required'),
+  body('primaryTeacher1Designation').trim().notEmpty().withMessage('Primary teacher 1 designation is required'),
+
+  body('primaryTeacher2Name').trim().notEmpty().withMessage('Primary teacher 2 name is required'),
+  body('primaryTeacher2Email').trim().notEmpty().isEmail().withMessage('Valid primary teacher 2 email is required').normalizeEmail(),
+  body('primaryTeacher2Phone').trim().notEmpty().matches(/^[6-9]\d{9}$/).withMessage('Valid primary teacher 2 phone is required'),
+  body('primaryTeacher2Designation').trim().notEmpty().withMessage('Primary teacher 2 designation is required'),
+
+  body('secondaryTeacher1Name').trim().notEmpty().withMessage('Secondary teacher 1 name is required'),
+  body('secondaryTeacher1Email').trim().notEmpty().isEmail().withMessage('Valid secondary teacher 1 email is required').normalizeEmail(),
+  body('secondaryTeacher1Phone').trim().notEmpty().matches(/^[6-9]\d{9}$/).withMessage('Valid secondary teacher 1 phone is required'),
+  body('secondaryTeacher1Designation').trim().notEmpty().withMessage('Secondary teacher 1 designation is required'),
+
+  body('secondaryTeacher2Name').trim().notEmpty().withMessage('Secondary teacher 2 name is required'),
+  body('secondaryTeacher2Email').trim().notEmpty().isEmail().withMessage('Valid secondary teacher 2 email is required').normalizeEmail(),
+  body('secondaryTeacher2Phone').trim().notEmpty().matches(/^[6-9]\d{9}$/).withMessage('Valid secondary teacher 2 phone is required'),
+  body('secondaryTeacher2Designation').trim().notEmpty().withMessage('Secondary teacher 2 designation is required'),
+
   ...preferredDatesValidation,
 
-  body('classCounts')
-    .notEmpty().withMessage('Class-wise student counts are required')
-    .isObject().withMessage('Class counts must be an object'),
+  body('classCounts').notEmpty().withMessage('Class-wise student counts are required').isObject().withMessage('Class counts must be an object'),
+  body('classCounts.3').isInt({ min: 0 }).withMessage('Class 3 count must be a non-negative integer'),
+  body('classCounts.4').isInt({ min: 0 }).withMessage('Class 4 count must be a non-negative integer'),
+  body('classCounts.5').isInt({ min: 0 }).withMessage('Class 5 count must be a non-negative integer'),
+  body('classCounts.6').isInt({ min: 0 }).withMessage('Class 6 count must be a non-negative integer'),
+  body('classCounts.7').isInt({ min: 0 }).withMessage('Class 7 count must be a non-negative integer'),
+  body('classCounts.8').isInt({ min: 0 }).withMessage('Class 8 count must be a non-negative integer'),
 
-  body('classCounts.3')
-    .isInt({ min: 0 }).withMessage('Class 3 count must be a non-negative integer'),
-
-  body('classCounts.4')
-    .isInt({ min: 0 }).withMessage('Class 4 count must be a non-negative integer'),
-
-  body('classCounts.5')
-    .isInt({ min: 0 }).withMessage('Class 5 count must be a non-negative integer'),
-
+  body('primaryCategoryTotal')
+    .isInt({ min: 0, max: 150 })
+    .withMessage('Primary category total must be between 0 and 150'),
+  body('secondaryCategoryTotal')
+    .isInt({ min: 0, max: 150 })
+    .withMessage('Secondary category total must be between 0 and 150'),
   body('totalParticipants')
-    .isInt({ min: 1, max: 200 })
-    .withMessage('Total participants must be between 1 and 200'),
+    .isInt({ min: 1, max: 300 })
+    .withMessage('Total participants must be between 1 and 300'),
 ];
 
 const quizValidation = [
@@ -102,31 +115,15 @@ const quizValidation = [
   ...teacherValidation,
   ...preferredDatesValidation,
 
-  body('classCounts')
-    .notEmpty().withMessage('Class-wise student counts are required')
-    .isObject().withMessage('Class counts must be an object'),
+  body('classCounts').notEmpty().withMessage('Class-wise student counts are required').isObject().withMessage('Class counts must be an object'),
+  body('classCounts.6').isInt({ min: 0 }).withMessage('Class 6 count must be a non-negative integer'),
+  body('classCounts.7').isInt({ min: 0 }).withMessage('Class 7 count must be a non-negative integer'),
+  body('classCounts.8').isInt({ min: 0 }).withMessage('Class 8 count must be a non-negative integer'),
 
-  body('classCounts.6')
-    .isInt({ min: 0 }).withMessage('Class 6 count must be a non-negative integer'),
-
-  body('classCounts.7')
-    .isInt({ min: 0 }).withMessage('Class 7 count must be a non-negative integer'),
-
-  body('classCounts.8')
-    .isInt({ min: 0 }).withMessage('Class 8 count must be a non-negative integer'),
-
-  body('totalParticipants')
-    .isInt({ min: 1, max: 50 })
-    .withMessage('Total participants must be between 1 and 50'),
-
-  body('availableComputers')
-    .isInt({ min: 1 })
-    .withMessage('Number of available computers must be at least 1'),
+  body('totalParticipants').isInt({ min: 1, max: 50 }).withMessage('Total participants must be between 1 and 50'),
+  body('availableComputers').isInt({ min: 1 }).withMessage('Number of available computers must be at least 1'),
 ];
 
-// ─── Public routes ──────────────────────────────────────────
-
-// GET /api/school-registration/validate?token=...
 router.get(
   '/validate',
   tokenQueryValidation,
@@ -134,7 +131,6 @@ router.get(
   validateToken
 );
 
-// POST /api/school-registration/painting?token=...
 router.post(
   '/painting',
   rateLimiter,
@@ -143,7 +139,6 @@ router.post(
   submitPaintingRegistration
 );
 
-// POST /api/school-registration/quiz?token=...
 router.post(
   '/quiz',
   rateLimiter,
@@ -152,9 +147,6 @@ router.post(
   submitQuizRegistration
 );
 
-// ─── Admin routes ───────────────────────────────────────────
-
-// GET /api/school-registration/admin/:competitionType
 router.get(
   '/admin/:competitionType',
   verifyAdmin,
@@ -164,7 +156,6 @@ router.get(
   listRegistrations
 );
 
-// GET /api/school-registration/admin/detail/:id
 router.get(
   '/admin/detail/:id',
   verifyAdmin,
@@ -173,7 +164,6 @@ router.get(
   getRegistrationById
 );
 
-// PATCH /api/school-registration/admin/:id/allot-date
 router.patch(
   '/admin/:id/allot-date',
   verifyAdmin,
@@ -196,7 +186,6 @@ router.patch(
   allotDate
 );
 
-// POST /api/school-registration/admin/:id/send-confirmation
 router.post(
   '/admin/:id/send-confirmation',
   verifyAdmin,
