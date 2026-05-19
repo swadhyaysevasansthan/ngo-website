@@ -22,14 +22,14 @@ const accessRequestValidation = [
 
   body('schoolEmail1')
     .trim()
-    .notEmpty().withMessage('Primary school email is required')
+    .notEmpty().withMessage('School email is required')
     .isEmail().withMessage('Please provide a valid email address')
     .normalizeEmail(),
 
   body('schoolEmail2')
-    .optional({ nullable: true, checkFalsy: true })
     .trim()
-    .isEmail().withMessage('Please provide a valid secondary email address')
+    .notEmpty().withMessage('Alternate school email is required')
+    .isEmail().withMessage('Please provide a valid email address')
     .normalizeEmail(),
 
   body('schoolAddress')
@@ -50,8 +50,14 @@ const accessRequestValidation = [
     .notEmpty().withMessage('Board of education is required'),
 
   body('hasEcoClub')
-    .notEmpty().withMessage('Please indicate if your school has an Eco Club')
-    .isBoolean().withMessage('Eco Club field must be true or false'),
+    .exists().withMessage('Please indicate if your school has an Eco Club')
+    .custom((value) => {
+      return value === true ||
+            value === false ||
+            value === 'true' ||
+            value === 'false';
+    })
+    .withMessage('Eco Club field must be true or false'),
 
   body('principalName')
     .trim()

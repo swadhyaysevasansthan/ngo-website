@@ -51,10 +51,10 @@ const SchoolAccessRequest = () => {
 
     if (!formData.schoolName.trim()) e.schoolName = 'School name is required';
 
-    if (!formData.schoolEmail1.trim()) e.schoolEmail1 = 'Primary email is required';
+    if (!formData.schoolEmail1.trim()) e.schoolEmail1 = 'School email is required';
     else if (!/\S+@\S+\.\S+/.test(formData.schoolEmail1)) e.schoolEmail1 = 'Invalid email address';
 
-    if (!formData.schoolEmail2.trim()) e.schoolEmail2 = 'Primary email is required';
+    if (!formData.schoolEmail2.trim()) e.schoolEmail2 = 'Alternate school email is required';
     else if (!/\S+@\S+\.\S+/.test(formData.schoolEmail2)) e.schoolEmail2 = 'Invalid email address';
 
     if (!formData.schoolAddress.trim()) e.schoolAddress = 'School address is required';
@@ -308,7 +308,7 @@ const SchoolAccessRequest = () => {
                     SECTION 2 · Principal Details
                   </h2>
                   <p className="text-sm text-gray-600 mb-4">
-                    Provide the principal's details. Only name and phone number are mandatory.
+                    Provide the principal's details. 
                   </p>
 
                   <div className="grid md:grid-cols-2 gap-4">

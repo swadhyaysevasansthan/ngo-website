@@ -71,7 +71,7 @@ export const createAccessRequest = async (req, res) => {
       [
         schoolName.trim(),
         primaryEmail,
-        schoolEmail2?.toLowerCase().trim() || null,
+        schoolEmail2?.toLowerCase().trim(),
         schoolAddress.trim(),
         city.trim(),
         state.trim(),
