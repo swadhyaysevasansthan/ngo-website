@@ -44,7 +44,7 @@ const teachersValidation = [
   body('teachers.*.phone')
     .optional({ nullable: true, checkFalsy: true })
     .trim()
-    .matches(/^[6-9]\\d{9}$/)
+    .matches(/^[6-9]\d{9}$/)
     .withMessage('Valid Indian mobile number required'),
 ];
 
