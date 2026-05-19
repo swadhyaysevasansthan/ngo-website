@@ -222,26 +222,33 @@ export const submitPaintingRegistration = async (req, res) => {
        RETURNING *`,
       [
         row.request_id,
-        primaryTeacher1Name.trim(),
-        primaryTeacher1Email.toLowerCase().trim(),
-        primaryTeacher1Phone.trim(),
-        primaryTeacher1Designation.trim(),
-        primaryTeacher2Name.trim(),
-        primaryTeacher2Email.toLowerCase().trim(),
-        primaryTeacher2Phone.trim(),
-        primaryTeacher2Designation.trim(),
-        secondaryTeacher1Name.trim(),
-        secondaryTeacher1Email.toLowerCase().trim(),
-        secondaryTeacher1Phone.trim(),
-        secondaryTeacher1Designation.trim(),
-        secondaryTeacher2Name.trim(),
-        secondaryTeacher2Email.toLowerCase().trim(),
-        secondaryTeacher2Phone.trim(),
-        secondaryTeacher2Designation.trim(),
+
+        primaryTeacher1Name?.trim(),
+        primaryTeacher1Email?.toLowerCase().trim(),
+        primaryTeacher1Phone?.trim(),
+        primaryTeacher1Designation?.trim(),
+
+        primaryTeacher2Name?.trim() || null,
+        primaryTeacher2Email?.toLowerCase().trim() || null,
+        primaryTeacher2Phone?.trim() || null,
+        primaryTeacher2Designation?.trim() || null,
+
+        secondaryTeacher1Name?.trim(),
+        secondaryTeacher1Email?.toLowerCase().trim(),
+        secondaryTeacher1Phone?.trim(),
+        secondaryTeacher1Designation?.trim(),
+
+        secondaryTeacher2Name?.trim() || null,
+        secondaryTeacher2Email?.toLowerCase().trim() || null,
+        secondaryTeacher2Phone?.trim() || null,
+        secondaryTeacher2Designation?.trim() || null,
+
         JSON.stringify(classCounts),
+
         primaryTotal,
         secondaryTotal,
         grandTotal,
+
         JSON.stringify(preferredDates),
       ]
     );
@@ -310,7 +317,11 @@ export const submitPaintingRegistration = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Submit painting registration error:', error);
+    console.error('Submit painting registration FULL error:', {
+  message: error.message,
+  stack: error.stack,
+  detail: error.detail,
+});
     res.status(500).json({
       success: false,
       message: 'Failed to submit painting registration.',
