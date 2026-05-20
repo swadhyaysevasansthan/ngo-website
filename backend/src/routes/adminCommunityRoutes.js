@@ -10,6 +10,7 @@ import {
   createEvent, updateEvent, deleteEvent,
   createSection, updateSection, deleteSection,
   createStat, updateStat, deleteStat,
+  createAlbum, updateAlbum, deleteAlbum,
 } from '../controllers/communityController.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -61,5 +62,9 @@ router.delete('/sections/:sectionId', deleteSection);
 router.post('/:id/stats', createStat);
 router.put('/stats/:statId', updateStat);
 router.delete('/stats/:statId', deleteStat);
+
+router.post('/:id/albums', createAlbum);
+router.put('/albums/:albumId', updateAlbum);
+router.delete('/albums/:albumId', deleteAlbum);
 
 export default router;

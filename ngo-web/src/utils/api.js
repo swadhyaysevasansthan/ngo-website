@@ -196,6 +196,10 @@ export const communityAPI = {
   createStat: (topicId, data) => apiClient.post(`/admin/communities/${topicId}/stats`, data),
   updateStat: (statId, data) => apiClient.put(`/admin/communities/stats/${statId}`, data),
   deleteStat: (statId) => apiClient.delete(`/admin/communities/stats/${statId}`),
+  // Albums
+  createAlbum: (topicId, data) => apiClient.post(`/admin/communities/${topicId}/albums`, data),
+  updateAlbum: (albumId, data) => apiClient.put(`/admin/communities/albums/${albumId}`, data),
+  deleteAlbum: (albumId) => apiClient.delete(`/admin/communities/albums/${albumId}`),
 };
 
 export default apiClient;

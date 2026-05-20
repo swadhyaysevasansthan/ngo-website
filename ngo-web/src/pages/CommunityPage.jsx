@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Calendar, Clock, Rocket } from 'lucide-react';
 import SectionHeader from '../components/SectionHeader';
 import Button from '../components/Button';
-import DomeGallery from '../components/DomeGallery';
+import CircularGallery from '../components/CircularGallery';
 import { communityAPI } from '../utils/api';
 
 const CommunityPage = () => {
@@ -15,8 +15,7 @@ const CommunityPage = () => {
   const [topic, setTopic] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const galleryRef = useRef(null);
-  const domeContainerRef = useRef(null);
-  const scrollDownRef = useRef(null);
+
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -42,25 +41,7 @@ const CommunityPage = () => {
     return () => observer.disconnect();
   }, [topic]);
 
-  // Rotate dome left/right by clicking arrows
-  const rotateDome = (direction) => {
-    const sphere = domeContainerRef.current?.querySelector('.sphere');
-    if (!sphere) return;
-    const current = sphere.style.transform || '';
-    const match = current.match(/rotateY\(([-\d.]+)deg\)/);
-    const currentY = match ? parseFloat(match[1]) : 0;
-    const newY = currentY + (direction === 'left' ? 30 : -30);
-    sphere.style.transition = 'transform 0.6s ease-out';
-    sphere.style.transform = current.replace(/rotateY\([-\d.]+deg\)/, `rotateY(${newY}deg)`);
-    setTimeout(() => { sphere.style.transition = ''; }, 600);
-  };
 
-  // Scroll past gallery
-  const scrollPastGallery = () => {
-    if (!galleryRef.current) return;
-    const galleryBottom = galleryRef.current.getBoundingClientRect().bottom + window.scrollY;
-    window.scrollTo({ top: galleryBottom, behavior: 'smooth' });
-  };
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -276,60 +257,80 @@ const CommunityPage = () => {
         </section>
       )}
 
-      {/* Image Gallery - 3D Dome */}
-      {topic.images?.length > 0 && (
+      {/* Image Galleries - One per Album */}
+      {(topic.albums?.length > 0 || topic.images?.length > 0) && (
         <section ref={galleryRef} className="py-16 bg-[#120F17] relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
             <SectionHeader
               title="Gallery"
-              subtitle="Click images to expand · Drag to explore"
             />
           </div>
-          <div ref={domeContainerRef} className="relative" style={{ width: '100%', height: isMobile ? '60vh' : '80vh', minHeight: isMobile ? '350px' : '500px' }}>
-            {/* Left arrow */}
-            <button onClick={() => rotateDome('left')} className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-10 cursor-pointer">
-              <div className="bg-white/20 backdrop-blur-md rounded-full p-3 md:p-4 border border-white/30 shadow-lg shadow-black/20 hover:bg-white/30 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7 md:w-9 md:h-9 text-white animate-[bounceLeft_1.5s_ease-in-out_infinite]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
+
+          {/* Album galleries */}
+          {topic.albums?.map((album) => (
+            album.images?.length > 0 && (
+              <div key={album.id} className="mb-12">
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="text-center mb-6"
+                >
+                  <h3 className="text-2xl md:text-3xl font-bold text-white">
+                    {album.title}
+                  </h3>
+                  {album.location && (
+                    <p className="text-sm text-gray-400 mt-2">📍 {album.location}</p>
+                  )}
+                  {album.description && (
+                    <p className="text-sm text-gray-300 mt-1 max-w-2xl mx-auto leading-relaxed">{album.description}</p>
+                  )}
+                </motion.div>
+                <div style={{ height: '500px', position: 'relative' }}>
+                  <CircularGallery
+                    items={album.images.map((img, idx) => ({
+                      image: img.image_url,
+                      text: `${idx + 1}/${album.images.length}`
+                    }))}
+                    bend={1}
+                    textColor="#ffffff"
+                    borderRadius={0.06}
+                    scrollSpeed={1.2}
+                    scrollEase={0.07}
+                  />
+                </div>
               </div>
-            </button>
-            {/* Right arrow */}
-            <button onClick={() => rotateDome('right')} className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-10 cursor-pointer">
-              <div className="bg-white/20 backdrop-blur-md rounded-full p-3 md:p-4 border border-white/30 shadow-lg shadow-black/20 hover:bg-white/30 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7 md:w-9 md:h-9 text-white animate-[bounceRight_1.5s_ease-in-out_infinite]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
+            )
+          ))}
+
+          {/* Ungrouped images fallback */}
+          {topic.images?.length > 0 && (
+            <div className="mb-8">
+              {topic.albums?.length > 0 && (
+                <motion.h3
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="text-2xl md:text-3xl font-bold text-white text-center mb-6"
+                >
+                  More Photos
+                </motion.h3>
+              )}
+              <div style={{ height: '500px', position: 'relative' }}>
+                <CircularGallery
+                  items={topic.images.map((img, idx) => ({
+                    image: img.image_url,
+                    text: `${idx + 1}/${topic.images.length}`
+                  }))}
+                  bend={1}
+                  textColor="#ffffff"
+                  borderRadius={0.06}
+                  scrollSpeed={1.2}
+                  scrollEase={0.07}
+                />
               </div>
-            </button>
-            <style dangerouslySetInnerHTML={{ __html: `
-              @keyframes bounceLeft { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-8px); } }
-              @keyframes bounceRight { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(8px); } }
-            `}} />
-            <DomeGallery
-              images={topic.images.map(img => ({ src: img.image_url, alt: img.caption || topic.title }))}
-              fit={isMobile ? 1 : 0.7}
-              minRadius={isMobile ? 400 : 1300}
-              maxVerticalRotationDeg={isMobile ? 5 : 3}
-              segments={isMobile ? 16 : 32}
-              dragDampening={isMobile ? 3 : 0}
-              overlayBlurColor="#120F17"
-              grayscale={false}
-              imageBorderRadius={isMobile ? '10px' : '16px'}
-              openedImageBorderRadius={isMobile ? '12px' : '16px'}
-              openedImageWidth={isMobile ? '90vw' : '70vw'}
-              openedImageHeight={isMobile ? '70vh' : '75vh'}
-            />
-          </div>
-          {/* Scroll down indicator */}
-          <button onClick={scrollPastGallery} className="absolute bottom-[80px] left-1/2 -translate-x-1/2 z-10 cursor-pointer flex flex-col items-center gap-2 group">
-            <span className="text-white/60 text-xs md:text-sm tracking-wide uppercase group-hover:text-white/90 transition-colors">Scroll down</span>
-            <div className="animate-bounce">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 md:w-8 md:h-8 text-white/80 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
             </div>
-          </button>
+          )}
         </section>
       )}
 

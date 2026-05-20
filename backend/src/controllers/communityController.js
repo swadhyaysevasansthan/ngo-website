@@ -19,13 +19,20 @@ export const getPublicTopicBySlug = async (req, res) => {
     const topicResult = await pool.query(`SELECT * FROM community_topics WHERE slug = \$1 AND is_active = true`, [slug]);
     if (topicResult.rows.length === 0) return res.status(404).json({ success: false, message: 'Not found.' });
     const topic = topicResult.rows[0];
-    const [sectionsRes, imagesRes, eventsRes, statsRes] = await Promise.all([
+    const [sectionsRes, imagesRes, eventsRes, statsRes, albumsRes] = await Promise.all([
       pool.query(`SELECT * FROM community_sections WHERE topic_id = \$1 ORDER BY display_order`, [topic.id]),
       pool.query(`SELECT * FROM community_images WHERE topic_id = \$1 ORDER BY display_order`, [topic.id]),
       pool.query(`SELECT * FROM community_events WHERE topic_id = \$1 ORDER BY display_order`, [topic.id]),
       pool.query(`SELECT * FROM community_stats WHERE topic_id = \$1 ORDER BY display_order`, [topic.id]),
+      pool.query(`SELECT * FROM community_image_albums WHERE topic_id = \$1 ORDER BY display_order`, [topic.id]),
     ]);
-    res.json({ success: true, data: { ...topic, sections: sectionsRes.rows, images: imagesRes.rows, events: eventsRes.rows, stats: statsRes.rows } });
+    const allImages = imagesRes.rows;
+    const albums = albumsRes.rows.map(album => ({
+      ...album,
+      images: allImages.filter(img => img.album_id === album.id)
+    }));
+    const ungroupedImages = allImages.filter(img => !img.album_id);
+    res.json({ success: true, data: { ...topic, sections: sectionsRes.rows, images: ungroupedImages, albums, events: eventsRes.rows, stats: statsRes.rows } });
   } catch (error) {
     console.error('Get topic by slug error:', error);
     res.status(500).json({ success: false, message: 'Failed to fetch topic.' });
@@ -47,13 +54,14 @@ export const getAdminTopicById = async (req, res) => {
     const topicResult = await pool.query(`SELECT * FROM community_topics WHERE id = \$1`, [id]);
     if (topicResult.rows.length === 0) return res.status(404).json({ success: false, message: 'Not found.' });
     const topic = topicResult.rows[0];
-    const [sectionsRes, imagesRes, eventsRes, statsRes] = await Promise.all([
+    const [sectionsRes, imagesRes, eventsRes, statsRes, albumsRes] = await Promise.all([
       pool.query(`SELECT * FROM community_sections WHERE topic_id = \$1 ORDER BY display_order`, [id]),
       pool.query(`SELECT * FROM community_images WHERE topic_id = \$1 ORDER BY display_order`, [id]),
       pool.query(`SELECT * FROM community_events WHERE topic_id = \$1 ORDER BY display_order`, [id]),
       pool.query(`SELECT * FROM community_stats WHERE topic_id = \$1 ORDER BY display_order`, [id]),
+      pool.query(`SELECT * FROM community_image_albums WHERE topic_id = \$1 ORDER BY display_order`, [id]),
     ]);
-    res.json({ success: true, data: { ...topic, sections: sectionsRes.rows, images: imagesRes.rows, events: eventsRes.rows, stats: statsRes.rows } });
+    res.json({ success: true, data: { ...topic, sections: sectionsRes.rows, images: imagesRes.rows, albums: albumsRes.rows, events: eventsRes.rows, stats: statsRes.rows } });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to fetch topic.' });
   }
@@ -110,6 +118,18 @@ export const uploadImages = async (req, res) => {
     const uploaded = [];
     const fs = (await import('fs')).default;
     const sharp = (await import('sharp')).default;
+
+    // Determine Cloudinary folder path based on album
+    let cloudinaryFolder = `communities/${slug}`;
+    const albumId = req.body.album_id || null;
+    if (albumId) {
+      const albumRes = await pool.query(`SELECT title FROM community_image_albums WHERE id = \$1`, [albumId]);
+      if (albumRes.rows.length > 0) {
+        const albumFolder = albumRes.rows[0].title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        cloudinaryFolder = `communities/${slug}/${albumFolder}`;
+      }
+    }
+
     for (const file of req.files) {
       let uploadPath = file.path;
       const ext = file.originalname.toLowerCase().slice(file.originalname.lastIndexOf('.'));
@@ -131,10 +151,10 @@ export const uploadImages = async (req, res) => {
       }
 
       const r = await cloudinary.uploader.upload(uploadPath, {
-        folder: `communities/${slug}`,
+        folder: cloudinaryFolder,
         resource_type: 'image',
       });
-      const db = await pool.query(`INSERT INTO community_images (topic_id, image_url, public_id, caption, display_order) VALUES (\$1,\$2,\$3,\$4,\$5) RETURNING *`, [id, r.secure_url, r.public_id, req.body.caption || null, req.body.display_order || 0]);
+      const db = await pool.query(`INSERT INTO community_images (topic_id, image_url, public_id, caption, display_order, album_id) VALUES (\$1,\$2,\$3,\$4,\$5,\$6) RETURNING *`, [id, r.secure_url, r.public_id, req.body.caption || null, req.body.display_order || 0, albumId]);
       uploaded.push(db.rows[0]);
       if (fs.existsSync(uploadPath)) fs.unlinkSync(uploadPath);
     }
@@ -301,5 +321,39 @@ export const deleteStat = async (req, res) => {
     res.json({ success: true, message: 'Deleted.' });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to delete stat.' });
+  }
+};
+
+export const createAlbum = async (req, res) => {
+  const { id } = req.params;
+  const { title, description, location, display_order } = req.body;
+  try {
+    const result = await pool.query(`INSERT INTO community_image_albums (topic_id, title, description, location, display_order) VALUES (\$1,\$2,\$3,\$4,\$5) RETURNING *`, [id, title.trim(), description || null, location || null, display_order || 0]);
+    res.status(201).json({ success: true, data: result.rows[0] });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Failed to create album.' });
+  }
+};
+
+export const updateAlbum = async (req, res) => {
+  const { albumId } = req.params;
+  const { title, description, location, display_order } = req.body;
+  try {
+    const result = await pool.query(`UPDATE community_image_albums SET title=\$1, description=\$2, location=\$3, display_order=\$4 WHERE id=\$5 RETURNING *`, [title.trim(), description || null, location || null, display_order || 0, albumId]);
+    if (result.rows.length === 0) return res.status(404).json({ success: false, message: 'Not found.' });
+    res.json({ success: true, data: result.rows[0] });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Failed to update album.' });
+  }
+};
+
+export const deleteAlbum = async (req, res) => {
+  const { albumId } = req.params;
+  try {
+    const result = await pool.query(`DELETE FROM community_image_albums WHERE id = \$1 RETURNING id`, [albumId]);
+    if (result.rows.length === 0) return res.status(404).json({ success: false, message: 'Not found.' });
+    res.json({ success: true, message: 'Album deleted.' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Failed to delete album.' });
   }
 };
