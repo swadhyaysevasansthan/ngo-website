@@ -594,7 +594,7 @@ Swadhyay Seva Foundation
 
 // 1. Access request received (sent to school after submitting request)
 export const schoolAccessRequestReceivedTemplate = (data) => {
-  const { schoolName, teacherName } = data;
+  const { schoolName } = data;
 
   return {
     subject: 'Access Request Received – SNEAC 2026–27',
@@ -636,7 +636,6 @@ export const schoolAccessRequestReceivedTemplate = (data) => {
               <p class="header-subtitle">Access request received</p>
             </div>
             <div class="content">
-              <h2>Dear ${teacherName},</h2>
               <p>We have received your school's access request for the <strong>Swadhyay National Environment Awareness Competitions 2026–27</strong>.</p>
               <span class="pill">Request under review</span>
               <div class="info-box">
@@ -674,8 +673,6 @@ export const schoolAccessRequestReceivedTemplate = (data) => {
     text: `
 SNEAC 2026–27 – Access Request Received
 
-Dear ${teacherName},
-
 We have received your school's access request for the Swadhyay National Environment Awareness Competitions 2026–27.
 
 School: ${schoolName}
@@ -701,7 +698,7 @@ www.swadhyayseva.org
 
 // 2. Access approved — magic link sent to school
 export const schoolAccessApprovedTemplate = (data) => {
-  const { schoolName, teacherName, registrationLink, expiresAt } = data;
+  const { schoolName, registrationLink, expiresAt } = data;
 
   const formattedExpiry = new Date(expiresAt).toLocaleDateString('en-IN', {
     day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata',
@@ -751,7 +748,6 @@ export const schoolAccessApprovedTemplate = (data) => {
               <p class="header-subtitle">Access approved — complete your registration</p>
             </div>
             <div class="content">
-              <h2>Dear ${teacherName},</h2>
               <p>Great news! Your school's access request has been <strong>approved</strong>. You can now register <strong>${schoolName}</strong> for the Swadhyay National Environment Awareness Competitions 2026–27.</p>
               <span class="pill">Access approved</span>
               <div class="id-box">
@@ -770,8 +766,8 @@ export const schoolAccessApprovedTemplate = (data) => {
               </p>
               <div class="section-title">Available competitions</div>
               <ul>
-                <li><strong>National Painting Competition</strong> — Classes 3rd to 5th, max 200 students per school.</li>
-                <li><strong>National Environment Awareness Quiz (SNEAC)</strong> — Classes 6th to 8th, max 50 students per school.</li>
+                <li><strong>Swadhyay National Environment Painting Competition (SNEPC)</strong> — Classes 3rd to 8th. The competition includes two categories for students: Primary Category (Classes 3rd–5th) and Secondary Category (Classes 6th–8th), max 300 students / school (upto 150 students per category).</li>
+                <li><strong>Swadhyay National Environment Quiz Competition</strong> — Classes 6th to 8th, max 50 students per school.</li>
               </ul>
               <div class="section-title">Important instructions</div>
               <ol>
@@ -804,8 +800,6 @@ export const schoolAccessApprovedTemplate = (data) => {
     text: `
 SNEAC 2026–27 – Access Approved
 
-Dear ${teacherName},
-
 Your school's access request has been approved. You can now complete your registration.
 
 School: ${schoolName}
@@ -815,8 +809,8 @@ Open your registration page here:
 ${registrationLink}
 
 Available competitions:
-- National Painting Competition — Classes 3rd to 5th, max 200 students.
-- National Environment Awareness Quiz (SNEAC) — Classes 6th to 8th, max 50 students.
+- Swadhyay National Environmental Painting Competition (SNEPC) — Classes 3rd to 8th, max 300 students per school.
+- Swadhyay National Environment Quiz Competition — Classes 6th to 8th, max 50 students.
 
 Important instructions:
 1. Use the link above — do not share it with others.
@@ -838,7 +832,7 @@ www.swadhyayseva.org
 
 // 3. Access rejected
 export const schoolAccessRejectedTemplate = (data) => {
-  const { schoolName, teacherName, rejectionReason } = data;
+  const { schoolName, rejectionReason } = data;
 
   return {
     subject: 'Access Request Update – SNEAC 2026–27',
@@ -878,7 +872,6 @@ export const schoolAccessRejectedTemplate = (data) => {
               <p class="header-subtitle">Access request update</p>
             </div>
             <div class="content">
-              <h2>Dear ${teacherName},</h2>
               <p>Thank you for your interest in the Swadhyay National Environment Awareness Competitions 2026–27. After reviewing your request, we are unable to approve the registration for <strong>${schoolName}</strong> at this time.</p>
               <span class="pill">Request not approved</span>
               ${rejectionReason ? `
@@ -909,8 +902,6 @@ export const schoolAccessRejectedTemplate = (data) => {
     text: `
 SNEAC 2026–27 – Access Request Update
 
-Dear ${teacherName},
-
 Thank you for your interest in the Swadhyay National Environment Awareness Competitions 2026–27.
 
 After reviewing your request, we are unable to approve the registration for ${schoolName} at this time.
@@ -931,17 +922,17 @@ www.swadhyayseva.org
 // 4. Competition registration confirmed (sent after school submits painting or quiz form)
 export const schoolCompetitionRegistrationTemplate = (data) => {
   const {
-    schoolName, teacherName, competitionType,
+    schoolName, competitionType,
     classCounts, totalParticipants, availableComputers,
     preferredDates, submittedAt,
   } = data;
 
   const competitionLabel = competitionType === 'painting'
-    ? 'National Painting Competition'
-    : 'National Environment Awareness Quiz (SNEAC)';
+    ? 'Swadhyay National Environmental Painting Competition (SNEPC)'
+    : 'Swadhyay National Environmental Quiz Competition ';
 
   const classLabel = competitionType === 'painting'
-    ? 'Classes 3rd – 5th'
+    ? 'Classes 3rd – 8th'
     : 'Classes 6th – 8th';
 
   const formattedDate = new Date(submittedAt).toLocaleString('en-IN', {
@@ -1007,7 +998,6 @@ export const schoolCompetitionRegistrationTemplate = (data) => {
               <p class="header-subtitle">${competitionLabel} — Registration confirmed</p>
             </div>
             <div class="content">
-              <h2>Dear ${teacherName},</h2>
               <p>Your school's registration for the <strong>${competitionLabel}</strong> has been successfully submitted.</p>
               <span class="pill">Registration submitted</span>
               <div class="id-box">
@@ -1053,8 +1043,6 @@ export const schoolCompetitionRegistrationTemplate = (data) => {
     text: `
 SNEAC 2026–27 – Registration Confirmed
 
-Dear ${teacherName},
-
 Your school's registration for the ${competitionLabel} has been successfully submitted.
 
 School: ${schoolName}
@@ -1084,13 +1072,13 @@ www.swadhyayseva.org
 // 5. Date allotment confirmation (sent by admin after allotting a date)
 export const schoolDateAllotmentTemplate = (data) => {
   const {
-    schoolName, teacherName, competitionType,
+    schoolName, competitionType,
     allottedDate, totalParticipants,
   } = data;
 
   const competitionLabel = competitionType === 'painting'
-    ? 'National Painting Competition'
-    : 'National Environment Awareness Quiz (SNEAC)';
+    ? 'Swadhyay National Environmental Painting Competition (SNEPC)'
+    : 'Swadhyay National Environmental Quiz Competition';
 
   const formattedAllottedDate = new Date(allottedDate).toLocaleDateString('en-IN', {
     weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata',
@@ -1135,11 +1123,10 @@ export const schoolDateAllotmentTemplate = (data) => {
         <div class="wrapper">
           <div class="container">
             <div class="header">
-              <p class="header-title">National Environment Awareness Competitions 2026–27</p>
+              <p class="header-title">Swadhyay National Environment Awareness Competitions 2026–27</p>
               <p class="header-subtitle">${competitionLabel} — Date confirmed</p>
             </div>
             <div class="content">
-              <h2>Dear ${teacherName},</h2>
               <p>We are pleased to confirm the date for the <strong>${competitionLabel}</strong> at <strong>${schoolName}</strong>.</p>
               <span class="pill">Date confirmed</span>
               <div class="date-box">
@@ -1183,8 +1170,6 @@ export const schoolDateAllotmentTemplate = (data) => {
     `,
     text: `
 SNEAC 2026–27 – Date Confirmed
-
-Dear ${teacherName},
 
 We are pleased to confirm the date for the ${competitionLabel} at ${schoolName}.
 
