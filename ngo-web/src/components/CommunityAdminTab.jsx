@@ -117,7 +117,7 @@ const CommunityAdminTab = () => {
     } catch (err) { toast.error('Failed to save album'); }
   };
   const handleDeleteAlbum = async (albumId) => {
-    if (!window.confirm('Delete this album? Images will become ungrouped.')) return;
+    if (!window.confirm('Delete this album? All images in this album will be permanently deleted.')) return;
     try { await communityAPI.deleteAlbum(albumId); toast.success('Album deleted'); fetchTopicDetail(topicDetail.id); } catch (err) { toast.error('Failed'); }
   };
   const handleMoveAlbum = async (albumId, direction) => {

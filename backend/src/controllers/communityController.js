@@ -350,10 +350,42 @@ export const updateAlbum = async (req, res) => {
 export const deleteAlbum = async (req, res) => {
   const { albumId } = req.params;
   try {
-    const result = await pool.query(`DELETE FROM community_image_albums WHERE id = \$1 RETURNING id`, [albumId]);
-    if (result.rows.length === 0) return res.status(404).json({ success: false, message: 'Not found.' });
-    res.json({ success: true, message: 'Album deleted.' });
+    const albumRes = await pool.query(`
+      SELECT a.title, t.slug 
+      FROM community_image_albums a
+      JOIN community_topics t ON a.topic_id = t.id
+      WHERE a.id = $1
+    `, [albumId]);
+    
+    if (albumRes.rows.length === 0) return res.status(404).json({ success: false, message: 'Not found.' });
+    
+    const { title, slug } = albumRes.rows[0];
+    const albumFolder = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const cloudinaryFolder = `communities/${slug}/${albumFolder}`;
+
+    const imagesRes = await pool.query(`SELECT public_id FROM community_images WHERE album_id = $1`, [albumId]);
+    const publicIds = imagesRes.rows.map(img => img.public_id).filter(id => id);
+    
+    if (publicIds.length > 0) {
+      try {
+        await cloudinary.api.delete_resources(publicIds);
+      } catch (e) {
+        console.error('Failed to delete album images from Cloudinary:', e);
+      }
+    }
+
+    try {
+      await cloudinary.api.delete_folder(cloudinaryFolder);
+    } catch (e) {
+      console.error('Failed to delete Cloudinary folder:', e);
+    }
+
+    await pool.query(`DELETE FROM community_images WHERE album_id = $1`, [albumId]);
+    await pool.query(`DELETE FROM community_image_albums WHERE id = $1`, [albumId]);
+
+    res.json({ success: true, message: 'Album and images deleted.' });
   } catch (error) {
+    console.error('deleteAlbum error:', error);
     res.status(500).json({ success: false, message: 'Failed to delete album.' });
   }
 };
