@@ -7,6 +7,7 @@ import {
   submitQuizRegistration,
   listRegistrations,
   allotDate,
+  sendConfirmation,
 } from '../controllers/schoolRegistrationController.js';
 
 import { validateRequest } from '../middleware/validation.js';
@@ -160,6 +161,20 @@ router.patch(
   validateRequest,
 
   allotDate
+);
+
+router.post(
+  '/admin/:id/send-confirmation',
+
+  verifyAdmin,
+
+  param('id')
+    .isInt({ min: 1 })
+    .withMessage('Invalid registration ID'),
+
+  validateRequest,
+
+  sendConfirmation
 );
 
 export default router;

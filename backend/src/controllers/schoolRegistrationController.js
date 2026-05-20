@@ -246,6 +246,36 @@ export const submitPaintingRegistration = async (req, res) => {
 
     await client.query('COMMIT');
 
+    const emailAddresses = new Set();
+
+    if (row.school_email) {
+      emailAddresses.add(row.school_email);
+    }
+
+    teachers.forEach((teacher) => {
+      if (teacher.email) {
+        emailAddresses.add(teacher.email);
+      }
+    });
+
+    const template = schoolCompetitionRegistrationTemplate({
+      schoolName: row.school_name,
+      teacherName: teachers?.[0]?.name || 'Teacher Coordinator',
+      competitionType: 'painting', // use 'quiz' in quiz controller
+      classCounts,
+      totalParticipants,
+      availableComputers: null, // quiz controller uses real value
+      preferredDates,
+      submittedAt: registration.submitted_at,
+    });
+
+    await sendEmail({
+      to: Array.from(emailAddresses),
+      subject: template.subject,
+      html: template.html,
+      text: template.text,
+    });
+
     return res.status(201).json({
       success: true,
       message: 'Painting competition registration submitted successfully.',
@@ -332,6 +362,36 @@ export const submitQuizRegistration = async (req, res) => {
     await insertTeachers(client, registration.id, teachers);
 
     await client.query('COMMIT');
+
+    const emailAddresses = new Set();
+
+    if (row.school_email) {
+      emailAddresses.add(row.school_email);
+    }
+
+    teachers.forEach((teacher) => {
+      if (teacher.email) {
+        emailAddresses.add(teacher.email);
+      }
+    });
+
+    const template = schoolCompetitionRegistrationTemplate({
+      schoolName: row.school_name,
+      teacherName: teachers?.[0]?.name || 'Teacher Coordinator',
+      competitionType: 'quiz', // use 'quiz' in quiz controller
+      classCounts,
+      totalParticipants,
+      availableComputers, // quiz controller uses real value
+      preferredDates,
+      submittedAt: registration.submitted_at,
+    });
+
+    await sendEmail({
+      to: Array.from(emailAddresses),
+      subject: template.subject,
+      html: template.html,
+      text: template.text,
+    });
 
     return res.status(201).json({
       success: true,
@@ -437,6 +497,92 @@ export const allotDate = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: 'Failed to allot date.',
+      error: error.message,
+    });
+  }
+};
+
+export const sendConfirmation = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const registrationResult = await pool.query(
+      `SELECT
+        scr.*,
+        sar.school_name,
+        sar.school_email
+
+       FROM school_competition_registrations scr
+
+       JOIN school_access_requests sar
+       ON sar.id = scr.request_id
+
+       WHERE scr.id = $1`,
+      [id]
+    );
+
+    if (registrationResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Registration not found.',
+      });
+    }
+
+    const registration = registrationResult.rows[0];
+
+    const teachers = await getRegistrationTeachers(registration.id);
+
+    const emails = new Set();
+
+    // school emails
+    if (registration.school_email) {
+      emails.add(registration.school_email);
+    }
+
+    // teacher emails
+    teachers.forEach((teacher) => {
+      if (teacher.teacher_email) {
+        emails.add(teacher.teacher_email);
+      }
+    });
+
+    const teacherName =
+      teachers?.[0]?.teacher_name || 'Teacher Coordinator';
+
+    const template = schoolDateAllotmentTemplate({
+      schoolName: registration.school_name,
+      teacherName,
+      competitionType: registration.competition_type,
+      allottedDate: registration.allotted_date,
+      totalParticipants: registration.total_participants,
+    });
+
+    await sendEmail({
+      to: Array.from(emails),
+      subject: template.subject,
+      html: template.html,
+      text: template.text,
+    });
+
+    await pool.query(
+      `UPDATE school_competition_registrations
+       SET confirmation_sent = true,
+           confirmation_sent_at = NOW()
+       WHERE id = $1`,
+      [id]
+    );
+
+    return res.json({
+      success: true,
+      message: 'Confirmation email sent successfully.',
+    });
+
+  } catch (error) {
+    console.error('Send confirmation error:', error);
+
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to send confirmation email.',
       error: error.message,
     });
   }
