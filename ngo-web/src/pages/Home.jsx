@@ -314,11 +314,6 @@ const Home = () => {
               Join us in creating a healthier, more sustainable future for all
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/quiz">
-                <Button variant="secondary" className="bg-black text-primary-600 hover:bg-gray-100">
-                  Take Our Quiz <ArrowRight className="inline ml-2" size={20} />
-                </Button>
-              </Link>
               <Link to="/contact">
                 <Button variant="outline" className="bg-white text-primary-600 hover:bg-gray-100">
                   Contact Us

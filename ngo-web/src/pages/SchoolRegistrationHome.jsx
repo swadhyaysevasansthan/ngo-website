@@ -83,7 +83,6 @@ const SchoolRegistrationHome = () => {
 
           {/* Header */}
           <div className="text-center mb-8 animate-slide-down">
-            <div className="text-5xl mb-4">🏫</div>
             <h1 className="text-3xl md:text-4xl font-extrabold text-forest mb-2">
               School Registration Portal
             </h1>
@@ -102,7 +101,7 @@ const SchoolRegistrationHome = () => {
                 <p className="text-sm text-gray-600 mt-1">{school.schoolAddress}, {school.city}, {school.state}</p>
                 <div className="flex flex-wrap gap-4 mt-3 text-sm text-gray-600">
                   <span>📧 {school.schoolEmail}</span>
-                  <span>👤 {school.teacherName}</span>
+                  <span>👤 {school.principalName}</span>
                   <span>📋 {school.boardOfEducation}</span>
                 </div>
                 <p className="mt-3 text-xs text-amber-700 bg-amber-50 border border-amber-100 rounded-lg px-3 py-1.5 inline-block">
@@ -121,9 +120,9 @@ const SchoolRegistrationHome = () => {
                 : 'border-gray-200 bg-white hover:border-primary/50 hover:shadow-md'
             }`}>
               <div className="text-4xl mb-3">🎨</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-1">National Painting Competition</h3>
-              <p className="text-sm text-gray-600 mb-1">Classes 3rd to 5th</p>
-              <p className="text-sm text-gray-600 mb-4">Maximum 200 students per school</p>
+              <h3 className="text-xl font-bold text-gray-900 mb-1">National Environmental Painting Competition</h3>
+              <p className="text-sm text-gray-600 mb-1">Classes 3rd to 8th</p>
+              <p className="text-sm text-gray-600 mb-4">Maximum 300 students per school</p>
 
               {registrations.painting ? (
                 <div className="bg-green-100 rounded-xl p-3 text-sm text-green-800">
@@ -155,7 +154,7 @@ const SchoolRegistrationHome = () => {
                 : 'border-gray-200 bg-white hover:border-primary/50 hover:shadow-md'
             }`}>
               <div className="text-4xl mb-3">🧠</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-1">Environment Awareness Quiz</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-1">National Environment Quiz Competition</h3>
               <p className="text-sm text-gray-600 mb-1">Classes 6th to 8th</p>
               <p className="text-sm text-gray-600 mb-4">Maximum 50 students per school</p>
 

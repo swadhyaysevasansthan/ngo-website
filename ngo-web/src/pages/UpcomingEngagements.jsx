@@ -86,7 +86,7 @@ const UpcomingEngagements = () => {
       icon: Globe,
     },
     painting: {
-      title: 'National Painting Competition',
+      title: 'National Environmental Painting Competition',
       subtitle: 'Express Your Ideas on Nature & Sustainability!',
       classes: 'Classes 3rd – 8th',
       max: '300 students / school (upto 150 students per category)',
@@ -103,7 +103,7 @@ const UpcomingEngagements = () => {
         'Students creatively express their ideas and concerns about nature, environmental protection, and sustainable living through artwork. The competition includes two categories for students: Primary Category (Classes 3rd–5th) and Secondary Category (Classes 6th–8th).',
     },
     quiz: {
-      title: 'National Environment Awareness Quiz',
+      title: 'National Environmental Quiz Competition',
       subtitle: 'SNEAC 2026–27 (2nd Edition)',
       classes: 'Classes 6th – 8th',
       max: '50 students / school',

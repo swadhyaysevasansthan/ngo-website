@@ -115,7 +115,7 @@ const SchoolAccessRequest = () => {
           <div className="bg-amber-50 border border-amber-100 rounded-xl p-4 text-sm text-amber-800 text-left">
             <p className="font-semibold mb-1">What happens next?</p>
             <ul className="list-disc list-inside space-y-1">
-              <li>Our team reviews your request (usually within 2–3 working days).</li>
+              <li>Our team reviews your request (usually within 1–2 working days).</li>
               <li>If approved, a unique registration link is sent to your school email(s).</li>
               <li>Use that link to register for the painting and/or quiz competitions.</li>
             </ul>

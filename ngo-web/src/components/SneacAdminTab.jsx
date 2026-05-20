@@ -236,7 +236,7 @@ const SneacAdminTab = () => {
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-4 py-3 text-left">School</th>
-                    <th className="px-4 py-3 text-left">Teacher</th>
+                    <th className="px-4 py-3 text-left">Principal</th>
                     <th className="px-4 py-3 text-left">City / State</th>
                     <th className="px-4 py-3 text-left">Board</th>
                     <th className="px-4 py-3 text-left">Eco Club</th>
@@ -258,10 +258,12 @@ const SneacAdminTab = () => {
                       <td className="px-4 py-3">
                         <p className="font-semibold">{r.school_name}</p>
                         <p className="text-xs text-gray-500">{r.school_email}</p>
+                        <p className="text-xs text-gray-500">{r.school_email_2}</p>
                       </td>
                       <td className="px-4 py-3">
-                        <p>{r.teacher_name}</p>
-                        <p className="text-xs text-gray-500">{r.teacher_phone}</p>
+                        <p>{r.principal_name}</p>
+                        <p className="text-xs text-gray-500">{r.principal_phone}</p>
+                        <p className="text-xs text-gray-500">{r.principal_email}</p>
                       </td>
                       <td className="px-4 py-3">{r.city}, {r.state}</td>
                       <td className="px-4 py-3 text-xs">{r.board_of_education}</td>
