@@ -329,7 +329,7 @@ const SneacAdminTab = () => {
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-4 py-3 text-left">School</th>
-                  <th className="px-4 py-3 text-left">Primary Teacher</th>
+                  <th className="px-4 py-3 text-left">Teachers</th>
                   <th className="px-4 py-3 text-left">City / State</th>
                   <th className="px-4 py-3 text-left">Total Students</th>
                   {subTab === 'quiz' && <th className="px-4 py-3 text-left">Computers</th>}
