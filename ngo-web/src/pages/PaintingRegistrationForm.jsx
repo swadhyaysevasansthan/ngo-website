@@ -178,14 +178,18 @@ const PaintingRegistrationForm = () => {
     });
   };
 
-  const validateUniqueTeachers = (
-    teachers
-  ) => {
-    const names = new Set();
-    const emails = new Set();
-    const phones = new Set();
+  const validateUniqueTeachers = (teachers) => {
 
-    for (const teacher of teachers) {
+    const errors = {};
+
+    const names = new Map();
+
+    const emails = new Map();
+
+    const phones = new Map();
+
+    teachers.forEach((teacher) => {
+
       const name =
         teacher.name
           ?.trim()
@@ -199,32 +203,83 @@ const PaintingRegistrationForm = () => {
       const phone =
         teacher.phone?.trim();
 
-      if (name) {
-        if (names.has(name)) {
-          return 'Same teacher name cannot be used multiple times.';
-        }
+      // NAME
 
-        names.add(name);
+      if (name) {
+
+        if (names.has(name)) {
+
+          errors[
+            teacher.nameField
+          ] =
+            'Duplicate teacher name';
+
+          errors[
+            names.get(name)
+          ] =
+            'Duplicate teacher name';
+
+        } else {
+
+          names.set(
+            name,
+            teacher.nameField
+          );
+        }
       }
+
+      // EMAIL
 
       if (email) {
-        if (emails.has(email)) {
-          return 'Same teacher email cannot be used multiple times.';
-        }
 
-        emails.add(email);
+        if (emails.has(email)) {
+
+          errors[
+            teacher.emailField
+          ] =
+            'Duplicate teacher email';
+
+          errors[
+            emails.get(email)
+          ] =
+            'Duplicate teacher email';
+
+        } else {
+
+          emails.set(
+            email,
+            teacher.emailField
+          );
+        }
       }
+
+      // PHONE
 
       if (phone) {
+
         if (phones.has(phone)) {
-          return 'Same teacher phone number cannot be used multiple times.';
+
+          errors[
+            teacher.phoneField
+          ] =
+            'Duplicate teacher phone';
+
+          errors[
+            phones.get(phone)
+          ] =
+            'Duplicate teacher phone';
+
+        } else {
+
+          phones.set(
+            phone,
+            teacher.phoneField
+          );
         }
-
-        phones.add(phone);
       }
-    }
+    });
 
-    return null;
+    return errors;
   };
 
   const validate = () => {
@@ -527,6 +582,15 @@ const PaintingRegistrationForm = () => {
 
             designation:
               formData.primaryTeacher1Designation,
+
+            nameField:
+              'primaryTeacher1Name',
+
+            emailField:
+              'primaryTeacher1Email',
+
+            phoneField:
+              'primaryTeacher1Phone',
           },
 
           {
@@ -544,6 +608,15 @@ const PaintingRegistrationForm = () => {
 
             designation:
               formData.primaryTeacher2Designation,
+
+            nameField:
+              'primaryTeacher2Name',
+
+            emailField:
+              'primaryTeacher2Email',
+
+            phoneField:
+              'primaryTeacher2Phone',
           }
         );
       }
@@ -569,6 +642,15 @@ const PaintingRegistrationForm = () => {
 
             designation:
               formData.secondaryTeacher1Designation,
+            
+            nameField:
+              'secondaryTeacher1Name',
+
+            emailField:
+              'secondaryTeacher1Email',
+
+            phoneField:
+              'secondaryTeacher1Phone',
           },
 
           {
@@ -586,18 +668,37 @@ const PaintingRegistrationForm = () => {
 
             designation:
               formData.secondaryTeacher2Designation,
+
+            nameField:
+              'secondaryTeacher2Name',
+
+            emailField:
+              'secondaryTeacher2Email',
+
+            phoneField:
+              'secondaryTeacher2Phone',
           }
         );
       }
 
-      const duplicateError =
+      const duplicateErrors =
         validateUniqueTeachers(
           teachers
         );
 
-      if (duplicateError) {
+      if (
+        Object.keys(
+          duplicateErrors
+        ).length > 0
+      ) {
+
+        setErrors((prev) => ({
+          ...prev,
+          ...duplicateErrors,
+        }));
+
         toast.error(
-          duplicateError
+          'Duplicate teacher details found.'
         );
 
         setLoading(false);
