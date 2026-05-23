@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+
 import { schoolRegistrationAPI } from '../utils/api';
+
 import Input from '../components/Input';
 import Button from '../components/Button1';
 import Card from '../components/Card1';
 
-const INDIAN_DATES = { min: '2026-05-01', max: '2027-02-28' };
+const INDIAN_DATES = {
+  min: '2026-05-01',
+  max: '2027-02-28',
+};
 
 const PaintingRegistrationForm = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
   const token = searchParams.get('token');
 
   const [loading, setLoading] = useState(false);
@@ -18,237 +24,668 @@ const PaintingRegistrationForm = () => {
   const [tokenError, setTokenError] = useState(null);
   const [school, setSchool] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+
   const [errors, setErrors] = useState({});
 
   const [formData, setFormData] = useState({
+    competitionCategories: [],
+
+    // PRIMARY
     primaryTeacher1Name: '',
     primaryTeacher1Email: '',
     primaryTeacher1Phone: '',
     primaryTeacher1Designation: '',
+
     primaryTeacher2Name: '',
     primaryTeacher2Email: '',
     primaryTeacher2Phone: '',
     primaryTeacher2Designation: '',
+
+    // SECONDARY
     secondaryTeacher1Name: '',
     secondaryTeacher1Email: '',
     secondaryTeacher1Phone: '',
     secondaryTeacher1Designation: '',
+
     secondaryTeacher2Name: '',
     secondaryTeacher2Email: '',
     secondaryTeacher2Phone: '',
     secondaryTeacher2Designation: '',
+
+    // CLASS COUNTS
     class3: '',
     class4: '',
     class5: '',
+
     class6: '',
     class7: '',
     class8: '',
-    preferredDate1: '',
-    preferredDate2: '',
-    preferredDate3: '',
-    preferredDate4: '',
+
+    // PRIMARY DATES
+    primaryDate1: '',
+    primaryDate2: '',
+    primaryDate3: '',
+    primaryDate4: '',
+
+    // SECONDARY DATES
+    secondaryDate1: '',
+    secondaryDate2: '',
+    secondaryDate3: '',
+    secondaryDate4: '',
   });
 
   useEffect(() => {
     if (!token) {
-      setTokenError('Missing token. Please use the link sent to your school email.');
+      setTokenError(
+        'Missing token. Please use the link sent to your school email.'
+      );
+
       setTokenLoading(false);
+
       return;
     }
 
-    schoolRegistrationAPI.validateToken(token)
+    schoolRegistrationAPI
+      .validateToken(token)
+
       .then((res) => {
         const { school, registrations } = res.data.data;
+
         if (registrations.painting) {
-          setTokenError('Your school has already registered for the painting competition.');
+          setTokenError(
+            'Your school has already registered for the painting competition.'
+          );
+
           return;
         }
+
         setSchool(school);
       })
+
       .catch((err) => {
-        setTokenError(err.response?.data?.message || 'Invalid or expired registration link.');
+        setTokenError(
+          err.response?.data?.message ||
+            'Invalid or expired registration link.'
+        );
       })
-      .finally(() => setTokenLoading(false));
+
+      .finally(() => {
+        setTokenLoading(false);
+      });
   }, [token]);
 
-  const getNum = (v) => parseInt(v, 10) || 0;
+  const getNum = (v) =>
+    parseInt(v, 10) || 0;
 
   const primaryCategoryTotal =
-    getNum(formData.class3) + getNum(formData.class4) + getNum(formData.class5);
+    getNum(formData.class3) +
+    getNum(formData.class4) +
+    getNum(formData.class5);
 
   const secondaryCategoryTotal =
-    getNum(formData.class6) + getNum(formData.class7) + getNum(formData.class8);
+    getNum(formData.class6) +
+    getNum(formData.class7) +
+    getNum(formData.class8);
 
-  const totalParticipants = primaryCategoryTotal + secondaryCategoryTotal;
+  const totalParticipants =
+    primaryCategoryTotal +
+    secondaryCategoryTotal;
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
+    const { name, value } =
+      e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: '',
+      }));
+    }
+  };
+
+  const handleCategoryChange = (
+    category
+  ) => {
+    setFormData((prev) => {
+      if (
+        prev.competitionCategories.includes(
+          category
+        )
+      ) {
+        return {
+          ...prev,
+
+          competitionCategories:
+            prev.competitionCategories.filter(
+              (c) => c !== category
+            ),
+        };
+      }
+
+      return {
+        ...prev,
+
+        competitionCategories: [
+          ...prev.competitionCategories,
+          category,
+        ],
+      };
+    });
+  };
+
+  const validateUniqueTeachers = (
+    teachers
+  ) => {
+    const names = new Set();
+    const emails = new Set();
+    const phones = new Set();
+
+    for (const teacher of teachers) {
+      const name =
+        teacher.name
+          ?.trim()
+          .toLowerCase();
+
+      const email =
+        teacher.email
+          ?.trim()
+          .toLowerCase();
+
+      const phone =
+        teacher.phone?.trim();
+
+      if (name) {
+        if (names.has(name)) {
+          return 'Same teacher name cannot be used multiple times.';
+        }
+
+        names.add(name);
+      }
+
+      if (email) {
+        if (emails.has(email)) {
+          return 'Same teacher email cannot be used multiple times.';
+        }
+
+        emails.add(email);
+      }
+
+      if (phone) {
+        if (phones.has(phone)) {
+          return 'Same teacher phone number cannot be used multiple times.';
+        }
+
+        phones.add(phone);
+      }
+    }
+
+    return null;
   };
 
   const validate = () => {
     const e = {};
 
-    const teacherFields = [
-      'primaryTeacher1Name',
-      'primaryTeacher1Email',
-      'primaryTeacher1Phone',
-      'primaryTeacher1Designation',
-      'primaryTeacher2Name',
-      'primaryTeacher2Email',
-      'primaryTeacher2Phone',
-      'primaryTeacher2Designation',
-      'secondaryTeacher1Name',
-      'secondaryTeacher1Email',
-      'secondaryTeacher1Phone',
-      'secondaryTeacher1Designation',
-      'secondaryTeacher2Name',
-      'secondaryTeacher2Email',
-      'secondaryTeacher2Phone',
-      'secondaryTeacher2Designation',
-    ];
+    if (
+      formData.competitionCategories
+        .length === 0
+    ) {
+      e.categories =
+        'Please select at least one category';
+    }
 
-    teacherFields.forEach((field) => {
-      if (!formData[field].trim()) {
-        e[field] = 'This field is required';
+    const emailRegex =
+      /\S+@\S+\.\S+/;
+
+    const phoneRegex =
+      /^[6-9]\d{9}$/;
+
+    const validateTeacherFields = (
+      prefix
+    ) => {
+      if (
+        !formData[
+          `${prefix}Name`
+        ].trim()
+      ) {
+        e[
+          `${prefix}Name`
+        ] =
+          'Teacher name is required';
       }
-    });
 
-    const emailFields = [
-      'primaryTeacher1Email',
-      'primaryTeacher2Email',
-      'secondaryTeacher1Email',
-      'secondaryTeacher2Email',
-    ];
-    emailFields.forEach((field) => {
-      if (formData[field].trim() && !/\S+@\S+\.\S+/.test(formData[field])) {
-        e[field] = 'Invalid email';
+      if (
+        !formData[
+          `${prefix}Email`
+        ].trim()
+      ) {
+        e[
+          `${prefix}Email`
+        ] =
+          'Teacher email is required';
+
+      } else if (
+        !emailRegex.test(
+          formData[
+            `${prefix}Email`
+          ]
+        )
+      ) {
+        e[
+          `${prefix}Email`
+        ] = 'Invalid email';
       }
-    });
 
-    const phoneFields = [
-      'primaryTeacher1Phone',
-      'primaryTeacher2Phone',
-      'secondaryTeacher1Phone',
-      'secondaryTeacher2Phone',
-    ];
-    phoneFields.forEach((field) => {
-      if (formData[field].trim() && !/^[6-9]\d{9}$/.test(formData[field])) {
-        e[field] = 'Invalid 10-digit number';
+      if (
+        !formData[
+          `${prefix}Phone`
+        ].trim()
+      ) {
+        e[
+          `${prefix}Phone`
+        ] =
+          'Teacher phone is required';
+
+      } else if (
+        !phoneRegex.test(
+          formData[
+            `${prefix}Phone`
+          ]
+        )
+      ) {
+        e[
+          `${prefix}Phone`
+        ] =
+          'Invalid 10-digit number';
       }
-    });
 
-    const classes = ['class3', 'class4', 'class5', 'class6', 'class7', 'class8'];
-    classes.forEach((field) => {
-      const val = formData[field];
-      if (val === '') {
-        e[field] = 'Required';
-        return;
+      if (
+        !formData[
+          `${prefix}Designation`
+        ].trim()
+      ) {
+        e[
+          `${prefix}Designation`
+        ] =
+          'Designation required';
       }
-      if (getNum(val) < 0) e[field] = 'Cannot be negative';
-    });
+    };
 
-    if (primaryCategoryTotal === 0) e.class3 = 'Please enter at least 1 participant in primary category';
-    if (secondaryCategoryTotal === 0) e.class6 = 'Please enter at least 1 participant in secondary category';
+    // PRIMARY
+    if (
+      formData.competitionCategories.includes(
+        'primary'
+      )
+    ) {
+      validateTeacherFields(
+        'primaryTeacher1'
+      );
 
-    if (primaryCategoryTotal > 150) e.class3 = 'Primary category total cannot exceed 150';
-    if (secondaryCategoryTotal > 150) e.class6 = 'Secondary category total cannot exceed 150';
-    if (totalParticipants > 300) e.class3 = 'Total cannot exceed 300 participants';
+      validateTeacherFields(
+        'primaryTeacher2'
+      );
 
-    ['preferredDate1', 'preferredDate2', 'preferredDate3', 'preferredDate4'].forEach((key, i) => {
-      if (!formData[key]) e[key] = `Preferred date ${i + 1} is required`;
-    });
+      ['class3', 'class4', 'class5'].forEach(
+        (field) => {
+          const val =
+            getNum(
+              formData[field]
+            );
 
-    const dates = [
-      formData.preferredDate1,
-      formData.preferredDate2,
-      formData.preferredDate3,
-      formData.preferredDate4,
-    ];
-    if (new Set(dates.filter(Boolean)).size !== dates.filter(Boolean).length) {
-      e.preferredDate1 = 'All 4 preferred dates must be different';
+          if (val < 0) {
+            e[field] =
+              'Cannot be negative';
+          }
+        }
+      );
+
+      if (
+        primaryCategoryTotal === 0
+      ) {
+        e.class3 =
+          'Please enter at least 1 participant in primary category';
+      }
+
+      if (
+        primaryCategoryTotal > 150
+      ) {
+        e.class3 =
+          'Primary category total cannot exceed 150 participants';
+      }
+
+      [
+        'primaryDate1',
+        'primaryDate2',
+        'primaryDate3',
+        'primaryDate4',
+      ].forEach((key, i) => {
+        if (!formData[key]) {
+          e[key] =
+            `Preferred date ${i + 1} is required`;
+        }
+      });
+
+      const dates = [
+        formData.primaryDate1,
+        formData.primaryDate2,
+        formData.primaryDate3,
+        formData.primaryDate4,
+      ];
+
+      if (
+        new Set(
+          dates.filter(Boolean)
+        ).size !==
+        dates.filter(Boolean).length
+      ) {
+        e.primaryDate1 =
+          'All preferred dates must be different';
+      }
+    }
+
+    // SECONDARY
+    if (
+      formData.competitionCategories.includes(
+        'secondary'
+      )
+    ) {
+      validateTeacherFields(
+        'secondaryTeacher1'
+      );
+
+      validateTeacherFields(
+        'secondaryTeacher2'
+      );
+
+      ['class6', 'class7', 'class8'].forEach(
+        (field) => {
+          const val =
+            getNum(
+              formData[field]
+            );
+
+          if (val < 0) {
+            e[field] =
+              'Cannot be negative';
+          }
+        }
+      );
+
+      if (
+        secondaryCategoryTotal === 0
+      ) {
+        e.class6 =
+          'Please enter at least 1 participant in secondary category';
+      }
+
+      if (
+        secondaryCategoryTotal > 150
+      ) {
+        e.class6 =
+          'Secondary category total cannot exceed 150 participants';
+      }
+
+      [
+        'secondaryDate1',
+        'secondaryDate2',
+        'secondaryDate3',
+        'secondaryDate4',
+      ].forEach((key, i) => {
+        if (!formData[key]) {
+          e[key] =
+            `Preferred date ${i + 1} is required`;
+        }
+      });
+
+      const dates = [
+        formData.secondaryDate1,
+        formData.secondaryDate2,
+        formData.secondaryDate3,
+        formData.secondaryDate4,
+      ];
+
+      if (
+        new Set(
+          dates.filter(Boolean)
+        ).size !==
+        dates.filter(Boolean).length
+      ) {
+        e.secondaryDate1 =
+          'All preferred dates must be different';
+      }
+    }
+
+    if (
+      totalParticipants > 300
+    ) {
+      e.class3 =
+        'Total participants across both categories cannot exceed 300';
     }
 
     setErrors(e);
-    return Object.keys(e).length === 0;
+
+    return (
+      Object.keys(e).length === 0
+    );
   };
+
+  const renderInput = (
+    label,
+    name,
+    type = 'text',
+    extraProps = {}
+  ) => (
+    <Input
+      label={label}
+      name={name}
+      type={type}
+      value={formData[name]}
+      onChange={handleChange}
+      error={errors[name]}
+      {...extraProps}
+    />
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!validate()) {
-      toast.error('Please fix the errors in the form');
+      toast.error(
+        'Please fix the errors in the form'
+      );
+
       return;
     }
 
     setLoading(true);
+
     try {
-      await schoolRegistrationAPI.submitPainting(token, {
-        teachers: [
+      const teachers = [];
+
+      if (
+        formData.competitionCategories.includes(
+          'primary'
+        )
+      ) {
+        teachers.push(
           {
             category: 'primary',
             role: 'coordinator',
-            name: formData.primaryTeacher1Name,
-            email: formData.primaryTeacher1Email,
-            phone: formData.primaryTeacher1Phone,
-            designation: formData.primaryTeacher1Designation,
+
+            name:
+              formData.primaryTeacher1Name,
+
+            email:
+              formData.primaryTeacher1Email,
+
+            phone:
+              formData.primaryTeacher1Phone,
+
+            designation:
+              formData.primaryTeacher1Designation,
           },
 
           {
             category: 'primary',
             role: 'coordinator',
-            name: formData.primaryTeacher2Name,
-            email: formData.primaryTeacher2Email,
-            phone: formData.primaryTeacher2Phone,
-            designation: formData.primaryTeacher2Designation,
+
+            name:
+              formData.primaryTeacher2Name,
+
+            email:
+              formData.primaryTeacher2Email,
+
+            phone:
+              formData.primaryTeacher2Phone,
+
+            designation:
+              formData.primaryTeacher2Designation,
+          }
+        );
+      }
+
+      if (
+        formData.competitionCategories.includes(
+          'secondary'
+        )
+      ) {
+        teachers.push(
+          {
+            category: 'secondary',
+            role: 'coordinator',
+
+            name:
+              formData.secondaryTeacher1Name,
+
+            email:
+              formData.secondaryTeacher1Email,
+
+            phone:
+              formData.secondaryTeacher1Phone,
+
+            designation:
+              formData.secondaryTeacher1Designation,
           },
 
           {
             category: 'secondary',
             role: 'coordinator',
-            name: formData.secondaryTeacher1Name,
-            email: formData.secondaryTeacher1Email,
-            phone: formData.secondaryTeacher1Phone,
-            designation: formData.secondaryTeacher1Designation,
+
+            name:
+              formData.secondaryTeacher2Name,
+
+            email:
+              formData.secondaryTeacher2Email,
+
+            phone:
+              formData.secondaryTeacher2Phone,
+
+            designation:
+              formData.secondaryTeacher2Designation,
+          }
+        );
+      }
+
+      const duplicateError =
+        validateUniqueTeachers(
+          teachers
+        );
+
+      if (duplicateError) {
+        toast.error(
+          duplicateError
+        );
+
+        setLoading(false);
+
+        return;
+      }
+
+      await schoolRegistrationAPI.submitPainting(
+        token,
+        {
+          competitionCategories:
+            formData.competitionCategories,
+
+          teachers,
+
+          classCounts: {
+            3: getNum(
+              formData.class3
+            ),
+
+            4: getNum(
+              formData.class4
+            ),
+
+            5: getNum(
+              formData.class5
+            ),
+
+            6: getNum(
+              formData.class6
+            ),
+
+            7: getNum(
+              formData.class7
+            ),
+
+            8: getNum(
+              formData.class8
+            ),
           },
 
-          {
-            category: 'secondary',
-            role: 'coordinator',
-            name: formData.secondaryTeacher2Name,
-            email: formData.secondaryTeacher2Email,
-            phone: formData.secondaryTeacher2Phone,
-            designation: formData.secondaryTeacher2Designation,
-          },
-        ],
+          primaryCategoryTotal,
+          secondaryCategoryTotal,
+          totalParticipants,
 
-        classCounts: {
-          3: getNum(formData.class3),
-          4: getNum(formData.class4),
-          5: getNum(formData.class5),
-          6: getNum(formData.class6),
-          7: getNum(formData.class7),
-          8: getNum(formData.class8),
-        },
+          primaryPreferredDates:
+            formData.competitionCategories.includes(
+              'primary'
+            )
+              ? [
+                  formData.primaryDate1,
+                  formData.primaryDate2,
+                  formData.primaryDate3,
+                  formData.primaryDate4,
+                ]
+              : [],
 
-        primaryCategoryTotal,
+          secondaryPreferredDates:
+            formData.competitionCategories.includes(
+              'secondary'
+            )
+              ? [
+                  formData.secondaryDate1,
+                  formData.secondaryDate2,
+                  formData.secondaryDate3,
+                  formData.secondaryDate4,
+                ]
+              : [],
+        }
+      );
 
-        secondaryCategoryTotal,
-
-        totalParticipants,
-
-        preferredDates: [
-          formData.preferredDate1,
-          formData.preferredDate2,
-          formData.preferredDate3,
-          formData.preferredDate4,
-        ],
-      });
+      toast.success(
+        'Painting competition registration submitted successfully!'
+      );
 
       setSubmitted(true);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Registration failed. Please try again.');
+      toast.error(
+        error.response?.data?.message ||
+          'Registration failed. Please try again.'
+      );
+
     } finally {
       setLoading(false);
     }
@@ -266,12 +703,28 @@ const PaintingRegistrationForm = () => {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="max-w-md text-center">
-          <div className="text-6xl mb-4">⚠️</div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Cannot Continue</h2>
-          <p className="text-gray-600 mb-6">{tokenError}</p>
-          <Button onClick={() => navigate(`/school-registration?token=${token}`)}>
+          <div className="text-6xl mb-4">
+            ⚠️
+          </div>
+
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            Cannot Continue
+          </h2>
+
+          <p className="text-gray-600 mb-6">
+            {tokenError}
+          </p>
+
+          <Button
+            onClick={() =>
+              navigate(
+                `/school-registration?token=${token}`
+              )
+            }
+          >
             Back to Registration Home
           </Button>
+
         </div>
       </div>
     );
@@ -279,175 +732,527 @@ const PaintingRegistrationForm = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-emerald-50 to-white flex items-center justify-center px-4 py-16">
+      <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white flex items-center justify-center px-4 py-16">
+
         <div className="max-w-lg w-full text-center animate-slide-down">
-          <div className="text-7xl mb-6">🎨</div>
-          <h1 className="text-3xl font-extrabold text-forest mb-3">Painting Registration Confirmed!</h1>
+
+          <div className="text-7xl mb-6">
+            🎨
+          </div>
+
+          <h1 className="text-3xl font-extrabold text-forest mb-3">
+            Painting Registration Confirmed!
+          </h1>
+
           <p className="text-gray-600 mb-6">
             Your school's painting competition registration has been submitted successfully.
-            A confirmation email has been sent to <strong>{school?.schoolEmail}</strong> and the supervising teachers.
           </p>
-          <Button onClick={() => navigate(`/school-registration?token=${token}`)}>
+
+          <Button
+            onClick={() =>
+              navigate(
+                `/school-registration?token=${token}`
+              )
+            }
+          >
             Back to Registration Home
           </Button>
+
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-emerald-50 via-white to-slate-50">
+    <div className="min-h-screen bg-gradient-to-b from-orange-50 via-white to-slate-50">
+
       <div className="py-12 px-4">
+
         <div className="container-custom">
+
           <div className="text-center mb-8 animate-slide-down">
+
             <h1 className="text-3xl md:text-4xl font-extrabold text-forest mb-2">
               🎨 Painting Competition Registration
             </h1>
+
             <p className="text-gray-600">
-              {school?.schoolName} · Classes 3rd–8th
+              {school?.schoolName}
             </p>
+
           </div>
 
           <div className="max-w-5xl mx-auto animate-slide-up">
-            <Card className="shadow-lg border border-slate-100">
-              <form onSubmit={handleSubmit} className="space-y-10">
 
-                <div className="bg-amber-50 rounded-xl p-5 border border-amber-100 text-sm text-gray-700">
+            <Card className="shadow-lg border border-slate-100">
+
+              <form
+                onSubmit={handleSubmit}
+                className="space-y-10"
+              >
+
+                <div className="bg-orange-50 rounded-xl p-5 border border-orange-100 text-sm text-gray-700">
+
                   <ul className="space-y-1">
-                    <li>✓ Open to students of Classes 3rd to 8th.</li>
-                    <li>✓ Primary Category: Classes 3rd–5th, max 150 students.</li>
-                    <li>✓ Secondary Category: Classes 6th–8th, max 150 students.</li>
-                    <li>✓ Maximum <strong>300 students</strong> per school.</li>
-                    <li>✓ Two supervising teachers required for each category.</li>
-                    <li>✓ Provide 4 preferred dates — one will be confirmed based on availability.</li>
+
+                    <li>
+                      ✓ Primary Category (Classes 3–5):
+                      Maximum 150 students
+                    </li>
+
+                    <li>
+                      ✓ Secondary Category (Classes 6–8):
+                      Maximum 150 students
+                    </li>
+
+                    <li>
+                      ✓ Schools may participate in one or both categories.
+                    </li>
+
+                    <li>
+                      ✓ Provide 4 preferred dates separately for each category.
+                    </li>
+
                   </ul>
                 </div>
 
-                <section>
-                  <h2 className="text-lg md:text-xl font-bold text-forest mb-1">
-                    SECTION 1 · Primary Category Supervising Teachers
-                  </h2>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Classes 3rd to 5th. Two supervising teachers are required.
-                  </p>
-
-                  <div className="grid md:grid-cols-2 gap-4 mb-6">
-                    <Input label="Teacher 1 Full Name" name="primaryTeacher1Name" value={formData.primaryTeacher1Name} onChange={handleChange} error={errors.primaryTeacher1Name} required />
-                    <Input label="Teacher 1 Email Address" name="primaryTeacher1Email" type="email" value={formData.primaryTeacher1Email} onChange={handleChange} error={errors.primaryTeacher1Email} required />
-                    <Input label="Teacher 1 Mobile Number" name="primaryTeacher1Phone" value={formData.primaryTeacher1Phone} onChange={handleChange} error={errors.primaryTeacher1Phone} maxLength="10" required />
-                    <Input label="Teacher 1 Designation" name="primaryTeacher1Designation" value={formData.primaryTeacher1Designation} onChange={handleChange} error={errors.primaryTeacher1Designation} required />
-
-                    <Input label="Teacher 2 Full Name" name="primaryTeacher2Name" value={formData.primaryTeacher2Name} onChange={handleChange} error={errors.primaryTeacher2Name} required />
-                    <Input label="Teacher 2 Email Address" name="primaryTeacher2Email" type="email" value={formData.primaryTeacher2Email} onChange={handleChange} error={errors.primaryTeacher2Email} required />
-                    <Input label="Teacher 2 Mobile Number" name="primaryTeacher2Phone" value={formData.primaryTeacher2Phone} onChange={handleChange} error={errors.primaryTeacher2Phone} maxLength="10" required />
-                    <Input label="Teacher 2 Designation" name="primaryTeacher2Designation" value={formData.primaryTeacher2Designation} onChange={handleChange} error={errors.primaryTeacher2Designation} required />
-                  </div>
-                </section>
+                {/* CATEGORY */}
 
                 <section>
-                  <h2 className="text-lg md:text-xl font-bold text-forest mb-1">
-                    SECTION 2 · Secondary Category Supervising Teachers
+
+                  <h2 className="text-lg md:text-xl font-bold text-forest mb-4">
+                    SECTION · Competition Categories
                   </h2>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Classes 6th to 8th. Two supervising teachers are required.
-                  </p>
 
-                  <div className="grid md:grid-cols-2 gap-4 mb-6">
-                    <Input label="Teacher 1 Full Name" name="secondaryTeacher1Name" value={formData.secondaryTeacher1Name} onChange={handleChange} error={errors.secondaryTeacher1Name} required />
-                    <Input label="Teacher 1 Email Address" name="secondaryTeacher1Email" type="email" value={formData.secondaryTeacher1Email} onChange={handleChange} error={errors.secondaryTeacher1Email} required />
-                    <Input label="Teacher 1 Mobile Number" name="secondaryTeacher1Phone" value={formData.secondaryTeacher1Phone} onChange={handleChange} error={errors.secondaryTeacher1Phone} maxLength="10" required />
-                    <Input label="Teacher 1 Designation" name="secondaryTeacher1Designation" value={formData.secondaryTeacher1Designation} onChange={handleChange} error={errors.secondaryTeacher1Designation} required />
+                  <div className="space-y-4">
 
-                    <Input label="Teacher 2 Full Name" name="secondaryTeacher2Name" value={formData.secondaryTeacher2Name} onChange={handleChange} error={errors.secondaryTeacher2Name} required />
-                    <Input label="Teacher 2 Email Address" name="secondaryTeacher2Email" type="email" value={formData.secondaryTeacher2Email} onChange={handleChange} error={errors.secondaryTeacher2Email} required />
-                    <Input label="Teacher 2 Mobile Number" name="secondaryTeacher2Phone" value={formData.secondaryTeacher2Phone} onChange={handleChange} error={errors.secondaryTeacher2Phone} maxLength="10" required />
-                    <Input label="Teacher 2 Designation" name="secondaryTeacher2Designation" value={formData.secondaryTeacher2Designation} onChange={handleChange} error={errors.secondaryTeacher2Designation} required />
-                  </div>
-                </section>
+                    <label className="flex items-center gap-3">
 
-                <section>
-                  <h2 className="text-lg md:text-xl font-bold text-forest mb-1">
-                    SECTION 3 · Student Counts
-                  </h2>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Enter student counts for Classes 3rd to 8th. Primary category max is 150, secondary category max is 150, and total max is 300.
-                  </p>
+                      <input
+                        type="checkbox"
 
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="font-semibold text-gray-800 mb-3">Primary Category (Classes 3rd–5th)</h3>
-                      <div className="grid md:grid-cols-3 gap-4">
-                        <Input label="Class 3 – No. of Students" name="class3" type="number" value={formData.class3} onChange={handleChange} placeholder="0" error={errors.class3} min="0" />
-                        <Input label="Class 4 – No. of Students" name="class4" type="number" value={formData.class4} onChange={handleChange} placeholder="0" error={errors.class4} min="0" />
-                        <Input label="Class 5 – No. of Students" name="class5" type="number" value={formData.class5} onChange={handleChange} placeholder="0" error={errors.class5} min="0" />
-                      </div>
-                    </div>
+                        checked={formData.competitionCategories.includes(
+                          'primary'
+                        )}
 
-                    <div>
-                      <h3 className="font-semibold text-gray-800 mb-3">Secondary Category (Classes 6th–8th)</h3>
-                      <div className="grid md:grid-cols-3 gap-4">
-                        <Input label="Class 6 – No. of Students" name="class6" type="number" value={formData.class6} onChange={handleChange} placeholder="0" error={errors.class6} min="0" />
-                        <Input label="Class 7 – No. of Students" name="class7" type="number" value={formData.class7} onChange={handleChange} placeholder="0" error={errors.class7} min="0" />
-                        <Input label="Class 8 – No. of Students" name="class8" type="number" value={formData.class8} onChange={handleChange} placeholder="0" error={errors.class8} min="0" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 flex flex-wrap gap-3">
-                    <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold ${
-                      primaryCategoryTotal > 150 ? 'bg-red-100 text-red-700' : primaryCategoryTotal > 0 ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'
-                    }`}>
-                      Primary Total: {primaryCategoryTotal}
-                    </div>
-                    <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold ${
-                      secondaryCategoryTotal > 150 ? 'bg-red-100 text-red-700' : secondaryCategoryTotal > 0 ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'
-                    }`}>
-                      Secondary Total: {secondaryCategoryTotal}
-                    </div>
-                    <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold ${
-                      totalParticipants > 300 ? 'bg-red-100 text-red-700' : totalParticipants > 0 ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'
-                    }`}>
-                      Grand Total: {totalParticipants}
-                    </div>
-                  </div>
-                </section>
-
-                <section>
-                  <h2 className="text-lg md:text-xl font-bold text-forest mb-1">
-                    SECTION 4 · Preferred Dates
-                  </h2>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Provide 4 different preferred dates between 1 May 2026 and 28 February 2027.
-                  </p>
-
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {[1, 2, 3, 4].map((n) => (
-                      <Input
-                        key={n}
-                        label={`Preferred Date ${n}`}
-                        name={`preferredDate${n}`}
-                        type="date"
-                        value={formData[`preferredDate${n}`]}
-                        onChange={handleChange}
-                        error={errors[`preferredDate${n}`]}
-                        min={INDIAN_DATES.min}
-                        max={INDIAN_DATES.max}
-                        required
+                        onChange={() =>
+                          handleCategoryChange(
+                            'primary'
+                          )
+                        }
                       />
-                    ))}
+
+                      <span>
+                        Primary Category (Classes 3rd–5th)
+                      </span>
+
+                    </label>
+
+                    <label className="flex items-center gap-3">
+
+                      <input
+                        type="checkbox"
+
+                        checked={formData.competitionCategories.includes(
+                          'secondary'
+                        )}
+
+                        onChange={() =>
+                          handleCategoryChange(
+                            'secondary'
+                          )
+                        }
+                      />
+
+                      <span>
+                        Secondary Category (Classes 6th–8th)
+                      </span>
+
+                    </label>
+
                   </div>
+
+                  {errors.categories && (
+                    <p className="text-red-500 text-sm mt-2">
+                      {errors.categories}
+                    </p>
+                  )}
+
                 </section>
 
-                <div className="pt-2 border-t border-slate-100">
-                  <Button type="submit" fullWidth size="large" loading={loading} disabled={loading}>
-                    {loading ? 'Submitting...' : 'Submit Painting Registration'}
+                                {/* PRIMARY */}
+
+                {formData.competitionCategories.includes(
+                  'primary'
+                ) && (
+
+                  <section className="space-y-8">
+
+                    <h2 className="text-lg md:text-xl font-bold text-blue-700">
+                      SECTION · Primary Category Teachers
+                    </h2>
+
+                    <div className="grid md:grid-cols-2 gap-5">
+
+                      {renderInput(
+                        'Primary Teacher 1 Name',
+                        'primaryTeacher1Name'
+                      )}
+
+                      {renderInput(
+                        'Primary Teacher 1 Email',
+                        'primaryTeacher1Email',
+                        'email'
+                      )}
+
+                      {renderInput(
+                        'Primary Teacher 1 Phone',
+                        'primaryTeacher1Phone'
+                      )}
+
+                      {renderInput(
+                        'Primary Teacher 1 Designation',
+                        'primaryTeacher1Designation'
+                      )}
+
+                      {renderInput(
+                        'Primary Teacher 2 Name',
+                        'primaryTeacher2Name'
+                      )}
+
+                      {renderInput(
+                        'Primary Teacher 2 Email',
+                        'primaryTeacher2Email',
+                        'email'
+                      )}
+
+                      {renderInput(
+                        'Primary Teacher 2 Phone',
+                        'primaryTeacher2Phone'
+                      )}
+
+                      {renderInput(
+                        'Primary Teacher 2 Designation',
+                        'primaryTeacher2Designation'
+                      )}
+
+                    </div>
+
+                    <div>
+
+                      <h3 className="text-base font-semibold text-gray-800 mb-4">
+                        Primary Category Student Counts
+                      </h3>
+
+                      <div className="grid md:grid-cols-3 gap-5">
+
+                        {renderInput(
+                          'Class 3 Students',
+                          'class3',
+                          'number'
+                        )}
+
+                        {renderInput(
+                          'Class 4 Students',
+                          'class4',
+                          'number'
+                        )}
+
+                        {renderInput(
+                          'Class 5 Students',
+                          'class5',
+                          'number'
+                        )}
+
+                      </div>
+
+                      <div
+                        className={`mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold ${
+                          primaryCategoryTotal > 150
+                            ? 'bg-red-100 text-red-700'
+                            : primaryCategoryTotal > 0
+                              ? 'bg-blue-100 text-blue-700'
+                              : 'bg-gray-100 text-gray-500'
+                        }`}
+                      >
+                        Primary Total:
+                        {' '}
+                        {primaryCategoryTotal}
+
+                        {primaryCategoryTotal > 150 &&
+                          ' — exceeds limit of 150'}
+                      </div>
+
+                    </div>
+
+                    <div>
+
+                      <h3 className="text-base font-semibold text-gray-800 mb-4">
+                        Preferred Dates for Primary Category
+                      </h3>
+
+                      <div className="grid md:grid-cols-2 gap-5">
+
+                        {renderInput(
+                          'Preferred Date 1',
+                          'primaryDate1',
+                          'date',
+                          {
+                            min: INDIAN_DATES.min,
+                            max: INDIAN_DATES.max,
+                          }
+                        )}
+
+                        {renderInput(
+                          'Preferred Date 2',
+                          'primaryDate2',
+                          'date',
+                          {
+                            min: INDIAN_DATES.min,
+                            max: INDIAN_DATES.max,
+                          }
+                        )}
+
+                        {renderInput(
+                          'Preferred Date 3',
+                          'primaryDate3',
+                          'date',
+                          {
+                            min: INDIAN_DATES.min,
+                            max: INDIAN_DATES.max,
+                          }
+                        )}
+
+                        {renderInput(
+                          'Preferred Date 4',
+                          'primaryDate4',
+                          'date',
+                          {
+                            min: INDIAN_DATES.min,
+                            max: INDIAN_DATES.max,
+                          }
+                        )}
+
+                      </div>
+
+                    </div>
+
+                  </section>
+                )}
+
+                {/* SECONDARY */}
+
+                {formData.competitionCategories.includes(
+                  'secondary'
+                ) && (
+
+                  <section className="space-y-8">
+
+                    <h2 className="text-lg md:text-xl font-bold text-purple-700">
+                      SECTION · Secondary Category Teachers
+                    </h2>
+
+                    <div className="grid md:grid-cols-2 gap-5">
+
+                      {renderInput(
+                        'Secondary Teacher 1 Name',
+                        'secondaryTeacher1Name'
+                      )}
+
+                      {renderInput(
+                        'Secondary Teacher 1 Email',
+                        'secondaryTeacher1Email',
+                        'email'
+                      )}
+
+                      {renderInput(
+                        'Secondary Teacher 1 Phone',
+                        'secondaryTeacher1Phone'
+                      )}
+
+                      {renderInput(
+                        'Secondary Teacher 1 Designation',
+                        'secondaryTeacher1Designation'
+                      )}
+
+                      {renderInput(
+                        'Secondary Teacher 2 Name',
+                        'secondaryTeacher2Name'
+                      )}
+
+                      {renderInput(
+                        'Secondary Teacher 2 Email',
+                        'secondaryTeacher2Email',
+                        'email'
+                      )}
+
+                      {renderInput(
+                        'Secondary Teacher 2 Phone',
+                        'secondaryTeacher2Phone'
+                      )}
+
+                      {renderInput(
+                        'Secondary Teacher 2 Designation',
+                        'secondaryTeacher2Designation'
+                      )}
+
+                    </div>
+
+                    <div>
+
+                      <h3 className="text-base font-semibold text-gray-800 mb-4">
+                        Secondary Category Student Counts
+                      </h3>
+
+                      <div className="grid md:grid-cols-3 gap-5">
+
+                        {renderInput(
+                          'Class 6 Students',
+                          'class6',
+                          'number'
+                        )}
+
+                        {renderInput(
+                          'Class 7 Students',
+                          'class7',
+                          'number'
+                        )}
+
+                        {renderInput(
+                          'Class 8 Students',
+                          'class8',
+                          'number'
+                        )}
+
+                      </div>
+
+                      <div
+                        className={`mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold ${
+                          secondaryCategoryTotal > 150
+                            ? 'bg-red-100 text-red-700'
+                            : secondaryCategoryTotal > 0
+                              ? 'bg-purple-100 text-purple-700'
+                              : 'bg-gray-100 text-gray-500'
+                        }`}
+                      >
+                        Secondary Total:
+                        {' '}
+                        {secondaryCategoryTotal}
+
+                        {secondaryCategoryTotal > 150 &&
+                          ' — exceeds limit of 150'}
+                      </div>
+
+                    </div>
+
+                    <div>
+
+                      <h3 className="text-base font-semibold text-gray-800 mb-4">
+                        Preferred Dates for Secondary Category
+                      </h3>
+
+                      <div className="grid md:grid-cols-2 gap-5">
+
+                        {renderInput(
+                          'Preferred Date 1',
+                          'secondaryDate1',
+                          'date',
+                          {
+                            min: INDIAN_DATES.min,
+                            max: INDIAN_DATES.max,
+                          }
+                        )}
+
+                        {renderInput(
+                          'Preferred Date 2',
+                          'secondaryDate2',
+                          'date',
+                          {
+                            min: INDIAN_DATES.min,
+                            max: INDIAN_DATES.max,
+                          }
+                        )}
+
+                        {renderInput(
+                          'Preferred Date 3',
+                          'secondaryDate3',
+                          'date',
+                          {
+                            min: INDIAN_DATES.min,
+                            max: INDIAN_DATES.max,
+                          }
+                        )}
+
+                        {renderInput(
+                          'Preferred Date 4',
+                          'secondaryDate4',
+                          'date',
+                          {
+                            min: INDIAN_DATES.min,
+                            max: INDIAN_DATES.max,
+                          }
+                        )}
+
+                      </div>
+
+                    </div>
+
+                  </section>
+                )}
+
+                {/* TOTALS */}
+
+                <section>
+
+                  <h2 className="text-lg md:text-xl font-bold text-forest mb-4">
+                    SECTION · Final Totals
+                  </h2>
+
+                  <div
+                    className={`inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm font-bold ${
+                      totalParticipants > 300
+                        ? 'bg-red-100 text-red-700'
+                        : totalParticipants > 0
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-gray-100 text-gray-500'
+                    }`}
+                  >
+                    Total Participants Across Categories:
+                    {' '}
+                    {totalParticipants}
+
+                    {totalParticipants > 300 &&
+                      ' — exceeds maximum limit of 300'}
+                  </div>
+
+                </section>
+
+                {/* SUBMIT */}
+
+                <div className="pt-4">
+
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full md:w-auto"
+                  >
+                    {loading
+                      ? 'Submitting Registration...'
+                      : 'Submit Painting Registration'}
                   </Button>
+
                 </div>
+
               </form>
+
             </Card>
+
           </div>
+
         </div>
+
       </div>
+
     </div>
   );
 };

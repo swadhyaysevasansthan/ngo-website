@@ -49,6 +49,20 @@ const accessRequestValidation = [
     .trim()
     .notEmpty().withMessage('Board of education is required'),
 
+  body('landlineNumber')
+    .trim()
+    .notEmpty()
+    .withMessage('Landline number is required')
+    .matches(/^[0-9]{2,5}-?[0-9]{5,8}$/)
+    .withMessage('Please enter a valid landline number with area code'),
+
+  body('mobileNumber')
+    .trim()
+    .notEmpty()
+    .withMessage('Mobile number is required')
+    .matches(/^[6-9]\d{9}$/)
+    .withMessage('Please provide a valid 10-digit mobile number'),
+
   body('hasEcoClub')
     .exists().withMessage('Please indicate if your school has an Eco Club')
     .custom((value) => {
@@ -79,7 +93,43 @@ const accessRequestValidation = [
     .optional()
     .trim()
     .isLength({ max: 1000 }).withMessage('Notes must not exceed 1000 characters'),
-];
+
+  body().custom((value, { req }) => {
+
+    // EMAIL CHECK
+    if (
+      req.body.schoolEmail1 &&
+      req.body.schoolEmail2 &&
+      req.body.schoolEmail1.trim().toLowerCase() ===
+      req.body.schoolEmail2.trim().toLowerCase()
+    ) {
+      throw new Error(
+        'Primary and alternate school email cannot be the same'
+      );
+    }
+
+    // PHONE CHECK
+    const landline =
+      req.body.landlineNumber
+        ?.replace(/[-\s]/g, '');
+
+    const mobile =
+      req.body.mobileNumber
+        ?.replace(/[-\s]/g, '');
+
+    if (
+      landline &&
+      mobile &&
+      landline === mobile
+    ) {
+      throw new Error(
+        'Landline and mobile number cannot be the same'
+      );
+    }
+
+    return true;
+  }),
+  ];
 
 const rejectValidation = [
   param('id').isInt({ min: 1 }).withMessage('Invalid request ID'),

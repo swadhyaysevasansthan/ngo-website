@@ -142,21 +142,52 @@ export const schoolAccessAPI = {
 // 🔥 SNEAC — School Registration API
 export const schoolRegistrationAPI = {
   validateToken: (token) =>
-    apiClient.get('/school-registration/validate', { params: { token } }),
-  submitPainting: (token, data) =>
-    apiClient.post(`/school-registration/painting?token=${token}`, data),
-  submitQuiz: (token, data) =>
-    apiClient.post(`/school-registration/quiz?token=${token}`, data),
+    apiClient.get('/school-registration/validate', {
+      params: { token },
+    }),
 
+  submitPainting: (token, data) =>
+    apiClient.post(
+      `/school-registration/painting?token=${token}`,
+      data
+    ),
+
+  submitQuiz: (token, data) =>
+    apiClient.post(
+      `/school-registration/quiz?token=${token}`,
+      data
+    ),
+
+  // ─────────────────────────────
   // Admin
+  // ─────────────────────────────
+
   listRegistrations: (competitionType) =>
-    apiClient.get(`/school-registration/admin/${competitionType}`),
+    apiClient.get(
+      `/school-registration/admin/${competitionType}`
+    ),
+
   getRegistrationById: (id) =>
-    apiClient.get(`/school-registration/admin/detail/${id}`),
-  allotDate: (id, allottedDate) =>
-    apiClient.patch(`/school-registration/admin/${id}/allot-date`, { allottedDate }),
+    apiClient.get(
+      `/school-registration/admin/detail/${id}`
+    ),
+
+  allotPaintingDates: (id, data) =>
+    apiClient.patch(
+      `/school-registration/admin/${id}/allot-painting-dates`,
+      data
+    ),
+
+  allotQuizDate: (id, allottedDate) =>
+    apiClient.patch(
+      `/school-registration/admin/${id}/allot-quiz-date`,
+      { allottedDate }
+    ),
+
   sendConfirmation: (id) =>
-    apiClient.post(`/school-registration/admin/${id}/send-confirmation`),
+    apiClient.post(
+      `/school-registration/admin/${id}/send-confirmation`
+    ),
 };
 
 // 🔥 INDIVIDUAL EXPORTS for direct imports

@@ -70,6 +70,44 @@ const QuizRegistrationForm = () => {
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
   };
 
+  const validateUniqueTeachers = (teachers) => {
+    const names = new Set();
+    const emails = new Set();
+    const phones = new Set();
+
+    for (const teacher of teachers) {
+      const name = teacher.name?.trim().toLowerCase();
+      const email = teacher.email?.trim().toLowerCase();
+      const phone = teacher.phone?.trim();
+
+      if (name) {
+        if (names.has(name)) {
+          return 'Same teacher name cannot be used multiple times.';
+        }
+
+        names.add(name);
+      }
+
+      if (email) {
+        if (emails.has(email)) {
+          return 'Same teacher email cannot be used multiple times.';
+        }
+
+        emails.add(email);
+      }
+
+      if (phone) {
+        if (phones.has(phone)) {
+          return 'Same teacher phone number cannot be used multiple times.';
+        }
+
+        phones.add(phone);
+      }
+    }
+
+    return null;
+  };
+
   const validate = () => {
     const e = {};
     if (!formData.primaryTeacherName.trim()) e.primaryTeacherName = 'Primary teacher name is required';
@@ -112,28 +150,43 @@ const QuizRegistrationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) { toast.error('Please fix the errors in the form'); return; }
+
+    if (!validate()) {
+      toast.error('Please fix the errors in the form');
+      return;
+    }
 
     setLoading(true);
-    try {
-      await schoolRegistrationAPI.submitQuiz(token, {
-        teachers: [
-          {
-            category: 'primary',
-            role: 'coordinator',
-            name: formData.primaryTeacherName,
-            email: formData.primaryTeacherEmail,
-            phone: formData.primaryTeacherPhone,
-          },
 
-          {
-            category: 'alternate',
-            role: 'alternate',
-            name: formData.altTeacherName,
-            email: formData.altTeacherEmail,
-            phone: formData.altTeacherPhone,
-          },
-        ],
+    try {
+      const teachers = [
+        {
+          category: 'primary',
+          role: 'coordinator',
+          name: formData.primaryTeacherName,
+          email: formData.primaryTeacherEmail,
+          phone: formData.primaryTeacherPhone,
+        },
+
+        {
+          category: 'alternate',
+          role: 'alternate',
+          name: formData.altTeacherName,
+          email: formData.altTeacherEmail,
+          phone: formData.altTeacherPhone,
+        },
+      ];
+
+      const duplicateError = validateUniqueTeachers(teachers);
+
+      if (duplicateError) {
+        toast.error(duplicateError);
+        setLoading(false);
+        return;
+      }
+
+      await schoolRegistrationAPI.submitQuiz(token, {
+        teachers,
 
         classCounts: {
           6: parseInt(formData.class6) || 0,
@@ -143,7 +196,8 @@ const QuizRegistrationForm = () => {
 
         totalParticipants,
 
-        availableComputers: parseInt(formData.availableComputers),
+        availableComputers:
+          parseInt(formData.availableComputers) || 0,
 
         preferredDates: [
           formData.preferredDate1,
@@ -152,10 +206,22 @@ const QuizRegistrationForm = () => {
           formData.preferredDate4,
         ],
       });
+
+      toast.success('Quiz competition registration submitted successfully!');
+
       setSubmitted(true);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Registration failed. Please try again.');
+      toast.error(
+        error.response?.data?.message ||
+        'Registration failed. Please try again.'
+      );
+
     } finally {
       setLoading(false);
     }

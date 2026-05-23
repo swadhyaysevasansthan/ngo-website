@@ -28,6 +28,8 @@ const getRecipients = (...emails) =>
 export const createAccessRequest = async (req, res) => {
   const {
     schoolName,
+    landlineNumber,
+    mobileNumber,
     schoolEmail1,
     schoolEmail2,
     schoolAddress,
@@ -63,10 +65,24 @@ export const createAccessRequest = async (req, res) => {
 
     const result = await pool.query(
       `INSERT INTO school_access_requests
-        (school_name, school_email, school_email_2, school_address, city, state,
-         board_of_education, has_eco_club, principal_name, principal_email,
-         principal_phone, notes, status)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'pending')
+        (
+          school_name,
+          school_email,
+          school_email_2,
+          school_address,
+          city,
+          state,
+          board_of_education,
+          landline_number,
+          mobile_number,
+          has_eco_club,
+          principal_name,
+          principal_email,
+          principal_phone,
+          notes,
+          status
+        )
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, 'pending')
        RETURNING *`,
       [
         schoolName.trim(),
@@ -76,6 +92,8 @@ export const createAccessRequest = async (req, res) => {
         city.trim(),
         state.trim(),
         boardOfEducation.trim(),
+        landlineNumber.trim(),
+        mobileNumber.trim(),
         hasEcoClub === true || hasEcoClub === 'true',
         principalName.trim(),
         principalEmail?.toLowerCase().trim() || null,
@@ -176,7 +194,8 @@ export const listAccessRequests = async (req, res) => {
 
     const result = await pool.query(
       `SELECT
-         id, school_name, school_email, school_email_2, city, state,
+         id, school_name, school_email, school_email_2, landline_number,
+         mobile_number, city, state,
          board_of_education, has_eco_club,
          principal_name, principal_email, principal_phone,
          notes, status, rejection_reason,

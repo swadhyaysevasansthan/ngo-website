@@ -924,7 +924,7 @@ export const schoolCompetitionRegistrationTemplate = (data) => {
   const {
     schoolName, competitionType,
     classCounts, totalParticipants, availableComputers,
-    preferredDates, submittedAt,
+    preferredDates, primaryPreferredDates, secondaryPreferredDates, submittedAt,
   } = data;
 
   const competitionLabel = competitionType === 'painting'
@@ -948,13 +948,109 @@ export const schoolCompetitionRegistrationTemplate = (data) => {
     .map(([cls, count]) => `  Class ${cls}: ${count} students`)
     .join('\n');
 
-  const datesHtml = preferredDates
-    .map((d, i) => `<li>${i === 0 ? 'Preferred' : `Alternate ${i}`}: <strong>${new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' })}</strong></li>`)
-    .join('');
+  const datesHtml =
+    competitionType === 'painting'
+      ? `
+        <div style="margin-bottom:16px;">
+          <strong>Primary Category Preferred Dates</strong>
+          <ul>
+            ${(primaryPreferredDates || [])
+              .map((d, i) => `
+                <li>
+                  ${i + 1}.
+                  ${new Date(d).toLocaleDateString('en-IN', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                    timeZone: 'Asia/Kolkata',
+                  })}
+                </li>
+              `)
+              .join('')}
+          </ul>
+        </div>
 
-  const datesText = preferredDates
-    .map((d, i) => `  ${i === 0 ? 'Preferred' : `Alternate ${i}`}: ${new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' })}`)
-    .join('\n');
+        <div>
+          <strong>Secondary Category Preferred Dates</strong>
+          <ul>
+            ${(secondaryPreferredDates || [])
+              .map((d, i) => `
+                <li>
+                  ${i + 1}.
+                  ${new Date(d).toLocaleDateString('en-IN', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                    timeZone: 'Asia/Kolkata',
+                  })}
+                </li>
+              `)
+              .join('')}
+          </ul>
+        </div>
+      `
+      : `
+        <ul>
+          ${(preferredDates || [])
+            .map((d, i) => `
+              <li>
+                ${i === 0 ? 'Preferred' : `Alternate ${i}`}:
+                <strong>
+                  ${new Date(d).toLocaleDateString('en-IN', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                    timeZone: 'Asia/Kolkata',
+                  })}
+                </strong>
+              </li>
+            `)
+            .join('')}
+        </ul>
+      `;
+
+  const datesText =
+    competitionType === 'painting'
+      ? `
+  Primary Category Preferred Dates:
+  ${(primaryPreferredDates || [])
+    .map(
+      (d, i) =>
+        `  ${i + 1}. ${new Date(d).toLocaleDateString('en-IN', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          timeZone: 'Asia/Kolkata',
+        })}`
+    )
+    .join('\n')}
+
+  Secondary Category Preferred Dates:
+  ${(secondaryPreferredDates || [])
+    .map(
+      (d, i) =>
+        `  ${i + 1}. ${new Date(d).toLocaleDateString('en-IN', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          timeZone: 'Asia/Kolkata',
+        })}`
+    )
+    .join('\n')}
+  `
+      : (preferredDates || [])
+          .map(
+            (d, i) =>
+              `  ${i === 0 ? 'Preferred' : `Alternate ${i}`}: ${new Date(
+                d
+              ).toLocaleDateString('en-IN', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                timeZone: 'Asia/Kolkata',
+              })}`
+          )
+          .join('\n');
 
   return {
     subject: `Registration Confirmed – ${competitionLabel} | SNEAC 2026–27`,
@@ -1069,130 +1165,423 @@ www.swadhyayseva.org
 };
 
 
-// 5. Date allotment confirmation (sent by admin after allotting a date)
 export const schoolDateAllotmentTemplate = (data) => {
   const {
-    schoolName, competitionType,
-    allottedDate, totalParticipants,
+    schoolName,
+    teacherName,
+    competitionType,
+
+    // NEW
+    category,
+
+    allottedDate,
+
+    primaryAllottedDate,
+    secondaryAllottedDate,
+
+    totalParticipants,
   } = data;
 
-  const competitionLabel = competitionType === 'painting'
-    ? 'Swadhyay National Environmental Painting Competition (SNEPC)'
-    : 'Swadhyay National Environmental Quiz Competition';
+  const competitionLabel =
+    competitionType === 'painting'
+      ? 'Swadhyay National Environmental Painting Competition (SNEPC)'
+      : 'Swadhyay National Environmental Quiz Competition';
 
-  const formattedAllottedDate = new Date(allottedDate).toLocaleDateString('en-IN', {
-    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata',
-  });
+  // ─────────────────────────────────────────────
+  // FORMATTERS
+  // ─────────────────────────────────────────────
+
+  const formatDate = (date) => {
+    if (!date) return '';
+
+    return new Date(date).toLocaleDateString(
+      'en-IN',
+      {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        timeZone: 'Asia/Kolkata',
+      }
+    );
+  };
+
+  const formattedAllottedDate =
+    formatDate(allottedDate);
+
+  const formattedPrimaryDate =
+    formatDate(primaryAllottedDate);
+
+  const formattedSecondaryDate =
+    formatDate(secondaryAllottedDate);
+
+  // ─────────────────────────────────────────────
+  // DYNAMIC DATE CONTENT
+  // ─────────────────────────────────────────────
+
+  let dateHtml = '';
+  let dateText = '';
+
+  // QUIZ
+  if (competitionType === 'quiz') {
+
+    dateHtml = `
+      <div class="date-box">
+        <div class="date-label">
+          Allotted Date
+        </div>
+
+        <div class="date-value">
+          ${formattedAllottedDate}
+        </div>
+      </div>
+    `;
+
+    dateText = `
+Allotted Date:
+${formattedAllottedDate}
+`;
+
+  }
+
+  // PAINTING — PRIMARY
+  else if (
+    competitionType === 'painting' &&
+    category === 'primary'
+  ) {
+
+    dateHtml = `
+      <div class="date-box">
+        <div class="date-label">
+          Primary Category Date
+        </div>
+
+        <div class="date-value">
+          ${formattedPrimaryDate}
+        </div>
+      </div>
+    `;
+
+    dateText = `
+Primary Category Date:
+${formattedPrimaryDate}
+`;
+
+  }
+
+  // PAINTING — SECONDARY
+  else if (
+    competitionType === 'painting' &&
+    category === 'secondary'
+  ) {
+
+    dateHtml = `
+      <div class="date-box">
+        <div class="date-label">
+          Secondary Category Date
+        </div>
+
+        <div class="date-value">
+          ${formattedSecondaryDate}
+        </div>
+      </div>
+    `;
+
+    dateText = `
+Secondary Category Date:
+${formattedSecondaryDate}
+`;
+
+  }
+
+  // PAINTING — SCHOOL
+  else if (
+    competitionType === 'painting' &&
+    category === 'school'
+  ) {
+
+    dateHtml = `
+      <div class="date-box">
+
+        <div class="date-label">
+          Primary Category Date
+        </div>
+
+        <div class="date-value">
+          ${formattedPrimaryDate}
+        </div>
+
+        <br/>
+
+        <div class="date-label">
+          Secondary Category Date
+        </div>
+
+        <div class="date-value">
+          ${formattedSecondaryDate}
+        </div>
+
+      </div>
+    `;
+
+    dateText = `
+Primary Category Date:
+${formattedPrimaryDate}
+
+Secondary Category Date:
+${formattedSecondaryDate}
+`;
+
+  }
 
   return {
     subject: `Date Confirmed – ${competitionLabel} | SNEAC 2026–27`,
+
     html: `
       <!DOCTYPE html>
       <html lang="en">
+
       <head>
         <meta charset="UTF-8" />
-        <title>SNEAC 2026–27 – Date Confirmed</title>
+
+        <title>
+          SNEAC 2026–27 – Date Confirmed
+        </title>
+
         <style>
-          body { margin: 0; padding: 0; background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; color: #111827; }
-          .wrapper { width: 100%; padding: 24px 12px; background-color: #f3f4f6; }
-          .container { max-width: 640px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12); }
-          .header { padding: 24px 28px; background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%); color: #f9fafb; text-align: left; }
-          .header-title { margin: 0; font-size: 18px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.95; color: #ffffff; }
-          .header-subtitle { margin: 6px 0 0 0; font-size: 15px; font-weight: 500; opacity: 0.96; color: #f9fafb; }
-          .content { padding: 26px 28px 30px 28px; }
-          h2 { margin: 0 0 10px 0; font-size: 20px; font-weight: 600; color: #0f172a; }
-          p { margin: 0 0 10px 0; font-size: 14px; line-height: 1.7; color: #374151; }
-          .pill { display: inline-block; margin-top: 6px; padding: 5px 12px; border-radius: 999px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; background-color: #ede9fe; color: #6d28d9; }
-          .date-box { margin: 22px 0 18px 0; padding: 20px 22px; border-radius: 12px; border: 1px solid #ddd6fe; background-color: #f5f3ff; text-align: center; }
-          .date-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #7c3aed; margin-bottom: 8px; }
-          .date-value { font-size: 22px; font-weight: 700; color: #4c1d95; }
-          .id-box { margin: 20px 0 18px 0; padding: 16px 18px; border-radius: 12px; border: 1px solid #ddd6fe; background-color: #faf5ff; }
-          .meta-item-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af; margin-bottom: 2px; }
-          .meta-item-value { font-size: 13px; color: #111827; margin-bottom: 10px; }
-          .section-title { margin: 22px 0 6px 0; font-size: 14px; font-weight: 600; color: #111827; }
-          ul { padding-left: 18px; margin: 4px 0 12px 0; }
-          li { margin: 5px 0; font-size: 13px; color: #374151; }
-          .note-box { margin-top: 18px; padding: 12px 14px; border-radius: 12px; background-color: #fefce8; border: 1px solid #facc15; font-size: 12px; color: #854d0e; }
-          .divider { margin: 24px 0 16px 0; height: 1px; background: linear-gradient(to right, transparent, #e5e7eb, transparent); }
-          .footer { padding: 14px 20px 10px 20px; text-align: center; font-size: 11px; color: #9ca3af; background-color: #f9fafb; }
-          .footer a { color: #4b5563; text-decoration: none; }
-          @media (max-width: 600px) { .container { border-radius: 12px; } .header, .content { padding: 20px 18px; } }
+          body {
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+            font-family: Arial, sans-serif;
+            color: #111827;
+          }
+
+          .wrapper {
+            width: 100%;
+            padding: 24px 12px;
+            background-color: #f3f4f6;
+          }
+
+          .container {
+            max-width: 640px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(15,23,42,0.12);
+          }
+
+          .header {
+            padding: 24px 28px;
+            background: linear-gradient(
+              135deg,
+              #7c3aed 0%,
+              #4c1d95 100%
+            );
+            color: #ffffff;
+          }
+
+          .header-title {
+            margin: 0;
+            font-size: 18px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+          }
+
+          .header-subtitle {
+            margin-top: 6px;
+            font-size: 15px;
+          }
+
+          .content {
+            padding: 26px 28px 30px 28px;
+          }
+
+          p {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #374151;
+          }
+
+          .pill {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            background-color: #ede9fe;
+            color: #6d28d9;
+          }
+
+          .date-box {
+            margin: 22px 0 18px 0;
+            padding: 20px 22px;
+            border-radius: 12px;
+            border: 1px solid #ddd6fe;
+            background-color: #f5f3ff;
+            text-align: center;
+          }
+
+          .date-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #7c3aed;
+            margin-bottom: 8px;
+          }
+
+          .date-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #4c1d95;
+          }
+
+          .meta-box {
+            margin: 20px 0 18px 0;
+            padding: 16px 18px;
+            border-radius: 12px;
+            border: 1px solid #ddd6fe;
+            background-color: #faf5ff;
+          }
+
+          .meta-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #9ca3af;
+          }
+
+          .meta-value {
+            font-size: 13px;
+            color: #111827;
+            margin-bottom: 10px;
+          }
+
+          .footer {
+            padding: 14px 20px;
+            text-align: center;
+            font-size: 11px;
+            color: #9ca3af;
+            background-color: #f9fafb;
+          }
         </style>
       </head>
+
       <body>
+
         <div class="wrapper">
+
           <div class="container">
+
             <div class="header">
-              <p class="header-title">Swadhyay National Environment Awareness Competitions 2026–27</p>
-              <p class="header-subtitle">${competitionLabel} — Date confirmed</p>
-            </div>
-            <div class="content">
-              <p>We are pleased to confirm the date for the <strong>${competitionLabel}</strong> at <strong>${schoolName}</strong>.</p>
-              <span class="pill">Date confirmed</span>
-              <div class="date-box">
-                <div class="date-label">Allotted date</div>
-                <div class="date-value">${formattedAllottedDate}</div>
-              </div>
-              <div class="id-box">
-                <div class="meta-item-label">School</div>
-                <div class="meta-item-value">${schoolName}</div>
-                <div class="meta-item-label">Competition</div>
-                <div class="meta-item-value">${competitionLabel}</div>
-                <div class="meta-item-label">Total participants</div>
-                <div class="meta-item-value">${totalParticipants} students</div>
-              </div>
-              <div class="section-title">Preparation checklist</div>
-              <ul>
-                <li>Ensure all registered students are informed about the scheduled date.</li>
-                <li>Arrange the required infrastructure (hall, computers if applicable) in advance.</li>
-                <li>Brief the coordinating teacher on competition rules and conduct.</li>
-                <li>Keep this email for reference on the day of the competition.</li>
-              </ul>
-              <div class="note-box">
-                If the confirmed date presents a conflict, please contact us immediately. We will try our best to accommodate a change, subject to availability.
-              </div>
-              <div class="divider"></div>
-              <p style="font-size: 12px; margin-bottom: 4px;"><strong>Support</strong></p>
-              <p style="font-size: 12px;">
-                Email: swadhyaysevafoundation@gmail.com<br/>
-                WhatsApp: +91&nbsp;9599224323 | +91&nbsp;9837042298
+
+              <p class="header-title">
+                Swadhyay National Environment Awareness Competitions 2026–27
               </p>
+
+              <p class="header-subtitle">
+                ${competitionLabel} — Date Confirmed
+              </p>
+
             </div>
+
+            <div class="content">
+
+              <p>
+                Dear ${teacherName},
+              </p>
+
+              <p>
+                We are pleased to confirm the scheduled date for the
+                <strong>${competitionLabel}</strong>
+                at
+                <strong>${schoolName}</strong>.
+              </p>
+
+              <span class="pill">
+                Date Confirmed
+              </span>
+
+              ${dateHtml}
+
+              <div class="meta-box">
+
+                <div class="meta-label">
+                  School
+                </div>
+
+                <div class="meta-value">
+                  ${schoolName}
+                </div>
+
+                <div class="meta-label">
+                  Competition
+                </div>
+
+                <div class="meta-value">
+                  ${competitionLabel}
+                </div>
+
+                <div class="meta-label">
+                  Total Participants
+                </div>
+
+                <div class="meta-value">
+                  ${totalParticipants} students
+                </div>
+
+              </div>
+
+              <p>
+                Please ensure that all registered participants are informed and prepared accordingly.
+              </p>
+
+              <p>
+                In case of any scheduling conflict, kindly contact us immediately.
+              </p>
+
+              <br/>
+
+              <p>
+                Regards,<br/>
+                <strong>Swadhyay Seva Foundation</strong>
+              </p>
+
+            </div>
+
             <div class="footer">
-              <p style="margin: 0 0 4px 0;"><strong>Swadhyay Seva Foundation</strong></p>
-              <p style="margin: 0 0 4px 0;">This is an automated message. Please do not reply.</p>
-              <p style="margin: 0;">Website: <a href="https://www.swadhyayseva.org">www.swadhyayseva.org</a></p>
+
+              Swadhyay Seva Foundation<br/>
+              www.swadhyayseva.org
+
             </div>
+
           </div>
+
         </div>
+
       </body>
       </html>
     `,
+
     text: `
 SNEAC 2026–27 – Date Confirmed
 
-We are pleased to confirm the date for the ${competitionLabel} at ${schoolName}.
+Dear ${teacherName},
 
-Allotted date: ${formattedAllottedDate}
+${competitionLabel}
+${schoolName}
 
-School: ${schoolName}
-Competition: ${competitionLabel}
-Total participants: ${totalParticipants} students
+${dateText}
 
-Preparation checklist:
-- Ensure all registered students are informed about the scheduled date.
-- Arrange the required infrastructure in advance.
-- Brief the coordinating teacher on competition rules and conduct.
-- Keep this email for reference on the day of the competition.
+Total Participants:
+${totalParticipants}
 
-If the confirmed date presents a conflict, please contact us immediately.
-
-Support:
-Email: swadhyaysevafoundation@gmail.com
-WhatsApp: +91 9599224323 | +91 9837042298
-
+Regards,
 Swadhyay Seva Foundation
 www.swadhyayseva.org
-    `,
+`,
   };
 };

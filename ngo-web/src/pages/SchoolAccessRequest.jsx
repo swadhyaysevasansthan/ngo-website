@@ -30,6 +30,8 @@ const SchoolAccessRequest = () => {
     schoolEmail1: '',
     schoolEmail2: '',
     schoolAddress: '',
+    landlineNumber: '',
+    mobileNumber: '',
     city: '',
     state: '',
     boardOfEducation: '',
@@ -49,31 +51,179 @@ const SchoolAccessRequest = () => {
   const validate = () => {
     const e = {};
 
-    if (!formData.schoolName.trim()) e.schoolName = 'School name is required';
+    // ─────────────────────────────────────────────
+    // SCHOOL NAME
+    // ─────────────────────────────────────────────
 
-    if (!formData.schoolEmail1.trim()) e.schoolEmail1 = 'School email is required';
-    else if (!/\S+@\S+\.\S+/.test(formData.schoolEmail1)) e.schoolEmail1 = 'Invalid email address';
-
-    if (!formData.schoolEmail2.trim()) e.schoolEmail2 = 'Alternate school email is required';
-    else if (!/\S+@\S+\.\S+/.test(formData.schoolEmail2)) e.schoolEmail2 = 'Invalid email address';
-
-    if (!formData.schoolAddress.trim()) e.schoolAddress = 'School address is required';
-    if (!formData.city.trim()) e.city = 'City is required';
-    if (!formData.state) e.state = 'State is required';
-    if (!formData.boardOfEducation) e.boardOfEducation = 'Board of education is required';
-    if (formData.hasEcoClub === '') e.hasEcoClub = 'Please select an option';
-
-    if (!formData.principalName.trim()) e.principalName = 'Principal name is required';
-    if (formData.principalPhone.trim() && !/^[6-9]\d{9}$/.test(formData.principalPhone)) {
-      e.principalPhone = 'Invalid 10-digit mobile number';
-    }
-    if (formData.principalEmail.trim() && !/\S+@\S+\.\S+/.test(formData.principalEmail)) {
-      e.principalEmail = 'Invalid email address';
+    if (!formData.schoolName.trim()) {
+      e.schoolName = 'School name is required';
     }
 
-    if (formData.notes.length > 1000) e.notes = 'Notes must not exceed 1000 characters';
+    // ─────────────────────────────────────────────
+    // PRIMARY EMAIL
+    // ─────────────────────────────────────────────
+
+    if (!formData.schoolEmail1.trim()) {
+      e.schoolEmail1 = 'School email is required';
+
+    } else if (
+      !/\S+@\S+\.\S+/.test(formData.schoolEmail1)
+    ) {
+      e.schoolEmail1 = 'Invalid email address';
+    }
+
+    // ─────────────────────────────────────────────
+    // ALTERNATE EMAIL
+    // ─────────────────────────────────────────────
+
+    if (!formData.schoolEmail2.trim()) {
+      e.schoolEmail2 =
+        'Alternate school email is required';
+
+    } else if (
+      !/\S+@\S+\.\S+/.test(formData.schoolEmail2)
+    ) {
+      e.schoolEmail2 =
+        'Invalid email address';
+    }
+
+    // EMAIL UNIQUENESS
+    if (
+      formData.schoolEmail1.trim().toLowerCase() ===
+      formData.schoolEmail2.trim().toLowerCase()
+    ) {
+      e.schoolEmail2 =
+        'Primary and alternate email cannot be the same';
+    }
+
+    // ─────────────────────────────────────────────
+    // LANDLINE
+    // ─────────────────────────────────────────────
+
+    if (!formData.landlineNumber.trim()) {
+
+      e.landlineNumber =
+        'Landline number is required';
+
+    } else if (
+      !/^[0-9]{2,5}-?[0-9]{5,8}$/.test(
+        formData.landlineNumber
+      )
+    ) {
+
+      e.landlineNumber =
+        'Invalid landline number';
+    }
+
+    // ─────────────────────────────────────────────
+    // MOBILE
+    // ─────────────────────────────────────────────
+
+    if (!formData.mobileNumber.trim()) {
+
+      e.mobileNumber =
+        'Mobile number is required';
+
+    } else if (
+      !/^[6-9]\d{9}$/.test(
+        formData.mobileNumber
+      )
+    ) {
+
+      e.mobileNumber =
+        'Invalid mobile number';
+    }
+
+    // PHONE UNIQUENESS
+    const cleanLandline =
+      formData.landlineNumber.replace(
+        /[-\s]/g,
+        ''
+      );
+
+    const cleanMobile =
+      formData.mobileNumber.replace(
+        /[-\s]/g,
+        ''
+      );
+
+    if (
+      cleanLandline &&
+      cleanMobile &&
+      cleanLandline === cleanMobile
+    ) {
+
+      e.mobileNumber =
+        'Landline and mobile number cannot be the same';
+    }
+
+    // ─────────────────────────────────────────────
+    // ADDRESS
+    // ─────────────────────────────────────────────
+
+    if (!formData.schoolAddress.trim()) {
+      e.schoolAddress =
+        'School address is required';
+    }
+
+    if (!formData.city.trim()) {
+      e.city = 'City is required';
+    }
+
+    if (!formData.state) {
+      e.state = 'State is required';
+    }
+
+    if (!formData.boardOfEducation) {
+      e.boardOfEducation =
+        'Board of education is required';
+    }
+
+    if (formData.hasEcoClub === '') {
+      e.hasEcoClub =
+        'Please select an option';
+    }
+
+    // ─────────────────────────────────────────────
+    // PRINCIPAL DETAILS
+    // ─────────────────────────────────────────────
+
+    if (!formData.principalName.trim()) {
+      e.principalName =
+        'Principal name is required';
+    }
+
+    if (
+      formData.principalPhone.trim() &&
+      !/^[6-9]\d{9}$/.test(
+        formData.principalPhone
+      )
+    ) {
+      e.principalPhone =
+        'Invalid 10-digit mobile number';
+    }
+
+    if (
+      formData.principalEmail.trim() &&
+      !/\S+@\S+\.\S+/.test(
+        formData.principalEmail
+      )
+    ) {
+      e.principalEmail =
+        'Invalid email address';
+    }
+
+    // ─────────────────────────────────────────────
+    // NOTES
+    // ─────────────────────────────────────────────
+
+    if (formData.notes.length > 1000) {
+      e.notes =
+        'Notes must not exceed 1000 characters';
+    }
 
     setErrors(e);
+
     return Object.keys(e).length === 0;
   };
 
@@ -203,6 +353,27 @@ const SchoolAccessRequest = () => {
                       onChange={handleChange}
                       placeholder="optional alternate email"
                       error={errors.schoolEmail2}
+                      required
+                    />
+
+                    <Input
+                      label="School Landline Number with STD Code"
+                      name="landlineNumber"
+                      value={formData.landlineNumber}
+                      onChange={handleChange}
+                      placeholder="011-27612345"
+                      error={errors.landlineNumber}
+                      required
+                    />
+
+                    <Input
+                      label="Official Mobile Number"
+                      name="mobileNumber"
+                      value={formData.mobileNumber}
+                      onChange={handleChange}
+                      placeholder="9876543210"
+                      error={errors.mobileNumber}
+                      maxLength="10"
                       required
                     />
 

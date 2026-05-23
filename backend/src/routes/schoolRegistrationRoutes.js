@@ -6,7 +6,8 @@ import {
   submitPaintingRegistration,
   submitQuizRegistration,
   listRegistrations,
-  allotDate,
+  allotPaintingDates,
+  allotQuizDate,
   sendConfirmation,
 } from '../controllers/schoolRegistrationController.js';
 
@@ -58,25 +59,49 @@ const paintingValidation = [
   ...tokenValidation,
   ...teachersValidation,
 
+  body('competitionCategories')
+    .isArray({ min: 1 })
+    .withMessage(
+      'At least one competition category must be selected'
+    ),
+
   body('classCounts')
     .isObject()
     .withMessage('Class counts are required'),
 
   body('totalParticipants')
     .isInt({ min: 1 })
-    .withMessage('Total participants must be greater than 0'),
+    .withMessage(
+      'Total participants must be greater than 0'
+    ),
 
   body('primaryCategoryTotal')
+    .optional()
     .isInt({ min: 0 })
-    .withMessage('Primary category total is required'),
+    .withMessage(
+      'Primary category total must be valid'
+    ),
 
   body('secondaryCategoryTotal')
+    .optional()
     .isInt({ min: 0 })
-    .withMessage('Secondary category total is required'),
+    .withMessage(
+      'Secondary category total must be valid'
+    ),
 
-  body('preferredDates')
-    .isArray({ min: 1 })
-    .withMessage('Preferred dates are required'),
+  body('primaryPreferredDates')
+    .optional()
+    .isArray()
+    .withMessage(
+      'Primary preferred dates must be an array'
+    ),
+
+  body('secondaryPreferredDates')
+    .optional()
+    .isArray()
+    .withMessage(
+      'Secondary preferred dates must be an array'
+    ),
 ];
 
 // ─────────────────────────────────────────────
@@ -146,8 +171,41 @@ router.get(
   listRegistrations
 );
 
+
 router.patch(
-  '/admin/:id/allot-date',
+  '/admin/:id/allot-painting-dates',
+  verifyAdmin,
+
+  param('id')
+    .isInt({ min: 1 })
+    .withMessage('Invalid registration ID'),
+
+  body().custom((value, { req }) => {
+
+    const {
+      primaryAllottedDate,
+      secondaryAllottedDate,
+    } = req.body;
+
+    if (
+      !primaryAllottedDate &&
+      !secondaryAllottedDate
+    ) {
+      throw new Error(
+        'At least one allotted date is required'
+      );
+    }
+
+    return true;
+  }),
+
+  validateRequest,
+
+  allotPaintingDates
+);
+
+router.patch(
+  '/admin/:id/allot-quiz-date',
   verifyAdmin,
 
   param('id')
@@ -156,11 +214,11 @@ router.patch(
 
   body('allottedDate')
     .notEmpty()
-    .withMessage('Allotted date is required'),
+    .withMessage('Allotted date required'),
 
   validateRequest,
 
-  allotDate
+  allotQuizDate
 );
 
 router.post(
@@ -176,5 +234,7 @@ router.post(
 
   sendConfirmation
 );
+
+
 
 export default router;
