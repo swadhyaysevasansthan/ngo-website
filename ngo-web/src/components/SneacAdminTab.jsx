@@ -952,101 +952,105 @@ const SneacAdminTab = () => {
                     )}
 
                     {subTab === 'painting' ? (
-                      <td className="px-4 py-3 text-xs">
+                      <>
+                        {/* PRIMARY COLUMN */}
+                        <td className="px-4 py-3 text-xs">
 
-                        {/* PRIMARY */}
+                          {(
+                            typeof reg.competition_categories ===
+                            'string'
+                              ? JSON.parse(
+                                  reg.competition_categories
+                                )
+                              : reg.competition_categories || []
+                          ).includes('primary') ? (
+                            <div>
 
-                        {(
-                          typeof reg.competition_categories ===
-                          'string'
-                            ? JSON.parse(
-                                reg.competition_categories
-                              )
-                            : reg.competition_categories || []
-                        ).includes('primary') && (
-                          <div className="mb-5">
-
-                            <div className="font-bold text-blue-700 mb-2">
-                              Primary Category
-                            </div>
-
-                            <div className="font-semibold text-gray-700 mb-1">
-                              Preferred
-                            </div>
-
-                            {(parseDates(
-                              reg.primary_preferred_dates
-                            ) || []).map((d, i) => (
-                              <div key={i}>
-                                {formatDate(d)}
+                              <div className="font-semibold text-gray-700 mb-1">
+                                Preferred
                               </div>
-                            ))}
 
-                            <div className="mt-2 font-semibold text-green-700">
-                              Allotted
+                              {(parseDates(
+                                reg.primary_preferred_dates
+                              ) || []).map((d, i) => (
+                                <div key={i}>
+                                  {formatDate(d)}
+                                </div>
+                              ))}
+
+                              <div className="mt-2 font-semibold text-green-700">
+                                Allotted
+                              </div>
+
+                              {reg.primary_allotted_date ? (
+                                <div className="font-semibold text-green-700">
+                                  {formatDate(
+                                    reg.primary_allotted_date
+                                  )}
+                                </div>
+                              ) : (
+                                <div className="text-gray-400">
+                                  Not allotted
+                                </div>
+                              )}
+
                             </div>
+                          ) : (
+                            <span className="text-gray-400">
+                              Not Participating
+                            </span>
+                          )}
+                        </td>
 
-                            {reg.primary_allotted_date ? (
-                              <div className="font-semibold text-green-700">
-                                {formatDate(
-                                  reg.primary_allotted_date
-                                )}
+                        {/* SECONDARY COLUMN */}
+                        <td className="px-4 py-3 text-xs">
+
+                          {(
+                            typeof reg.competition_categories ===
+                            'string'
+                              ? JSON.parse(
+                                  reg.competition_categories
+                                )
+                              : reg.competition_categories || []
+                          ).includes('secondary') ? (
+                            <div>
+
+                              <div className="font-semibold text-gray-700 mb-1">
+                                Preferred
                               </div>
-                            ) : (
-                              <div className="text-gray-400">
-                                Not allotted
+
+                              {(parseDates(
+                                reg.secondary_preferred_dates
+                              ) || []).map((d, i) => (
+                                <div key={i}>
+                                  {formatDate(d)}
+                                </div>
+                              ))}
+
+                              <div className="mt-2 font-semibold text-green-700">
+                                Allotted
                               </div>
-                            )}
-                          </div>
-                        )}
 
-                        {/* SECONDARY */}
+                              {reg.secondary_allotted_date ? (
+                                <div className="font-semibold text-green-700">
+                                  {formatDate(
+                                    reg.secondary_allotted_date
+                                  )}
+                                </div>
+                              ) : (
+                                <div className="text-gray-400">
+                                  Not allotted
+                                </div>
+                              )}
 
-                        {(
-                          typeof reg.competition_categories ===
-                          'string'
-                            ? JSON.parse(
-                                reg.competition_categories
-                              )
-                            : reg.competition_categories || []
-                        ).includes('primary') && (
-                          <div>
-
-                            <div className="font-bold text-purple-700 mb-2">
-                              Secondary Category
                             </div>
-
-                            <div className="font-semibold text-gray-700 mb-1">
-                              Preferred
-                            </div>
-
-                            {(parseDates(
-                              reg.secondary_preferred_dates
-                            ) || []).map((d, i) => (
-                              <div key={i}>
-                                {formatDate(d)}
-                              </div>
-                            ))}
-
-                            <div className="mt-2 font-semibold text-green-700">
-                              Allotted
-                            </div>
-
-                            {reg.secondary_allotted_date ? (
-                              <div className="font-semibold text-green-700">
-                                {formatDate(
-                                  reg.secondary_allotted_date
-                                )}
-                              </div>
-                            ) : (
-                              <div className="text-gray-400">
-                                Not allotted
-                              </div>
-                            )}
-                          </div>
-                        )}
-
-                      </td>
+                          ) : (
+                            <span className="text-gray-400">
+                              Not Participating
+                            </span>
+                          )}
+                        </td>
+                      </>
                     ) : (
                       <>
                         <td className="px-4 py-3 text-xs">
@@ -1114,26 +1118,68 @@ const SneacAdminTab = () => {
 
                           📅
 
-                          {subTab ===
-                          'painting'
-                            ? (
-                                reg.primary_allotted_date &&
-                                reg.secondary_allotted_date
-                              )
-                              ? ' Change Dates'
-                              : ' Allot Dates'
+                          {subTab === 'painting'
+  ? (
+      (
+        (
+          typeof reg.competition_categories ===
+          'string'
+            ? JSON.parse(
+                reg.competition_categories
+              )
+            : reg.competition_categories || []
+        ).includes('primary')
+          ? reg.primary_allotted_date
+          : true
+      ) &&
+      (
+        (
+          typeof reg.competition_categories ===
+          'string'
+            ? JSON.parse(
+                reg.competition_categories
+              )
+            : reg.competition_categories || []
+        ).includes('secondary')
+          ? reg.secondary_allotted_date
+          : true
+      )
+    )
+      ? ' Change Dates'
+      : ' Allot Dates'
                             : reg.allotted_date
                               ? ' Change Date'
                               : ' Allot Date'}
                         </button>
 
                         {(
-                          subTab ===
-                          'painting'
-                            ? (
-                                reg.primary_allotted_date &&
-                                reg.secondary_allotted_date
-                              )
+                          subTab === 'painting'
+  ? (
+      (
+        (
+          typeof reg.competition_categories ===
+          'string'
+            ? JSON.parse(
+                reg.competition_categories
+              )
+            : reg.competition_categories || []
+        ).includes('primary')
+          ? reg.primary_allotted_date
+          : true
+      ) &&
+      (
+        (
+          typeof reg.competition_categories ===
+          'string'
+            ? JSON.parse(
+                reg.competition_categories
+              )
+            : reg.competition_categories || []
+        ).includes('secondary')
+          ? reg.secondary_allotted_date
+          : true
+      )
+    )
                             : reg.allotted_date
                         ) && (
                           <button

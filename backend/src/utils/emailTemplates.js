@@ -1168,7 +1168,6 @@ www.swadhyayseva.org
 export const schoolDateAllotmentTemplate = (data) => {
   const {
     schoolName,
-    teacherName,
     competitionType,
 
     // NEW
@@ -1489,9 +1488,7 @@ ${formattedSecondaryDate}
 
             <div class="content">
 
-              <p>
-                Dear ${teacherName},
-              </p>
+
 
               <p>
                 We are pleased to confirm the scheduled date for the
@@ -1569,7 +1566,6 @@ ${formattedSecondaryDate}
     text: `
 SNEAC 2026–27 – Date Confirmed
 
-Dear ${teacherName},
 
 ${competitionLabel}
 ${schoolName}
