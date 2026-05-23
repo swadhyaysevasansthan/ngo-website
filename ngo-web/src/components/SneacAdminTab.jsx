@@ -302,76 +302,71 @@ const SneacAdminTab = () => {
     // SAVE DATES
     // ─────────────────────────────────────────────
 
-  const handleAllotDate = async () => {
+    const handleAllotDate = async () => {
 
-    if (!dateModal) return;
+      if (!dateModal) return;
 
-    setActionLoading(dateModal.id);
+      setActionLoading(dateModal.id);
 
-    try {
+      try {
 
-      if (
-        dateModal.competitionType ===
-        'painting'
-      ) {
-
-        const payload = {};
-
+        // 🎨 PAINTING
         if (
-          dateModal.categories.includes(
-            'primary'
-          )
+          dateModal.competitionType ===
+          'painting'
         ) {
-          payload.primaryAllottedDate =
-            dateModal.primaryAllottedDate;
+
+          const payload = {
+
+            primaryAllottedDate:
+              dateModal.primaryAllottedDate || null,
+
+            secondaryAllottedDate:
+              dateModal.secondaryAllottedDate || null,
+          };
+
+          await schoolRegistrationAPI.allotPaintingDates(
+            dateModal.id,
+            payload
+          );
+
+          toast.success(
+            'Painting dates allotted successfully.'
+          );
+
         }
 
-        if (
-          dateModal.categories.includes(
-            'secondary'
-          )
-        ) {
-          payload.secondaryAllottedDate =
-            dateModal.secondaryAllottedDate;
+        // 🧠 QUIZ
+        else {
+
+          await schoolRegistrationAPI.allotQuizDate(
+            dateModal.id,
+            dateModal.allottedDate
+          );
+
+          toast.success(
+            'Quiz date allotted successfully.'
+          );
         }
 
-        await schoolRegistrationAPI.allotPaintingDates(
-          dateModal.id,
-          payload
+        closeDateModal();
+
+        fetchAll();
+
+      } catch (err) {
+
+        console.error(err);
+
+        toast.error(
+          err.response?.data?.message ||
+          'Failed to allot date.'
         );
 
-        toast.success(
-          'Painting dates allotted successfully.'
-        );
+      } finally {
 
-      } else {
-
-        await schoolRegistrationAPI.allotQuizDate(
-          dateModal.id,
-          dateModal.allottedDate
-        );
-
-        toast.success(
-          'Quiz date allotted successfully.'
-        );
+        setActionLoading(null);
       }
-
-      closeDateModal();
-
-      fetchAll();
-
-    } catch (err) {
-
-      toast.error(
-        err.response?.data?.message ||
-        'Failed to allot date.'
-      );
-
-    } finally {
-
-      setActionLoading(null);
-    }
-  };
+    };
 
   // ─────────────────────────────────────────────
   // SEND CONFIRMATION
@@ -961,9 +956,14 @@ const SneacAdminTab = () => {
 
                         {/* PRIMARY */}
 
-                        {reg.competition_categories?.includes(
-                          'primary'
-                        ) && (
+                        {(
+                          typeof reg.competition_categories ===
+                          'string'
+                            ? JSON.parse(
+                                reg.competition_categories
+                              )
+                            : reg.competition_categories || []
+                        ).includes('primary') && (
                           <div className="mb-5">
 
                             <div className="font-bold text-blue-700 mb-2">
@@ -1002,9 +1002,14 @@ const SneacAdminTab = () => {
 
                         {/* SECONDARY */}
 
-                        {reg.competition_categories?.includes(
-                          'secondary'
-                        ) && (
+                        {(
+                          typeof reg.competition_categories ===
+                          'string'
+                            ? JSON.parse(
+                                reg.competition_categories
+                              )
+                            : reg.competition_categories || []
+                        ).includes('primary') && (
                           <div>
 
                             <div className="font-bold text-purple-700 mb-2">

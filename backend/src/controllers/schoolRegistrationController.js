@@ -225,6 +225,7 @@ export const submitPaintingRegistration = async (req, res) => {
     const { token } = req.query;
 
     const {
+      competitionCategories,
       teachers,
       classCounts,
       totalParticipants,
@@ -290,6 +291,7 @@ export const submitPaintingRegistration = async (req, res) => {
       `INSERT INTO school_competition_registrations (
         request_id,
         competition_type,
+        competition_categories,
         class_counts,
         primary_category_total,
         secondary_category_total,
@@ -297,11 +299,12 @@ export const submitPaintingRegistration = async (req, res) => {
         primary_preferred_dates,
         secondary_preferred_dates
       )
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
       RETURNING *`,
       [
         row.request_id,
         'painting',
+        JSON.stringify(competitionCategories),
         JSON.stringify(classCounts),
         primaryCategoryTotal,
         secondaryCategoryTotal,
