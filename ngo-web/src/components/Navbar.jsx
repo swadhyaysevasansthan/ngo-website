@@ -16,6 +16,7 @@ const Navbar = () => {
   const supportDropdownRef = useRef(null);
   const voicesDropdownRef = useRef(null);
   const schoolStoriesDropdownRef = useRef(null);
+  const competitionDropdownRef = useRef(null);
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -23,8 +24,7 @@ const Navbar = () => {
     { name: 'Quiz', dropdown: true, type: 'quiz' },
     { name: 'School Stories', dropdown: true, type: 'schoolstories' },
     { name: 'Voices', dropdown: true, type: 'voices' }, // updated
-    { name: 'SNEAC 2026-27', path: '/upcoming-engagements' },
-    { name: 'SNPC 2026', path: '/photography-competition' },
+    { name: 'Competitions', dropdown: true, type: 'competitions' },
     { name: 'Our Communities', dropdown: true, type: 'ourcommunities' },
     { name: 'Contact', path: '/contact' },
     { name: 'Support Us', dropdown: true, type: 'support' },
@@ -39,9 +39,15 @@ const Navbar = () => {
     { name: 'Question Bank', path: '/question-bank' },
     { name: 'Online Quiz', path: '/quiz' },
   ];
+
   const schoolStoriesSubLinks = [
-  { name: 'SNEAC 2025-26', path: '/sneac2025-26' },
-];
+    { name: 'SNEAC 2025-26', path: '/sneac2025-26' },
+  ];
+
+  const competitionSubLinks = [
+    { name: 'SNPC 2026', path: '/photography-competition' },
+    { name: 'SNEAC 2026-27', path: '/upcoming-engagements' },
+  ];
 
   const ourCommunitiesSubLinks = [
     { name: 'Natural Farming', path: '/natural-farming' },
@@ -121,6 +127,12 @@ const Navbar = () => {
       )
         setActiveDesktopDropdown('');
       if (
+        activeDesktopDropdown === 'competitions' &&
+        competitionDropdownRef.current &&
+        !competitionDropdownRef.current.contains(event.target)
+      )
+        setActiveDesktopDropdown('');
+      if (
         activeDesktopDropdown === 'schoolstories' &&
         schoolStoriesDropdownRef.current &&
         !schoolStoriesDropdownRef.current.contains(event.target)
@@ -140,6 +152,7 @@ const Navbar = () => {
     if (type === 'about') return aboutDropdownRef;
     if (type === 'support') return supportDropdownRef;
     if (type === 'voices') return voicesDropdownRef;
+    if (type === 'competitions') return competitionDropdownRef;
     if (type === 'schoolstories') return schoolStoriesDropdownRef;
     return null;
   };
@@ -149,6 +162,7 @@ const Navbar = () => {
     if (type === 'about') return aboutSubLinks;
     if (type === 'support') return supportSublinks;
     if (type === 'voices') return voicesSubLinks;
+    if (type === 'competitions') return competitionSubLinks;
     if (type === 'schoolstories') return schoolStoriesSubLinks;
     // Merge static + dynamic community topics
     const staticPaths = new Set(ourCommunitiesSubLinks.map(l => l.path));
