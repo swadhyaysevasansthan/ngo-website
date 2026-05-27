@@ -4,13 +4,11 @@ const activities = {
   past: [
     { title: 'Naturopathy Health Camp', date: 'Mar 2024', description: 'Free checkups and wellness consultations.' },
     { title: 'Detox Diet Webinar', date: 'May 2024', description: 'Online session on healthy eating habits.' },
-  ],
-  ongoing: [
-    { title: 'Yoga-Naturopathy Integration Sessions', date: 'Oct-Nov 2025', description: 'Weekly sessions at Swadhyay Hall.' },
-  ],
-  future: [
+    { title: 'Yoga-Naturopathy Integration Sessions', date: 'Oct–Nov 2025', description: 'Weekly wellness sessions combining yoga and naturopathy practices.' },
     { title: 'Winter Wellness Workshop', date: 'Jan 2026', description: 'Hands-on cold & cough home remedy clinic.' },
   ],
+  ongoing: [],
+  future: [],
 };
 
 const Section = ({ title, items }) => (

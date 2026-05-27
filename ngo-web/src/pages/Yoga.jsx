@@ -65,9 +65,9 @@ const Yoga = () => {
 
 
   const stats = [
-    { icon: <CalendarDays size={32} />, number: '300+', label: 'Yoga Camps Conducted' },
-    { icon: <Users size={32} />, number: '50,000+', label: 'Participants Reached' },
-    { icon: <Heart size={32} />, number: '50+', label: 'Locations Covered' },
+    { icon: <CalendarDays size={32} />, label: 'Yoga Camps Conducted', highlight: 'Across Schools & Villages' },
+    { icon: <Users size={32} />, label: 'Communities Reached', highlight: 'Urban, Rural & Tribal Areas' },
+    { icon: <Heart size={32} />, label: 'Holistic Programs', highlight: 'Mind, Body & Spirit' },
   ];
 
   const nextImage = () => {
@@ -161,8 +161,8 @@ const Yoga = () => {
                 className="flex flex-col items-center"
               >
                 <div className="mb-3">{stat.icon}</div>
-                <div className="text-4xl font-bold mb-2">{stat.number}</div>
-                <div className="text-blue-100">{stat.label}</div>
+                <div className="text-xl font-bold mb-1">{stat.highlight}</div>
+                <div className="text-blue-100 text-sm">{stat.label}</div>
               </motion.div>
             ))}
           </div>

@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Quote, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Quote, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Card from './Card';
 import SectionHeader from './SectionHeader';
@@ -65,64 +65,7 @@ const Testimonials = () => {
     },
   ];
 
-  const scrollRef = useRef(null);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(1);
 
-  // Recalculate pages on resize
-  useEffect(() => {
-    const calculatePages = () => {
-      const container = scrollRef.current;
-      if (!container) return;
-
-      // approximate single-card width (same as your min-w on the card wrapper)
-      const cardWidth = 320; // px, between 280–360
-      const visibleWidth = container.offsetWidth;
-      const cardsPerPage = Math.max(1, Math.floor(visibleWidth / cardWidth));
-      const pages = Math.max(
-        1,
-        Math.ceil(featuredTestimonials.length / cardsPerPage)
-      );
-      setTotalPages(pages);
-      setCurrentPage((prev) => Math.min(prev, pages - 1));
-    };
-
-    calculatePages();
-    window.addEventListener('resize', calculatePages);
-    return () => window.removeEventListener('resize', calculatePages);
-  }, [featuredTestimonials.length]);
-
-  const scrollToPage = (pageIndex) => {
-    const container = scrollRef.current;
-    if (!container) return;
-
-    const maxScrollLeft = container.scrollWidth - container.clientWidth;
-    const target =
-      totalPages <= 1
-        ? 0
-        : Math.min(maxScrollLeft, (maxScrollLeft / (totalPages - 1)) * pageIndex);
-
-    container.scrollTo({
-      left: target,
-      behavior: 'smooth',
-    });
-  };
-
-  const handleArrowClick = (direction) => {
-    if (direction === 'next') {
-      const next = Math.min(currentPage + 1, totalPages - 1);
-      setCurrentPage(next);
-      scrollToPage(next);
-    } else {
-      const prev = Math.max(currentPage - 1, 0);
-      setCurrentPage(prev);
-      scrollToPage(prev);
-    }
-  };
-
-  // indicator width & position based on pages
-  const thumbWidthPercent = totalPages > 0 ? 100 / totalPages : 100;
-  const barLeftPercent = thumbWidthPercent * currentPage;
 
   return (
     <section className="bg-gradient-to-br from-gray-50 to-blue-50 py-16">
@@ -132,42 +75,13 @@ const Testimonials = () => {
           subtitle="What institutions and communities say about our initiatives"
         />
 
-        <div className="relative mt-12">
-          {/* Arrows */}
-          {totalPages > 1 && (
-            <>
-              <button
-                onClick={() => handleArrowClick('prev')}
-                className="hidden md:flex absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-primary-50 text-gray-700 hover:text-primary-600 disabled:opacity-40 disabled:cursor-not-allowed"
-                aria-label="Previous testimonial"
-                disabled={currentPage === 0}
-              >
-                <ChevronLeft size={20} />
-              </button>
-              <button
-                onClick={() => handleArrowClick('next')}
-                className="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:bg-primary-50 text-gray-700 hover:text-primary-600 disabled:opacity-40 disabled:cursor-not-allowed"
-                aria-label="Next testimonial"
-                disabled={currentPage === totalPages - 1}
-              >
-                <ChevronRight size={20} />
-              </button>
-            </>
-          )}
-
-          {/* Scrollable row */}
-          <div
-            ref={scrollRef}
-            className="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory hide-native-scrollbar"
-          >
-            {featuredTestimonials.map((testimonial, index) => (
-              <motion.div
+        <div className="relative mt-12 overflow-hidden w-full">
+          {/* Continuous Marquee */}
+          <div className="flex w-fit animate-[marquee_40s_linear_infinite] hover:[animation-play-state:paused] gap-6">
+            {[...featuredTestimonials, ...featuredTestimonials].map((testimonial, index) => (
+              <div
                 key={index}
-                className="min-w-[280px] sm:min-w-[320px] lg:min-w-[360px] snap-start"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05, duration: 0.4 }}
-                viewport={{ once: true }}
+                className="min-w-[280px] sm:min-w-[320px] lg:min-w-[360px] max-w-[360px] flex-shrink-0"
               >
                 <Card className="h-full">
                   <div className="p-6 flex flex-col h-full">
@@ -195,22 +109,9 @@ const Testimonials = () => {
                     </div>
                   </div>
                 </Card>
-              </motion.div>
+              </div>
             ))}
           </div>
-
-          {/* Position bar */}
-          {totalPages > 1 && (
-            <div className="mx-auto mt-3 h-[4px] w-40 rounded-full bg-blue-200/60 relative overflow-hidden">
-              <div
-                className="absolute inset-y-0 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-orange-400 transition-all duration-300"
-                style={{
-                  width: `${thumbWidthPercent}%`,
-                  left: `${barLeftPercent}%`,
-                }}
-              />
-            </div>
-          )}
         </div>
 
         {/* View All Button */}

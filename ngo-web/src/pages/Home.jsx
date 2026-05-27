@@ -262,10 +262,10 @@ const Home = () => {
             <div className="p-6">
               <h4 className="font-semibold text-lg text-primary-700 mb-3">Yoga & Naturopathy</h4>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>• 300+ yoga camps conducted</li>
-                <li>• International Day of Yoga celebrations</li>
+                <li>• Regular yoga camps across schools & villages</li>
+                <li>• International Day of Yoga mass celebrations</li>
                 <li>• Training in mud therapy & crystal healing</li>
-                <li>• Stress management programs</li>
+                <li>• Stress management & wellness programs</li>
               </ul>
             </div>
           </Card>
@@ -274,10 +274,10 @@ const Home = () => {
             <div className="p-6">
               <h4 className="font-semibold text-lg text-primary-700 mb-3">Natural Farming</h4>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>• 1000+ acres converted to organic</li>
-                <li>• 500+ farmers trained</li>
-                <li>• Model farms for demonstrations</li>
-                <li>• Farmer telephone directory</li>
+                <li>• Land converted from chemical to organic farming</li>
+                <li>• Farmers trained in zero-budget natural farming</li>
+                <li>• Model farms for live demonstrations</li>
+                <li>• Farmer telephone directory & community network</li>
               </ul>
             </div>
           </Card>
@@ -286,10 +286,10 @@ const Home = () => {
             <div className="p-6">
               <h4 className="font-semibold text-lg text-primary-700 mb-3">Plantation & Environment</h4>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>• 50,000+ saplings planted</li>
-                <li>• Community green zones created</li>
-                <li>• Medicinal gardens established</li>
-                <li>• "One Person, One Tree" campaigns</li>
+                <li>• Mass plantation drives across communities</li>
+                <li>• Community green zones & medicinal gardens</li>
+                <li>• "One Person, One Tree" awareness campaigns</li>
+                <li>• Ongoing sapling care & eco-education programs</li>
               </ul>
             </div>
           </Card>

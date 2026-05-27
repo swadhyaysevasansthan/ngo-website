@@ -12,22 +12,20 @@ const activities = {
       title: 'Compost Making Training',
       date: 'Jan 2024',
       description: 'Hands-on event on creating compost with farm waste.'
-    }
-  ],
-  ongoing: [
+    },
     {
       title: 'Soil Health Monitoring',
-      date: 'Sep-Nov 2025',
-      description: 'Regular testing and awareness in partner villages.'
-    }
-  ],
-  future: [
+      date: 'Sep–Nov 2025',
+      description: 'Regular soil testing and awareness sessions conducted in partner villages.'
+    },
     {
       title: 'Natural Pest Management Camp',
       date: 'Dec 2025',
-      description: 'Upcoming demonstration session at local farm.'
-    }
-  ]
+      description: 'Demonstration session on natural pest control techniques at a local farm.'
+    },
+  ],
+  ongoing: [],
+  future: [],
 };
 
 const Section = ({ title, icon, color, items }) => (

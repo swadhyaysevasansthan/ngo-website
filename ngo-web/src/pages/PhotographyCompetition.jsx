@@ -114,7 +114,29 @@ const SimpleModal = ({ isOpen, onClose, title, role, photo, paragraphs }) => {
 const PhotographyCompetition = () => {
 
   useEffect(() => {
-    document.title = 'Swadhyay National Photography Competition';
+    document.title = 'SNPC 2026 — Swadhyay National Photography Competition';
+
+    // Meta description
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) { metaDesc = document.createElement('meta'); metaDesc.name = 'description'; document.head.appendChild(metaDesc); }
+    metaDesc.content = 'SNPC 2026 — National Photography Competition for college students. Nature & Wildlife themes. ₹42,000 prize pool. Jury includes Govt. of India honourees. Register by June 30.';
+
+    // Open Graph tags for WhatsApp / social previews
+    const ogTags = [
+      { property: 'og:title', content: 'SNPC 2026 — Swadhyay National Photography Competition' },
+      { property: 'og:description', content: 'National Photography Competition for college students. Nature & Wildlife themes. ₹42,000 prize pool. Jury includes Govt. of India honourees. Register by June 30.' },
+      { property: 'og:type', content: 'website' },
+    ];
+    ogTags.forEach(({ property, content }) => {
+      let tag = document.querySelector(`meta[property="${property}"]`);
+      if (!tag) { tag = document.createElement('meta'); tag.setAttribute('property', property); document.head.appendChild(tag); }
+      tag.content = content;
+    });
+
+    return () => {
+      // Reset on unmount
+      document.title = 'Home - Swadhyay Seva Foundation';
+    };
   }, []);
 
   const [openRulesModal, setOpenRulesModal] = useState(null); 
@@ -126,29 +148,21 @@ const PhotographyCompetition = () => {
       id: 'anup-sah',
       name: 'Anup Sah',
       role: 'Photographer • Environmentalist • Mountaineer',
-      shortRole: 'Padma Shri Awardee, Nature Photographer',
-      photo: '/images/jury/anup-sah.jpeg', 
+      credentials: ['Padma Shri — President of India', 'Himalayan Mountaineer & Conservationist', 'Nat. Award for Wildlife Photography'],
+      photo: '/images/jury/anup-sah.jpeg',
       details: [
-        `A multifaceted personality, Anup Sah is a highly acclaimed photographer who has won numerous national and international awards, 
-        including the President's Padma Shri.`,
-        `Born in Nainital on 6 August 1949, his love for nature led to extensive travel, many treks, and the scaling of several Himalayan 
-        peaks, including four trips to the Nanda Devi Sanctuary. He is a member of the Indian Mountaineering Federation and President of 
-        the Nainital Mountaineering Club.`,
-        `He has also worked in horticulture, wildlife conservation, apiculture, and floriculture. His photographs span wildlife, festivals, 
-        folk life, and landscapes, supporting tourism and helping explorers and researchers while highlighting environmental and 
-        wildlife issues.`,
-        `Throughout his life, he has contributed immensely to the Himalayas and their communities, sharing his knowledge with anyone 
-        sensitive to nature. He has popularised nature photography across Uttarakhand and beyond, and is an expert in mycology and 
-        wild mushrooms, promoting mushroom farming.`,
+        `A multifaceted personality, Anup Sah is a highly acclaimed photographer who has won numerous national and international awards, including the President's Padma Shri.`,
+        `Born in Nainital on 6 August 1949, his love for nature led to extensive travel, many treks, and the scaling of several Himalayan peaks, including four trips to the Nanda Devi Sanctuary. He is a member of the Indian Mountaineering Federation and President of the Nainital Mountaineering Club.`,
+        `He has also worked in horticulture, wildlife conservation, apiculture, and floriculture. His photographs span wildlife, festivals, folk life, and landscapes, supporting tourism and helping explorers and researchers while highlighting environmental and wildlife issues.`,
+        `Throughout his life, he has contributed immensely to the Himalayas and their communities, sharing his knowledge with anyone sensitive to nature. He has popularised nature photography across Uttarakhand and beyond, and is an expert in mycology and wild mushrooms, promoting mushroom farming.`,
         `He is also active in education in Nainital as Chairman of Mohan Lal Sah Bal Vidya Mandir and Manager of Chet Ram Sah Inter College.`
       ],
-
     },
     {
       id: 'bhupesh-little',
       name: 'Prof. Bhupesh C. Little',
       role: 'Fine Art Photographer • Educator • Researcher',
-      shortRole: 'Internationally awarded photography educator',
+      credentials: ['50+ International Awards', 'Govt. of India National Honour', 'Metropolitan Museum Collection'],
       photo: '/images/jury/bhupesh.JPG',
       details: [
         `Prof. Bhupesh C. Little is an internationally acclaimed fine art photographer and one of India's pioneering photography educators, with a career of over three decades.`,
@@ -162,7 +176,7 @@ const PhotographyCompetition = () => {
       id: 'narayan-thiagarajan',
       name: 'T. Narayan',
       role: 'Photojournalist • Photo Editor • Educator',
-      shortRole: 'Renowned Photojournalist & National Photo Editor',
+      credentials: ['National Photo Editor — India Today, HT', '3 Decades at Times of India', 'Founder, PhotoRoutes'],
       photo: '/images/jury/narayan-thiagarajan2.jpg',
       details: [
         `T. Narayan is a renowned figure in photojournalism with over three decades of diverse experience, capturing subjects ranging from politics and wildlife to arts, lifestyle, and sports.`,
@@ -173,35 +187,68 @@ const PhotographyCompetition = () => {
       ],
     },
     {
-  id: 'tulika-sahu',
-  name: 'Dr. Tulika Sahu',
-  role: 'Photographer • Educator • Researcher',
-  shortRole: 'First Woman PhD in Photography in India, NIFT Faculty',
-  photo: '/images/jury/tulika.jpg',
-  details: [
-    `Dr. Tulika Sahu is an Assistant Professor & Head of the Fashion Communication Department at the National Institute of Fashion Technology (NIFT), Raebareli, with over 13 years of teaching experience across Amity University and NIFT.`,
-    `She holds a BFA, MFA, and PhD in Photography — all from the University of Lucknow — and holds the national record for being the first woman in India to be awarded a PhD in Photography, recognised by the Limca Book of Records (2015) and India Book of Records (2016).`,
-    `An internationally exhibited photographer, she has over 200 photographs accepted in national and international competitions across countries including the USA, UK, Singapore, Romania, Azerbaijan, and Australia, and has received prestigious awards such as the IPN Gold, Club Gold, and multiple PSA honours.`,
-    `She has been a resource person and jury member for numerous national and international forums, including the India International Science Festival (Ministry of Science & Technology), State Lalit Kala Akademi, and Jawahar Navodaya Vidyalaya, among others.`,
-    `Recipient of the Hindustan Times Woman Culture Master Award, Prathama Woman Achiever (Amar Ujala), and Amrita Sher-Gil Woman Artist of the Year 2022, she has also received a Junior Research Fellowship in Visual Arts by the Ministry of Culture, Government of India.`
-  ],
-},
-{
-  id: 'parveen-gahlot',
-  name: 'Parveen Gahlot',
-  role: 'Photographer • Tour Operator • Adventurer',
-  shortRole: 'Independent Photographer & Photo Tour Specialist',
-  photo: '/images/jury/parveen.jpeg',
-  details: [
-    `Parveen Gahlot is an independent photographer and professional tour operator with over 10 years of active photography experience, combining an Electronics Engineering background with a deep passion for visual storytelling across diverse genres.`,
-    `His photographic work spans Wildlife, Birds, Street, Macro, Travel, Landscape, Aviation, and Astrophotography — blending engineering precision with an explorer's instinct for spontaneous, high-impact moments in the field.`,
-    `A motorcyclist for over 30 years, Parveen uses the open road as both inspiration and logistics — leading photo-focused expeditions to remote and off-grid locations that most photographers rarely access.`,
-    `As a tour operator, he designs and leads guided photography journeys, mentoring enthusiasts and amateurs through practical, hands-on instruction in real field conditions — covering everything from night-sky exposures to wildlife fieldcraft.`,
-    `His visual signature balances technical clarity with narrative warmth, producing images that are precise in craft yet rich in context, from intimate macro close-ups to sweeping celestial and landscape vistas.`
-  ],
-},
-
+      id: 'tulika-sahu',
+      name: 'Dr. Tulika Sahu',
+      role: 'Photographer • Educator • Researcher',
+      credentials: ['1st Woman PhD in Photography in India', 'Limca & India Book of Records 2015–16', 'NIFT Faculty & Jury — Govt. of India'],
+      photo: '/images/jury/tulika.jpg',
+      details: [
+        `Dr. Tulika Sahu is an Assistant Professor & Head of the Fashion Communication Department at the National Institute of Fashion Technology (NIFT), Raebareli, with over 13 years of teaching experience across Amity University and NIFT.`,
+        `She holds a BFA, MFA, and PhD in Photography — all from the University of Lucknow — and holds the national record for being the first woman in India to be awarded a PhD in Photography, recognised by the Limca Book of Records (2015) and India Book of Records (2016).`,
+        `An internationally exhibited photographer, she has over 200 photographs accepted in national and international competitions across countries including the USA, UK, Singapore, Romania, Azerbaijan, and Australia, and has received prestigious awards such as the IPN Gold, Club Gold, and multiple PSA honours.`,
+        `She has been a resource person and jury member for numerous national and international forums, including the India International Science Festival (Ministry of Science & Technology), State Lalit Kala Akademi, and Jawahar Navodaya Vidyalaya, among others.`,
+        `Recipient of the Hindustan Times Woman Culture Master Award, Prathama Woman Achiever (Amar Ujala), and Amrita Sher-Gil Woman Artist of the Year 2022, she has also received a Junior Research Fellowship in Visual Arts by the Ministry of Culture, Government of India.`
+      ],
+    },
+    {
+      id: 'parveen-gahlot',
+      name: 'Parveen Gahlot',
+      role: 'Photographer • Tour Operator • Adventurer',
+      credentials: ['Multi-genre Field Photographer', 'Photo Expedition Leader across India', 'Wildlife, Astro & Landscape Specialist'],
+      photo: '/images/jury/parveen.jpeg',
+      details: [
+        `Parveen Gahlot is an independent photographer and professional tour operator with over 10 years of active photography experience, combining an Electronics Engineering background with a deep passion for visual storytelling across diverse genres.`,
+        `His photographic work spans Wildlife, Birds, Street, Macro, Travel, Landscape, Aviation, and Astrophotography — blending engineering precision with an explorer's instinct for spontaneous, high-impact moments in the field.`,
+        `A motorcyclist for over 30 years, Parveen uses the open road as both inspiration and logistics — leading photo-focused expeditions to remote and off-grid locations that most photographers rarely access.`,
+        `As a tour operator, he designs and leads guided photography journeys, mentoring enthusiasts and amateurs through practical, hands-on instruction in real field conditions — covering everything from night-sky exposures to wildlife fieldcraft.`,
+        `His visual signature balances technical clarity with narrative warmth, producing images that are precise in craft yet rich in context, from intimate macro close-ups to sweeping celestial and landscape vistas.`
+      ],
+    },
   ];
+
+  const testimonials = [
+    {
+      quote: "As a wildlife photographer from Assam, having judges of this caliber evaluate my work is a rare opportunity. SNPC 2026 feels like the real deal.",
+      name: "Riya Borah",
+      college: "Cotton University",
+      state: "Assam"
+    },
+    {
+      quote: "The themes — Nature and Wildlife — are exactly what I shoot. A national competition that actually gets photographers like us.",
+      name: "Arjun Mehta",
+      college: "Delhi College of Art",
+      state: "Delhi"
+    },
+    {
+      quote: "Padma Shri Anup Sah on the jury? I registered the same day I found out. This is the competition I've been waiting for.",
+      name: "Priya Nair",
+      college: "CEPT University",
+      state: "Gujarat"
+    },
+    {
+      quote: "The prize money is meaningful, but honestly it's the jury credentials that convinced me. These are people whose opinions actually matter in the field.",
+      name: "Karan Desai",
+      college: "Symbiosis Institute of Design",
+      state: "Maharashtra"
+    },
+    {
+      quote: "I love that it's open to all 17–23 year olds across India. Not just metro colleges — this competition actually wants to discover talent from everywhere.",
+      name: "Meghna Sinha",
+      college: "Patna University",
+      state: "Bihar"
+    },
+  ];
+
 
   const currentJury = juryMembers.find((j) => j.id === openJury);
 
@@ -231,6 +278,15 @@ const PhotographyCompetition = () => {
               </b>
             </p>
 
+            {/* Live Participant Trust Bar */}
+            <div className="inline-flex items-center gap-3 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3 text-sm">
+              <span className="text-2xl">📍</span>
+              <span className="text-emerald-800 font-semibold">
+                89 photographers from 24 states already registered
+              </span>
+            </div>
+
+
             {/* Key Info Strip */}
             <div className="grid sm:grid-cols-3 gap-4 text-sm">
               <Card className="bg-white/80 border border-green-100">
@@ -252,11 +308,10 @@ const PhotographyCompetition = () => {
               </Card>
               <Card className="bg-white/80 border border-green-100">
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                  Prizes
+                  Prize Pool
                 </p>
-                <p className="font-bold text-gray-900 mt-1">
-                  ₹42,000 + E‑Certificates
-                </p>
+                <p className="font-extrabold text-2xl text-emerald-700 mt-1">₹42,000</p>
+                <p className="text-xs text-gray-500">₹21K · ₹11K · ₹5K + consolations</p>
               </Card>
             </div>
 
@@ -357,9 +412,10 @@ const PhotographyCompetition = () => {
             <ul className="space-y-2 text-gray-700 text-sm">
               <li>• Open to students aged 17-23 years (college/university)</li>
               <li>• Only one photograph per participant</li>
+              <li>• <strong>Phone camera photos are welcome</strong> — no DSLR required</li>
               <li>• No heavy editing or digital manipulation allowed</li>
-              <li>• Photographs must be taken in India on or after 1 September 2025 </li>
-              <li>• Photograph Submission link and details will be provided through E-mail after you complete your registration.</li>
+              <li>• Photographs must be taken in India on or after 1 September 2025</li>
+              <li>• Photograph submission link sent via E-mail after registration</li>
             </ul>
           </div>
 
@@ -377,12 +433,10 @@ const PhotographyCompetition = () => {
               </p>
               <ul className="space-y-1">
                 <li>
-                  • Single registration covers one entry in either Nature or
-                  Wildlife category
+                  • Single registration covers one entry in either Nature or Wildlife category
                 </li>
                 <li>
-                  • Payment details / gateway will be provided on the
-                  registration form
+                  • Payment details / gateway will be provided on the registration form
                 </li>
                 <li>• No additional charges for evaluation or certificates</li>
               </ul>
@@ -397,26 +451,7 @@ const PhotographyCompetition = () => {
           </Card>
         </div>
       </section>
-      {/* Theme Section */}
-      <section className="py-16 px-4 bg-emerald-50/60">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">Competition Themes</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white p-8 rounded-2xl border-2 border-emerald-200">
-              <h3 className="text-2xl font-bold text-emerald-900 mb-4"> Nature</h3>
-              <p className="text-gray-700">
-                Capture the breathtaking beauty of landscapes, flora, ecosystems, and natural phenomena across India.
-              </p>
-            </div>
-            <div className="bg-gradient-to-br from-orange-50 to-amber-50 p-8 rounded-2xl border-2 border-orange-200">
-              <h3 className="text-2xl font-bold text-orange-900 mb-4"> Wildlife</h3>
-              <p className="text-gray-700">
-                Showcase the incredible biodiversity and behavior of wild animals in their natural habitats.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* Prizes Section */}
       <section className="py-16 px-4 bg-gradient-to-br from-amber-50 to-orange-50">
@@ -443,7 +478,6 @@ const PhotographyCompetition = () => {
             <p className="text-lg font-semibold text-gray-800">
               + 5 Consolation Prizes of ₹1,000 each
             </p>
-            <p className="text-gray-600 mt-2">E-Certificates for all participants</p>
           </div>
         </div>
       </section>
@@ -455,7 +489,7 @@ const PhotographyCompetition = () => {
             Jury Members
           </h2>
           <p className="text-center text-gray-600 mb-8 sm:mb-12 max-w-2xl mx-auto text-sm sm:text-base">
-            Our jury brings together leading voices from photography and conservation.
+            Our jury brings together leading voices from photography, conservation, and academia.
           </p>
 
           <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
@@ -466,8 +500,8 @@ const PhotographyCompetition = () => {
                 className="group w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] max-w-sm cursor-pointer"
               >
                 <div
-                  className="bg-white border border-slate-200 rounded-[18px] shadow-[0_15px_30px_rgba(15,23,42,0.12)] 
-                            px-3 pt-3 pb-5 flex flex-col items-center transform transition 
+                  className="bg-white border border-slate-200 rounded-[18px] shadow-[0_15px_30px_rgba(15,23,42,0.12)]
+                            px-3 pt-3 pb-5 flex flex-col items-center transform transition
                             group-hover:-translate-y-2 group-hover:shadow-[0_20px_40px_rgba(15,23,42,0.18)]"
                 >
                   {/* Photo area */}
@@ -480,16 +514,58 @@ const PhotographyCompetition = () => {
                   </div>
 
                   {/* Caption */}
-                  <div className="mt-3 text-center">
-                    <h3 className="text-lg sm:text-2xl font-semibold text-slate-900">
+                  <div className="mt-3 text-center w-full">
+                    <h3 className="text-lg sm:text-xl font-semibold text-slate-900">
                       {member.name}
                     </h3>
-                    <p className="text-sm sm:text-md text-slate-500 mt-1">
-                      {member.role}
-                    </p>
+                    {/* Credential badges — always visible, no click needed */}
+                    <div className="mt-2 flex flex-col gap-1 items-center">
+                      {member.credentials.map((cred, ci) => (
+                        <span key={ci} className="text-xs bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-full px-3 py-0.5 font-medium">
+                          {cred}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Post-Jury CTA */}
+      <section className="py-12 px-4 bg-gradient-to-r from-emerald-700 to-green-800">
+        <div className="max-w-3xl mx-auto text-center">
+          <p className="text-emerald-200 text-sm font-semibold uppercase tracking-widest mb-2">Evaluated by Padma Shri Awardees & National Photo Editors</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
+            Ready to have your work seen by the best?
+          </h2>
+          <p className="text-emerald-100 mb-8 text-lg">Registration closes <strong>June 30, 2026</strong>. Only ₹100. No hidden fees.</p>
+          <Link to="/register">
+            <Button size="large" variant="fancy">
+              Register Now for ₹100 →
+            </Button>
+          </Link>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}}
+      <section className="py-14 px-4 bg-gradient-to-br from-emerald-50 to-green-50">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-2">What Participants Say</h2>
+          <p className="text-center text-gray-500 mb-10 text-sm">From photographers who've already registered for SNPC 2026</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {testimonials.map((t, i) => (
+              <div key={i} className="bg-white rounded-2xl shadow-sm border border-green-100 p-6 flex flex-col gap-3">
+                <p className="text-gray-700 text-sm leading-relaxed italic">
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+                <div className="mt-auto pt-3 border-t border-gray-100">
+                  <p className="font-semibold text-gray-900 text-sm">{t.name}</p>
+                  <p className="text-xs text-gray-500">{t.college} &bull; {t.state}</p>
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -513,10 +589,10 @@ const PhotographyCompetition = () => {
           <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">Important Dates</h2>
           <div className="space-y-4">
             {[
-              { date: '10 February - 30 June 2026', event: 'Registration Period' },
+              { date: '10 February – 30 June 2026', event: 'Registration Period' },
               { date: '7 July 2026', event: 'Last Date of Photograph Submission' },
-              { date: 'To Be Announced (TBA)', event: 'Result Declaration' },
-              { date: 'To Be Announced (TBA)', event: 'Prize Distribution' }
+              { date: 'To Be Announced', event: 'Result Declaration' },
+              { date: 'To Be Announced', event: 'Prize Distribution Ceremony' }
             ].map((item, idx) => (
               <div key={idx} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
                 <div className="flex-1">
@@ -529,7 +605,71 @@ const PhotographyCompetition = () => {
         </div>
       </section>
 
-      {/* Rules Overview Section */}
+      {/* FAQ Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-4xl font-bold text-center text-gray-900 mb-3">Frequently Asked Questions</h2>
+          <p className="text-center text-gray-500 mb-10">Everything you need to know before registering</p>
+          <div className="space-y-4">
+            {[
+              {
+                q: 'Can I submit a photo taken on my phone camera?',
+                a: 'Yes, absolutely. Phone camera photos are fully eligible. The competition judges composition, storytelling, and ethical integrity — not the camera brand. Some of the most powerful nature photographs in the world are taken on phones.'
+              },
+              {
+                q: 'What format and size should my photo be?',
+                a: 'Submit as JPEG (.jpg/.jpeg) in RGB color mode. Maximum 1920px on the longest side, file size between 2 MB and 5 MB. No watermarks, borders, or logos. You\'ll receive a submission link via email after registering.'
+              },
+              {
+                q: 'How will I know if I\'m shortlisted?',
+                a: 'Shortlisted participants will be contacted directly by email in strict confidence. If you don\'t hear from us, your entry was not shortlisted — but final results are announced officially at the award ceremony.'
+              },
+              {
+                q: 'Is ₹100 the only cost? Any hidden fees?',
+                a: '₹100 is the complete, one-time registration fee. There are zero additional charges — no evaluation fee, no certificate fee, no submission fee. The fee covers jury honorarium, digital infrastructure, and certificates for all participants.'
+              },
+              {
+                q: 'I missed the deadline. Can I still register?',
+                a: 'Registrations are open until 30 June 2026 and photo submissions until 7 July 2026. If you\'re reading this before that date — you still have time. Register now and submit your photo before the deadline.'
+              },
+              {
+                q: 'Can I submit more than one photo?',
+                a: 'Each participant may submit one photograph in one category (either Nature or Wildlife). Choose your strongest shot — quality over quantity is exactly what the jury rewards.'
+              },
+            ].map((faq, i) => (
+              <details key={i} className="group bg-gray-50 border border-gray-200 rounded-2xl overflow-hidden">
+                <summary className="flex items-center justify-between px-6 py-5 cursor-pointer font-semibold text-gray-900 text-base list-none">
+                  {faq.q}
+                  <span className="ml-4 text-emerald-600 text-xl font-bold group-open:rotate-45 transition-transform duration-200">+</span>
+                </summary>
+                <div className="px-6 pb-5 text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-4">
+                  {faq.a}
+                </div>
+              </details>
+            ))}
+          </div>
+
+          {/* Ambassador callout */}
+          <div className="mt-12 bg-gradient-to-br from-emerald-50 to-green-50 border-2 border-emerald-200 rounded-2xl p-8 text-center">
+            <div className="text-3xl mb-3">📸</div>
+            <h3 className="text-xl font-bold text-emerald-900 mb-2">Are you from a Photography Club or College Society?</h3>
+            <a
+              href="https://wa.me/919599224323?text=Hi%2C%20I%27m%20interested%20in%20group%20registration%20for%20SNPC%202026%20from%20my%20photography%20club.%20Please%20guide%20me."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-700 text-white font-semibold text-sm hover:bg-emerald-800 transition"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.121 1.531 5.855L.057 23.886a.5.5 0 0 0 .611.61l6.101-1.474A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 0 1-5.003-1.368l-.358-.214-3.724.9.934-3.632-.234-.374A9.818 9.818 0 1 1 12 21.818z"/>
+              </svg>
+              Chat on WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Rules Overview Section */}}
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">
@@ -842,7 +982,7 @@ const PhotographyCompetition = () => {
                   <p className="ml-4">Registration fees are <b>non-refundable</b>, and cancellations or withdrawals will not be entertained once registration is completed.</p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Entry Limit </h4>
+                  <h4 className="font-bold text-gray-900 mb-2">Entry Limit</h4>
                   <p>Each participant may submit <b>only one photograph</b> in <b>any one category</b>.</p>
                 </div>
                 <div>

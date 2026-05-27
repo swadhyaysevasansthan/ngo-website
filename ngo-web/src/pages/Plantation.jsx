@@ -40,9 +40,9 @@ const Plantation = () => {
   ];
 
   const stats = [
-    { icon: <Trees size={32} />, number: '50,000+', label: 'Saplings Planted' },
-    { icon: <Users size={32} />, number: '5,000+', label: 'Volunteers Engaged' },
-    { icon: <Leaf size={32} />, number: '100+', label: 'Green Zones Created' },
+    { icon: <Trees size={32} />, label: 'Saplings Planted', highlight: 'Mass Drives Across Communities' },
+    { icon: <Users size={32} />, label: 'Volunteers Engaged', highlight: 'Youth, Students & Families' },
+    { icon: <Leaf size={32} />, label: 'Green Zones Created', highlight: 'Schools, Villages & Urban Areas' },
   ];
 
   const nextImage = () => {
@@ -137,8 +137,8 @@ const Plantation = () => {
                 className="flex flex-col items-center"
               >
                 <div className="mb-3">{stat.icon}</div>
-                <div className="text-4xl font-bold mb-2">{stat.number}</div>
-                <div className="text-blue-100">{stat.label}</div>
+                <div className="text-xl font-bold mb-1">{stat.highlight}</div>
+                <div className="text-blue-100 text-sm">{stat.label}</div>
               </motion.div>
             ))}
           </div>
