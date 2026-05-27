@@ -32,6 +32,7 @@ import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
 import RegistrationMaintenance from "./pages/RegistrationMaintenance";
+import GrandFinalePage from './pages/GrandFinalePage';
 
 // 🔥 NEW REVIEW PAGES
 import ReviewsPage from './pages/Reviews';
@@ -84,6 +85,7 @@ function App() {
             {/* 🔥 NEW PUBLIC REVIEW ROUTES */}
             <Route path="/reviews" element={<ReviewsPage />} />
             <Route path="/submit-review" element={<SubmitReview />} />
+            <Route path="/grand-finale26" element={<GrandFinalePage />} />
 
             {/* 🔥 SNEAC — School Competition Routes */}
             <Route path="/school-competition" element={<SchoolAccessRequest />} />

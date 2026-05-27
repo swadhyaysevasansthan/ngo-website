@@ -42,6 +42,7 @@ const Navbar = () => {
 
   const schoolStoriesSubLinks = [
     { name: 'SNEAC 2025-26', path: '/sneac2025-26' },
+    { name: 'SNEAC 2025-26 Grand Finale', path: '/grand-finale26' },
   ];
 
   const competitionSubLinks = [
