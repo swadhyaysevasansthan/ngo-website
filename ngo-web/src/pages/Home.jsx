@@ -199,10 +199,11 @@ const Home = () => {
               </div>
               <h3 className="text-2xl font-bold text-gray-800 mb-4">Our Mission</h3>
               <p className="text-gray-600 leading-relaxed">
-                We are committed to building a healthier and more sustainable future by awakening self-awareness, promoting holistic well-being, 
-                and encouraging chemical-free and sustainable farming practices. Through environmental consciousness, community participation, 
-                and value-based education, we strive to restore harmony between human health and the health of the Earth, 
-                creating a golden chapter of wellness, sustainability, and responsible living for generations to come.
+                We are committed to building a healthier and sustainable future by awakening self-awareness, 
+                promoting holistic well-being and encouraging chemical-free, sustainable farming practices. 
+                Through environmental consciousness, community participation and value-based education, 
+                we strive to restore harmony between human health and the health of the Earth, 
+                creating a golden chapter of wellness, sustainability and responsible living for generations to come.
               </p>
             </div>
           </Card>
@@ -214,9 +215,9 @@ const Home = () => {
               </div>
               <h3 className="text-2xl font-bold text-gray-800 mb-4">Our Vision</h3>
               <p className="text-gray-600 leading-relaxed">
-                To build a healthier and more sustainable society by fostering health awareness, encouraging individual and social responsibility, 
+                To build a healthier and sustainable society by fostering health awareness, encouraging individual and social responsibility 
                 and promoting natural and balanced living. We envision empowered communities that embrace holistic well-being, 
-                adopt environmentally conscious practices, and contribute to a greener and healthier world.
+                adopt environmentally conscious practices and contribute to a greener and healthier world.
               </p>
             </div>
           </Card>
