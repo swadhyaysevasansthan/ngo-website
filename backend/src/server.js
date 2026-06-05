@@ -23,6 +23,8 @@ import schoolRegistrationRoutes from './routes/schoolRegistrationRoutes.js';
 import communityRoutes from './routes/communityRoutes.js';
 import adminCommunityRoutes from './routes/adminCommunityRoutes.js';
 
+import visitorRoutes from './routes/visitorRoutes.js';
+
 // Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -128,6 +130,7 @@ app.use('/api/school-access', schoolAccessRoutes);
 app.use('/api/school-registration', schoolRegistrationRoutes);
 app.use('/api/communities', communityRoutes);
 app.use('/api/admin/communities', adminCommunityRoutes);
+app.use('/api/visitors', visitorRoutes);
 
 // 404 handler
 app.use((req, res) => {

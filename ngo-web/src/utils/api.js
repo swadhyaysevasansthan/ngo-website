@@ -190,6 +190,16 @@ export const schoolRegistrationAPI = {
     ),
 };
 
+export const visitorAPI = {
+  track: (visitorToken) =>
+    apiClient.post('/visitors/track', {
+      visitorToken
+    }),
+
+  getCount: () =>
+    apiClient.get('/visitors/count')
+};
+
 // 🔥 INDIVIDUAL EXPORTS for direct imports
 export const {
   submitReview,

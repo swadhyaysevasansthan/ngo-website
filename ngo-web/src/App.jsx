@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
 // import WelcomeModal from './components/WelcomeModal';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -45,7 +46,15 @@ import QuizRegistrationForm from './pages/QuizRegistrationForm';
 import CommunityPage from './pages/CommunityPage';
 import CommunityAdmin from './pages/CommunityAdmin';
 
+import { trackVisitor } from './utils/visitorTracker';
+import VisitorCounter from './components/VisitorCounter';
+
 function App() {
+
+  useEffect(() => {
+    trackVisitor();
+  }, []);
+
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
@@ -103,6 +112,7 @@ function App() {
             <Route path="/admin/communities" element={<CommunityAdmin />} />
           </Routes>
         </main>
+        <VisitorCounter />
         <Footer />
       </div>
     </Router>
