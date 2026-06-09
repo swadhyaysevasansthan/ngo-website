@@ -3,7 +3,8 @@ import { body } from 'express-validator';
 import { 
   registerParticipant, 
   getParticipantById, 
-  verifyParticipant 
+  verifyParticipant,
+  getLiveStats
 } from '../controllers/participantController.js';
 import { validateRequest } from '../middleware/validation.js';
 import { rateLimiter } from '../middleware/rateLimiter.js';
@@ -92,6 +93,7 @@ const registrationValidation = [
 
 // Routes
 router.post('/register', rateLimiter, registrationValidation, validateRequest, registerParticipant);
+router.get('/live-stats', getLiveStats);
 router.get('/:participantId', getParticipantById);
 router.post('/verify', verifyParticipant);
 

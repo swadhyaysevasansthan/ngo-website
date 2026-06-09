@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import {FileText, Camera, CheckCircle2, AlertCircle} from 'lucide-react';
 import Button from "../components/Button1";
 import Card from "../components/Card1";
+import LiveParticipation from '../components/LiveParticipation';
 
 import hero1 from "../assets/hero/1.jpg";
 import hero2 from "../assets/hero/2.jpg";
@@ -148,7 +149,7 @@ const PhotographyCompetition = () => {
       id: 'anup-sah',
       name: 'Anup Sah',
       role: 'Photographer • Environmentalist • Mountaineer',
-      credentials: ['Padma Shri — President of India', 'Himalayan Mountaineer & Conservationist', 'Nat. Award for Wildlife Photography'],
+      credentials: ['Padma Shri Awardee', 'Himalayan Mountaineer & Conservationist', 'Nat. Award for Wildlife Photography'],
       photo: '/images/jury/anup-sah.jpeg',
       details: [
         `A multifaceted personality, Anup Sah is a highly acclaimed photographer who has won numerous national and international awards, including the President's Padma Shri.`,
@@ -216,38 +217,38 @@ const PhotographyCompetition = () => {
     },
   ];
 
-  const testimonials = [
-    {
-      quote: "As a wildlife photographer from Assam, having judges of this caliber evaluate my work is a rare opportunity. SNPC 2026 feels like the real deal.",
-      name: "Riya Borah",
-      college: "Cotton University",
-      state: "Assam"
-    },
-    {
-      quote: "The themes — Nature and Wildlife — are exactly what I shoot. A national competition that actually gets photographers like us.",
-      name: "Arjun Mehta",
-      college: "Delhi College of Art",
-      state: "Delhi"
-    },
-    {
-      quote: "Padma Shri Anup Sah on the jury? I registered the same day I found out. This is the competition I've been waiting for.",
-      name: "Priya Nair",
-      college: "CEPT University",
-      state: "Gujarat"
-    },
-    {
-      quote: "The prize money is meaningful, but honestly it's the jury credentials that convinced me. These are people whose opinions actually matter in the field.",
-      name: "Karan Desai",
-      college: "Symbiosis Institute of Design",
-      state: "Maharashtra"
-    },
-    {
-      quote: "I love that it's open to all 17–23 year olds across India. Not just metro colleges — this competition actually wants to discover talent from everywhere.",
-      name: "Meghna Sinha",
-      college: "Patna University",
-      state: "Bihar"
-    },
-  ];
+  // const testimonials = [
+  //   {
+  //     quote: "As a wildlife photographer from Assam, having judges of this caliber evaluate my work is a rare opportunity. SNPC 2026 feels like the real deal.",
+  //     name: "Riya Borah",
+  //     college: "Cotton University",
+  //     state: "Assam"
+  //   },
+  //   {
+  //     quote: "The themes — Nature and Wildlife — are exactly what I shoot. A national competition that actually gets photographers like us.",
+  //     name: "Arjun Mehta",
+  //     college: "Delhi College of Art",
+  //     state: "Delhi"
+  //   },
+  //   {
+  //     quote: "Padma Shri Anup Sah on the jury? I registered the same day I found out. This is the competition I've been waiting for.",
+  //     name: "Priya Nair",
+  //     college: "CEPT University",
+  //     state: "Gujarat"
+  //   },
+  //   {
+  //     quote: "The prize money is meaningful, but honestly it's the jury credentials that convinced me. These are people whose opinions actually matter in the field.",
+  //     name: "Karan Desai",
+  //     college: "Symbiosis Institute of Design",
+  //     state: "Maharashtra"
+  //   },
+  //   {
+  //     quote: "I love that it's open to all 17–23 year olds across India. Not just metro colleges — this competition actually wants to discover talent from everywhere.",
+  //     name: "Meghna Sinha",
+  //     college: "Patna University",
+  //     state: "Bihar"
+  //   },
+  // ];
 
 
   const currentJury = juryMembers.find((j) => j.id === openJury);
@@ -279,12 +280,7 @@ const PhotographyCompetition = () => {
             </p>
 
             {/* Live Participant Trust Bar */}
-            <div className="inline-flex items-center gap-3 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3 text-sm">
-              <span className="text-2xl">📍</span>
-              <span className="text-emerald-800 font-semibold">
-                89 photographers from 24 states already registered
-              </span>
-            </div>
+            <LiveParticipation />
 
 
             {/* Key Info Strip */}
@@ -389,6 +385,259 @@ const PhotographyCompetition = () => {
           </div>
         </div>
       </section>
+
+      {/* WHY PARTICIPATE */}
+<section className="py-20 px-4 bg-white">
+  <div className="max-w-6xl mx-auto">
+
+    <div className="text-center mb-14">
+      <span className="inline-flex items-center px-4 py-2 rounded-full bg-emerald-100 text-emerald-800 text-sm font-semibold">
+        Why Participate?
+      </span>
+
+      <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-4">
+        More Than Just a Competition
+      </h2>
+
+      <p className="mt-4 text-gray-600 max-w-3xl mx-auto">
+        SNPC 2026 is designed to discover and celebrate emerging
+        photographers who can tell compelling stories about nature,
+        wildlife, and conservation through their lens.
+      </p>
+    </div>
+
+    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      <Card className="p-8 text-center border-emerald-100">
+        <div className="text-5xl mb-4">🏆</div>
+        <h3 className="font-bold text-lg mb-2">
+          National Recognition
+        </h3>
+        <p className="text-gray-600 text-sm">
+          Showcase your work on a national platform.
+        </p>
+      </Card>
+
+      <Card className="p-8 text-center border-emerald-100">
+        <div className="text-5xl mb-4">👨‍⚖️</div>
+        <h3 className="font-bold text-lg mb-2">
+          Distinguished Jury
+        </h3>
+        <p className="text-gray-600 text-sm">
+          Evaluated by Padma Shri awardees and photography experts.
+        </p>
+      </Card>
+
+      <Card className="p-8 text-center border-emerald-100">
+        <div className="text-5xl mb-4">📸</div>
+        <h3 className="font-bold text-lg mb-2">
+          Showcase Your Vision
+        </h3>
+        <p className="text-gray-600 text-sm">
+          Share your perspective of India’s natural world.
+        </p>
+      </Card>
+
+      <Card className="p-8 text-center border-emerald-100">
+        <div className="text-5xl mb-4">💰</div>
+        <h3 className="font-bold text-lg mb-2">
+          ₹42,000 Prize Pool
+        </h3>
+        <p className="text-gray-600 text-sm">
+          Cash awards and national-level recognition.
+        </p>
+      </Card>
+
+    </div>
+
+  </div>
+</section>
+
+      {/* Jury Section */}
+      <section className="py-10 sm:py-16 px-3 sm:px-4 bg-white/80">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-3 sm:mb-4">
+            Jury Members
+          </h2>
+          <p className="text-center text-gray-600 mb-8 sm:mb-12 max-w-2xl mx-auto text-sm sm:text-base">
+            Our jury brings together leading voices from photography, conservation, and academia.
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
+            {juryMembers.map((member) => (
+              <button
+                key={member.id}
+                onClick={() => setOpenJury(member.id)}
+                className="group w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] max-w-sm cursor-pointer"
+              >
+                <div
+                  className="bg-white border border-slate-200 rounded-[18px] shadow-[0_15px_30px_rgba(15,23,42,0.12)]
+                            px-3 pt-3 pb-5 flex flex-col items-center transform transition
+                            group-hover:-translate-y-2 group-hover:shadow-[0_20px_40px_rgba(15,23,42,0.18)]"
+                >
+                  {/* Photo area */}
+                  <div className="w-full h-64 sm:h-80 overflow-hidden bg-slate-100 rounded-[12px]">
+                    <img
+                      src={member.photo}
+                      alt={member.name}
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </div>
+
+                  {/* Caption */}
+                  <div className="mt-3 text-center w-full">
+                    <h3 className="text-lg sm:text-xl font-semibold text-slate-900">
+                      {member.name}
+                    </h3>
+                    {/* Credential badges — always visible, no click needed */}
+                    <div className="mt-2 flex flex-col gap-1 items-center">
+                      {member.credentials.map((cred, ci) => (
+                        <span key={ci} className="text-xs bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-full px-3 py-0.5 font-medium">
+                          {cred}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+            <SimpleModal
+        isOpen={Boolean(currentJury)}
+        onClose={() => setOpenJury(null)}
+        title={currentJury?.name || ''}
+        role={currentJury?.role || ''} 
+        photo={currentJury?.photo || ''}
+        paragraphs={currentJury?.details || []}
+      />
+
+
+      {/* Final CTA */}
+<section className="relative overflow-hidden py-20 px-4 bg-gradient-to-br from-emerald-900 via-green-800 to-emerald-900">
+
+  {/* Background Glow Effects */}
+  <div className="absolute top-0 left-1/4 h-80 w-80 rounded-full bg-white/5 blur-3xl" />
+  <div className="absolute bottom-0 right-1/4 h-80 w-80 rounded-full bg-emerald-300/10 blur-3xl" />
+
+  <div className="relative max-w-4xl mx-auto text-center">
+
+    <p className="text-emerald-200 text-sm font-semibold uppercase tracking-[0.3em] mb-4">
+      Evaluated by Padma Shri Awardee, Former National Photo Editors, Internationally Acclaimed Photographers & Photography Educators
+    </p>
+
+    <h2 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
+      Showcase Your Vision
+      <span className="block text-emerald-300">
+        On a National Stage
+      </span>
+    </h2>
+
+    <Link to="/register">
+      <Button
+        size="large"
+        variant="fancy"
+        className="px-10 py-4 text-lg font-bold shadow-2xl hover:scale-105 transition-all duration-300"
+      >
+        Register for SNPC 2026 →
+      </Button>
+    </Link>
+
+    <p className="mt-5 text-sm text-emerald-200">
+      Join photographers from across India and be part of a growing national community of visual storytellers.
+    </p>
+
+  </div>
+</section>
+
+      {/* PRIZES */}
+<section className="py-20 px-4 bg-gradient-to-br from-amber-50 via-white to-orange-50">
+
+  <div className="max-w-6xl mx-auto">
+
+    <div className="text-center mb-14">
+      <span className="inline-flex px-4 py-2 rounded-full bg-amber-100 text-amber-800 font-semibold text-sm">
+        Awards & Recognition
+      </span>
+
+      <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-4">
+        ₹42,000 Prize Pool
+      </h2>
+
+      <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+        Recognising excellence in nature and wildlife photography by young
+        photographers across India.
+      </p>
+    </div>
+
+    <div className="grid md:grid-cols-3 gap-8 mb-10">
+
+      <div className="bg-gradient-to-br from-yellow-400 to-amber-500 rounded-3xl p-8 text-center shadow-xl">
+        <div className="text-6xl mb-4">🥇</div>
+        <h3 className="text-white text-2xl font-bold mb-2">
+          First Prize
+        </h3>
+        <div className="text-5xl font-extrabold text-white">
+          ₹21,000
+        </div>
+      </div>
+
+      <div className="bg-gradient-to-br from-slate-300 to-slate-400 rounded-3xl p-8 text-center shadow-xl">
+        <div className="text-6xl mb-4">🥈</div>
+        <h3 className="text-white text-2xl font-bold mb-2">
+          Second Prize
+        </h3>
+        <div className="text-5xl font-extrabold text-white">
+          ₹11,000
+        </div>
+      </div>
+
+      <div className="bg-gradient-to-br from-orange-500 to-amber-700 rounded-3xl p-8 text-center shadow-xl">
+        <div className="text-6xl mb-4">🥉</div>
+        <h3 className="text-white text-2xl font-bold mb-2">
+          Third Prize
+        </h3>
+        <div className="text-5xl font-extrabold text-white">
+          ₹5,000
+        </div>
+      </div>
+
+    </div>
+
+    <Card className="p-8 text-center border-emerald-100">
+      <h3 className="text-2xl font-bold mb-4">
+        Every Participant Receives
+      </h3>
+
+      <div className="grid md:grid-cols-3 gap-4 text-sm">
+
+        <div>
+          ✓ Participation Certificate
+        </div>
+
+        <div>
+          ✓ National-Level Exposure
+        </div>
+
+        <div>
+          ✓ Evaluation by Expert Jury
+        </div>
+
+      </div>
+
+      <div className="mt-6 font-semibold text-emerald-700">
+        + 5 Consolation Awards of ₹1,000 each
+      </div>
+    </Card>
+
+  </div>
+
+</section>
+
+
+
       {/* ABOUT SECTION – white strip full width */}
       <section id="about" className="bg-white/80">
         <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 py-14 grid md:grid-cols-2 gap-10 items-start">
@@ -452,224 +701,69 @@ const PhotographyCompetition = () => {
         </div>
       </section>
 
+{/* IMPORTANT DATES */}
+<section className="py-20 px-4 bg-emerald-50/60">
 
-      {/* Prizes Section */}
-      <section className="py-16 px-4 bg-gradient-to-br from-amber-50 to-orange-50">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">Prizes & Awards</h2>
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-gradient-to-br from-yellow-400 to-amber-500 p-8 rounded-2xl text-center shadow-xl transform hover:scale-105 transition">
-              <div className="text-6xl mb-4">🥇</div>
-              <h3 className="text-2xl font-bold text-white mb-2">1st Prize</h3>
-              <p className="text-4xl font-extrabold text-white">₹21,000</p>
+  <div className="max-w-5xl mx-auto">
+
+    <div className="text-center mb-14">
+      <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+        Important Dates
+      </h2>
+    </div>
+
+    <div className="relative">
+
+      <div className="absolute left-8 top-0 bottom-0 w-1 bg-emerald-200 hidden md:block" />
+
+      {[
+        {
+          date: "10 Feb 2026",
+          title: "Registrations Open"
+        },
+        {
+          date: "30 Jun 2026",
+          title: "Registration Deadline"
+        },
+        {
+          date: "7 Jul 2026",
+          title: "Submission Deadline"
+        },
+        {
+          date: "TBA",
+          title: "Results & Awards"
+        }
+      ].map((item, idx) => (
+        <div
+          key={idx}
+          className="relative flex items-center gap-6 mb-8"
+        >
+
+          <div className="hidden md:flex h-16 w-16 rounded-full bg-emerald-600 text-white font-bold items-center justify-center z-10">
+            {idx + 1}
+          </div>
+
+          <Card className="flex-1 p-6">
+            <div className="text-sm uppercase tracking-wider text-emerald-700 font-semibold">
+              {item.date}
             </div>
-            <div className="bg-gradient-to-br from-gray-300 to-gray-400 p-8 rounded-2xl text-center shadow-xl transform hover:scale-105 transition">
-              <div className="text-6xl mb-4">🥈</div>
-              <h3 className="text-2xl font-bold text-white mb-2">2nd Prize</h3>
-              <p className="text-4xl font-extrabold text-white">₹11,000</p>
+
+            <div className="text-xl font-bold mt-2">
+              {item.title}
             </div>
-            <div className="bg-gradient-to-br from-orange-400 to-amber-600 p-8 rounded-2xl text-center shadow-xl transform hover:scale-105 transition">
-              <div className="text-6xl mb-4">🥉</div>
-              <h3 className="text-2xl font-bold text-white mb-2">3rd Prize</h3>
-              <p className="text-4xl font-extrabold text-white">₹5,000</p>
-            </div>
-          </div>
-          <div className="bg-white p-6 rounded-2xl text-center shadow-md">
-            <p className="text-lg font-semibold text-gray-800">
-              + 5 Consolation Prizes of ₹1,000 each
-            </p>
-          </div>
+          </Card>
+
         </div>
-      </section>
+      ))}
 
-      {/* Jury Section */}
-      <section className="py-10 sm:py-16 px-3 sm:px-4 bg-white/80">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-3 sm:mb-4">
-            Jury Members
-          </h2>
-          <p className="text-center text-gray-600 mb-8 sm:mb-12 max-w-2xl mx-auto text-sm sm:text-base">
-            Our jury brings together leading voices from photography, conservation, and academia.
-          </p>
+    </div>
 
-          <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
-            {juryMembers.map((member) => (
-              <button
-                key={member.id}
-                onClick={() => setOpenJury(member.id)}
-                className="group w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] max-w-sm cursor-pointer"
-              >
-                <div
-                  className="bg-white border border-slate-200 rounded-[18px] shadow-[0_15px_30px_rgba(15,23,42,0.12)]
-                            px-3 pt-3 pb-5 flex flex-col items-center transform transition
-                            group-hover:-translate-y-2 group-hover:shadow-[0_20px_40px_rgba(15,23,42,0.18)]"
-                >
-                  {/* Photo area */}
-                  <div className="w-full h-64 sm:h-80 overflow-hidden bg-slate-100 rounded-[12px]">
-                    <img
-                      src={member.photo}
-                      alt={member.name}
-                      className="w-full h-full object-cover object-top"
-                    />
-                  </div>
+  </div>
 
-                  {/* Caption */}
-                  <div className="mt-3 text-center w-full">
-                    <h3 className="text-lg sm:text-xl font-semibold text-slate-900">
-                      {member.name}
-                    </h3>
-                    {/* Credential badges — always visible, no click needed */}
-                    <div className="mt-2 flex flex-col gap-1 items-center">
-                      {member.credentials.map((cred, ci) => (
-                        <span key={ci} className="text-xs bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-full px-3 py-0.5 font-medium">
-                          {cred}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Post-Jury CTA */}
-      <section className="py-12 px-4 bg-gradient-to-r from-emerald-700 to-green-800">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-emerald-200 text-sm font-semibold uppercase tracking-widest mb-2">Evaluated by Padma Shri Awardees & National Photo Editors</p>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
-            Ready to have your work seen by the best?
-          </h2>
-          <p className="text-emerald-100 mb-8 text-lg">Registration closes <strong>June 30, 2026</strong>. Only ₹100. No hidden fees.</p>
-          <Link to="/register">
-            <Button size="large" variant="fancy">
-              Register Now for ₹100 →
-            </Button>
-          </Link>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}}
-      <section className="py-14 px-4 bg-gradient-to-br from-emerald-50 to-green-50">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-2">What Participants Say</h2>
-          <p className="text-center text-gray-500 mb-10 text-sm">From photographers who've already registered for SNPC 2026</p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {testimonials.map((t, i) => (
-              <div key={i} className="bg-white rounded-2xl shadow-sm border border-green-100 p-6 flex flex-col gap-3">
-                <p className="text-gray-700 text-sm leading-relaxed italic">
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <div className="mt-auto pt-3 border-t border-gray-100">
-                  <p className="font-semibold text-gray-900 text-sm">{t.name}</p>
-                  <p className="text-xs text-gray-500">{t.college} &bull; {t.state}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+</section>
 
 
-      <SimpleModal
-        isOpen={Boolean(currentJury)}
-        onClose={() => setOpenJury(null)}
-        title={currentJury?.name || ''}
-        role={currentJury?.role || ''} 
-        photo={currentJury?.photo || ''}
-        paragraphs={currentJury?.details || []}
-      />
-
-
-
-      {/* Important Dates */}
-      <section className="py-16 px-4 bg-emerald-50/60">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">Important Dates</h2>
-          <div className="space-y-4">
-            {[
-              { date: '10 February – 30 June 2026', event: 'Registration Period' },
-              { date: '7 July 2026', event: 'Last Date of Photograph Submission' },
-              { date: 'To Be Announced', event: 'Result Declaration' },
-              { date: 'To Be Announced', event: 'Prize Distribution Ceremony' }
-            ].map((item, idx) => (
-              <div key={idx} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
-                <div className="flex-1">
-                  <p className="text-xl font-bold text-gray-900">{item.event}</p>
-                  <p className="text-sm text-gray-600">{item.date}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-4xl font-bold text-center text-gray-900 mb-3">Frequently Asked Questions</h2>
-          <p className="text-center text-gray-500 mb-10">Everything you need to know before registering</p>
-          <div className="space-y-4">
-            {[
-              {
-                q: 'Can I submit a photo taken on my phone camera?',
-                a: 'Yes, absolutely. Phone camera photos are fully eligible. The competition judges composition, storytelling, and ethical integrity — not the camera brand. Some of the most powerful nature photographs in the world are taken on phones.'
-              },
-              {
-                q: 'What format and size should my photo be?',
-                a: 'Submit as JPEG (.jpg/.jpeg) in RGB color mode. Maximum 1920px on the longest side, file size between 2 MB and 5 MB. No watermarks, borders, or logos. You\'ll receive a submission link via email after registering.'
-              },
-              {
-                q: 'How will I know if I\'m shortlisted?',
-                a: 'Shortlisted participants will be contacted directly by email in strict confidence. If you don\'t hear from us, your entry was not shortlisted — but final results are announced officially at the award ceremony.'
-              },
-              {
-                q: 'Is ₹100 the only cost? Any hidden fees?',
-                a: '₹100 is the complete, one-time registration fee. There are zero additional charges — no evaluation fee, no certificate fee, no submission fee. The fee covers jury honorarium, digital infrastructure, and certificates for all participants.'
-              },
-              {
-                q: 'I missed the deadline. Can I still register?',
-                a: 'Registrations are open until 30 June 2026 and photo submissions until 7 July 2026. If you\'re reading this before that date — you still have time. Register now and submit your photo before the deadline.'
-              },
-              {
-                q: 'Can I submit more than one photo?',
-                a: 'Each participant may submit one photograph in one category (either Nature or Wildlife). Choose your strongest shot — quality over quantity is exactly what the jury rewards.'
-              },
-            ].map((faq, i) => (
-              <details key={i} className="group bg-gray-50 border border-gray-200 rounded-2xl overflow-hidden">
-                <summary className="flex items-center justify-between px-6 py-5 cursor-pointer font-semibold text-gray-900 text-base list-none">
-                  {faq.q}
-                  <span className="ml-4 text-emerald-600 text-xl font-bold group-open:rotate-45 transition-transform duration-200">+</span>
-                </summary>
-                <div className="px-6 pb-5 text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-4">
-                  {faq.a}
-                </div>
-              </details>
-            ))}
-          </div>
-
-          {/* Ambassador callout */}
-          <div className="mt-12 bg-gradient-to-br from-emerald-50 to-green-50 border-2 border-emerald-200 rounded-2xl p-8 text-center">
-            <div className="text-3xl mb-3">📸</div>
-            <h3 className="text-xl font-bold text-emerald-900 mb-2">Are you from a Photography Club or College Society?</h3>
-            <a
-              href="https://wa.me/919599224323?text=Hi%2C%20I%27m%20interested%20in%20group%20registration%20for%20SNPC%202026%20from%20my%20photography%20club.%20Please%20guide%20me."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-700 text-white font-semibold text-sm hover:bg-emerald-800 transition"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.121 1.531 5.855L.057 23.886a.5.5 0 0 0 .611.61l6.101-1.474A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 0 1-5.003-1.368l-.358-.214-3.724.9.934-3.632-.234-.374A9.818 9.818 0 1 1 12 21.818z"/>
-              </svg>
-              Chat on WhatsApp
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Rules Overview Section */}}
+      {/* Rules Overview Section */}
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">
@@ -1008,26 +1102,132 @@ const PhotographyCompetition = () => {
         </div>
       </RulesModal>
 
-    {/* CONTACT / FOOTER CTA */}
-      <section className="bg-emerald-900">
-        <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <h3 className="text-2xl font-bold text-white mb-1">
-              Need more information?
-            </h3>
-            <p className="text-sm text-emerald-100 max-w-xl">
-              Schools, colleges, and photography clubs can reach out for bulk
-              registrations, orientation sessions, or collaborations.
-            </p>
+      
+      {/* FAQ Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-4xl font-bold text-center text-gray-900 mb-3">Frequently Asked Questions</h2>
+          <p className="text-center text-gray-500 mb-10">Everything you need to know before registering</p>
+          <div className="space-y-4">
+            {[
+              {
+                q: 'Can I submit a photo taken on my phone camera?',
+                a: 'Yes, absolutely. Phone camera photos are fully eligible. The competition judges composition, storytelling, and ethical integrity — not the camera brand. Some of the most powerful nature photographs in the world are taken on phones.'
+              },
+              {
+                q: 'What format and size should my photo be?',
+                a: 'Submit as JPEG (.jpg/.jpeg) in RGB color mode. Maximum 1920px on the longest side, file size between 2 MB and 5 MB. No watermarks, borders, or logos. You\'ll receive a submission link via email after registering.'
+              },
+              {
+                q: 'How will I know if I\'m shortlisted?',
+                a: 'Shortlisted participants will be contacted directly by email in strict confidence. If you don\'t hear from us, your entry was not shortlisted — but final results are announced officially at the award ceremony.'
+              },
+              {
+                q: 'Is ₹100 the only cost? Any hidden fees?',
+                a: '₹100 is the complete, one-time registration fee. There are zero additional charges — no evaluation fee, no certificate fee, no submission fee. The fee covers jury honorarium, digital infrastructure, and certificates for all participants.'
+              },
+              {
+                q: 'I missed the deadline. Can I still register?',
+                a: 'Registrations are open until 30 June 2026 and photo submissions until 7 July 2026. If you\'re reading this before that date — you still have time. Register now and submit your photo before the deadline.'
+              },
+              {
+                q: 'Can I submit more than one photo?',
+                a: 'Each participant may submit one photograph in one category (either Nature or Wildlife). Choose your strongest shot — quality over quantity is exactly what the jury rewards.'
+              },
+            ].map((faq, i) => (
+              <details key={i} className="group bg-gray-50 border border-gray-200 rounded-2xl overflow-hidden">
+                <summary className="flex items-center justify-between px-6 py-5 cursor-pointer font-semibold text-gray-900 text-base list-none">
+                  {faq.q}
+                  <span className="ml-4 text-emerald-600 text-xl font-bold group-open:rotate-45 transition-transform duration-200">+</span>
+                </summary>
+                <div className="px-6 pb-5 text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-4">
+                  {faq.a}
+                </div>
+              </details>
+            ))}
           </div>
-          <a
-            href="/contact"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-emerald-900 text-sm font-semibold shadow hover:bg-emerald-50 transition"
-          >
-            Contact the SNPC Team
-          </a>
-        </div>
-      </section>
+          </div>
+        </section>
+      
+      
+
+<div className="py-5 bg-emerald-50 border-y border-emerald-100">
+  <div className="max-w-6xl mx-auto px-4">
+    <LiveParticipation compact />
+  </div>
+</div>
+
+{/* FINAL CTA */}
+<section className="relative overflow-hidden py-24 px-4 bg-gradient-to-br from-emerald-900 via-green-800 to-emerald-900">
+
+  <div className="absolute top-0 left-1/4 h-96 w-96 bg-white/5 rounded-full blur-3xl" />
+  <div className="absolute bottom-0 right-1/4 h-96 w-96 bg-emerald-300/10 rounded-full blur-3xl" />
+
+  <div className="relative max-w-5xl mx-auto text-center">
+
+    <span className="inline-flex items-center px-5 py-2 rounded-full bg-white/10 text-emerald-200 text-sm font-semibold mb-6">
+      📸 Swadhyay National Photography Competition 2026
+    </span>
+
+    <h2 className="text-4xl md:text-6xl font-extrabold text-white leading-tight">
+      Your Best Photograph
+      <span className="block text-emerald-300">
+        Deserves a National Audience
+      </span>
+    </h2>
+
+    <Link to="/register">
+      <Button
+        size="large"
+        variant="fancy"
+        className="px-12 py-5 text-lg font-bold shadow-2xl hover:scale-105 transition-all duration-300"
+      >
+        Register for SNPC 2026 →
+      </Button>
+    </Link>
+
+    <p className="mt-6 text-sm text-emerald-200">
+      Registration closes on <strong>30 June 2026</strong> • Open to participants aged 17–23 years across India
+    </p>
+
+  </div>
+
+</section>
+
+{/* Photography Club CTA */}
+<section className="py-8 px-4 bg-white">
+
+  <div className="max-w-4xl mx-auto">
+
+    <div className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl p-6 text-center">
+
+      <div className="text-3xl mb-2">📸</div>
+
+      <h3 className="text-xl font-bold text-emerald-900 mb-2">
+        Photography Club or College Society?
+      </h3>
+
+      <p className="text-gray-600 text-sm mb-5 max-w-xl mx-auto">
+        Interested in promoting SNPC 2026 within your photography club,
+        media society, or student community? We'd love to connect.
+      </p>
+
+      <a
+        href="https://wa.me/919599224323?text=Hi%2C%20I'm%20interested%20in%20SNPC%202026%20for%20our%20Photography%20Club."
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-700 text-white font-semibold text-sm hover:bg-emerald-800 transition"
+      >
+        Chat on WhatsApp
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+       
+      
 
     </main>
   );

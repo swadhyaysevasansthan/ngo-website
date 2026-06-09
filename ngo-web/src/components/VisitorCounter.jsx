@@ -22,7 +22,7 @@ const VisitorCounter = () => {
   }, []);
 
   return (
-        <div
+    <div
     className="
         fixed
         bottom-5

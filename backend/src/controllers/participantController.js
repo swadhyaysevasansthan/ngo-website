@@ -232,3 +232,51 @@ export const verifyParticipant = async (req, res) => {
     });
   }
 };
+
+
+export const getLiveStats = async (req, res) => {
+  try {
+    const MANUAL_REGISTRATIONS = 7;
+
+    const totalResult = await pool.query(`
+      SELECT COUNT(*) AS total
+      FROM participants
+      WHERE payment_status = true
+    `);
+
+    const stateResult = await pool.query(`
+      SELECT COUNT(DISTINCT state) AS total_states
+      FROM participants
+      WHERE payment_status = true
+    `);
+
+    const topStatesResult = await pool.query(`
+      SELECT state, COUNT(*) AS count
+      FROM participants
+      WHERE payment_status = true
+      GROUP BY state
+      ORDER BY count DESC
+      LIMIT 5
+    `);
+
+    const dbParticipants = parseInt(totalResult.rows[0].total);
+
+    res.json({
+      success: true,
+      data: {
+        totalPhotographers: dbParticipants + MANUAL_REGISTRATIONS,
+        databasePhotographers: dbParticipants,
+        manualPhotographers: MANUAL_REGISTRATIONS,
+        totalStates: parseInt(stateResult.rows[0].total_states),
+        topStates: topStatesResult.rows
+      }
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch live stats'
+    });
+  }
+};
