@@ -370,9 +370,7 @@ const PhotographyCompetition = () => {
 
             {/* Floating badge */}
             <div className="absolute -bottom-6 right-4 bg-white rounded-xl shadow-lg px-4 py-3 flex items-center gap-3">
-              <div className="bg-green-100 text-green-700 w-9 h-9 flex items-center justify-center rounded-full text-xl">
-                🏆
-              </div>
+              
               <div>
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                   Top Awards
