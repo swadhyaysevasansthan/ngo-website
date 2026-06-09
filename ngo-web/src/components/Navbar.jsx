@@ -52,6 +52,7 @@ const Navbar = () => {
   ];
 
   const eventsSubLinks = [
+    { name: 'Worlds Wetlands Day 2026', path: '/wetlands-day26' },
     { name: 'Grand Finale 2025-26', path: '/grand-finale26' },
   ];
 

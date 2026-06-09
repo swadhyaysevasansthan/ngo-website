@@ -46,7 +46,6 @@ export const participantAPI = {
   register: (data) => apiClient.post('/participants/register', data),
   verify: (data) => apiClient.post('/participants/verify', data),
   getById: (participantId) => apiClient.get(`/participants/${participantId}`),
-  getLiveStats: () => apiClient.get('/participants/live-stats'),
 };
 
 export const submissionAPI = {

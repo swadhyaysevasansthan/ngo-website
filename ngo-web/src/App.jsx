@@ -34,6 +34,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
 import RegistrationMaintenance from "./pages/RegistrationMaintenance";
 import GrandFinalePage from './pages/GrandFinalePage';
+import WetlandsDay from './pages/WetlandsDay';
 
 // 🔥 NEW REVIEW PAGES
 import ReviewsPage from './pages/Reviews';
@@ -95,6 +96,7 @@ function App() {
             <Route path="/reviews" element={<ReviewsPage />} />
             <Route path="/submit-review" element={<SubmitReview />} />
             <Route path="/grand-finale26" element={<GrandFinalePage />} />
+            <Route path="/wetlands-day26" element={<WetlandsDay />} />
 
             {/* 🔥 SNEAC — School Competition Routes */}
             <Route path="/school-competition" element={<SchoolAccessRequest />} />

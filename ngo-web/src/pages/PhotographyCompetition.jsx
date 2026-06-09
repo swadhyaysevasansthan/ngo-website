@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import {FileText, Camera, CheckCircle2, AlertCircle} from 'lucide-react';
 import Button from "../components/Button1";
 import Card from "../components/Card1";
-import LiveParticipation from '../components/LiveParticipation';
 
 import hero1 from "../assets/hero/1.jpg";
 import hero2 from "../assets/hero/2.jpg";
@@ -280,7 +279,7 @@ const PhotographyCompetition = () => {
             </p>
 
             {/* Live Participant Trust Bar */}
-            <LiveParticipation />
+            {/* <LiveParticipation /> */}
 
 
             {/* Key Info Strip */}
@@ -1147,13 +1146,7 @@ const PhotographyCompetition = () => {
           </div>
         </section>
       
-      
-
-<div className="py-5 bg-emerald-50 border-y border-emerald-100">
-  <div className="max-w-6xl mx-auto px-4">
-    <LiveParticipation compact />
-  </div>
-</div>
+    
 
 {/* FINAL CTA */}
 <section className="relative overflow-hidden py-24 px-4 bg-gradient-to-br from-emerald-900 via-green-800 to-emerald-900">
