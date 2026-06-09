@@ -3,11 +3,13 @@ import { useQuery } from '@tanstack/react-query';
 import { getPublicReviews } from '../utils/api';
 import ReviewCard from '../components/ReviewCard';
 import SectionHeader from '../components/SectionHeader';
+import ReviewModal from '../components/ReviewModal';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Reviews = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedReview, setSelectedReview] = useState(null);
   const limit = 6;
 
   useEffect(() => {
@@ -98,9 +100,11 @@ const Reviews = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 mt-12 mb-16 max-w-6xl mx-auto justify-items-center">
           {reviews.map((review) => (
             <div key={review.id} className="w-full max-w-sm h-full">
-              <ReviewCard review={review} />
+              <ReviewCard review={review} truncate={true} onReadMore={setSelectedReview}/>
+              
             </div>
           ))}
+          
         </div>
 
         {/* Empty State */}
@@ -171,6 +175,10 @@ const Reviews = () => {
           </a>
         </div>
       </section>
+      <ReviewModal
+        review={selectedReview}
+        onClose={() => setSelectedReview(null)}
+      />
     </div>
   );
 };

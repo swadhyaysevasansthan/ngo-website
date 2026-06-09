@@ -61,7 +61,7 @@ const TestimonialCarousel = () => {
                 key={`${review.id}-${idx}`}
                 className="min-w-[280px] sm:min-w-[320px] lg:min-w-[360px] max-w-[360px] flex-shrink-0"
               >
-                <ReviewCard review={review} />
+                <ReviewCard review={review} truncate={true} />
               </div>
             ))}
           </div>
