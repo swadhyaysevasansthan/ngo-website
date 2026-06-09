@@ -1,34 +1,59 @@
-// src/components/AnnouncementBanner.jsx
 import React from 'react';
-import { Camera, Award } from 'lucide-react';
+import { Camera, Award, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const AnnouncementBanner = () => {
   return (
-    <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 text-white overflow-hidden relative">
+    <div className="bg-gradient-to-r from-emerald-800 via-green-700 to-emerald-800 text-white overflow-hidden border-b border-white/10">
       <Link to="/photography-competition" className="block">
-        <div className="relative h-12 flex items-center">
-          {/* Continuous scrolling text - duplicated for seamless loop */}
+
+        <div className="h-12 flex items-center">
+
           <div className="flex animate-scroll whitespace-nowrap">
+
             {[...Array(3)].map((_, index) => (
-              <div key={index} className="flex items-center gap-8 px-8">
-                <Camera size={20} className="flex-shrink-0" />
-                <span className="font-bold text-lg">
-                  📸 Swadhyay National Photography Competition (SNPC) 2026
+              <div
+                key={index}
+                className="flex items-center gap-8 px-10"
+              >
+                <Camera size={18} />
+
+                <span className="font-semibold tracking-wide">
+                  SWADHYAY NATIONAL PHOTOGRAPHY COMPETITION 2026
                 </span>
-                <Award size={20} className="flex-shrink-0" />
+
+                <span className="opacity-70">•</span>
+
+                <Award size={18} />
+
+                <span>
+                  ₹42,000 Prize Pool
+                </span>
+
+                <span className="opacity-70">•</span>
+
+                <span>
+                  Registration Open Until 30 June 2026
+                </span>
+
+                <span className="opacity-70">•</span>
+
+                <span className="font-medium">
+                  Ages 17–23
+                </span>
+
+                <ArrowRight size={16} />
+
                 <span className="font-semibold">
-                  Win prizes up to ₹21,000 | Registration Open: Till 30th June 2026
+                  View Competition Details
                 </span>
-                <span className="text-amber-100">✨</span>
-                <span className="font-semibold">
-                  Click here for more details
-                </span>
-                <span className="text-amber-100">✨</span>
               </div>
             ))}
+
           </div>
+
         </div>
+
       </Link>
     </div>
   );

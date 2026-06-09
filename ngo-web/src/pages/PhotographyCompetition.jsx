@@ -409,7 +409,7 @@ const PhotographyCompetition = () => {
     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
 
       <Card className="p-8 text-center border-emerald-100">
-        <div className="text-5xl mb-4">🏆</div>
+       
         <h3 className="font-bold text-lg mb-2">
           National Recognition
         </h3>
@@ -419,17 +419,17 @@ const PhotographyCompetition = () => {
       </Card>
 
       <Card className="p-8 text-center border-emerald-100">
-        <div className="text-5xl mb-4">👨‍⚖️</div>
+       
         <h3 className="font-bold text-lg mb-2">
           Distinguished Jury
         </h3>
         <p className="text-gray-600 text-sm">
-          Evaluated by Padma Shri awardees and photography experts.
+          Evaluated by internationally acclaimed photographers and photography experts.
         </p>
       </Card>
 
       <Card className="p-8 text-center border-emerald-100">
-        <div className="text-5xl mb-4">📸</div>
+       
         <h3 className="font-bold text-lg mb-2">
           Showcase Your Vision
         </h3>
@@ -439,7 +439,7 @@ const PhotographyCompetition = () => {
       </Card>
 
       <Card className="p-8 text-center border-emerald-100">
-        <div className="text-5xl mb-4">💰</div>
+        
         <h3 className="font-bold text-lg mb-2">
           ₹42,000 Prize Pool
         </h3>
