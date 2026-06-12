@@ -1,60 +1,114 @@
-import React from 'react';
-import { Camera, Award, ArrowRight } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import {
+  Camera,
+  Tv,
+  ArrowRight,
+  PlayCircle,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+const announcements = [
+  {
+    id: 1,
+    title: 'Swadhyay National Photography Competition 2026',
+    subtitle: '₹42,000 Prize Pool • Registration Open Until 30 June 2026',
+    link: '/photography-competition',
+    internal: true,
+    icon: Camera,
+    cta: 'View Competition Details',
+  },
+  {
+    id: 2,
+    title: 'Dr. Manish Goel Represented Swadhyay Seva Foundation on DD Kisan',
+    subtitle: 'Environment Day Special • Paryavaran Samvaad 2026',
+    link: 'https://youtu.be/akQDzUbk0OA',
+    internal: false,
+    icon: Tv,
+    cta: 'Click to Watch on YouTube',
+  },
+];
+
 const AnnouncementBanner = () => {
-  return (
-    <div className="bg-gradient-to-r from-emerald-800 via-green-700 to-emerald-800 text-white overflow-hidden border-b border-white/10">
-      <Link to="/photography-competition" className="block">
+  const [current, setCurrent] = useState(0);
 
-        <div className="h-12 flex items-center">
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % announcements.length);
+    }, 7000);
 
-          <div className="flex animate-scroll whitespace-nowrap">
+    return () => clearInterval(interval);
+  }, []);
 
-            {[...Array(3)].map((_, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-8 px-10"
-              >
-                <Camera size={18} />
+  const announcement = announcements[current];
+  const Icon = announcement.icon;
 
-                <span className="font-semibold tracking-wide">
-                  SWADHYAY NATIONAL PHOTOGRAPHY COMPETITION 2026
-                </span>
+  const content = (
+    <div className="relative flex items-center justify-center min-h-[56px] px-4 py-2">
 
-                <span className="opacity-70">•</span>
+      <div
+        key={announcement.id}
+        className="flex items-center gap-4 text-center animate-fade-in"
+      >
+        <Icon size={18} className="flex-shrink-0" />
 
-                <Award size={18} />
+        <div className="flex flex-col items-center">
+          <span className="font-semibold text-sm md:text-base leading-tight">
+            {announcement.title}
+          </span>
 
-                <span>
-                  ₹42,000 Prize Pool
-                </span>
-
-                <span className="opacity-70">•</span>
-
-                <span>
-                  Registration Open Until 30 June 2026
-                </span>
-
-                <span className="opacity-70">•</span>
-
-                <span className="font-medium">
-                  Ages 17–23
-                </span>
-
-                <ArrowRight size={16} />
-
-                <span className="font-semibold">
-                  View Competition Details
-                </span>
-              </div>
-            ))}
-
-          </div>
-
+          <span className="text-xs md:text-sm text-white/80 leading-tight">
+            {announcement.subtitle}
+          </span>
         </div>
 
-      </Link>
+        <div className="hidden md:flex items-center gap-2 font-medium text-white">
+          <span>{announcement.cta}</span>
+
+          {announcement.internal ? (
+            <ArrowRight size={16} />
+          ) : (
+            <PlayCircle size={16} />
+          )}
+        </div>
+      </div>
+
+      {/* Dots */}
+      <div className="absolute right-4 top-1/2 -translate-y-1/2 hidden lg:flex gap-2">
+        {announcements.map((_, index) => (
+          <div
+            key={index}
+            className={`h-2 w-2 rounded-full transition-all duration-300 ${
+              current === index
+                ? 'bg-white'
+                : 'bg-white/40'
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="bg-gradient-to-r from-emerald-800 via-green-700 to-emerald-800 text-white border-b border-white/10">
+
+      {announcement.internal ? (
+        <Link
+          to={announcement.link}
+          className="block hover:bg-white/5 transition-colors"
+        >
+          {content}
+        </Link>
+      ) : (
+        <a
+          href={announcement.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block hover:bg-white/5 transition-colors"
+        >
+          {content}
+        </a>
+      )}
+
     </div>
   );
 };

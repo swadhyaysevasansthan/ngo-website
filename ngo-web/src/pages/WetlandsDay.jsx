@@ -47,7 +47,7 @@ export default function WetlandsDay() {
                 World Wetlands Day • 2 February 2026
             </span>
 
-            <h1 className="mt-6 text-6xl md:text-8xl font-black text-white">
+            <h1 className="mt-6 text-4xl md:text-7xl font-black text-white">
                 Photography
                 <br />
                 Competition 2026
