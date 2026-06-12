@@ -98,6 +98,20 @@ export const patrons = [
     description: "Industrialist & Social Activist",
     image: "/images/team/sandeep-marodia.jpeg",
   },
+  {
+  name: "Dr. Jyoti Vardhan Sahni",
+  role: "Jyotishacharya & Maha Vastu Expert",
+  description: "Astrologer, Vastu Consultant, Numerologist, Author, and Spiritual Advisor",
+  image: "/images/team/jyoti-vardhan.jpeg",
+  details: (
+    <div>
+      <p>Dr. Jyoti Vardhan Sahni is a renowned Jyotishacharya and Maha Vastu Expert with over three decades of experience in astrology, vastu consultation, numerology, tarot reading, and spiritual counseling.</p><br/>
+      <p>A Gold Medalist in multiple disciplines including Jyotish, Medical Astrology, Maha Vastu, Tarot Reading, and Numerology, he has earned widespread recognition for his expertise and contributions to the field.</p><br/>
+      <p>Dr. Sahni has been honored with numerous prestigious awards and titles, including “Jyotish Acharya” and “Maha Vastu Expert,” and has served as a consultant to business leaders, professionals, and organizations across India.</p><br/>
+      <p>He is a regular contributor to newspapers, magazines, seminars, and media platforms, sharing insights on astrology, vastu, and personal development. Through his work, he continues to guide individuals and organizations toward harmony, growth, and success.</p>
+    </div>
+  ),
+},
 ];
 
 export const teamMembers = [
