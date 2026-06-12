@@ -35,6 +35,7 @@ import AdminLogin from './pages/AdminLogin';
 import RegistrationMaintenance from "./pages/RegistrationMaintenance";
 import GrandFinalePage from './pages/GrandFinalePage';
 import WetlandsDay from './pages/WetlandsDay';
+import WorldEnvironmentDay2026 from './pages/WorldEnvironmentDay2026.jsx';
 
 // 🔥 NEW REVIEW PAGES
 import ReviewsPage from './pages/Reviews';
@@ -97,6 +98,7 @@ function App() {
             <Route path="/submit-review" element={<SubmitReview />} />
             <Route path="/grand-finale26" element={<GrandFinalePage />} />
             <Route path="/wetlands-day26" element={<WetlandsDay />} />
+            <Route path="/environment-day26" element={<WorldEnvironmentDay2026 />} />
 
             {/* 🔥 SNEAC — School Competition Routes */}
             <Route path="/school-competition" element={<SchoolAccessRequest />} />
