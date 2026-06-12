@@ -342,14 +342,6 @@ export default function WorldEnvironmentDay2026() {
               <br />
               For A Better Tomorrow
             </h2>
-
-            <a
-              href="/activities"
-              className="inline-flex items-center gap-2 mt-10 px-8 py-4 rounded-full bg-emerald-600 text-white font-semibold"
-            >
-              Explore More Activities
-              <ArrowRight size={18} />
-            </a>
           </div>
         </div>
       </section>
