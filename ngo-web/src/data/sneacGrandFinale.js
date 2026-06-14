@@ -84,21 +84,68 @@ export const foundationPatron = {
 };
 
 export const schedule = [
-  { time: "9:45 AM",  activity: "Guest Arrival & Reception" },
-  { time: "10:00 AM", activity: "Opening Ceremony — Diya Lighting" },
-  { time: "10:05 AM", activity: "Bouquets, Mementos & Plants to Dignitaries" },
-  { time: "10:13 AM", activity: "Welcome Address by Anchor" },
-  { time: "10:20 AM", activity: "Addresses by Guests" },
-  { time: "10:30 AM", activity: "Quiz Round 1 — Batch A (30 Finalists)" },
-  { time: "10:45 AM", activity: "Break — Organizational Video & Refreshments" },
-  { time: "10:53 AM", activity: "Quiz Round 1 — Batch B (30 Finalists)" },
-  { time: "11:08 AM", activity: "Result Verification & Qualifier Announcement" },
-  { time: "11:15 AM", activity: "Grand Finale Round — Top 10 Finalists" },
-  { time: "11:30 AM", activity: "Break & Final Result Verification" },
-  { time: "11:40 AM", activity: "SNEAC 2026–27 Official Launch" },
-  { time: "11:45 AM", activity: "Award Ceremony & Prize Distribution" },
-  { time: "11:55 AM", activity: "Media Interaction — Press & Journalist Q&A" },
-  { time: "12:00 PM", activity: "Lunch & Networking" },
+  {
+    time: "10:15 AM",
+    activity:
+      "Guest Arrival, Reception, Tilak Ceremony, Participant Registration & Organizational Video Presentation",
+  },
+  {
+    time: "10:30 AM",
+    activity:
+      "Opening Ceremony, Welcome Address by Anchor & Introduction to SNEAC 2025–26",
+  },
+  {
+    time: "10:45 AM",
+    activity: "Traditional Diya Lighting Ceremony",
+  },
+  {
+    time: "10:50 AM",
+    activity: "Felicitation of Guests of Honour with Tulsi Pots & Mementoes",
+  },
+  {
+    time: "11:05 AM",
+    activity: "Quiz Round 1 — Batch A Finalist Verification (Online)",
+  },
+  {
+    time: "11:15 AM",
+    activity: "Quiz Round 1 — Batch A (24 Finalists)",
+  },
+  {
+    time: "11:25 AM",
+    activity: "Quiz Round 1 — Batch B Finalist Verification (Online)",
+  },
+  {
+    time: "11:35 AM",
+    activity: "Quiz Round 1 — Batch B (23 Finalists)",
+  },
+  {
+    time: "11:50 AM",
+    activity: "Result Verification & Announcement of Top 10 Qualifiers",
+  },
+  {
+    time: "12:05 PM",
+    activity: "Grand Finale Round — Top 10 Finalists",
+  },
+  {
+    time: "12:20 PM",
+    activity: "Organizational Video Presentation & Final Result Verification",
+  },
+  {
+    time: "12:30 PM",
+    activity: "Addresses by Guests of Honour & Motivational Remarks",
+  },
+  {
+    time: "12:45 PM",
+    activity: "SNEAC 2026–27 Official Launch",
+  },  
+  {
+    time: "12:50 PM",
+    activity: "Closing Remarks, Vote of Thanks & Award Ceremony",
+  },
+  {
+    time: "01:00 PM",
+    activity: "Lunch & Networking",
+  },
 ];
 
 export const galleryTabs = [
