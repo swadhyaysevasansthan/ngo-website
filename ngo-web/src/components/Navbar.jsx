@@ -63,6 +63,7 @@ const Navbar = () => {
     { name: 'Plantation', path: '/plantation' },
     { name: 'Yoga', path: '/yoga' },
     { name: 'Pustak Daan', path: '/book-donation' },
+    { name: 'Our Innovative Farmers', path: '/innovative-farmers' },
   ];
 
   const [dynamicCommunities, setDynamicCommunities] = useState([]);

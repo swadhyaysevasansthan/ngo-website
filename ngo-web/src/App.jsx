@@ -54,6 +54,9 @@ import CommunityAdmin from './pages/CommunityAdmin';
 import { trackVisitor } from './utils/visitorTracker';
 import VisitorCounter from './components/VisitorCounter';
 
+import FarmerProfile from './pages/FarmerProfile';
+import InnovativeFarmers from './pages/InnovativeFarmers';
+
 function App() {
 
   useEffect(() => {
@@ -119,6 +122,10 @@ function App() {
             {/* 🔥 COMMUNITIES */}
             <Route path="/community/:slug" element={<CommunityPage />} />
             <Route path="/admin/communities" element={<CommunityAdmin />} />
+
+            <Route path="/innovative-farmers" element={<InnovativeFarmers />} />
+
+            <Route path="/innovative-farmers/:slug" element={<FarmerProfile />} />
           </Routes>
         </main>
         <VisitorCounter />

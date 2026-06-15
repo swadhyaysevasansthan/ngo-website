@@ -21,7 +21,7 @@ const TestimonialCarousel = () => {
 
   if (isLoading) {
     return (
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
             title="Trusted by Our Community"
@@ -46,7 +46,7 @@ const TestimonialCarousel = () => {
   }
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-gray-70">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           title="Trusted by Our Community"

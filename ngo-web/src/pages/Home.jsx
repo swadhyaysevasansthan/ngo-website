@@ -9,6 +9,7 @@ import Testimonials from '../components/Testimonials';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 // import FoundationCarousel from '../components/FoundationCarousel';
 import LeadSponsorHero from '../components/LeadSponsorHero';
+import FeaturedFarmers from '../components/FeaturedFarmers';
 
 const Home = () => {
   useEffect(() => {
@@ -299,6 +300,7 @@ const Home = () => {
           </Card>
         </div>
       </section>
+      <FeaturedFarmers />
       <TestimonialCarousel/>
       <Testimonials />
 

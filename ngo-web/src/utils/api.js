@@ -243,4 +243,92 @@ export const communityAPI = {
   deleteAlbum: (albumId) => apiClient.delete(`/admin/communities/albums/${albumId}`),
 };
 
+export const farmerAPI = {
+  getAll: () =>
+    apiClient.get('/farmers'),
+
+  getBySlug: (slug) =>
+    apiClient.get(`/farmers/${slug}`),
+
+  adminGetAll: () =>
+    apiClient.get('/farmers/admin/all'),
+
+  create: (data) =>
+    apiClient.post('/farmers/admin', data),
+
+  update: (id, data) =>
+    apiClient.put(`/farmers/admin/${id}`, data),
+
+  delete: (id) =>
+    apiClient.delete(`/farmers/admin/${id}`),
+
+  uploadProfileImage: (id, formData) =>
+  apiClient.post(
+    `/admin/farmers/${id}/profile-image`,
+    formData,
+    {
+      headers: {
+        'Content-Type':
+          'multipart/form-data',
+      },
+    }
+  ),
+
+uploadCoverImage: (id, formData) =>
+  apiClient.post(
+    `/admin/farmers/${id}/cover-image`,
+    formData,
+    {
+      headers: {
+        'Content-Type':
+          'multipart/form-data',
+      },
+    }
+  ),
+
+uploadGallery: (id, formData) =>
+  apiClient.post(
+    `/admin/farmers/${id}/gallery`,
+    formData,
+    {
+      headers: {
+        'Content-Type':
+          'multipart/form-data',
+      },
+    }
+  ),
+
+  deleteProfileImage: (id) =>
+    apiClient.delete(
+      `/admin/farmers/${id}/profile-image`
+    ),
+
+  deleteCoverImage: (id) =>
+    apiClient.delete(
+      `/admin/farmers/${id}/cover-image`
+    ),
+
+  deleteGalleryImage: (
+    id,
+    imageUrl
+  ) =>
+    apiClient.delete(
+      `/admin/farmers/${id}/gallery`,
+      {
+        data: {
+          imageUrl,
+        },
+      }
+    ),
+
+  getCategories: () => apiClient.get('/farmers/categories/all'),
+
+  createCategory: (data) => apiClient.post('/farmers/categories', data),
+
+  updateCategory: (id, data) => apiClient.put(`/farmers/categories/${id}`, data),
+
+  deleteCategory: (id) => apiClient.delete(`/farmers/categories/${id}`),
+};
+
+
 export default apiClient;

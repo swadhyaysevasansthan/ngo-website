@@ -6,6 +6,7 @@ import Card from '../components/Card1';
 import Button from '../components/Button1';
 import AdminReviewCard from '../components/AdminReviewCard';
 import SneacAdminTab from '../components/SneacAdminTab';
+import FarmersAdminTab from '../components/admin/FarmersAdminTab';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -195,6 +196,7 @@ const AdminDashboard = () => {
               { id: 'participants', label: '👥 Participants' },
               { id: 'reviews', label: '💬 Reviews', badge: pendingReviewsCount },
               { id: 'sneac', label: '🏫 SNEAC Schools' },
+              { id: 'farmers', label: '👨‍🌾 Farmers' },
               { id: 'email', label: '✉️ Send Email' },
             ].map((tab) => (
               <button
@@ -586,6 +588,11 @@ const AdminDashboard = () => {
         {/* SNEAC SCHOOLS TAB */}
         {activeTab === 'sneac' && (
           <SneacAdminTab />
+        )}
+
+          {/* FARMERS TAB */}
+        {activeTab === 'farmers' && (
+          <FarmersAdminTab />
         )}
       </div>
     </div>
