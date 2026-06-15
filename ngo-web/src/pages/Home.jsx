@@ -8,6 +8,7 @@ import SectionHeader from '../components/SectionHeader';
 import Testimonials from '../components/Testimonials';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 // import FoundationCarousel from '../components/FoundationCarousel';
+import LeadSponsorHero from '../components/LeadSponsorHero';
 
 const Home = () => {
   useEffect(() => {
@@ -93,6 +94,7 @@ const Home = () => {
                 </Button>
               </Link>
             </div>
+            <LeadSponsorHero />
           </motion.div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 mb-[-1px]">

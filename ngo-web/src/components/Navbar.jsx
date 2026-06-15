@@ -76,6 +76,7 @@ const Navbar = () => {
   const supportSublinks = [
     { name: 'Partner With Us', path: '/partner-with-us' },
     { name: 'Donate', path: '/donate', emphasis: true },
+    { name: 'Our Lead Platinum Partner', path: '/our-sponsors' },
   ];
 
   // NEW: Voices sublinks

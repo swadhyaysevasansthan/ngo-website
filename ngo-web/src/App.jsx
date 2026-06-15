@@ -48,6 +48,9 @@ import QuizRegistrationForm from './pages/QuizRegistrationForm';
 import CommunityPage from './pages/CommunityPage';
 import CommunityAdmin from './pages/CommunityAdmin';
 
+import SponsorPartnerPage from './pages/SponsorPartnerPage';
+import SponsorFloatingAd from './components/SponsorFloatingAd';
+
 import { trackVisitor } from './utils/visitorTracker';
 import VisitorCounter from './components/VisitorCounter';
 
@@ -64,6 +67,7 @@ function App() {
         <ScrollToTop />
         <Navbar />
         <AnnouncementBanner />
+        <SponsorFloatingAd />
         {/*   */}
         <main className="flex-grow">
           <Routes>
@@ -99,6 +103,7 @@ function App() {
             <Route path="/grand-finale26" element={<GrandFinalePage />} />
             <Route path="/wetlands-day26" element={<WetlandsDay />} />
             <Route path="/environment-day26" element={<WorldEnvironmentDay2026 />} />
+            <Route path="/our-sponsors" element={<SponsorPartnerPage />} />
 
             {/* 🔥 SNEAC — School Competition Routes */}
             <Route path="/school-competition" element={<SchoolAccessRequest />} />
