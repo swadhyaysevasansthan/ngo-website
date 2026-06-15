@@ -94,7 +94,7 @@ const Home = () => {
                 </Button>
               </Link>
             </div>
-            <LeadSponsorHero />
+            {/* <LeadSponsorHero /> */}
           </motion.div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 mb-[-1px]">
