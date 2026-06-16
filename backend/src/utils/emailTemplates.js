@@ -227,7 +227,7 @@ export const registrationEmailTemplate = (data) => {
                 <div class="section-title">Next steps</div>
                 <ol>
                   <li>Plan and capture your photograph according to the official competition guidelines.</li>
-                  <li>Submit your entry on or before <strong>23 April 2026, 11:59 PM IST</strong>.</li>
+                  <li>Submit your entry on or before <strong>7th July 2026, 11:59 PM IST</strong>.</li>
                   <li>Use your <strong>Participant ID</strong> during the submission process.</li>
                 </ol>
               </div>
@@ -245,7 +245,7 @@ export const registrationEmailTemplate = (data) => {
                   <li>Maximum file size: <strong>5 MB</strong>, JPG/JPEG format recommended.</li>
                   <li>No heavy compositing or manipulation; basic global adjustments only.</li>
                   <li>One photograph per participant for the competition.</li>
-                  <li>Submission deadline: <strong>23 April 2026</strong>.</li>
+                  <li>Submission deadline: <strong>7th July 2026</strong>.</li>
                 </ul>
               </div>
               <div class="section-title">To read all the rules and information visit our website: <a href="https://www.swadhyayseva.org/photography-competition">www.swadhyayseva.org</a></div>
@@ -301,7 +301,7 @@ Registration details:
 
 Next steps:
 1. Capture your photograph following the official guidelines.
-2. Submit your entry on or before 23 April 2026, 11:59 PM IST.
+2. Submit your entry on or before 7 July 2026, 11:59 PM IST.
 3. Use your Participant ID during submission.
 
 Key rules (summary):
@@ -309,7 +309,7 @@ Key rules (summary):
 - Maximum file size: 5 MB.
 - Minimal editing only; no composites or heavy manipulation.
 - One photograph per participant.
-- Submission deadline: 23 April 2026.
+- Submission deadline: 7th July 2026.
 
 Prizes:
 - 1st Prize – ₹21,000
