@@ -1581,3 +1581,112 @@ www.swadhyayseva.org
 `,
   };
 };
+
+
+export const submissionReminderTemplate = (data) => {
+  const {
+    fullName,
+    participantId,
+  } = data;
+
+  const submissionLink =
+    'https://forms.gle/NXCuCNRLQ7wEh6AeA';
+
+  return {
+    subject:
+      'Reminder: Submit Your Photograph Before 7 July 2026 | SNPC 2026',
+
+    html: `
+      <!DOCTYPE html>
+      <html>
+      <body style="font-family: Arial, sans-serif; background:#f4f4f4;">
+        <div style="max-width:600px;margin:auto;background:white;padding:30px;border-radius:12px;">
+
+          <h2 style="color:#166534;">
+            📸 SNPC 2026 Submission Reminder
+          </h2>
+
+          <p>Dear ${fullName},</p>
+
+          <p>
+            This is a friendly reminder that your photograph for
+            <strong>Swadhyay National Photography Competition 2026</strong>
+            has not yet been submitted.
+          </p>
+
+          <div
+            style="
+              background:#f0fdf4;
+              border:1px solid #bbf7d0;
+              padding:15px;
+              border-radius:10px;
+              margin:20px 0;
+            "
+          >
+            <p><strong>Your SNPC ID:</strong></p>
+            <h3>${participantId}</h3>
+          </div>
+
+          <p>
+            Submission Deadline:
+            <strong>7 July 2026, 11:59 PM IST</strong>
+          </p>
+
+          <p>
+            Please use your Participant ID while submitting.
+          </p>
+
+          <div style="text-align:center;margin:30px 0;">
+            <a
+              href="${submissionLink}"
+              style="
+                background:#2563eb;
+                color:white;
+                text-decoration:none;
+                padding:12px 24px;
+                border-radius:999px;
+              "
+            >
+              Submit Photograph
+            </a>
+          </div>
+
+          <h3>Important Notes</h3>
+
+          <ul>
+            <li>Only one photograph may be submitted.</li>
+            <li>File size should not exceed 5 MB.</li>
+            <li>Basic edits are allowed.</li>
+            <li>Keep original files safely until results are announced.</li>
+          </ul>
+
+          <hr />
+
+          <p>
+            Swadhyay Seva Foundation<br/>
+            Email: swadhyaysevafoundation@gmail.com<br/>
+            WhatsApp: +91 9599224323
+          </p>
+
+        </div>
+      </body>
+      </html>
+    `,
+
+    text: `
+Dear ${fullName},
+
+This is a reminder that your photograph for SNPC 2026 has not yet been submitted.
+
+Participant ID: ${participantId}
+
+Submission Deadline:
+7 July 2026, 11:59 PM IST
+
+Submission Form:
+${submissionLink}
+
+Swadhyay Seva Foundation
+    `,
+  };
+};

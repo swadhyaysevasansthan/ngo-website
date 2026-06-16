@@ -1,6 +1,9 @@
 import pool from '../config/database.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import {
+  submissionReminderTemplate,
+} from '../utils/emailTemplates.js';
 
 /**
  * Admin login
@@ -217,7 +220,12 @@ export const getDashboardStats = async (req, res) => {
  * recipients: 'all' | 'submitted' | 'pending'
  */
 export const sendBulkEmail = async (req, res) => {
-  const { subject, message, recipients } = req.body;
+  const {
+    recipients,
+    templateType,
+    subject,
+    message,
+  } = req.body;
 
   try {
     let query =
@@ -252,31 +260,54 @@ export const sendBulkEmail = async (req, res) => {
 
     const { sendEmail } = await import('../config/email.js');
 
-    const emailPromises = participants.map((participant) => {
-      const personalizedMessage = message
-        .replace('{name}', participant.full_name)
-        .replace('{participantId}', participant.participant_id);
+    const emailPromises = participants.map(async (participant) => {
+      let emailContent;
+
+      switch (templateType) {
+        case 'submission-reminder':
+          emailContent = submissionReminderTemplate({
+            fullName: participant.full_name,
+            participantId: participant.participant_id,
+          });
+          break;
+
+        case 'custom':
+        default: {
+          const personalizedMessage = message
+            .replace('{name}', participant.full_name)
+            .replace('{participantId}', participant.participant_id);
+
+          emailContent = {
+            subject,
+            html: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <h2 style="color: #4a7c29;">SNPC 2026</h2>
+                <p>Dear ${participant.full_name},</p>
+
+                ${personalizedMessage
+                  .split('\n')
+                  .map((line) => `<p>${line}</p>`)
+                  .join('')}
+
+                <hr style="margin:20px 0;border:none;border-top:1px solid #ddd;">
+
+                <p style="font-size:12px;color:#666;">
+                  Swadhyay Seva Foundation<br/>
+                  Email: swadhyaysevafoundation@gmail.com<br/>
+                  WhatsApp: +91 9599224323
+                </p>
+              </div>
+            `,
+            text: `Dear ${participant.full_name}\n\n${personalizedMessage}`,
+          };
+        }
+      }
 
       return sendEmail({
         to: participant.email,
-        subject,
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #4a7c29;">SNPC 2026</h2>
-            <p>Dear ${participant.full_name},</p>
-            ${personalizedMessage
-              .split('\n')
-              .map((line) => `<p>${line}</p>`)
-              .join('')}
-            <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">
-            <p style="font-size: 12px; color: #666;">
-              Swadhyay Seva Foundation<br>
-              Email: swadhyaysevafoundation@gmail.com<br>
-              WhatsApp: +91 9599224323
-            </p>
-          </div>
-        `,
-        text: `Dear ${participant.full_name},\n\n${personalizedMessage}`,
+        subject: emailContent.subject,
+        html: emailContent.html,
+        text: emailContent.text,
       });
     });
 
@@ -293,6 +324,61 @@ export const sendBulkEmail = async (req, res) => {
       success: false,
       message: 'Failed to send bulk email',
       error: error.message,
+    });
+  }
+};
+
+
+export const getEmailPreview = async (req, res) => {
+  try {
+    const { templateType } = req.query;
+
+    // Get one participant for preview
+    const result = await pool.query(`
+      SELECT full_name, participant_id
+      FROM participants
+      WHERE has_submitted = false
+      ORDER BY id ASC
+      LIMIT 1
+    `);
+
+    const participant = result.rows[0];
+
+    if (!participant) {
+      return res.status(404).json({
+        success: false,
+        message: 'No participants found',
+      });
+    }
+
+    let template;
+
+    switch (templateType) {
+      case 'submission-reminder':
+        template = submissionReminderTemplate({
+          fullName: participant.full_name,
+          participantId: participant.participant_id,
+        });
+        break;
+
+      default:
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid template',
+        });
+    }
+
+    return res.json({
+      success: true,
+      subject: template.subject,
+      html: template.html,
+    });
+  } catch (error) {
+    console.error('Preview error:', error);
+
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to generate preview',
     });
   }
 };

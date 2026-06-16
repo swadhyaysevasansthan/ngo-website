@@ -15,14 +15,18 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, participants, email
   const [emailForm, setEmailForm] = useState({
+    recipients: 'pending',
+    templateType: 'submission-reminder',
     subject: '',
     message: '',
-    recipients: 'all',
   });
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewHtml, setPreviewHtml] = useState('');
   const [reviews, setReviews] = useState([]);
   const [reviewsLoading, setReviewsLoading] = useState(false);
   const [reviewsTab, setReviewsTab] = useState('pending'); // pending, approved
   const pendingReviewsCount = reviews.filter(r => r.status === 'pending').length;
+  
 
   const adminUsername = localStorage.getItem('adminUsername');
 
@@ -76,21 +80,43 @@ const AdminDashboard = () => {
   const handleSendBulkEmail = async (e) => {
     e.preventDefault();
 
-    if (!emailForm.subject || !emailForm.message) {
+    if (
+      emailForm.templateType === 'custom' &&
+      (!emailForm.subject || !emailForm.message)
+    ) {
       toast.error('Please fill in all fields');
       return;
     }
 
-    if (!window.confirm(`Send email to ${emailForm.recipients} participants?`)) {
+    if (!window.confirm(`Send "${emailForm.templateType}" email to ${emailForm.recipients} participants?`)) {
       return;
     }
 
     try {
       const response = await adminAPI.sendBulkEmail(emailForm);
       toast.success(response.data.message);
-      setEmailForm({ subject: '', message: '', recipients: 'all' });
+      setEmailForm({
+        recipients: 'pending',
+        templateType: 'submission-reminder',
+        subject: '',
+        message: '',
+      });
     } catch (error) {
       toast.error(error.message || 'Failed to send emails');
+    }
+  };
+
+  const handlePreview = async () => {
+    try {
+      const res = await adminAPI.getEmailPreview(
+        emailForm.templateType
+      );
+
+      setPreviewHtml(res.data.html);
+      setShowPreview(true);
+    } catch (error) {
+      toast.error('Failed to load preview');
+      console.error(error);
     }
   };
 
@@ -482,6 +508,32 @@ const AdminDashboard = () => {
 
                 <div className="mb-5">
                   <label className="block mb-2 font-semibold text-gray-700">
+                    Email Template
+                  </label>
+
+                  <select
+                    value={emailForm.templateType}
+                    onChange={(e) =>
+                      setEmailForm({
+                        ...emailForm,
+                        templateType: e.target.value,
+                      })
+                    }
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none"
+                  >
+                    <option value="submission-reminder">
+                      📸 Submission Reminder
+                    </option>
+
+                    <option value="custom">
+                      ✍️ Custom Email
+                    </option>
+                  </select>
+                </div>
+                {emailForm.templateType === 'custom' && (
+                    <>
+                <div className="mb-5">
+                  <label className="block mb-2 font-semibold text-gray-700">
                     Subject
                   </label>
                   <input
@@ -520,12 +572,51 @@ const AdminDashboard = () => {
                     for personalization.
                   </p>
                 </div>
+                </>
+                )}
+                <div className="flex gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handlePreview}
+                  >
+                    👁 Preview
+                  </Button>
 
-                <Button type="submit" fullWidth size="large">
-                  Send Email
-                </Button>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    size="large"
+                  >
+                    Send Email
+                  </Button>
+                </div>
               </form>
             </Card>
+            {showPreview && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                <div className="bg-white w-full max-w-5xl h-[85vh] rounded-lg overflow-hidden shadow-2xl">
+                  <div className="p-4 border-b flex justify-between items-center">
+                    <h3 className="font-bold text-lg">
+                      Email Preview
+                    </h3>
+
+                    <button
+                      onClick={() => setShowPreview(false)}
+                      className="text-xl font-bold"
+                    >
+                      ✕
+                    </button>
+                  </div>
+
+                  <iframe
+                    title="email-preview"
+                    srcDoc={previewHtml}
+                    className="w-full h-full"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         )}
         {/* REVIEWS TAB - NEW */}

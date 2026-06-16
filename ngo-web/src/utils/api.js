@@ -70,6 +70,10 @@ export const adminAPI = {
     }),
   getSubmissions: () => apiClient.get('/admin/submissions'),
   sendBulkEmail: (data) => apiClient.post('/admin/bulk-email', data),
+  getEmailPreview: (templateType) =>
+  apiClient.get(
+    `/admin/email-preview?templateType=${templateType}`
+  ),
 
   getAdminReviews: (status = 'pending') =>
     apiClient.get(`/admin/reviews?status=${status}`),
