@@ -1,9 +1,7 @@
 import pool from '../config/database.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import {
-  submissionReminderTemplate,
-} from '../utils/emailTemplates.js';
+import { submissionReminderTemplate, } from '../utils/emailTemplates.js';
 
 /**
  * Admin login
@@ -219,6 +217,7 @@ export const getDashboardStats = async (req, res) => {
  * Send bulk email
  * recipients: 'all' | 'submitted' | 'pending'
  */
+
 export const sendBulkEmail = async (req, res) => {
   const {
     recipients,
@@ -248,8 +247,6 @@ export const sendBulkEmail = async (req, res) => {
       });
     }
 
-    // You said emails are temporarily disabled in this project.
-    // If ENABLE_EMAILS is false, skip sending but report count.
     if (process.env.ENABLE_EMAILS !== 'true') {
       return res.json({
         success: true,
@@ -260,74 +257,119 @@ export const sendBulkEmail = async (req, res) => {
 
     const { sendEmail } = await import('../config/email.js');
 
-    const emailPromises = participants.map(async (participant) => {
-      let emailContent;
+    let successCount = 0;
+    let failedCount = 0;
 
-      switch (templateType) {
-        case 'submission-reminder':
-          emailContent = submissionReminderTemplate({
-            fullName: participant.full_name,
-            participantId: participant.participant_id,
+    const batchSize = 5;
+
+    for (let i = 0; i < participants.length; i += batchSize) {
+      const batch = participants.slice(i, i + batchSize);
+
+      const batchResults = await Promise.allSettled(
+        batch.map(async (participant) => {
+          let emailContent;
+
+          switch (templateType) {
+            case 'submission-reminder':
+              emailContent = submissionReminderTemplate({
+                fullName: participant.full_name,
+                participantId: participant.participant_id,
+              });
+              break;
+
+            case 'custom':
+            default: {
+              const personalizedMessage = message
+                .replace('{name}', participant.full_name)
+                .replace(
+                  '{participantId}',
+                  participant.participant_id
+                );
+
+              emailContent = {
+                subject,
+                html: `
+                  <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #4a7c29;">SNPC 2026</h2>
+
+                    <p>Dear ${participant.full_name},</p>
+
+                    ${personalizedMessage
+                      .split('\n')
+                      .map((line) => `<p>${line}</p>`)
+                      .join('')}
+
+                    <hr style="margin:20px 0;border:none;border-top:1px solid #ddd;">
+
+                    <p style="font-size:12px;color:#666;">
+                      Swadhyay Seva Foundation<br/>
+                      Email: swadhyaysevafoundation@gmail.com<br/>
+                      WhatsApp: +91 9599224323
+                    </p>
+                  </div>
+                `,
+                text: `Dear ${participant.full_name}\n\n${personalizedMessage}`,
+              };
+            }
+          }
+
+          console.log(
+            `Sending email to ${participant.email}`
+          );
+
+          return sendEmail({
+            to: participant.email,
+            subject: emailContent.subject,
+            html: emailContent.html,
+            text: emailContent.text,
           });
-          break;
+        })
+      );
 
-        case 'custom':
-        default: {
-          const personalizedMessage = message
-            .replace('{name}', participant.full_name)
-            .replace('{participantId}', participant.participant_id);
+      batchResults.forEach((result, index) => {
+        const participant = batch[index];
 
-          emailContent = {
-            subject,
-            html: `
-              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                <h2 style="color: #4a7c29;">SNPC 2026</h2>
-                <p>Dear ${participant.full_name},</p>
+        if (result.status === 'fulfilled') {
+          successCount++;
 
-                ${personalizedMessage
-                  .split('\n')
-                  .map((line) => `<p>${line}</p>`)
-                  .join('')}
+          console.log(
+            `✓ Email sent to ${participant.email}`
+          );
+        } else {
+          failedCount++;
 
-                <hr style="margin:20px 0;border:none;border-top:1px solid #ddd;">
-
-                <p style="font-size:12px;color:#666;">
-                  Swadhyay Seva Foundation<br/>
-                  Email: swadhyaysevafoundation@gmail.com<br/>
-                  WhatsApp: +91 9599224323
-                </p>
-              </div>
-            `,
-            text: `Dear ${participant.full_name}\n\n${personalizedMessage}`,
-          };
+          console.error(
+            `✗ Failed for ${participant.email}:`,
+            result.reason
+          );
         }
-      }
-
-      return sendEmail({
-        to: participant.email,
-        subject: emailContent.subject,
-        html: emailContent.html,
-        text: emailContent.text,
       });
-    });
 
-    await Promise.all(emailPromises);
+      // Resend limit = 5 requests/second
+      if (i + batchSize < participants.length) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, 1000)
+        );
+      }
+    }
 
-    res.json({
+    return res.json({
       success: true,
-      message: `Bulk email sent to ${participants.length} participants`,
-      count: participants.length,
+      message: `Emails processed successfully`,
+      sent: successCount,
+      failed: failedCount,
+      total: participants.length,
     });
   } catch (error) {
     console.error('Bulk email error:', error);
-    res.status(500).json({
+
+    return res.status(500).json({
       success: false,
       message: 'Failed to send bulk email',
       error: error.message,
     });
   }
 };
-
 
 export const getEmailPreview = async (req, res) => {
   try {
