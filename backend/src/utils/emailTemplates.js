@@ -1584,101 +1584,321 @@ www.swadhyayseva.org
 
 
 export const submissionReminderTemplate = (data) => {
-  const {
-    fullName,
-    participantId,
-  } = data;
+const { fullName, participantId } = data;
 
-  const submissionLink =
-    'https://forms.gle/NXCuCNRLQ7wEh6AeA';
+const submissionLink =
+'https://forms.gle/NXCuCNRLQ7wEh6AeA';
 
-  return {
-    subject:
-      'Reminder: Submit Your Photograph Before 7 July 2026 | SNPC 2026',
+return {
+subject:
+'Reminder: Submit Your Photograph Before 7 July 2026 | SNPC 2026',
 
-    html: `
-      <!DOCTYPE html>
-      <html>
-      <body style="font-family: Arial, sans-serif; background:#f4f4f4;">
-        <div style="max-width:600px;margin:auto;background:white;padding:30px;border-radius:12px;">
+html: `
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>SNPC 2026 – Submission Reminder</title>
 
-          <h2 style="color:#166534;">
-            📸 SNPC 2026 Submission Reminder
-          </h2>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #f3f4f6;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+        color: #111827;
+      }
 
-          <p>Dear ${fullName},</p>
+      .wrapper {
+        width: 100%;
+        padding: 24px 12px;
+        background-color: #f3f4f6;
+      }
+
+      .container {
+        max-width: 640px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+      }
+
+      .header {
+        padding: 24px 28px;
+        background: linear-gradient(
+          135deg,
+          #ea580c 0%,
+          #dc2626 100%
+        );
+        color: #ffffff;
+      }
+
+      .header-title {
+        margin: 0;
+        font-size: 18px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #ffffff;
+      }
+
+      .header-subtitle {
+        margin: 6px 0 0 0;
+        font-size: 15px;
+        font-weight: 500;
+        color: #ffffff;
+      }
+
+      .content {
+        padding: 26px 28px 30px 28px;
+      }
+
+      h2 {
+        margin: 0 0 10px 0;
+        font-size: 20px;
+        font-weight: 600;
+        color: #0f172a;
+      }
+
+      p {
+        margin: 0 0 10px 0;
+        font-size: 14px;
+        line-height: 1.7;
+        color: #374151;
+      }
+
+      .pill {
+        display: inline-block;
+        margin-top: 6px;
+        padding: 5px 12px;
+        border-radius: 999px;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        background-color: #ffedd5;
+        color: #c2410c;
+      }
+
+      .id-box {
+        margin: 20px 0 18px 0;
+        padding: 16px 18px;
+        border-radius: 12px;
+        border: 1px solid #fed7aa;
+        background-color: #fff7ed;
+      }
+
+      .id-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: #6b7280;
+        margin-bottom: 6px;
+      }
+
+      .id-value {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco,
+          Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 18px;
+        font-weight: 700;
+        color: #9a3412;
+      }
+
+      .id-help {
+        margin-top: 6px;
+        font-size: 12px;
+        color: #4b5563;
+      }
+
+      .deadline-box {
+        margin: 18px 0;
+        padding: 14px 16px;
+        border-radius: 12px;
+        background-color: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #991b1b;
+        font-size: 14px;
+      }
+
+      .button-wrapper {
+        text-align: center;
+        margin: 24px 0 8px 0;
+      }
+
+      .button {
+        display: inline-block;
+        padding: 11px 26px;
+        border-radius: 999px;
+        background: linear-gradient(
+          135deg,
+          #ea580c 0%,
+          #dc2626 100%
+        );
+        color: #f9fafb !important;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .note-box {
+        margin-top: 18px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background-color: #fffbeb;
+        border: 1px solid #fcd34d;
+        font-size: 12px;
+        color: #92400e;
+      }
+
+      .divider {
+        margin: 24px 0 16px 0;
+        height: 1px;
+        background: linear-gradient(
+          to right,
+          transparent,
+          #e5e7eb,
+          transparent
+        );
+      }
+
+      .footer {
+        padding: 14px 20px 10px 20px;
+        text-align: center;
+        font-size: 11px;
+        color: #9ca3af;
+        background-color: #f9fafb;
+      }
+
+      .footer a {
+        color: #4b5563;
+        text-decoration: none;
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          border-radius: 12px;
+        }
+
+        .header,
+        .content {
+          padding: 20px 18px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <div class="container">
+
+        <div class="header">
+          <p class="header-title">
+            Swadhyay National Photography Competition 2026
+          </p>
+          <p class="header-subtitle">
+            Submission Reminder
+          </p>
+        </div>
+
+        <div class="content">
+
+          <h2>Hi ${fullName},</h2>
 
           <p>
-            This is a friendly reminder that your photograph for
+            We noticed that your photograph for
             <strong>Swadhyay National Photography Competition 2026</strong>
             has not yet been submitted.
           </p>
 
-          <div
-            style="
-              background:#f0fdf4;
-              border:1px solid #bbf7d0;
-              padding:15px;
-              border-radius:10px;
-              margin:20px 0;
-            "
-          >
-            <p><strong>Your SNPC ID:</strong></p>
-            <h3>${participantId}</h3>
+          <span class="pill">
+            Submission Pending
+          </span>
+
+          <div class="id-box">
+            <div class="id-label">
+              Participant ID
+            </div>
+
+            <div class="id-value">
+              ${participantId}
+            </div>
+
+            <p class="id-help">
+              Please keep this ID handy during submission.
+            </p>
+          </div>
+
+          <div class="deadline-box">
+            <strong>Submission Deadline</strong><br />
+            7 July 2026, 11:59 PM IST
           </div>
 
           <p>
-            Submission Deadline:
-            <strong>7 July 2026, 11:59 PM IST</strong>
+            Please complete your submission before the deadline
+            to ensure your participation in SNPC 2026.
           </p>
 
           <p>
-            Please use your Participant ID while submitting.
+            Don't miss your chance to compete for cash prizes,
+            certificates, and national recognition through SNPC 2026.
           </p>
 
-          <div style="text-align:center;margin:30px 0;">
+          <div class="button-wrapper">
             <a
               href="${submissionLink}"
-              style="
-                background:#2563eb;
-                color:white;
-                text-decoration:none;
-                padding:12px 24px;
-                border-radius:999px;
-              "
+              class="button"
             >
               Submit Photograph
             </a>
           </div>
 
-          <h3>Important Notes</h3>
+          <div class="divider"></div>
 
-          <ul>
-            <li>Only one photograph may be submitted.</li>
-            <li>File size should not exceed 5 MB.</li>
-            <li>Basic edits are allowed.</li>
-            <li>Keep original files safely until results are announced.</li>
-          </ul>
+          <p style="font-size: 12px; margin-bottom: 4px;">
+            <strong>Support</strong>
+          </p>
 
-          <hr />
-
-          <p>
-            Swadhyay Seva Foundation<br/>
-            Email: swadhyaysevafoundation@gmail.com<br/>
+          <p style="font-size: 12px;">
+            Email: swadhyaysevafoundation@gmail.com<br />
             WhatsApp: +91 9599224323
           </p>
 
         </div>
-      </body>
-      </html>
-    `,
 
-    text: `
-Dear ${fullName},
+        <div class="footer">
+          <p style="margin: 0 0 4px 0;">
+            <strong>Swadhyay Seva Foundation</strong>
+          </p>
 
-This is a reminder that your photograph for SNPC 2026 has not yet been submitted.
+          <p style="margin: 0 0 4px 0;">
+            This is an automated message. Please do not reply.
+          </p>
 
-Participant ID: ${participantId}
+          <p style="margin: 0;">
+            Website:
+            <a href="https://www.swadhyayseva.org">
+              www.swadhyayseva.org
+            </a>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </body>
+  </html>
+`,
+
+text: `
+
+SNPC 2026 – Submission Reminder
+
+Hi ${fullName},
+
+We noticed that your photograph for SNPC 2026 has not yet been submitted.
+
+Participant ID:
+${participantId}
 
 Submission Deadline:
 7 July 2026, 11:59 PM IST
@@ -1686,7 +1906,15 @@ Submission Deadline:
 Submission Form:
 ${submissionLink}
 
+Already submitted your photograph?
+You may safely ignore this reminder.
+
+Support:
+Email: swadhyaysevafoundation@gmail.com
+WhatsApp: +91 9599224323
+
 Swadhyay Seva Foundation
-    `,
-  };
+http://www.swadhyayseva.org 
+`,
+};
 };
