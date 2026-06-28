@@ -38,7 +38,7 @@ const FarmerProfile = () => {
 
   useEffect(() => {
     if (farmer) {
-      document.title = `${farmer.name} | Swadhyay Seva Foundation`;
+      document.title = `${farmer.name} - Swadhyay Seva Foundation`;
     }
 
     return () => {

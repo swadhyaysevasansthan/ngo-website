@@ -18,7 +18,7 @@ const InnovativeFarmers = () => {
 
   useEffect(() => {
     document.title =
-      'Our Innovative Farmers | Swadhyay Seva Foundation';
+      'Our Innovative Farmers - Swadhyay Seva Foundation';
 
     return () => {
       document.title =
