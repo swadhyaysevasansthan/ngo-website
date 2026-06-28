@@ -11,7 +11,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Quiz from './pages/Quiz';
 import Contact from './pages/Contact';
-import QuestionBank from './pages/QuestionBank'; 
+import QuestionBank from './pages/QuestionBank';
 import OurTeam from './pages/OurTeam';
 import PartnerWithUs from './pages/PartnerWithUs';
 import NaturalFarming from './pages/NaturalFarming';
@@ -56,6 +56,7 @@ import VisitorCounter from './components/VisitorCounter';
 
 import FarmerProfile from './pages/FarmerProfile';
 import InnovativeFarmers from './pages/InnovativeFarmers';
+import TeacherProfile from './pages/TeacherProfile.jsx';
 
 function App() {
 
@@ -78,7 +79,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/quiz" element={<Quiz />} />
-            <Route path="/question-bank" element={<QuestionBank />} /> 
+            <Route path="/question-bank" element={<QuestionBank />} />
             <Route path="/sneac2025-26" element={<SchoolStories />} />
             <Route path="/quiz/currently-active" element={<CurrentlyActiveEvents />} />
             <Route path="/upcoming-engagements" element={<UpcomingEngagements />} />
@@ -126,6 +127,9 @@ function App() {
             <Route path="/innovative-farmers" element={<InnovativeFarmers />} />
 
             <Route path="/innovative-farmers/:slug" element={<FarmerProfile />} />
+
+            <Route path="/yoga-team/:slug" element={<TeacherProfile />} />
+
           </Routes>
         </main>
         <VisitorCounter />

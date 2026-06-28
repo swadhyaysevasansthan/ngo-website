@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const MODAL_HEIGHTS = {
   base: "max-h-[90vh]", // Changed to max-h for better responsiveness
@@ -38,10 +39,10 @@ const ModalCard = ({ selectedMember, onClose }) => (
         <div className="flex flex-col items-center w-full">
           {/* Profile Image */}
           <div className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 bg-gradient-to-br from-green-500 to-primary-500 rounded-full overflow-hidden mx-auto mb-4 border-4 border-primary-100 flex items-center justify-center">
-            <img 
-              src={selectedMember.image} 
-              alt={selectedMember.name} 
-              className="w-full h-full object-cover" 
+            <img
+              src={selectedMember.image}
+              alt={selectedMember.name}
+              className="w-full h-full object-cover"
             />
           </div>
 
@@ -68,6 +69,17 @@ const ModalCard = ({ selectedMember, onClose }) => (
           {selectedMember.details && (
             <div className="w-full text-gray-700 text-sm mt-2">
               {selectedMember.details}
+            </div>
+          )}
+          {selectedMember.page && (
+            <div className="mt-8 flex justify-center">
+              <Link
+                to={`/yoga-team/${selectedMember.slug}`}
+                onClick={onClose}
+                className="inline-flex items-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors"
+              >
+                View Full Profile →
+              </Link>
             </div>
           )}
         </div>

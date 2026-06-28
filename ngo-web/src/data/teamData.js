@@ -118,6 +118,8 @@ export const teamMembers = [
 
   {
     name: "Acharya Krishan Garg",
+    slug: "krishan-garg",
+    page: true,
     role: "Yoga Expert",
     description: "Yoga Teacher, International Yoga Champion, Wellness Educator",
     image: "/images/team/krishnan-garg.jpg",
@@ -135,9 +137,17 @@ export const teamMembers = [
         <p>Through his lifelong commitment and inspiring instruction, Krishan Kumar continues to guide people toward health, balance, and inner harmony.</p>
       </div>
     ),
+    gallery: [
+      'https://res.cloudinary.com/demp2xljz/image/upload/v1782639684/59844723-1743-4e51-99d4-542ee1c50e33.png',
+      'https://res.cloudinary.com/demp2xljz/image/upload/v1782639663/1be9351b-360a-4f12-84ff-91a5f2845473.png',
+      'https://res.cloudinary.com/demp2xljz/image/upload/v1782639653/8dd40a5a-8b00-4df9-945a-c167cbc26b4b.png',
+      'https://res.cloudinary.com/demp2xljz/image/upload/v1782639635/eec882b1-5166-4538-ba15-57ae5e8dc363.png',
+    ],
   },
   {
     name: "Dr. Shallu Gupta",
+    slug: "shallu-gupta",
+    page: false,
     role: "PhD (Naturopathy and Yoga)",
     description: "CMO at Samshudhi Naturopathy Hospital, Naturopathy & Yoga Expert",
     image: "/images/team/shalu-gupta.jpg",
@@ -152,6 +162,8 @@ export const teamMembers = [
   },
   {
     name: "Acharya Shishir Pokhriyal",
+    slug: "shishir-pokhriyal",
+    page: false,
     role: "MA Yogic Science, Pranic Healer",
     description: "Yoga Master, Founder – Shivaya Yog Sansthan, Holistic Health Expert",
     image: "/images/team/shishir-pokhriyal.jpg",
@@ -166,6 +178,8 @@ export const teamMembers = [
   },
   {
     name: "Acharya Vijay",
+    slug: "vijay",
+    page: false,
     role: "Masters in Yoga",
     description: "International Yoga Champion, Yoga Teacher, International Yoga Referee",
     image: "/images/team/vijay-yadav.jpeg",
@@ -205,6 +219,8 @@ export const teamMembers = [
   // },
   {
     name: "Yogini Jaya Bisht",
+    slug: "jaya-bisht",
+    page: false,
     role: "M.A. Yoga, YTTC 300 Hours",
     description: "National-Level Yoga Player, Corporate & Prenatal Yoga Trainer",
     image: "/images/team/jaya-bisht.jpeg",
@@ -219,6 +235,8 @@ export const teamMembers = [
   },
   {
     name: "Dr. Brij Bhushan Goel",
+    slug: "brij-bhushan-goel",
+    page: false,
     role: "NDDY, D.PH, PGDIHC, DLIM",
     description: "Senior Naturopath since 1990.",
     image: "/images/team/user-nobg.png",
