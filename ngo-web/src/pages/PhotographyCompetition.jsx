@@ -114,7 +114,7 @@ const SimpleModal = ({ isOpen, onClose, title, role, photo, paragraphs }) => {
 const PhotographyCompetition = () => {
 
   useEffect(() => {
-    document.title = 'SNPC 2026 — Swadhyay National Photography Competition';
+    document.title = 'SNPC 2026 - Swadhyay National Photography Competition';
 
     // Meta description
     let metaDesc = document.querySelector('meta[name="description"]');

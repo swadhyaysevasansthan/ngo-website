@@ -16,6 +16,16 @@ const InnovativeFarmers = () => {
     loadData();
   }, []);
 
+  useEffect(() => {
+    document.title =
+      'Our Innovative Farmers | Swadhyay Seva Foundation';
+
+    return () => {
+      document.title =
+        'Swadhyay Seva Foundation';
+    };
+  }, []);
+
   const loadData = async () => {
     try {
       const [farmersRes, categoriesRes] =
@@ -52,8 +62,8 @@ const InnovativeFarmers = () => {
         selectedCategory === 'All'
           ? true
           : farmer.categories?.includes(
-              selectedCategory
-            );
+            selectedCategory
+          );
 
       return searchMatch && categoryMatch;
     });
@@ -113,11 +123,10 @@ const InnovativeFarmers = () => {
             onClick={() =>
               setSelectedCategory('All')
             }
-            className={`px-4 py-2 rounded-full ${
-              selectedCategory === 'All'
+            className={`px-4 py-2 rounded-full ${selectedCategory === 'All'
                 ? 'bg-primary text-white'
                 : 'bg-gray-100'
-            }`}
+              }`}
           >
             All
           </button>
@@ -130,12 +139,11 @@ const InnovativeFarmers = () => {
                   category.name
                 )
               }
-              className={`px-4 py-2 rounded-full ${
-                selectedCategory ===
-                category.name
+              className={`px-4 py-2 rounded-full ${selectedCategory ===
+                  category.name
                   ? 'bg-primary text-white'
                   : 'bg-gray-100'
-              }`}
+                }`}
             >
               {category.name}
             </button>
@@ -145,7 +153,7 @@ const InnovativeFarmers = () => {
       </section>
 
       {/* FEATURED */}
-{/* 
+      {/* 
       {featuredFarmers.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 pb-12">
 
@@ -169,37 +177,37 @@ const InnovativeFarmers = () => {
 
       {/* ALL FARMERS */}
 
-        <section className="max-w-7xl mx-auto px-4 pb-20">
+      <section className="max-w-7xl mx-auto px-4 pb-20">
 
         <h2 className="text-3xl font-bold mb-8">
-            All Farmers
+          All Farmers
         </h2>
 
         {loading ? (
-            <div className="text-center py-12">
+          <div className="text-center py-12">
             Loading...
-            </div>
+          </div>
         ) : filteredFarmers.length === 0 ? (
-            <div className="bg-white rounded-2xl shadow-md p-12 text-center">
+          <div className="bg-white rounded-2xl shadow-md p-12 text-center">
             <h3 className="text-2xl font-semibold text-gray-700">
-                No farmers found
+              No farmers found
             </h3>
 
             <p className="text-gray-500 mt-2">
-                Try changing your search or category filter.
+              Try changing your search or category filter.
             </p>
-            </div>
+          </div>
         ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredFarmers.map((farmer) => (
-                <FarmerCard
+              <FarmerCard
                 key={farmer.id}
                 farmer={farmer}
-                />
+              />
             ))}
-            </div>
+          </div>
         )}
-        </section>
+      </section>
 
     </div>
   );

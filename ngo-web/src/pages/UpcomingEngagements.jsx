@@ -73,7 +73,7 @@ const UpcomingEngagements = () => {
   const [activeTab, setActiveTab] = useState('overview');
 
   useEffect(() => {
-    document.title = 'Upcoming Engagements';
+    document.title = 'SNEAC 2026-27';
   }, []);
 
   const competitions = {

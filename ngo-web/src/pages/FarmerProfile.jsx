@@ -36,6 +36,17 @@ const FarmerProfile = () => {
     loadFarmer();
   }, [slug]);
 
+  useEffect(() => {
+    if (farmer) {
+      document.title = `${farmer.name} | Swadhyay Seva Foundation`;
+    }
+
+    return () => {
+      document.title =
+        'Swadhyay Seva Foundation';
+    };
+  }, [farmer]);
+
   const loadFarmer = async () => {
     try {
       const res =
@@ -118,11 +129,11 @@ const FarmerProfile = () => {
 
               <div>
 
-                  <img
-                    src={farmer.profile_image ||'/images/team/user.png'}
-                    alt={farmer.name}
-                    className="w-40 h-40 rounded-2xl object-cover shadow-lg"
-                  />
+                <img
+                  src={farmer.profile_image || '/images/team/user.png'}
+                  alt={farmer.name}
+                  className="w-40 h-40 rounded-2xl object-cover shadow-lg"
+                />
 
               </div>
 
@@ -184,85 +195,85 @@ const FarmerProfile = () => {
 
       {(farmer.detailed_bio ||
         farmer.short_bio) && (
-        <section className="max-w-7xl mx-auto px-4 py-16">
+          <section className="max-w-7xl mx-auto px-4 py-16">
 
-          <h2 className="text-3xl font-bold mb-6">
-            About
-          </h2>
+            <h2 className="text-3xl font-bold mb-6">
+              About
+            </h2>
 
-          <div className="bg-white rounded-2xl shadow-md p-8">
-            <p className="text-gray-700 leading-8 whitespace-pre-line">
-              {farmer.detailed_bio ||
-                farmer.short_bio}
-            </p>
-          </div>
+            <div className="bg-white rounded-2xl shadow-md p-8">
+              <p className="text-gray-700 leading-8 whitespace-pre-line">
+                {farmer.detailed_bio ||
+                  farmer.short_bio}
+              </p>
+            </div>
 
-        </section>
-      )}
+          </section>
+        )}
 
       {/* ACHIEVEMENTS */}
 
       {farmer.achievements?.length >
         0 && (
-        <section className="max-w-7xl mx-auto px-4 pb-16">
+          <section className="max-w-7xl mx-auto px-4 pb-16">
 
-          <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
-            <Award />
-            Achievements
-          </h2>
+            <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
+              <Award />
+              Achievements
+            </h2>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
 
-            {farmer.achievements.map(
-              (
-                achievement,
-                index
-              ) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-2xl shadow-md p-6"
-                >
-                  {achievement}
-                </div>
-              )
-            )}
+              {farmer.achievements.map(
+                (
+                  achievement,
+                  index
+                ) => (
+                  <div
+                    key={index}
+                    className="bg-white rounded-2xl shadow-md p-6"
+                  >
+                    {achievement}
+                  </div>
+                )
+              )}
 
-          </div>
+            </div>
 
-        </section>
-      )}
+          </section>
+        )}
 
       {/* PRODUCTS */}
 
       {farmer.products?.length >
         0 && (
-        <section className="max-w-7xl mx-auto px-4 pb-16">
+          <section className="max-w-7xl mx-auto px-4 pb-16">
 
-          <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
-            <Package />
-            Products & Services
-          </h2>
+            <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
+              <Package />
+              Products & Services
+            </h2>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
 
-            {farmer.products.map(
-              (
-                product,
-                index
-              ) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-2xl shadow-md p-6"
-                >
-                  {product}
-                </div>
-              )
-            )}
+              {farmer.products.map(
+                (
+                  product,
+                  index
+                ) => (
+                  <div
+                    key={index}
+                    className="bg-white rounded-2xl shadow-md p-6"
+                  >
+                    {product}
+                  </div>
+                )
+              )}
 
-          </div>
+            </div>
 
-        </section>
-      )}
+          </section>
+        )}
 
       {/* GALLERY */}
 
@@ -316,101 +327,101 @@ const FarmerProfile = () => {
         farmer.address ||
         farmer.facebook ||
         farmer.instagram) && (
-        <section className="max-w-7xl mx-auto px-4 pb-24">
+          <section className="max-w-7xl mx-auto px-4 pb-24">
 
-          <h2 className="text-3xl font-bold mb-8">
-            Contact Information
-          </h2>
+            <h2 className="text-3xl font-bold mb-8">
+              Contact Information
+            </h2>
 
-          <div className="grid md:grid-cols-2 gap-5">
+            <div className="grid md:grid-cols-2 gap-5">
 
-            {farmer.phone && (
-              <div className="bg-white rounded-2xl shadow-md p-5 flex gap-3">
-                <Phone />
-                {farmer.phone}
-              </div>
-            )}
+              {farmer.phone && (
+                <div className="bg-white rounded-2xl shadow-md p-5 flex gap-3">
+                  <Phone />
+                  {farmer.phone}
+                </div>
+              )}
 
-            {farmer.email && (
-              <div className="bg-white rounded-2xl shadow-md p-5 flex gap-3">
-                <Mail />
-                {farmer.email}
-              </div>
-            )}
+              {farmer.email && (
+                <div className="bg-white rounded-2xl shadow-md p-5 flex gap-3">
+                  <Mail />
+                  {farmer.email}
+                </div>
+              )}
 
-            {farmer.website && (
-              <a
-                href={farmer.website}
-                target="_blank"
-                rel="noreferrer"
-                className="bg-white rounded-2xl shadow-md p-5 flex gap-3"
-              >
-                <Globe />
-                Website
-              </a>
-            )}
+              {farmer.website && (
+                <a
+                  href={farmer.website}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="bg-white rounded-2xl shadow-md p-5 flex gap-3"
+                >
+                  <Globe />
+                  Website
+                </a>
+              )}
 
-            {farmer.instagram && (
-              <a
-                href={farmer.instagram}
-                target="_blank"
-                rel="noreferrer"
-                className="bg-white rounded-2xl shadow-md p-5 flex gap-3"
-              >
-                <Instagram />
-                Instagram
-              </a>
-            )}
+              {farmer.instagram && (
+                <a
+                  href={farmer.instagram}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="bg-white rounded-2xl shadow-md p-5 flex gap-3"
+                >
+                  <Instagram />
+                  Instagram
+                </a>
+              )}
 
-            {farmer.facebook && (
-              <a
-                href={farmer.facebook}
-                target="_blank"
-                rel="noreferrer"
-                className="bg-white rounded-2xl shadow-md p-5 flex gap-3"
-              >
-                <Facebook />
-                Facebook
-              </a>
-            )}
+              {farmer.facebook && (
+                <a
+                  href={farmer.facebook}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="bg-white rounded-2xl shadow-md p-5 flex gap-3"
+                >
+                  <Facebook />
+                  Facebook
+                </a>
+              )}
 
-            {farmer.address && (
-              <div className="bg-white rounded-2xl shadow-md p-5 flex gap-3">
-                <MapPin />
-                {farmer.address}
-              </div>
-            )}
+              {farmer.address && (
+                <div className="bg-white rounded-2xl shadow-md p-5 flex gap-3">
+                  <MapPin />
+                  {farmer.address}
+                </div>
+              )}
 
-          </div>
+            </div>
 
-        </section>
-      )}
+          </section>
+        )}
       {selectedImage && (
         <div
-            className="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center p-4"
-            onClick={() =>
+          className="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center p-4"
+          onClick={() =>
             setSelectedImage(null)
-            }
+          }
         >
-            <img
+          <img
             src={selectedImage}
             alt=""
             className="max-w-full max-h-full object-contain rounded-xl"
             onClick={(e) =>
-                e.stopPropagation()
+              e.stopPropagation()
             }
-            />
+          />
 
-            <button
+          <button
             className="absolute top-5 right-5 text-white text-4xl"
             onClick={() =>
-                setSelectedImage(null)
+              setSelectedImage(null)
             }
-            >
+          >
             ×
-            </button>
+          </button>
         </div>
-        )}
+      )}
 
     </div>
   );
