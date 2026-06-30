@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
-// import WelcomeModal from './components/WelcomeModal';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AnnouncementBanner from './components/AnnouncementBanner';
@@ -22,7 +21,6 @@ import DonatePage from './pages/DonatePage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import RefundPolicy from './pages/RefundPolicy';
 import TermsAndConditions from './pages/TermsAndConditions';
-// import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
 import RegistrationClosed from "./pages/RegistrationClosed.jsx";
@@ -68,7 +66,7 @@ function App() {
         {/*   */}
         <main className="flex-grow">
           <Routes>
-            {/* 🔥 EXISTING ROUTES - UNCHANGED */}
+            {/* EXISTING ROUTES - UNCHANGED */}
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/quiz" element={<Quiz />} />
@@ -91,10 +89,9 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/refund-policy" element={<RefundPolicy />} />
             <Route path="/terms-conditions" element={<TermsAndConditions />} />
-            {/* <Route path="/register" element={<Register />} /> */}
             <Route path="/register" element={<RegistrationClosed />} />
 
-            {/* 🔥 NEW PUBLIC REVIEW ROUTES */}
+            {/* NEW PUBLIC REVIEW ROUTES */}
             <Route path="/reviews" element={<ReviewsPage />} />
             <Route path="/submit-review" element={<SubmitReview />} />
             <Route path="/grand-finale26" element={<GrandFinalePage />} />
@@ -102,18 +99,18 @@ function App() {
             <Route path="/environment-day26" element={<WorldEnvironmentDay2026 />} />
             {/* <Route path="/our-sponsors" element={<SponsorPartnerPage />} /> */}
 
-            {/* 🔥 SNEAC — School Competition Routes */}
+            {/* SNEAC — School Competition Routes */}
             <Route path="/school-competition" element={<SchoolAccessRequest />} />
             <Route path="/school-registration" element={<SchoolRegistrationHome />} />
             <Route path="/school-registration/painting" element={<PaintingRegistrationForm />} />
             <Route path="/school-registration/quiz" element={<QuizRegistrationForm />} />
 
-            {/* 🔥 NEW ADMIN ROUTES */}
+            {/* NEW ADMIN ROUTES */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/reviews" element={<AdminDashboard />} /> {/* Integrated tab */}
 
-            {/* 🔥 COMMUNITIES */}
+            {/* COMMUNITIES */}
             <Route path="/community/:slug" element={<CommunityPage />} />
             <Route path="/admin/communities" element={<CommunityAdmin />} />
 
