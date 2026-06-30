@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AnnouncementBanner from './components/AnnouncementBanner';
-import LatestUpdatesBar from './components/LatestUpdatesBar';
 import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -14,25 +13,19 @@ import Contact from './pages/Contact';
 import QuestionBank from './pages/QuestionBank';
 import OurTeam from './pages/OurTeam';
 import PartnerWithUs from './pages/PartnerWithUs';
-import NaturalFarming from './pages/NaturalFarming';
 import PhotographyCompetition from './pages/PhotographyCompetition';
-import Naturopathy from './pages/Naturopathy';
-import Plantation from './pages/Plantation';
-// import CertificateDownload from './pages/CertificateDownload';
-import Yoga from './pages/Yoga';
 import SchoolStories from './pages/SchoolStories';
 import CurrentlyActiveEvents from './pages/CurrentlyActiveEvents';
 import UpcomingEngagements from './pages/UpcomingEngagements';
 import TestimonialsPage from './pages/TestimonialsPage';
 import DonatePage from './pages/DonatePage';
-import BookDonation from './pages/BookDonation';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import RefundPolicy from './pages/RefundPolicy';
 import TermsAndConditions from './pages/TermsAndConditions';
-import Register from './pages/Register';
+// import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
-import RegistrationMaintenance from "./pages/RegistrationMaintenance";
+import RegistrationClosed from "./pages/RegistrationClosed.jsx";
 import GrandFinalePage from './pages/GrandFinalePage';
 import WetlandsDay from './pages/WetlandsDay';
 import WorldEnvironmentDay2026 from './pages/WorldEnvironmentDay2026.jsx';
@@ -98,8 +91,8 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/refund-policy" element={<RefundPolicy />} />
             <Route path="/terms-conditions" element={<TermsAndConditions />} />
-            <Route path="/register" element={<Register />} />
-            {/* <Route path="/register" element={<RegistrationMaintenance />} /> */}
+            {/* <Route path="/register" element={<Register />} /> */}
+            <Route path="/register" element={<RegistrationClosed />} />
 
             {/* 🔥 NEW PUBLIC REVIEW ROUTES */}
             <Route path="/reviews" element={<ReviewsPage />} />
