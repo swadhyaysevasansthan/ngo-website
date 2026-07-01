@@ -27,6 +27,7 @@ import RegistrationClosed from "./pages/RegistrationClosed.jsx";
 import GrandFinalePage from './pages/GrandFinalePage';
 import WetlandsDay from './pages/WetlandsDay';
 import WorldEnvironmentDay2026 from './pages/WorldEnvironmentDay2026.jsx';
+import Register from './pages/Register.jsx';
 
 // 🔥 NEW REVIEW PAGES
 import ReviewsPage from './pages/Reviews';
@@ -90,6 +91,7 @@ function App() {
             <Route path="/refund-policy" element={<RefundPolicy />} />
             <Route path="/terms-conditions" element={<TermsAndConditions />} />
             <Route path="/register" element={<RegistrationClosed />} />
+            <Route path="/photography-registration" element={<Register />} />
 
             {/* NEW PUBLIC REVIEW ROUTES */}
             <Route path="/reviews" element={<ReviewsPage />} />
