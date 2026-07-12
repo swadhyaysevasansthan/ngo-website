@@ -74,7 +74,7 @@ const AdminDashboard = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('adminUsername');
     toast.success('Logged out successfully');
-    navigate('/admin/login');
+    navigate("/admin/login", { replace: true });
   };
 
   const handleSendBulkEmail = async (e) => {

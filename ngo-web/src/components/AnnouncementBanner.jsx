@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Camera,
+  Leaf,
   Tv,
   ArrowRight,
   PlayCircle,
@@ -10,11 +10,11 @@ import { Link } from 'react-router-dom';
 const announcements = [
   {
     id: 1,
-    title: 'Swadhyay National Photography Competition 2026',
-    subtitle: '₹42,000 Prize Pool • Registration Open Until 30 June 2026',
-    link: '/photography-competition',
+    title: 'Swadhyay National Environment Awareness Competitions (SNEAC 2026-27) 2nd Edition',
+    subtitle: 'Registration Open • No Registration Fee',
+    link: '/upcoming-engagements',
     internal: true,
-    icon: Camera,
+    icon: Leaf,
     cta: 'View Competition Details',
   },
   {

@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import sponsor from "../data/sponsorDemo";
 
 const SponsorFloatingAd = () => {
   const [expanded, setExpanded] = useState(false);
@@ -15,7 +16,7 @@ const SponsorFloatingAd = () => {
 
   useEffect(() => {
     const expiry = localStorage.getItem(
-      "galaxy-sponsor-dismissed"
+      "sponsor-demo-dismissed"
     );
 
     if (
@@ -27,7 +28,7 @@ const SponsorFloatingAd = () => {
 
     const timer = setTimeout(() => {
       setVisible(true);
-    }, 3000);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -48,7 +49,7 @@ const SponsorFloatingAd = () => {
       24 * 60 * 60 * 1000;
 
     localStorage.setItem(
-      "galaxy-sponsor-dismissed",
+      "sponsor-demo-dismissed",
       expiry.toString()
     );
 
@@ -60,13 +61,15 @@ const SponsorFloatingAd = () => {
   return (
     <div
       className="
-        fixed
-        bottom-6
-        left-6
-        z-[999]
-        max-w-[calc(100vw-32px)]
-      "
+      fixed
+      bottom-6
+      left-6
+      z-[999]
+      max-w-[calc(100vw-32px)]
+    "
     >
+      {/* Expanded Card */}
+
       <AnimatePresence>
         {expanded && (
           <motion.div
@@ -89,35 +92,38 @@ const SponsorFloatingAd = () => {
               duration: 0.25,
             }}
             className="
-              absolute
-              bottom-20
-              left-0
-              w-[340px]
-              max-w-[90vw]
-              bg-white
-              rounded-3xl
-              overflow-hidden
-              shadow-2xl
-              border
-              border-gray-200
-            "
+            absolute
+            bottom-20
+            left-0
+            w-[360px]
+            max-w-[90vw]
+            bg-white
+            rounded-3xl
+            overflow-hidden
+            shadow-2xl
+            border
+            border-gray-200
+          "
           >
+            {/* Header */}
+
             <div
               className="
-                bg-gradient-to-r
-                from-yellow-500
-                to-orange-500
-                px-5
-                py-3
-                text-white
-                flex
-                justify-between
-                items-center
-              "
+              bg-gradient-to-r
+              from-yellow-500
+              via-orange-500
+              to-orange-600
+              text-white
+              px-5
+              py-3
+              flex
+              items-center
+              justify-between
+            "
             >
-              <span className="font-bold text-sm">
-                Official Lead Platinum Partner
-              </span>
+              <div className="font-bold text-sm">
+                {sponsor.tier}
+              </div>
 
               <button
                 onClick={dismiss}
@@ -127,15 +133,17 @@ const SponsorFloatingAd = () => {
               </button>
             </div>
 
+            {/* Content */}
+
             <div className="p-6">
 
               <img
-                src="/images/sponsors/galaxy.png"
-                alt="Galaxy Basmati Rice"
+                src={sponsor.logo}
+                alt={sponsor.company}
                 className="
                   h-24
-                  object-contain
                   mx-auto
+                  object-contain
                 "
               />
 
@@ -147,23 +155,30 @@ const SponsorFloatingAd = () => {
                   mt-4
                 "
               >
-                Galaxy Basmati Rice
+                {sponsor.company}
               </h3>
+
+              <p
+                className="
+                  text-primary-700
+                  text-center
+                  font-medium
+                  mt-2
+                "
+              >
+                {sponsor.tagline}
+              </p>
 
               <p
                 className="
                   text-gray-600
                   text-sm
                   text-center
-                  mt-3
+                  mt-4
                   leading-relaxed
                 "
               >
-                Proudly supporting environmental
-                education, sustainability,
-                community engagement and the
-                Swadhyay National Environmental
-                Competitions.
+                {sponsor.description}
               </p>
 
               <div
@@ -180,21 +195,21 @@ const SponsorFloatingAd = () => {
                     setExpanded(false)
                   }
                   className="
-                    text-center
                     py-3
                     rounded-xl
                     bg-primary-600
-                    text-white
-                    font-semibold
                     hover:bg-primary-700
                     transition
+                    text-white
+                    text-center
+                    font-semibold
                   "
                 >
                   Learn More
                 </Link>
 
                 <a
-                  href="https://www.goelrice.net/our-profile.php"
+                  href={sponsor.website}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="
@@ -206,14 +221,28 @@ const SponsorFloatingAd = () => {
                     rounded-xl
                     border
                     border-gray-300
-                    font-semibold
                     hover:bg-gray-50
                     transition
+                    font-semibold
                   "
                 >
                   Website
+
                   <ExternalLink size={16} />
                 </a>
+              </div>
+
+              <div
+                className="
+                  mt-6
+                  text-xs
+                  text-center
+                  text-gray-400
+                  border-t
+                  pt-4
+                "
+              >
+                Demonstration Sponsor Preview
               </div>
 
             </div>
@@ -221,7 +250,7 @@ const SponsorFloatingAd = () => {
         )}
       </AnimatePresence>
 
-      {/* Collapsed Sponsor Badge */}
+      {/* Floating Badge */}
 
       <motion.button
         animate={{
@@ -273,13 +302,14 @@ const SponsorFloatingAd = () => {
         </div>
 
         <div className="text-left">
+
           <div
             className="
               text-xs
               text-gray-500
             "
           >
-            Official Lead Platinum Partner
+            {sponsor.tier}
           </div>
 
           <div
@@ -289,8 +319,9 @@ const SponsorFloatingAd = () => {
               text-gray-900
             "
           >
-            Galaxy Basmati Rice
+            {sponsor.shortName}
           </div>
+
         </div>
 
         {expanded ? (

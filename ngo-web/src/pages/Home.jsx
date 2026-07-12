@@ -8,7 +8,7 @@ import SectionHeader from '../components/SectionHeader';
 import Testimonials from '../components/Testimonials';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 // import FoundationCarousel from '../components/FoundationCarousel';
-import LeadSponsorHero from '../components/LeadSponsorHero';
+// import LeadSponsorHero from '../components/LeadSponsorHero';
 import FeaturedFarmers from '../components/FeaturedFarmers';
 
 const Home = () => {
