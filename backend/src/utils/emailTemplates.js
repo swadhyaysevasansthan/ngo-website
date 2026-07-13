@@ -955,18 +955,18 @@ export const schoolCompetitionRegistrationTemplate = (data) => {
           <strong>Primary Category Preferred Dates</strong>
           <ul>
             ${(primaryPreferredDates || [])
-              .map((d, i) => `
+        .map((d, i) => `
                 <li>
                   ${i + 1}.
                   ${new Date(d).toLocaleDateString('en-IN', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                    timeZone: 'Asia/Kolkata',
-                  })}
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          timeZone: 'Asia/Kolkata',
+        })}
                 </li>
               `)
-              .join('')}
+        .join('')}
           </ul>
         </div>
 
@@ -974,38 +974,38 @@ export const schoolCompetitionRegistrationTemplate = (data) => {
           <strong>Secondary Category Preferred Dates</strong>
           <ul>
             ${(secondaryPreferredDates || [])
-              .map((d, i) => `
+        .map((d, i) => `
                 <li>
                   ${i + 1}.
                   ${new Date(d).toLocaleDateString('en-IN', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                    timeZone: 'Asia/Kolkata',
-                  })}
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          timeZone: 'Asia/Kolkata',
+        })}
                 </li>
               `)
-              .join('')}
+        .join('')}
           </ul>
         </div>
       `
       : `
         <ul>
           ${(preferredDates || [])
-            .map((d, i) => `
+        .map((d, i) => `
               <li>
                 ${i === 0 ? 'Preferred' : `Alternate ${i}`}:
                 <strong>
                   ${new Date(d).toLocaleDateString('en-IN', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                    timeZone: 'Asia/Kolkata',
-                  })}
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          timeZone: 'Asia/Kolkata',
+        })}
                 </strong>
               </li>
             `)
-            .join('')}
+        .join('')}
         </ul>
       `;
 
@@ -1014,43 +1014,43 @@ export const schoolCompetitionRegistrationTemplate = (data) => {
       ? `
   Primary Category Preferred Dates:
   ${(primaryPreferredDates || [])
-    .map(
-      (d, i) =>
-        `  ${i + 1}. ${new Date(d).toLocaleDateString('en-IN', {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric',
-          timeZone: 'Asia/Kolkata',
-        })}`
-    )
-    .join('\n')}
+        .map(
+          (d, i) =>
+            `  ${i + 1}. ${new Date(d).toLocaleDateString('en-IN', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+              timeZone: 'Asia/Kolkata',
+            })}`
+        )
+        .join('\n')}
 
   Secondary Category Preferred Dates:
   ${(secondaryPreferredDates || [])
-    .map(
-      (d, i) =>
-        `  ${i + 1}. ${new Date(d).toLocaleDateString('en-IN', {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric',
-          timeZone: 'Asia/Kolkata',
-        })}`
-    )
-    .join('\n')}
+        .map(
+          (d, i) =>
+            `  ${i + 1}. ${new Date(d).toLocaleDateString('en-IN', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+              timeZone: 'Asia/Kolkata',
+            })}`
+        )
+        .join('\n')}
   `
       : (preferredDates || [])
-          .map(
-            (d, i) =>
-              `  ${i === 0 ? 'Preferred' : `Alternate ${i}`}: ${new Date(
-                d
-              ).toLocaleDateString('en-IN', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-                timeZone: 'Asia/Kolkata',
-              })}`
-          )
-          .join('\n');
+        .map(
+          (d, i) =>
+            `  ${i === 0 ? 'Preferred' : `Alternate ${i}`}: ${new Date(
+              d
+            ).toLocaleDateString('en-IN', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+              timeZone: 'Asia/Kolkata',
+            })}`
+        )
+        .join('\n');
 
   return {
     subject: `Registration Confirmed – ${competitionLabel} | SNEAC 2026–27`,
@@ -1169,15 +1169,10 @@ export const schoolDateAllotmentTemplate = (data) => {
   const {
     schoolName,
     competitionType,
-
-    // NEW
     category,
-
     allottedDate,
-
     primaryAllottedDate,
     secondaryAllottedDate,
-
     totalParticipants,
   } = data;
 
@@ -1192,7 +1187,6 @@ export const schoolDateAllotmentTemplate = (data) => {
 
   const formatDate = (date) => {
     if (!date) return '';
-
     return new Date(date).toLocaleDateString(
       'en-IN',
       {
@@ -1205,14 +1199,9 @@ export const schoolDateAllotmentTemplate = (data) => {
     );
   };
 
-  const formattedAllottedDate =
-    formatDate(allottedDate);
-
-  const formattedPrimaryDate =
-    formatDate(primaryAllottedDate);
-
-  const formattedSecondaryDate =
-    formatDate(secondaryAllottedDate);
+  const formattedAllottedDate = formatDate(allottedDate);
+  const formattedPrimaryDate = formatDate(primaryAllottedDate);
+  const formattedSecondaryDate = formatDate(secondaryAllottedDate);
 
   // ─────────────────────────────────────────────
   // DYNAMIC DATE CONTENT
@@ -1223,57 +1212,46 @@ export const schoolDateAllotmentTemplate = (data) => {
 
   // QUIZ
   if (competitionType === 'quiz') {
-
     dateHtml = `
       <div class="date-box">
         <div class="date-label">
           Allotted Date
         </div>
-
         <div class="date-value">
           ${formattedAllottedDate}
         </div>
       </div>
     `;
-
     dateText = `
 Allotted Date:
 ${formattedAllottedDate}
 `;
-
   }
-
   // PAINTING — PRIMARY
   else if (
     competitionType === 'painting' &&
     category === 'primary'
   ) {
-
     dateHtml = `
       <div class="date-box">
         <div class="date-label">
           Primary Category Date
         </div>
-
         <div class="date-value">
           ${formattedPrimaryDate}
         </div>
       </div>
     `;
-
     dateText = `
 Primary Category Date:
 ${formattedPrimaryDate}
 `;
-
   }
-
   // PAINTING — SECONDARY
   else if (
     competitionType === 'painting' &&
     category === 'secondary'
   ) {
-
     dateHtml = `
       <div class="date-box">
         <div class="date-label">
@@ -1285,20 +1263,16 @@ ${formattedPrimaryDate}
         </div>
       </div>
     `;
-
     dateText = `
 Secondary Category Date:
 ${formattedSecondaryDate}
 `;
-
   }
-
   // PAINTING — SCHOOL
   else if (
     competitionType === 'painting' &&
     category === 'school'
   ) {
-
     dateHtml = `
       <div class="date-box">
 
@@ -1311,35 +1285,27 @@ ${formattedSecondaryDate}
         </div>
 
         <br/>
-
         <div class="date-label">
           Secondary Category Date
         </div>
-
         <div class="date-value">
           ${formattedSecondaryDate}
         </div>
 
       </div>
     `;
-
     dateText = `
 Primary Category Date:
 ${formattedPrimaryDate}
-
 Secondary Category Date:
 ${formattedSecondaryDate}
 `;
-
   }
-
   return {
     subject: `Date Confirmed – ${competitionLabel} | SNEAC 2026–27`,
-
     html: `
       <!DOCTYPE html>
       <html lang="en">
-
       <head>
         <meta charset="UTF-8" />
 
@@ -1469,17 +1435,12 @@ ${formattedSecondaryDate}
       </head>
 
       <body>
-
         <div class="wrapper">
-
           <div class="container">
-
             <div class="header">
-
               <p class="header-title">
                 Swadhyay National Environment Awareness Competitions 2026–27
               </p>
-
               <p class="header-subtitle">
                 ${competitionLabel} — Date Confirmed
               </p>
@@ -1487,9 +1448,6 @@ ${formattedSecondaryDate}
             </div>
 
             <div class="content">
-
-
-
               <p>
                 We are pleased to confirm the scheduled date for the
                 <strong>${competitionLabel}</strong>
@@ -1500,65 +1458,45 @@ ${formattedSecondaryDate}
               <span class="pill">
                 Date Confirmed
               </span>
-
               ${dateHtml}
-
               <div class="meta-box">
-
                 <div class="meta-label">
                   School
                 </div>
-
                 <div class="meta-value">
                   ${schoolName}
                 </div>
-
                 <div class="meta-label">
                   Competition
                 </div>
-
                 <div class="meta-value">
                   ${competitionLabel}
                 </div>
-
                 <div class="meta-label">
                   Total Participants
                 </div>
-
                 <div class="meta-value">
                   ${totalParticipants} students
                 </div>
-
               </div>
-
               <p>
                 Please ensure that all registered participants are informed and prepared accordingly.
               </p>
-
               <p>
                 In case of any scheduling conflict, kindly contact us immediately.
               </p>
-
               <br/>
-
               <p>
                 Regards,<br/>
                 <strong>Swadhyay Seva Foundation</strong>
               </p>
-
             </div>
-
             <div class="footer">
-
               Swadhyay Seva Foundation<br/>
               www.swadhyayseva.org
-
             </div>
-
           </div>
-
         </div>
-
       </body>
       </html>
     `,
@@ -1584,16 +1522,16 @@ www.swadhyayseva.org
 
 
 export const submissionReminderTemplate = (data) => {
-const { fullName, participantId } = data;
+  const { fullName, participantId } = data;
 
-const submissionLink =
-'https://forms.gle/NXCuCNRLQ7wEh6AeA';
+  const submissionLink =
+    'https://forms.gle/NXCuCNRLQ7wEh6AeA';
 
-return {
-subject:
-'Reminder: Submit Your Photograph Before 7 July 2026 | SNPC 2026',
+  return {
+    subject:
+      'Reminder: Submit Your Photograph Before 7 July 2026 | SNPC 2026',
 
-html: `
+    html: `
   <!DOCTYPE html>
   <html lang="en">
   <head>
@@ -1889,7 +1827,7 @@ html: `
   </html>
 `,
 
-text: `
+    text: `
 
 SNPC 2026 – Submission Reminder
 
@@ -1916,5 +1854,5 @@ WhatsApp: +91 9599224323
 Swadhyay Seva Foundation
 http://www.swadhyayseva.org 
 `,
-};
+  };
 };

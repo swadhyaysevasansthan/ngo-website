@@ -778,22 +778,14 @@ export const sendConfirmation = async (req, res) => {
           schoolDateAllotmentTemplate({
             schoolName:
               registration.school_name,
-
             teacherName:
               primaryTeachers?.[0]
                 ?.teacher_name ||
               'Teacher Coordinator',
-
-            competitionType:
-              'painting',
-
+            competitionType: 'painting',
             category: 'primary',
-
-            allottedDate:
-              registration.primary_allotted_date,
-
-            totalParticipants:
-              registration.primary_category_total,
+            primaryAllottedDate: registration.primary_allotted_date,
+            totalParticipants: registration.primary_category_total,
           });
 
         const primaryEmails =
@@ -836,7 +828,7 @@ export const sendConfirmation = async (req, res) => {
 
             category: 'secondary',
 
-            allottedDate:
+            secondaryAllottedDate:
               registration.secondary_allotted_date,
 
             totalParticipants:
