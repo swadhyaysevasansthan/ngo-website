@@ -453,7 +453,7 @@ const PaintingRegistrationForm = () => {
       Object.keys(e).length === 0
     );
   };
-  
+
   const renderInput = (
     label,
     name,
@@ -463,11 +463,9 @@ const PaintingRegistrationForm = () => {
     const isPrimaryField =
       name.startsWith('primary') ||
       ['class3', 'class4', 'class5'].includes(name);
-
     const isSecondaryField =
       name.startsWith('secondary') ||
       ['class6', 'class7', 'class8'].includes(name);
-
     const isRequired =
       (
         isPrimaryField &&
@@ -481,7 +479,6 @@ const PaintingRegistrationForm = () => {
           'secondary'
         )
       );
-
     return (
       <div>
         <label
@@ -489,7 +486,6 @@ const PaintingRegistrationForm = () => {
           className="block text-sm font-semibold text-gray-700 mb-2"
         >
           {label}
-
           {isRequired && (
             <span
               className="text-red-500 ml-1"
@@ -499,7 +495,6 @@ const PaintingRegistrationForm = () => {
             </span>
           )}
         </label>
-
         <input
           id={name}
           type={type}
@@ -514,7 +509,6 @@ const PaintingRegistrationForm = () => {
             }`}
           {...extraProps}
         />
-
         {errors[name] && (
           <p className="mt-1 text-sm text-red-500">
             {errors[name]}

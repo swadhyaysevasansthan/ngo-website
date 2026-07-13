@@ -71,73 +71,52 @@ const QuizRegistrationForm = () => {
   };
 
   const validateUniqueTeachers = (teachers) => {
-
     const errors = {};
-
     const names = new Map();
-
     const emails = new Map();
-
     const phones = new Map();
-
     teachers.forEach((teacher) => {
-
       const name =
         teacher.name
           ?.trim()
           .toLowerCase();
-
       const email =
         teacher.email
           ?.trim()
           .toLowerCase();
-
       const phone =
         teacher.phone?.trim();
 
       // NAME
-
       if (name) {
-
         if (names.has(name)) {
-
           errors[
             teacher.nameField
           ] =
             'Duplicate teacher name';
-
           errors[
             names.get(name)
           ] =
             'Duplicate teacher name';
-
         } else {
-
           names.set(
             name,
             teacher.nameField
           );
         }
       }
-
       // EMAIL
-
       if (email) {
-
         if (emails.has(email)) {
-
           errors[
             teacher.emailField
           ] =
             'Duplicate teacher email';
-
           errors[
             emails.get(email)
           ] =
             'Duplicate teacher email';
-
         } else {
-
           emails.set(
             email,
             teacher.emailField
@@ -146,23 +125,17 @@ const QuizRegistrationForm = () => {
       }
 
       // PHONE
-
       if (phone) {
-
         if (phones.has(phone)) {
-
           errors[
             teacher.phoneField
           ] =
             'Duplicate teacher phone';
-
           errors[
             phones.get(phone)
           ] =
             'Duplicate teacher phone';
-
         } else {
-
           phones.set(
             phone,
             teacher.phoneField
@@ -170,7 +143,6 @@ const QuizRegistrationForm = () => {
         }
       }
     });
-
     return errors;
   };
 
@@ -209,21 +181,17 @@ const QuizRegistrationForm = () => {
     if (new Set(dates.filter(Boolean)).size !== dates.filter(Boolean).length) {
       e.preferredDate1 = 'All 4 preferred dates must be different';
     }
-
     setErrors(e);
     return Object.keys(e).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validate()) {
       toast.error('Please fix the errors in the form');
       return;
     }
-
     setLoading(true);
-
     try {
       const teachers = [
         {
@@ -272,46 +240,35 @@ const QuizRegistrationForm = () => {
             'altTeacherPhone',
         },
       ];
-
       const duplicateErrors =
         validateUniqueTeachers(
           teachers
         );
-
       if (
         Object.keys(
           duplicateErrors
         ).length > 0
       ) {
-
         setErrors((prev) => ({
           ...prev,
           ...duplicateErrors,
         }));
-
         toast.error(
           'Duplicate teacher details found.'
         );
-
         setLoading(false);
-
         return;
       }
-
       await schoolRegistrationAPI.submitQuiz(token, {
         teachers,
-
         classCounts: {
           6: parseInt(formData.class6) || 0,
           7: parseInt(formData.class7) || 0,
           8: parseInt(formData.class8) || 0,
         },
-
         totalParticipants,
-
         availableComputers:
           parseInt(formData.availableComputers) || 0,
-
         preferredDates: [
           formData.preferredDate1,
           formData.preferredDate2,
@@ -319,27 +276,21 @@ const QuizRegistrationForm = () => {
           formData.preferredDate4,
         ],
       });
-
       toast.success('Quiz competition registration submitted successfully!');
-
       setSubmitted(true);
-
       window.scrollTo({
         top: 0,
         behavior: 'smooth',
       });
-
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
         'Registration failed. Please try again.'
       );
-
     } finally {
       setLoading(false);
     }
   };
-
   if (tokenLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -391,7 +342,6 @@ const QuizRegistrationForm = () => {
             </h1>
             <p className="text-gray-600">{school?.schoolName} · Classes 6th–8th</p>
           </div>
-
           <div className="max-w-4xl mx-auto animate-slide-up">
             <Card className="shadow-lg border border-slate-100">
               <form onSubmit={handleSubmit} className="space-y-10">
@@ -413,7 +363,6 @@ const QuizRegistrationForm = () => {
                   <p className="text-sm text-gray-600 mb-4">
                     Primary teacher will be the main contact. Alternate teacher is optional but recommended.
                   </p>
-
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="md:col-span-2">
                       <p className="text-sm font-semibold text-gray-700 mb-3">Primary Teacher</p>
@@ -427,7 +376,6 @@ const QuizRegistrationForm = () => {
                       onChange={handleChange} placeholder="10-digit number" error={errors.primaryTeacherPhone}
                       maxLength="10" required />
                   </div>
-
                   <div className="grid md:grid-cols-2 gap-4 mt-6">
                     <div className="md:col-span-2">
                       <p className="text-sm font-semibold text-gray-700 mb-3">
@@ -453,7 +401,6 @@ const QuizRegistrationForm = () => {
                   <p className="text-sm text-gray-600 mb-4">
                     Enter student counts per class and the number of computers available for the quiz.
                   </p>
-
                   <div className="grid md:grid-cols-3 gap-4">
                     <Input label="Class 6 – No. of Students" name="class6" type="number"
                       value={formData.class6} onChange={handleChange} placeholder="0"
@@ -465,7 +412,6 @@ const QuizRegistrationForm = () => {
                       value={formData.class8} onChange={handleChange} placeholder="0"
                       error={errors.class8} min="0" max="50" />
                   </div>
-
                   <div className={`mt-4 mb-5 inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold ${
                     totalParticipants > 50
                       ? 'bg-red-100 text-red-700'
@@ -476,7 +422,6 @@ const QuizRegistrationForm = () => {
                     Total Participants: {totalParticipants}
                     {totalParticipants > 50 && ' — exceeds limit of 50'}
                   </div>
-
                   <Input
                     label="Computers Available at School (for quiz)"
                     name="availableComputers"
@@ -499,7 +444,6 @@ const QuizRegistrationForm = () => {
                   <p className="text-sm text-gray-600 mb-4">
                     Provide 4 different preferred dates between 1 May 2026 and 28 February 2027.
                   </p>
-
                   <div className="grid md:grid-cols-2 gap-4">
                     {[1, 2, 3, 4].map((n) => (
                       <Input
@@ -517,7 +461,6 @@ const QuizRegistrationForm = () => {
                     ))}
                   </div>
                 </section>
-
                 <div className="pt-2 border-t border-slate-100">
                   <Button type="submit" fullWidth size="large" loading={loading} disabled={loading}>
                     {loading ? 'Submitting...' : 'Submit Quiz Registration'}
