@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import {
-  Calendar, MapPin, ArrowRight, Brush, BookOpen,
-  Award, Users, Star, Trophy, Clock, ChevronDown,
-  Leaf, Flame, Droplets, TreePine, Globe, Zap, Mail, Phone, Trash
+  Calendar, ArrowRight, Brush, BookOpen, Users, Trophy,
+  Leaf, Flame, Droplets, TreePine, Globe, Zap, Trash
 } from 'lucide-react';
+import CompetitionRulesSection from "../components/CompetitionRulesSection";
+import CompetitionRulesModal from "../components/CompetitionRulesModal";
+import { competitionRules } from "../data/competitionRules";
 
 /* ─── Animation Helpers ───────────────────────────────────────── */
 const fadeUp = {
@@ -21,19 +23,19 @@ const stagger = {
 
 /* ─── Data ────────────────────────────────────────────────────── */
 const topics = [
-  { icon: Flame,    label: 'Global Warming',        color: 'text-orange-500 bg-orange-50' },
-  { icon: Zap,      label: 'Renewable Energy',       color: 'text-yellow-500 bg-yellow-50' },
-  { icon: Droplets, label: 'Pollution & Waste',      color: 'text-blue-500 bg-blue-50' },
-  { icon: TreePine, label: 'Tree Plantation',         color: 'text-green-600 bg-green-50' },
-  { icon: Trash,    label: 'Waste Management',  color: 'text-red-600 bg-red-50' },
-  { icon: Leaf,     label: 'Sustainable Living',     color: 'text-teal-600 bg-teal-50' },
+  { icon: Flame, label: 'Global Warming', color: 'text-orange-500 bg-orange-50' },
+  { icon: Zap, label: 'Renewable Energy', color: 'text-yellow-500 bg-yellow-50' },
+  { icon: Droplets, label: 'Pollution & Waste', color: 'text-blue-500 bg-blue-50' },
+  { icon: TreePine, label: 'Tree Plantation', color: 'text-green-600 bg-green-50' },
+  { icon: Trash, label: 'Waste Management', color: 'text-red-600 bg-red-50' },
+  { icon: Leaf, label: 'Sustainable Living', color: 'text-teal-600 bg-teal-50' },
 ];
 
 const awards = [
-  {  text: 'E-Certificates for all participants' },
+  { text: 'E-Certificates for all participants' },
   { text: 'Merit certificates for top 3 students from each school' },
-  {  text: 'Top performers qualify for National Level event & trophies & recognition at National Level' },
-  {  text: 'Special recognition for best performing schools' },
+  { text: 'Top performers qualify for National Level event & trophies & recognition at National Level' },
+  { text: 'Special recognition for best performing schools' },
 ];
 
 
@@ -70,11 +72,26 @@ function TimelineBadge({ icon: Icon, label, date, color }) {
 
 /* ─── Main Page ───────────────────────────────────────────────── */
 const UpcomingEngagements = () => {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState("overview");
+  const [selectedRules, setSelectedRules] = useState(null);
+  const [showRulesModal, setShowRulesModal] = useState(false);
 
   useEffect(() => {
     document.title = 'SNEAC 2026-27';
   }, []);
+
+  const openRules = (competition) => {
+    setSelectedRules(competition);
+    setShowRulesModal(true);
+  };
+
+  const closeRules = () => {
+    setShowRulesModal(false);
+
+    setTimeout(() => {
+      setSelectedRules(null);
+    }, 200);
+  };
 
   const competitions = {
     overview: {
@@ -98,7 +115,7 @@ const UpcomingEngagements = () => {
       tabActive: 'bg-orange-500 text-white',
       tabHover: 'hover:bg-orange-50 text-orange-600',
       icon: Brush,
-      poster: '/images/competitions/paint1.jpeg', 
+      poster: '/images/competitions/paint1.jpeg',
       description:
         'Students creatively express their ideas and concerns about nature, environmental protection, and sustainable living through artwork. The competition includes two categories for students: Primary Category (Classes 3rd–5th) and Secondary Category (Classes 6th–8th).',
     },
@@ -115,7 +132,7 @@ const UpcomingEngagements = () => {
       tabActive: 'bg-emerald-600 text-white',
       tabHover: 'hover:bg-emerald-50 text-emerald-600',
       icon: BookOpen,
-      poster: '/images/competitions/quiz1.jpeg', 
+      poster: '/images/competitions/quiz1.jpeg',
       description:
         'Students participate in a knowledge-based quiz covering important environmental topics and sustainability issues at a national level.',
     },
@@ -214,7 +231,7 @@ const UpcomingEngagements = () => {
           <motion.p variants={fadeUp} className="text-gray-500 mt-2 max-w-xl mx-auto">
             Designed for different age groups — both united by a love for our planet
           </motion.p>
-         
+
         </motion.div>
 
         {/* Tabs */}
@@ -231,12 +248,11 @@ const UpcomingEngagements = () => {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                    isActive ? c.tabActive + ' shadow-sm' : 'text-gray-500 ' + c.tabHover
-                  }`}
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${isActive ? c.tabActive + ' shadow-sm' : 'text-gray-500 ' + c.tabHover
+                    }`}
                 >
                   <TabIcon className="w-4 h-4" />
-                    {tab === 'overview' ? 'Overview' : tab === 'painting' ? 'Painting' : 'Quiz'}
+                  {tab === 'overview' ? 'Overview' : tab === 'painting' ? 'Painting' : 'Quiz'}
                 </button>
               );
             })}
@@ -254,100 +270,100 @@ const UpcomingEngagements = () => {
           >
             {activeTab === 'overview' ? (
 
-            /* ── Overview: same two-column layout as painting/quiz ── */
-            <div className="rounded-3xl border-2 border-emerald-200 bg-emerald-50 overflow-hidden shadow-xl">
-              <div className="grid md:grid-cols-2 gap-0">
+              /* ── Overview: same two-column layout as painting/quiz ── */
+              <div className="rounded-3xl border-2 border-emerald-200 bg-emerald-50 overflow-hidden shadow-xl">
+                <div className="grid md:grid-cols-2 gap-0">
 
-                {/* Left: combined poster */}
-                <div className="relative min-h-[320px] md:min-h-[480px] overflow-hidden">
-                  <img
-                    src={comp.poster}
-                    alt="National Environment Awareness Competitions 2026-27 poster"
-                    className="w-full h-full object-cover object-top"
-                    loading="lazy"
-                    width={600}
-                    height={800}
-                  />
-                  <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-white/90 text-gray-800 shadow">
-                      Painting & Quiz
-                    </span>
-                  </div>
-                </div>
-
-                {/* Right: overview details */}
-                <div className="p-8 sm:p-10 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="p-2.5 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 text-white shadow">
-                        <Globe className="w-5 h-5" />
-                      </div>
-                      <span className="text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full bg-emerald-100 text-emerald-700">
-                        National Level
+                  {/* Left: combined poster */}
+                  <div className="relative min-h-[320px] md:min-h-[480px] overflow-hidden">
+                    <img
+                      src={comp.poster}
+                      alt="National Environment Awareness Competitions 2026-27 poster"
+                      className="w-full h-full object-cover object-top"
+                      loading="lazy"
+                      width={600}
+                      height={800}
+                    />
+                    <div className="absolute top-4 left-4">
+                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-white/90 text-gray-800 shadow">
+                        Painting & Quiz
                       </span>
                     </div>
+                  </div>
 
-                    <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-1 leading-tight">
-                      National Environment Awareness Competitions
-                    </h3>
-                    <p className="text-sm font-semibold text-gray-500 mb-4">2026–2027 · Painting & Quiz</p>
-                    <p className="text-gray-700 leading-relaxed mb-6">
-                      Two national-level competitions — a Painting Competition for Classes 3rd–8th and an Environment Awareness Quiz for Classes 6th–8th — united by the theme of Environment & Sustainability.
-                    </p>
-
-                    {/* Competition highlights */}
-                    <div className="grid grid-cols-2 gap-4 mb-6">
-                      {[
-                        { icon: Brush,    label: 'Painting',  value: 'Classes 3rd – 8th',  sub: 'Up to 300 students/school', color: 'border-orange-200 bg-orange-50' },
-                        { icon: BookOpen, label: 'Quiz',       value: 'Classes 6th – 8th',  sub: 'Up to 50 students/school',  color: 'border-emerald-200 bg-emerald-50/80' },
-                      ].map(s => (
-                        <div key={s.label} className={`rounded-xl p-4 shadow-sm border ${s.color}`}>
-                          <s.icon className="w-4 h-4 text-gray-400 mb-1" />
-                          <p className="text-[11px] text-gray-500 uppercase tracking-wider">{s.label}</p>
-                          <p className="font-bold text-gray-800 text-sm mt-0.5">{s.value}</p>
-                          <p className="text-[11px] text-gray-500 mt-0.5">{s.sub}</p>
+                  {/* Right: overview details */}
+                  <div className="p-8 sm:p-10 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="p-2.5 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 text-white shadow">
+                          <Globe className="w-5 h-5" />
                         </div>
-                      ))}
+                        <span className="text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full bg-emerald-100 text-emerald-700">
+                          National Level
+                        </span>
+                      </div>
+
+                      <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-1 leading-tight">
+                        National Environment Awareness Competitions
+                      </h3>
+                      <p className="text-sm font-semibold text-gray-500 mb-4">2026–2027 · Painting & Quiz</p>
+                      <p className="text-gray-700 leading-relaxed mb-6">
+                        Two national-level competitions — a Painting Competition for Classes 3rd–8th and an Environment Awareness Quiz for Classes 6th–8th — united by the theme of Environment & Sustainability.
+                      </p>
+
+                      {/* Competition highlights */}
+                      <div className="grid grid-cols-2 gap-4 mb-6">
+                        {[
+                          { icon: Brush, label: 'Painting', value: 'Classes 3rd – 8th', sub: 'Up to 300 students/school', color: 'border-orange-200 bg-orange-50' },
+                          { icon: BookOpen, label: 'Quiz', value: 'Classes 6th – 8th', sub: 'Up to 50 students/school', color: 'border-emerald-200 bg-emerald-50/80' },
+                        ].map(s => (
+                          <div key={s.label} className={`rounded-xl p-4 shadow-sm border ${s.color}`}>
+                            <s.icon className="w-4 h-4 text-gray-400 mb-1" />
+                            <p className="text-[11px] text-gray-500 uppercase tracking-wider">{s.label}</p>
+                            <p className="font-bold text-gray-800 text-sm mt-0.5">{s.value}</p>
+                            <p className="text-[11px] text-gray-500 mt-0.5">{s.sub}</p>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Timeline */}
+                      <div className="space-y-3 mb-6">
+                        <TimelineBadge
+                          icon={Calendar}
+                          label="School Level Participation"
+                          date="May 2026 – 28 Feb 2027"
+                          color="border-emerald-200 bg-emerald-50 text-gray-800"
+                        />
+                        <TimelineBadge
+                          icon={Trophy}
+                          label="National Level Event"
+                          date="April 2027"
+                          color="border-yellow-300 bg-yellow-50 text-gray-800"
+                        />
+                      </div>
                     </div>
 
-                    {/* Timeline */}
-                    <div className="space-y-3 mb-6">
-                      <TimelineBadge
-                        icon={Calendar}
-                        label="School Level Participation"
-                        date="May 2026 – 28 Feb 2027"
-                        color="border-emerald-200 bg-emerald-50 text-gray-800"
-                      />
-                      <TimelineBadge
-                        icon={Trophy}
-                        label="National Level Event"
-                        date="April 2027"
-                        color="border-yellow-300 bg-yellow-50 text-gray-800"
-                      />
+                    {/* CTA buttons */}
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <button
+                        onClick={() => setActiveTab('painting')}
+                        className="flex-1 py-3 rounded-2xl font-bold text-white text-sm bg-gradient-to-r from-orange-400 to-amber-500 hover:opacity-90 transition-opacity shadow-md"
+                      >
+                        Painting Details
+                      </button>
+                      <button
+                        onClick={() => setActiveTab('quiz')}
+                        className="flex-1 py-3 rounded-2xl font-bold text-white text-sm bg-gradient-to-r from-emerald-500 to-teal-600 hover:opacity-90 transition-opacity shadow-md"
+                      >
+                        Quiz Details
+                      </button>
                     </div>
                   </div>
 
-                  {/* CTA buttons */}
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <button
-                      onClick={() => setActiveTab('painting')}
-                      className="flex-1 py-3 rounded-2xl font-bold text-white text-sm bg-gradient-to-r from-orange-400 to-amber-500 hover:opacity-90 transition-opacity shadow-md"
-                    >
-                      Painting Details
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('quiz')}
-                      className="flex-1 py-3 rounded-2xl font-bold text-white text-sm bg-gradient-to-r from-emerald-500 to-teal-600 hover:opacity-90 transition-opacity shadow-md"
-                    >
-                      Quiz Details
-                    </button>
-                  </div>
                 </div>
-
               </div>
-            </div>
 
-          ) : (
+            ) : (
 
               /* ── Painting / Quiz: two-column detail card ── */
               <div className={`rounded-3xl border-2 ${comp.border} ${comp.bg} overflow-hidden shadow-xl`}>
@@ -518,6 +534,12 @@ const UpcomingEngagements = () => {
         </motion.div>
       </section>
 
+      {/* ── COMPETITION RULES ─────────────────────────────────── */}
+      <CompetitionRulesSection
+        competitionRules={competitionRules}
+        onOpen={openRules}
+      />
+
       {/* ── AWARDS ───────────────────────────────────────────── */}
       <section className="bg-gradient-to-br from-emerald-700 to-teal-400  py-20 text-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
@@ -548,8 +570,11 @@ const UpcomingEngagements = () => {
         </div>
       </section>
 
-
-      
+      <CompetitionRulesModal
+        open={showRulesModal}
+        competition={selectedRules}
+        onClose={closeRules}
+      />
 
     </div>
   );
