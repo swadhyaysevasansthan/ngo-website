@@ -5,7 +5,7 @@ import { adminAPI } from '../utils/api';
 import Card from '../components/Card1';
 import Button from '../components/Button1';
 import AdminReviewCard from '../components/AdminReviewCard';
-import SneacAdminTab from '../components/SneacAdminTab';
+import SneacAdminTab from '../components/sneac/SneacAdminTab';
 import FarmersAdminTab from '../components/admin/FarmersAdminTab';
 
 const AdminDashboard = () => {
