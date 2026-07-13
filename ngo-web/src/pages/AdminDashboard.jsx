@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { adminAPI } from '../utils/api';
@@ -6,7 +6,18 @@ import Card from '../components/Card1';
 import Button from '../components/Button1';
 import AdminReviewCard from '../components/AdminReviewCard';
 import SneacAdminTab from '../components/sneac/SneacAdminTab';
+import useSneacAdmin from '../components/sneac/useSneacAdmin';
 import FarmersAdminTab from '../components/admin/FarmersAdminTab';
+
+// 🔥 7 days is the window used for "recent registrations" across both
+// competitions, kept in one place so SNPC and SNEAC stay consistent.
+const isWithinLastNDays = (dateValue, days = 7) => {
+  if (!dateValue) return false;
+  const date = new Date(dateValue);
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - days);
+  return date >= cutoff;
+};
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -14,6 +25,7 @@ const AdminDashboard = () => {
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, participants, email
+  const [dashboardCompetition, setDashboardCompetition] = useState('snpc'); // snpc, sneac
   const [emailForm, setEmailForm] = useState({
     recipients: 'pending',
     templateType: 'submission-reminder',
@@ -69,6 +81,52 @@ const AdminDashboard = () => {
       setLoading(false);
     }
   };
+
+  // 🔥 SNEAC — reuses the same hook that powers the SNEAC Schools tab, so the
+  // dashboard card numbers always match what's shown there. This fetches on
+  // mount regardless of which dropdown option is selected (same pattern as
+  // the SNPC stats above), so switching the dropdown is instant.
+  const {
+    requests: sneacRequests,
+    paintingRegs,
+    quizRegs,
+    loading: sneacLoading,
+  } = useSneacAdmin();
+
+  const sneacStats = useMemo(() => {
+    const approved = sneacRequests.filter((r) => r.status === 'approved');
+    const pending = sneacRequests.filter((r) => r.status === 'pending');
+    const rejected = sneacRequests.filter((r) => r.status === 'rejected');
+    const recentRequests = sneacRequests.filter((r) =>
+      isWithinLastNDays(r.created_at)
+    );
+
+    const paintingParticipants = paintingRegs.reduce(
+      (sum, r) => sum + (r.total_participants || 0),
+      0
+    );
+    const quizParticipants = quizRegs.reduce(
+      (sum, r) => sum + (r.total_participants || 0),
+      0
+    );
+
+    const paintingDatesAllotted = paintingRegs.filter(
+      (r) => r.primary_allotted_date || r.secondary_allotted_date
+    ).length;
+    const quizDatesAllotted = quizRegs.filter((r) => r.allotted_date).length;
+
+    return {
+      totalSchools: sneacRequests.length,
+      approvedCount: approved.length,
+      pendingCount: pending.length,
+      rejectedCount: rejected.length,
+      recentCount: recentRequests.length,
+      paintingParticipants,
+      quizParticipants,
+      paintingDatesAllotted,
+      quizDatesAllotted,
+    };
+  }, [sneacRequests, paintingRegs, quizRegs]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -249,83 +307,206 @@ const AdminDashboard = () => {
       {/* Content */}
       <div className="container-custom py-8">
         {/* DASHBOARD TAB */}
-        {activeTab === 'dashboard' && stats && (
+        {activeTab === 'dashboard' && (
           <div className="animate-fade-in">
-            {/* Stats Cards */}
-            <div className="grid md:grid-cols-4 gap-6 mb-8">
-              <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
-                <div className="text-4xl mb-2">👥</div>
-                <div className="text-3xl font-bold">
-                  {stats.totalRegistrations}
-                </div>
-                <div className="text-blue-100">Total Registrations</div>
-              </Card>
-
-              <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white">
-                <div className="text-4xl mb-2">✅</div>
-                <div className="text-3xl font-bold">
-                  {stats.totalSubmissions}
-                </div>
-                <div className="text-green-100">Marked as Submitted</div>
-              </Card>
-
-              <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-white">
-                <div className="text-4xl mb-2">⏳</div>
-                <div className="text-3xl font-bold">
-                  {stats.pendingSubmissions}
-                </div>
-                <div className="text-orange-100">Pending Submissions</div>
-              </Card>
-
-              <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white">
-                <div className="text-4xl mb-2">📈</div>
-                <div className="text-3xl font-bold">
-                  {stats.recentRegistrations}
-                </div>
-                <div className="text-purple-100">Last 7 Days (Regs)</div>
-              </Card>
+            {/* Competition Selector */}
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6">
+              <h2 className="text-xl font-bold text-gray-800">
+                {dashboardCompetition === 'snpc'
+                  ? '🌿 SNPC 2026 Stats'
+                  : '🏫 SNEAC Stats'}
+              </h2>
+              <select
+                value={dashboardCompetition}
+                onChange={(e) => setDashboardCompetition(e.target.value)}
+                className="px-4 py-2 border-2 border-gray-300 rounded-lg font-semibold focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none bg-white"
+              >
+                <option value="snpc">🌿 SNPC 2026</option>
+                <option value="sneac">🏫 SNEAC</option>
+              </select>
             </div>
 
-            {/* Category Breakdown */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card>
-                <h3 className="text-xl font-bold mb-4">
-                  📋 Registrations by Category
-                </h3>
-                <div className="space-y-3">
-                  {stats.categoryBreakdown.map((cat) => (
-                    <div
-                      key={cat.category}
-                      className="flex justify-between items-center"
-                    >
-                      <span className="font-semibold">{cat.category}</span>
-                      <span className="bg-primary/10 text-primary px-4 py-1 rounded-full">
-                        {cat.count} registrations
-                      </span>
+            {/* SNPC STATS */}
+            {dashboardCompetition === 'snpc' && stats && (
+              <>
+                {/* Stats Cards */}
+                <div className="grid md:grid-cols-4 gap-6 mb-8">
+                  <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+                    <div className="text-4xl mb-2">👥</div>
+                    <div className="text-3xl font-bold">
+                      {stats.totalRegistrations}
                     </div>
-                  ))}
-                </div>
-              </Card>
+                    <div className="text-blue-100">Total Registrations</div>
+                  </Card>
 
-              <Card>
-                <h3 className="text-xl font-bold mb-4">
-                  ✅ Marked Submissions by Category
-                </h3>
-                <div className="space-y-3">
-                  {stats.submissionsByCategory.map((cat) => (
-                    <div
-                      key={cat.category}
-                      className="flex justify-between items-center"
-                    >
-                      <span className="font-semibold">{cat.category}</span>
-                      <span className="bg-green-100 text-green-700 px-4 py-1 rounded-full">
-                        {cat.count} submitted
-                      </span>
+                  <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white">
+                    <div className="text-4xl mb-2">✅</div>
+                    <div className="text-3xl font-bold">
+                      {stats.totalSubmissions}
                     </div>
-                  ))}
+                    <div className="text-green-100">Marked as Submitted</div>
+                  </Card>
+
+                  <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-white">
+                    <div className="text-4xl mb-2">⏳</div>
+                    <div className="text-3xl font-bold">
+                      {stats.pendingSubmissions}
+                    </div>
+                    <div className="text-orange-100">Pending Submissions</div>
+                  </Card>
+
+                  <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white">
+                    <div className="text-4xl mb-2">📈</div>
+                    <div className="text-3xl font-bold">
+                      {stats.recentRegistrations}
+                    </div>
+                    <div className="text-purple-100">Last 7 Days (Regs)</div>
+                  </Card>
                 </div>
-              </Card>
-            </div>
+
+                {/* Category Breakdown */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  <Card>
+                    <h3 className="text-xl font-bold mb-4">
+                      📋 Registrations by Category
+                    </h3>
+                    <div className="space-y-3">
+                      {stats.categoryBreakdown.map((cat) => (
+                        <div
+                          key={cat.category}
+                          className="flex justify-between items-center"
+                        >
+                          <span className="font-semibold">{cat.category}</span>
+                          <span className="bg-primary/10 text-primary px-4 py-1 rounded-full">
+                            {cat.count} registrations
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </Card>
+
+                  <Card>
+                    <h3 className="text-xl font-bold mb-4">
+                      ✅ Marked Submissions by Category
+                    </h3>
+                    <div className="space-y-3">
+                      {stats.submissionsByCategory.map((cat) => (
+                        <div
+                          key={cat.category}
+                          className="flex justify-between items-center"
+                        >
+                          <span className="font-semibold">{cat.category}</span>
+                          <span className="bg-green-100 text-green-700 px-4 py-1 rounded-full">
+                            {cat.count} submitted
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </Card>
+                </div>
+              </>
+            )}
+
+            {/* SNEAC STATS */}
+            {dashboardCompetition === 'sneac' && (
+              <>
+                {sneacLoading ? (
+                  <div className="flex items-center justify-center py-24">
+                    <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+                  </div>
+                ) : (
+                  <>
+                    {/* Stats Cards */}
+                    <div className="grid md:grid-cols-5 gap-6 mb-8">
+                      <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+                        <div className="text-4xl mb-2">🏫</div>
+                        <div className="text-3xl font-bold">
+                          {sneacStats.totalSchools}
+                        </div>
+                        <div className="text-blue-100">Total Schools</div>
+                      </Card>
+
+                      <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white">
+                        <div className="text-4xl mb-2">✅</div>
+                        <div className="text-3xl font-bold">
+                          {sneacStats.approvedCount}
+                        </div>
+                        <div className="text-green-100">Approved</div>
+                      </Card>
+
+                      <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-white">
+                        <div className="text-4xl mb-2">⏳</div>
+                        <div className="text-3xl font-bold">
+                          {sneacStats.pendingCount}
+                        </div>
+                        <div className="text-orange-100">Needs Approval</div>
+                      </Card>
+
+                      <Card className="bg-gradient-to-br from-red-500 to-red-600 text-white">
+                        <div className="text-4xl mb-2">❌</div>
+                        <div className="text-3xl font-bold">
+                          {sneacStats.rejectedCount}
+                        </div>
+                        <div className="text-red-100">Rejected</div>
+                      </Card>
+
+                      <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white">
+                        <div className="text-4xl mb-2">📈</div>
+                        <div className="text-3xl font-bold">
+                          {sneacStats.recentCount}
+                        </div>
+                        <div className="text-purple-100">Last 7 Days</div>
+                      </Card>
+                    </div>
+
+                    {/* Registrations by Competition Type */}
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <Card>
+                        <h3 className="text-xl font-bold mb-4">
+                          📋 Registrations by Competition
+                        </h3>
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-center">
+                            <span className="font-semibold">🎨 Painting</span>
+                            <span className="bg-primary/10 text-primary px-4 py-1 rounded-full">
+                              {paintingRegs.length} schools ·{' '}
+                              {sneacStats.paintingParticipants} participants
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="font-semibold">🧠 Quiz</span>
+                            <span className="bg-primary/10 text-primary px-4 py-1 rounded-full">
+                              {quizRegs.length} schools ·{' '}
+                              {sneacStats.quizParticipants} participants
+                            </span>
+                          </div>
+                        </div>
+                      </Card>
+
+                      <Card>
+                        <h3 className="text-xl font-bold mb-4">
+                          📅 Competition Dates Allotted
+                        </h3>
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-center">
+                            <span className="font-semibold">🎨 Painting</span>
+                            <span className="bg-green-100 text-green-700 px-4 py-1 rounded-full">
+                              {sneacStats.paintingDatesAllotted} / {paintingRegs.length} allotted
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="font-semibold">🧠 Quiz</span>
+                            <span className="bg-green-100 text-green-700 px-4 py-1 rounded-full">
+                              {sneacStats.quizDatesAllotted} / {quizRegs.length} allotted
+                            </span>
+                          </div>
+                        </div>
+                      </Card>
+                    </div>
+                  </>
+                )}
+              </>
+            )}
           </div>
         )}
 
