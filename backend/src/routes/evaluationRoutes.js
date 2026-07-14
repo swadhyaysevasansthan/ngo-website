@@ -12,6 +12,7 @@ import {
   runQualification,
   getAuditLog,
   exportResults,
+  resetEvaluationData,
 } from '../controllers/evaluationController.js';
 
 import {
@@ -95,6 +96,9 @@ router.post(
   assignWinner
 );
 router.delete('/winners/:id', removeWinner);
+
+// Testing / reset tool
+router.post('/reset', resetEvaluationData);
 
 // Audit log
 router.get('/audit-log', getAuditLog);

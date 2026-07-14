@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { toast } from 'react-toastify';
-import { Loader2, Mail, Phone } from 'lucide-react';
+import { Loader2, Mail, Phone, Lock } from 'lucide-react';
 import { evaluationAdminAPI } from '../../utils/api';
 
 const STATUS_STYLE = {
@@ -19,13 +19,18 @@ const STATUS_LABEL = {
 
 const VerificationQueue = () => {
   const [queue, setQueue] = useState([]);
+  const [verificationOpen, setVerificationOpen] = useState(true);
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState(null);
 
   const load = useCallback(async () => {
     try {
-      const res = await evaluationAdminAPI.getVerificationQueue();
-      setQueue(res.data.data);
+      const [queueRes, settingsRes] = await Promise.all([
+        evaluationAdminAPI.getVerificationQueue(),
+        evaluationAdminAPI.getSettings(),
+      ]);
+      setQueue(queueRes.data.data);
+      setVerificationOpen(settingsRes.data.data.settings.verification_status === 'open');
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to load verification queue');
     } finally {
@@ -70,6 +75,13 @@ const VerificationQueue = () => {
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-bold text-gray-800">Verification Queue ({queue.length})</h2>
       </div>
+
+      {!verificationOpen && (
+        <div className="bg-amber-50 border border-amber-200 text-amber-700 rounded-lg p-3 flex items-center gap-2 text-sm font-medium">
+          <Lock size={16} className="shrink-0" />
+          Verification is currently closed. You can view the queue, but statuses can't be changed until it's opened in Settings.
+        </div>
+      )}
 
       {queue.length === 0 ? (
         <div className="bg-white rounded-xl border border-gray-100 p-12 text-center text-gray-400">
@@ -117,6 +129,14 @@ const VerificationQueue = () => {
                   <td className="px-4 py-3">
                     {updatingId === row.entry_id ? (
                       <Loader2 size={16} className="animate-spin text-gray-400" />
+                    ) : !verificationOpen ? (
+                      <span
+                        className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
+                          STATUS_STYLE[row.verification_status] || 'bg-gray-100 text-gray-500'
+                        }`}
+                      >
+                        {STATUS_LABEL[row.verification_status]}
+                      </span>
                     ) : (
                       <select
                         value={row.verification_status}

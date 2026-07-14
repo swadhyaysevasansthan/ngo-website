@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { toast } from 'react-toastify';
-import { Loader2, ShieldAlert } from 'lucide-react';
+import { Loader2, ShieldAlert, Play, RotateCcw } from 'lucide-react';
 import { evaluationAdminAPI } from '../../utils/api';
 
 const Toggle = ({ label, description, checked, onChange, disabled }) => (
@@ -29,11 +29,21 @@ const EvaluationSettings = () => {
   const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [qualifying, setQualifying] = useState(false);
+  const [judges, setJudges] = useState([]);
+  const [resetScope, setResetScope] = useState('scores');
+  const [resetRound, setResetRound] = useState('');
+  const [resetJudgeId, setResetJudgeId] = useState('');
+  const [resetting, setResetting] = useState(false);
 
   const load = useCallback(async () => {
     try {
-      const res = await evaluationAdminAPI.getSettings();
-      setSettings(res.data.data.settings);
+      const [settingsRes, judgesRes] = await Promise.all([
+        evaluationAdminAPI.getSettings(),
+        evaluationAdminAPI.getJudges(),
+      ]);
+      setSettings(settingsRes.data.data.settings);
+      setJudges(judgesRes.data.data);
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to load settings');
     } finally {
@@ -55,6 +65,46 @@ const EvaluationSettings = () => {
       toast.error(error.response?.data?.message || 'Failed to update settings');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleRunQualification = async () => {
+    setQualifying(true);
+    try {
+      const res = await evaluationAdminAPI.runQualification();
+      toast.success(`Qualification applied — ${res.data.data.qualifiedCount} entries now qualified`);
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to run qualification');
+    } finally {
+      setQualifying(false);
+    }
+  };
+
+  const handleReset = async () => {
+    const scopeLabel = resetScope === 'full' ? 'scores + qualification + winners' : 'scores only';
+    const scopeDetail = [
+      resetRound ? `Round ${resetRound}` : 'all rounds',
+      resetJudgeId ? judges.find((j) => j.id === Number(resetJudgeId))?.full_name : 'all judges',
+    ].join(', ');
+    if (
+      !window.confirm(
+        `Reset (${scopeLabel}) for ${scopeDetail}? This cannot be undone. Use this for testing only.`
+      )
+    ) {
+      return;
+    }
+    setResetting(true);
+    try {
+      const res = await evaluationAdminAPI.resetEvaluationData({
+        scope: resetScope,
+        round: resetRound ? Number(resetRound) : undefined,
+        judgeId: resetJudgeId ? Number(resetJudgeId) : undefined,
+      });
+      toast.success(res.data.message);
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to reset');
+    } finally {
+      setResetting(false);
     }
   };
 
@@ -121,6 +171,19 @@ const EvaluationSettings = () => {
             ? `Top ${settings.qualification_value} highest-scoring entries qualify for Round 2.`
             : `Entries scoring ${settings.qualification_value} or above qualify for Round 2.`}
         </p>
+        <div className="mt-3 bg-amber-50 border border-amber-100 rounded-lg p-3 flex items-center justify-between gap-3">
+          <p className="text-xs text-amber-700">
+            Changing the method or value above does <strong>not</strong> retroactively update Round 1
+            Results — it only takes effect the next time qualification is run.
+          </p>
+          <button
+            onClick={handleRunQualification}
+            disabled={qualifying || settings.frozen}
+            className="shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary-dark disabled:opacity-50"
+          >
+            <Play size={12} /> {qualifying ? 'Running…' : 'Run Qualification Now'}
+          </button>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
@@ -175,6 +238,55 @@ const EvaluationSettings = () => {
           }}
           disabled={saving}
         />
+
+        <div className="pt-4 mt-2 border-t border-red-200">
+          <p className="font-medium text-gray-800 flex items-center gap-2 mb-1">
+            <RotateCcw size={16} className="text-red-600" /> Reset Evaluation Data (testing only)
+          </p>
+          <p className="text-xs text-gray-500 mb-3">
+            Clears submitted scores so you can re-test the flow. Entries, judges, and settings are
+            untouched. The audit log is preserved — this action itself is not logged there, so use
+            it deliberately.
+          </p>
+          <div className="flex flex-wrap gap-2 mb-3">
+            <select
+              value={resetScope}
+              onChange={(e) => setResetScope(e.target.value)}
+              className="px-3 py-2 border rounded-lg text-sm"
+            >
+              <option value="scores">Scores only</option>
+              <option value="full">Scores + qualification + winners (full reset)</option>
+            </select>
+            <select
+              value={resetRound}
+              onChange={(e) => setResetRound(e.target.value)}
+              className="px-3 py-2 border rounded-lg text-sm"
+            >
+              <option value="">Both rounds</option>
+              <option value="1">Round 1 only</option>
+              <option value="2">Round 2 only</option>
+            </select>
+            <select
+              value={resetJudgeId}
+              onChange={(e) => setResetJudgeId(e.target.value)}
+              className="px-3 py-2 border rounded-lg text-sm"
+            >
+              <option value="">All judges</option>
+              {judges.map((j) => (
+                <option key={j.id} value={j.id}>
+                  {j.full_name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button
+            onClick={handleReset}
+            disabled={resetting}
+            className="px-4 py-2 rounded-lg font-semibold bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 text-sm"
+          >
+            {resetting ? 'Resetting…' : 'Reset Now'}
+          </button>
+        </div>
       </div>
     </div>
   );

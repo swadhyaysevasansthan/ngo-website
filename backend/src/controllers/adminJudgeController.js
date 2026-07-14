@@ -220,6 +220,21 @@ export const updateVerificationStatus = async (req, res) => {
   }
 
   try {
+    const competition = await getDefaultCompetition();
+    if (!competition) {
+      return res.status(404).json({ success: false, message: 'No competition configured' });
+    }
+    const settingsRes = await pool.query(
+      'SELECT verification_status FROM evaluation_settings WHERE competition_id = $1',
+      [competition.id]
+    );
+    if (settingsRes.rows[0]?.verification_status !== 'open') {
+      return res.status(403).json({
+        success: false,
+        message: 'Verification is currently closed. Open it from Settings before updating verification status.',
+      });
+    }
+
     const result = await pool.query(
       `UPDATE evaluation_qualifications SET verification_status = $1, updated_at = NOW()
        WHERE entry_id = $2 RETURNING *`,
@@ -231,7 +246,6 @@ export const updateVerificationStatus = async (req, res) => {
 
     let promoted = { promoted: 0 };
     if (status === 'disqualified') {
-      const competition = await getDefaultCompetition();
       promoted = await promoteNextQualifiers(competition.id);
     }
 

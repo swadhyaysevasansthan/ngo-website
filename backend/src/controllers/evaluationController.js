@@ -343,6 +343,118 @@ const buildExportRows = async (competitionId) => {
   });
 };
 
+/**
+ * TESTING / RE-RUN TOOL — clears evaluation data so an admin can
+ * re-test the judging flow without touching entries, judges, or
+ * settings. Never touches evaluation_score_audit unless clearAudit
+ * is explicitly true (audit history should normally never be erased;
+ * this exception exists purely for pre-launch testing).
+ *
+ * scope:
+ *  - 'scores'  : delete evaluation_scores only (optionally filtered
+ *                by round and/or judgeId)
+ *  - 'full'    : also clears evaluation_qualifications and
+ *                evaluation_winners for the competition — a full
+ *                return to the pre-Round-1 state
+ */
+export const resetEvaluationData = async (req, res) => {
+  const { scope = 'scores', round, judgeId, clearAudit = false } = req.body;
+
+  if (!['scores', 'full'].includes(scope)) {
+    return res.status(400).json({ success: false, message: 'scope must be "scores" or "full"' });
+  }
+
+  try {
+    const competition = await getDefaultCompetition();
+    if (!competition) {
+      return res.status(404).json({ success: false, message: 'No competition configured' });
+    }
+
+    const conditions = ['e.competition_id = $1'];
+    const params = [competition.id];
+    let i = 2;
+
+    if (round) {
+      conditions.push(`s.round = $${i}`);
+      params.push(round);
+      i++;
+    }
+    if (judgeId) {
+      conditions.push(`s.judge_id = $${i}`);
+      params.push(judgeId);
+      i++;
+    }
+
+    const deletedScores = await pool.query(
+      `DELETE FROM evaluation_scores s
+       USING evaluation_entries e
+       WHERE s.entry_id = e.id AND ${conditions.join(' AND ')}
+       RETURNING s.id`,
+      params
+    );
+
+    let deletedAudit = { rowCount: 0 };
+    if (clearAudit) {
+      const auditConditions = ['e.competition_id = $1'];
+      const auditParams = [competition.id];
+      let j = 2;
+      if (round) {
+        auditConditions.push(`a.round = $${j}`);
+        auditParams.push(round);
+        j++;
+      }
+      if (judgeId) {
+        auditConditions.push(`a.judge_id = $${j}`);
+        auditParams.push(judgeId);
+        j++;
+      }
+      deletedAudit = await pool.query(
+        `DELETE FROM evaluation_score_audit a
+         USING evaluation_entries e
+         WHERE a.entry_id = e.id AND ${auditConditions.join(' AND ')}`,
+        auditParams
+      );
+    }
+
+    let qualificationsReset = 0;
+    let winnersReset = 0;
+    if (scope === 'full') {
+      const qRes = await pool.query(
+        `UPDATE evaluation_qualifications q
+         SET qualified = false, verification_status = 'not_applicable', total_score = 0,
+             conflict_level = 'LOW', updated_at = NOW()
+         FROM evaluation_entries e
+         WHERE q.entry_id = e.id AND e.competition_id = $1
+         RETURNING q.id`,
+        [competition.id]
+      );
+      qualificationsReset = qRes.rowCount;
+
+      const wRes = await pool.query(
+        `DELETE FROM evaluation_winners WHERE competition_id = $1 RETURNING id`,
+        [competition.id]
+      );
+      winnersReset = wRes.rowCount;
+    }
+
+    res.json({
+      success: true,
+      message: `Reset complete: ${deletedScores.rowCount} score(s) cleared${
+        clearAudit ? `, ${deletedAudit.rowCount} audit row(s) cleared` : ''
+      }${scope === 'full' ? `, ${qualificationsReset} qualification(s) reset, ${winnersReset} winner assignment(s) removed` : ''}.`,
+      data: {
+        scoresCleared: deletedScores.rowCount,
+        auditCleared: clearAudit ? deletedAudit.rowCount : 0,
+        qualificationsReset,
+        winnersReset,
+      },
+    });
+  } catch (error) {
+    console.error('Reset evaluation data error:', error);
+    res.status(500).json({ success: false, message: 'Failed to reset evaluation data', error: error.message });
+  }
+};
+
 export const exportResults = async (req, res) => {
   try {
     const { format } = req.params;

@@ -34,7 +34,6 @@ apiClient.interceptors.response.use(
   (error) => Promise.reject(error)
 );
 
-
 // 🔥 EXISTING APIs (your original code)
 export const participantAPI = {
   register: (data) => apiClient.post('/participants/register', data),
@@ -397,6 +396,8 @@ export const evaluationAdminAPI = {
 
   getAuditLog: (search) =>
     apiClient.get('/admin/evaluation/audit-log', { params: search ? { search } : {} }),
+
+  resetEvaluationData: (payload) => apiClient.post('/admin/evaluation/reset', payload),
 
   exportResults: (format) => {
     return axios({
