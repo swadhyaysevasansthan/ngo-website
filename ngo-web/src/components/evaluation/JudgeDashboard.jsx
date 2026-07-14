@@ -44,7 +44,14 @@ const JudgeDashboard = () => {
   useEffect(() => {
     if (dashboard) loadEntries();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dashboard, status, search]);
+  }, [dashboard, status]);
+
+  useEffect(() => {
+    if (!dashboard) return;
+    const t = setTimeout(() => loadEntries(), 300);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
 
   const refreshAfterSave = () => {
     setActiveEntryId(null);

@@ -229,6 +229,7 @@ export const getEntryDetail = async (req, res) => {
         entryNumber: entry.entry_number,
         round,
         imageUrl: sourceData?.imageUrl || null,
+        fullImageUrl: sourceData?.fullImageUrl || null,
         captureLocation: sourceData?.captureLocation || null,
         captureDate: sourceData?.captureDate || null,
         cameraModel: sourceData?.cameraModel || null,

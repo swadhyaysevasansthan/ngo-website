@@ -90,6 +90,8 @@ const JudgeEvaluationModal = ({ entryId, round, onClose, onSaved }) => {
                 <img
                   src={entry.imageUrl}
                   alt={`Entry #${entry.entryNumber}`}
+                  loading="eager"
+                  decoding="async"
                   className="w-full max-h-[50vh] object-contain bg-gray-100 rounded-xl cursor-zoom-in"
                   onClick={() => setFullscreen(true)}
                 />
@@ -177,7 +179,7 @@ const JudgeEvaluationModal = ({ entryId, round, onClose, onSaved }) => {
 
       {fullscreen && entry?.imageUrl && (
         <JudgeImageViewer
-          imageUrl={entry.imageUrl}
+          imageUrl={entry.fullImageUrl || entry.imageUrl}
           alt={`Entry #${entry.entryNumber}`}
           onClose={() => setFullscreen(false)}
         />

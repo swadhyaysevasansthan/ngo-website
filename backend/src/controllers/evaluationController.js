@@ -1,5 +1,5 @@
 import pool from '../config/database.js';
-import { recomputeRound1Results, applyQualification } from '../services/qualificationService.js';
+import { computeRound1Results, applyQualification } from '../services/qualificationService.js';
 import { buildResultsCSV, buildResultsExcel, buildResultsPDF } from '../services/reportService.js';
 
 /**
@@ -16,11 +16,29 @@ export const getDefaultCompetition = async () => {
 };
 
 /**
+ * Insert a Cloudinary transformation into an /upload/ URL.
+ * Camera-original photos are frequently 5-20MB; serving them
+ * untouched was the actual cause of slow image loads in both the
+ * judge evaluation modal and the admin photo viewer. w_*,q_auto,f_auto
+ * caps dimensions and lets Cloudinary pick optimal format/quality —
+ * usually a 90%+ size reduction with no visible quality loss on screen.
+ */
+const applyCloudinaryTransform = (url, transform) => {
+  if (!url || !url.includes('/upload/')) return url;
+  return url.replace('/upload/', `/upload/${transform}/`);
+};
+
+/**
  * Adapter: given a competition + entry, fetch the raw source data
  * (image URL, capture metadata) from whichever table the competition
  * declares as its source_table. Only 'submissions' (photography) is
  * implemented today; add a branch here for future competition types
  * (e.g. painting) without touching any evaluation_* table.
+ *
+ * Returns two image URLs: `imageUrl` (capped ~1600px, for inline
+ * display) and `fullImageUrl` (capped ~2400px, for the fullscreen
+ * viewer) — both far smaller than the untouched original but still
+ * plenty sharp on any screen.
  */
 export const getEntrySourceData = async (competition, entry) => {
   if (competition.source_table === 'submissions') {
@@ -33,7 +51,8 @@ export const getEntrySourceData = async (competition, entry) => {
     const row = result.rows[0];
     if (!row) return null;
     return {
-      imageUrl: row.cloudinary_url || null,
+      imageUrl: row.cloudinary_url ? applyCloudinaryTransform(row.cloudinary_url, 'w_1600,q_auto,f_auto') : null,
+      fullImageUrl: row.cloudinary_url ? applyCloudinaryTransform(row.cloudinary_url, 'w_2400,q_auto,f_auto') : null,
       captureLocation: row.capture_location,
       captureDate: row.capture_date,
       cameraModel: row.camera_model,
@@ -48,6 +67,55 @@ export const getEntrySourceData = async (competition, entry) => {
  * the anonymized layer. Idempotent — safe to call repeatedly.
  * Entry numbers continue sequentially from the current max.
  */
+/**
+ * Admin-only: fetch the photo + full (unmasked) context for a single
+ * entry. Powers the "View" button in the Round 1 Results grid.
+ */
+export const getEntryPhoto = async (req, res) => {
+  try {
+    const { entryId } = req.params;
+    const competition = await getDefaultCompetition();
+    if (!competition) {
+      return res.status(404).json({ success: false, message: 'No competition configured' });
+    }
+
+    const entryRes = await pool.query(
+      `SELECT e.*, p.full_name, p.email, p.phone
+       FROM evaluation_entries e
+       JOIN participants p ON p.participant_id = e.participant_id
+       WHERE e.id = $1 AND e.competition_id = $2`,
+      [entryId, competition.id]
+    );
+    const entry = entryRes.rows[0];
+    if (!entry) {
+      return res.status(404).json({ success: false, message: 'Entry not found' });
+    }
+
+    const sourceData = await getEntrySourceData(competition, entry);
+
+    res.json({
+      success: true,
+      data: {
+        entryId: entry.id,
+        entryNumber: entry.entry_number,
+        participantId: entry.participant_id,
+        fullName: entry.full_name,
+        email: entry.email,
+        phone: entry.phone,
+        imageUrl: sourceData?.imageUrl || null,
+        fullImageUrl: sourceData?.fullImageUrl || null,
+        captureLocation: sourceData?.captureLocation || null,
+        captureDate: sourceData?.captureDate || null,
+        cameraModel: sourceData?.cameraModel || null,
+        environmentalMessage: sourceData?.environmentalMessage || null,
+      },
+    });
+  } catch (error) {
+    console.error('Get entry photo error:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch photo', error: error.message });
+  }
+};
+
 export const syncEntries = async (req, res) => {
   try {
     const competition = await getDefaultCompetition();
@@ -173,7 +241,7 @@ export const getResults = async (req, res) => {
       return res.status(404).json({ success: false, message: 'No competition configured' });
     }
 
-    const results = await recomputeRound1Results(competition.id);
+    const results = await computeRound1Results(competition.id);
 
     const judgesRes = await pool.query(
       'SELECT id, full_name FROM judges ORDER BY id ASC'
@@ -243,7 +311,7 @@ export const getConflicts = async (req, res) => {
       return res.status(404).json({ success: false, message: 'No competition configured' });
     }
 
-    const results = await recomputeRound1Results(competition.id);
+    const results = await computeRound1Results(competition.id);
     const filtered = level ? results.filter((r) => r.conflict === level.toUpperCase()) : results;
 
     res.json({ success: true, data: filtered });
@@ -305,7 +373,7 @@ export const getAuditLog = async (req, res) => {
  * Builds the same flat row shape used by all three export formats.
  */
 const buildExportRows = async (competitionId) => {
-  const results = await recomputeRound1Results(competitionId);
+  const results = await computeRound1Results(competitionId);
 
   const judgesRes = await pool.query('SELECT id, full_name FROM judges ORDER BY id ASC');
   const judges = judgesRes.rows;

@@ -2,7 +2,7 @@ import pool from '../config/database.js';
 import bcrypt from 'bcryptjs';
 import { generateJudgeUsername, generateJudgePassword } from '../utils/judgeCredentials.js';
 import { getDefaultCompetition } from './evaluationController.js';
-import { promoteNextQualifiers, recomputeRound1Results } from '../services/qualificationService.js';
+import { promoteNextQualifiers } from '../services/qualificationService.js';
 
 const MAX_JUDGES = 5;
 
@@ -278,7 +278,6 @@ export const disqualifyEntry = async (req, res) => {
     }
 
     const competition = await getDefaultCompetition();
-    await recomputeRound1Results(competition.id);
     const promoted = await promoteNextQualifiers(competition.id);
 
     res.json({ success: true, message: 'Entry disqualified', autoPromoted: promoted.promoted });

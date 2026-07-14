@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { toast } from 'react-toastify';
-import { Loader2, Mail, Phone, Lock } from 'lucide-react';
+import { Loader2, Mail, Phone, Lock, Eye } from 'lucide-react';
 import { evaluationAdminAPI } from '../../utils/api';
+import AdminEntryPhotoModal from './AdminEntryPhotoModal';
 
 const STATUS_STYLE = {
   pending_verification: 'bg-amber-100 text-amber-700',
@@ -22,6 +23,7 @@ const VerificationQueue = () => {
   const [verificationOpen, setVerificationOpen] = useState(true);
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState(null);
+  const [viewingId, setViewingId] = useState(null);
 
   const load = useCallback(async () => {
     try {
@@ -98,6 +100,7 @@ const VerificationQueue = () => {
                 <th className="px-4 py-3 text-center">Score</th>
                 <th className="px-4 py-3 text-center">Conflict</th>
                 <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3"></th>
               </tr>
             </thead>
             <tbody>
@@ -153,11 +156,23 @@ const VerificationQueue = () => {
                       </select>
                     )}
                   </td>
+                  <td className="px-4 py-3 text-right">
+                    <button
+                      onClick={() => setViewingId(row.entry_id)}
+                      className="inline-flex items-center gap-1 text-xs px-2.5 py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-blue-50 hover:text-blue-700 font-semibold transition-colors"
+                    >
+                      <Eye size={11} /> View
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+      )}
+
+      {viewingId && (
+        <AdminEntryPhotoModal entryId={viewingId} onClose={() => setViewingId(null)} />
       )}
     </div>
   );

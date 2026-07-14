@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { toast } from 'react-toastify';
-import { RefreshCw, Play, Download, Ban, RotateCcw, Loader2 } from 'lucide-react';
+import { RefreshCw, Play, Download, Ban, RotateCcw, Loader2, Eye } from 'lucide-react';
 import { evaluationAdminAPI } from '../../utils/api';
+import AdminEntryPhotoModal from './AdminEntryPhotoModal';
 
 const CONFLICT_STYLE = {
   HIGH: 'bg-red-100 text-red-700',
@@ -17,6 +18,7 @@ const EvaluationResultsGrid = () => {
   const [qualifying, setQualifying] = useState(false);
   const [exportingFmt, setExportingFmt] = useState(null);
   const [actionId, setActionId] = useState(null);
+  const [viewingId, setViewingId] = useState(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -226,23 +228,31 @@ const EvaluationResultsGrid = () => {
                           : <span className="text-gray-400">—</span>}
                     </td>
                     <td className="px-4 py-3 text-right">
-                      {isActing ? (
-                        <Loader2 size={15} className="animate-spin text-gray-400 inline-block" />
-                      ) : isDisq ? (
+                      <div className="inline-flex items-center gap-2">
                         <button
-                          onClick={() => handleReinstate(entry.entryId)}
-                          className="inline-flex items-center gap-1 text-xs px-2.5 py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-green-50 hover:text-green-700 font-semibold transition-colors"
+                          onClick={() => setViewingId(entry.entryId)}
+                          className="inline-flex items-center gap-1 text-xs px-2.5 py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-blue-50 hover:text-blue-700 font-semibold transition-colors"
                         >
-                          <RotateCcw size={11} /> Reinstate
+                          <Eye size={11} /> View
                         </button>
-                      ) : (
-                        <button
-                          onClick={() => handleDisqualify(entry.entryId)}
-                          className="inline-flex items-center gap-1 text-xs px-2.5 py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-red-50 hover:text-red-700 font-semibold transition-colors"
-                        >
-                          <Ban size={11} /> Disqualify
-                        </button>
-                      )}
+                        {isActing ? (
+                          <Loader2 size={15} className="animate-spin text-gray-400 inline-block" />
+                        ) : isDisq ? (
+                          <button
+                            onClick={() => handleReinstate(entry.entryId)}
+                            className="inline-flex items-center gap-1 text-xs px-2.5 py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-green-50 hover:text-green-700 font-semibold transition-colors"
+                          >
+                            <RotateCcw size={11} /> Reinstate
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handleDisqualify(entry.entryId)}
+                            className="inline-flex items-center gap-1 text-xs px-2.5 py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-red-50 hover:text-red-700 font-semibold transition-colors"
+                          >
+                            <Ban size={11} /> Disqualify
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 );
@@ -250,6 +260,10 @@ const EvaluationResultsGrid = () => {
             </tbody>
           </table>
         </div>
+      )}
+
+      {viewingId && (
+        <AdminEntryPhotoModal entryId={viewingId} onClose={() => setViewingId(null)} />
       )}
     </div>
   );

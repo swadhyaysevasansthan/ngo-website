@@ -2,13 +2,15 @@ import pool from '../config/database.js';
 import { calculateConflictLevel } from './conflictDetectionService.js';
 
 /**
- * Recompute total score + conflict level for every active entry in a
- * competition's Round 1, and persist into evaluation_qualifications.
- * Returns the computed rows (entry_id, entry_number, participant_id,
- * status, total, conflict, scoreCount) for callers that need them
- * immediately (e.g. applyQualification, results endpoint).
+ * PURE READ — total score + conflict level for every entry in a
+ * competition's Round 1. No writes. Two queries total regardless of
+ * entry count, safe to call on every page load (Results, Conflicts,
+ * dashboards). This used to also UPSERT a row per entry inside the
+ * loop, which meant every read caused N sequential round trips to
+ * the DB (104 entries = 104 queries just to render a table) — that
+ * was the actual cause of the multi-second load times.
  */
-export const recomputeRound1Results = async (competitionId) => {
+export const computeRound1Results = async (competitionId) => {
   const entriesRes = await pool.query(
     `SELECT
         e.id AS entry_id,
@@ -28,14 +30,11 @@ export const recomputeRound1Results = async (competitionId) => {
     [competitionId]
   );
 
-  const results = [];
-
-  for (const row of entriesRes.rows) {
+  return entriesRes.rows.map((row) => {
     const scores = row.scores || [];
     const total = scores.reduce((sum, s) => sum + s, 0);
     const conflict = calculateConflictLevel(scores);
-
-    results.push({
+    return {
       entryId: row.entry_id,
       entryNumber: row.entry_number,
       participantId: row.participant_id,
@@ -44,17 +43,39 @@ export const recomputeRound1Results = async (competitionId) => {
       total,
       conflict,
       scoreCount: scores.length,
-    });
+    };
+  });
+};
 
-    await pool.query(
-      `INSERT INTO evaluation_qualifications (entry_id, total_score, conflict_level, updated_at)
-       VALUES ($1, $2, $3, NOW())
-       ON CONFLICT (entry_id)
-       DO UPDATE SET total_score = $2, conflict_level = $3, updated_at = NOW()`,
-      [row.entry_id, total, conflict]
-    );
-  }
+/**
+ * Persist a results snapshot into evaluation_qualifications in a
+ * single batched query (UNNEST), instead of one query per entry.
+ * Only called from applyQualification / promoteNextQualifiers —
+ * i.e. only when an admin explicitly triggers qualification, not on
+ * every page view.
+ */
+const persistSnapshot = async (results) => {
+  if (results.length === 0) return;
+  await pool.query(
+    `INSERT INTO evaluation_qualifications (entry_id, total_score, conflict_level, updated_at)
+     SELECT entry_id, total_score, conflict_level, NOW()
+     FROM UNNEST($1::int[], $2::int[], $3::text[]) AS t(entry_id, total_score, conflict_level)
+     ON CONFLICT (entry_id)
+     DO UPDATE SET total_score = EXCLUDED.total_score,
+                    conflict_level = EXCLUDED.conflict_level,
+                    updated_at = NOW()`,
+    [results.map((r) => r.entryId), results.map((r) => r.total), results.map((r) => r.conflict)]
+  );
+};
 
+/**
+ * Kept for backward compatibility with any caller that wants the old
+ * "compute AND persist" behavior explicitly and deliberately (not on
+ * a hot read path).
+ */
+export const recomputeRound1Results = async (competitionId) => {
+  const results = await computeRound1Results(competitionId);
+  await persistSnapshot(results);
   return results;
 };
 
@@ -72,7 +93,9 @@ export const applyQualification = async (competitionId) => {
   const settings = settingsRes.rows[0];
   if (!settings) throw new Error('Competition settings not found');
 
-  const results = await recomputeRound1Results(competitionId);
+  const results = await computeRound1Results(competitionId);
+  await persistSnapshot(results);
+
   const eligible = results
     .filter((r) => r.status !== 'disqualified')
     .sort((a, b) => b.total - a.total);
@@ -88,20 +111,22 @@ export const applyQualification = async (competitionId) => {
     );
   }
 
-  for (const r of results) {
-    const qualified = qualifiedIds.has(r.entryId);
-    await pool.query(
-      `UPDATE evaluation_qualifications
-       SET qualified = $1,
-           verification_status = CASE
-             WHEN $1 AND verification_status = 'not_applicable' THEN 'pending_verification'
-             ELSE verification_status
-           END,
-           updated_at = NOW()
-       WHERE entry_id = $2`,
-      [qualified, r.entryId]
-    );
-  }
+  const allIds = results.map((r) => r.entryId);
+  const qualifiedFlags = results.map((r) => qualifiedIds.has(r.entryId));
+
+  // Single batched update instead of one UPDATE per entry.
+  await pool.query(
+    `UPDATE evaluation_qualifications q
+     SET qualified = t.qualified,
+         verification_status = CASE
+           WHEN t.qualified AND q.verification_status = 'not_applicable' THEN 'pending_verification'
+           ELSE q.verification_status
+         END,
+         updated_at = NOW()
+     FROM UNNEST($1::int[], $2::boolean[]) AS t(entry_id, qualified)
+     WHERE q.entry_id = t.entry_id`,
+    [allIds, qualifiedFlags]
+  );
 
   return { qualifiedCount: qualifiedIds.size, totalEligible: eligible.length };
 };
@@ -111,6 +136,8 @@ export const applyQualification = async (competitionId) => {
  * during verification. Backfills open slots from the next-highest
  * scoring, not-yet-qualified entries. Only meaningful for the
  * top_n qualification method (min_score has no fixed slot count).
+ * neededSlots is always small (a handful), so a small per-candidate
+ * loop here is fine — unlike the all-104-entries case above.
  */
 export const promoteNextQualifiers = async (competitionId) => {
   const settingsRes = await pool.query(
@@ -120,7 +147,7 @@ export const promoteNextQualifiers = async (competitionId) => {
   const settings = settingsRes.rows[0];
   if (!settings || settings.qualification_method !== 'top_n') return { promoted: 0 };
 
-  const results = await recomputeRound1Results(competitionId);
+  const results = await computeRound1Results(competitionId);
   const eligible = results
     .filter((r) => r.status !== 'disqualified')
     .sort((a, b) => b.total - a.total);

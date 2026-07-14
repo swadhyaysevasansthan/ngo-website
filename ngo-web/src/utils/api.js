@@ -365,6 +365,7 @@ export const judgeAPI = {
 // existing admin apiClient/token, same as adminAPI above)
 export const evaluationAdminAPI = {
   syncEntries: () => apiClient.post('/admin/evaluation/entries/sync'),
+  getEntryPhoto: (entryId) => apiClient.get(`/admin/evaluation/entries/${entryId}/photo`),
 
   getJudges: () => apiClient.get('/admin/evaluation/judges'),
   createJudge: (fullName) => apiClient.post('/admin/evaluation/judges', { fullName }),

@@ -13,6 +13,7 @@ import {
   getAuditLog,
   exportResults,
   resetEvaluationData,
+  getEntryPhoto,
 } from '../controllers/evaluationController.js';
 
 import {
@@ -38,6 +39,7 @@ router.use(verifyAdmin);
 
 // Entries / setup
 router.post('/entries/sync', syncEntries);
+router.get('/entries/:entryId/photo', getEntryPhoto);
 
 // Judges
 router.get('/judges', listJudges);
