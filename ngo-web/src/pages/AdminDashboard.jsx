@@ -26,7 +26,7 @@ const AdminDashboard = () => {
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, participants, email
-  const [dashboardCompetition, setDashboardCompetition] = useState('snpc'); // snpc, sneac
+  const [dashboardCompetition, setDashboardCompetition] = useState('sneac'); // snpc, sneac
   const [emailForm, setEmailForm] = useState({
     recipients: 'pending',
     templateType: 'submission-reminder',
@@ -261,7 +261,7 @@ const AdminDashboard = () => {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-bold text-forest">
-                🌿 SNPC 2026 Admin Panel
+                🌿 Swadhyay Seva Foundation Admin Panel
               </h1>
               <p className="text-sm text-gray-600">Welcome, {adminUsername}</p>
             </div>
