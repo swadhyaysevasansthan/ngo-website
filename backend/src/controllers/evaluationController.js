@@ -1,0 +1,383 @@
+import pool from '../config/database.js';
+import { recomputeRound1Results, applyQualification } from '../services/qualificationService.js';
+import { buildResultsCSV, buildResultsExcel, buildResultsPDF } from '../services/reportService.js';
+
+/**
+ * Single-tenant helper for now: the module is architected to support
+ * multiple evaluation_competitions rows (see migration), but the
+ * frontend only drives one competition today. Falls back to the
+ * seeded 'snpc2026-photography' competition if none is specified.
+ */
+export const getDefaultCompetition = async () => {
+  const result = await pool.query(
+    `SELECT * FROM evaluation_competitions ORDER BY id ASC LIMIT 1`
+  );
+  return result.rows[0] || null;
+};
+
+/**
+ * Adapter: given a competition + entry, fetch the raw source data
+ * (image URL, capture metadata) from whichever table the competition
+ * declares as its source_table. Only 'submissions' (photography) is
+ * implemented today; add a branch here for future competition types
+ * (e.g. painting) without touching any evaluation_* table.
+ */
+export const getEntrySourceData = async (competition, entry) => {
+  if (competition.source_table === 'submissions') {
+    const result = await pool.query(
+      `SELECT capture_location, capture_date, camera_model, cloudinary_url,
+              file_path
+       FROM submissions WHERE id = $1`,
+      [entry.source_id]
+    );
+    const row = result.rows[0];
+    if (!row) return null;
+    return {
+      imageUrl: row.cloudinary_url || null,
+      captureLocation: row.capture_location,
+      captureDate: row.capture_date,
+      cameraModel: row.camera_model,
+      environmentalMessage: row.environmental_message || null,
+    };
+  }
+  return null;
+};
+
+/**
+ * Create evaluation_entries for any submissions not yet mapped into
+ * the anonymized layer. Idempotent — safe to call repeatedly.
+ * Entry numbers continue sequentially from the current max.
+ */
+export const syncEntries = async (req, res) => {
+  try {
+    const competition = await getDefaultCompetition();
+    if (!competition) {
+      return res.status(400).json({ success: false, message: 'No competition configured' });
+    }
+
+    const maxRes = await pool.query(
+      `SELECT COALESCE(MAX(entry_number::int), 0) AS max_num
+       FROM evaluation_entries WHERE competition_id = $1`,
+      [competition.id]
+    );
+    let nextNum = maxRes.rows[0].max_num + 1;
+
+    const unmapped = await pool.query(
+      `SELECT s.id, s.participant_id
+       FROM submissions s
+       WHERE NOT EXISTS (
+         SELECT 1 FROM evaluation_entries e
+         WHERE e.competition_id = $1 AND e.source_id = s.id
+       )
+       ORDER BY s.submission_date ASC, s.id ASC`,
+      [competition.id]
+    );
+
+    const created = [];
+    for (const row of unmapped.rows) {
+      const entryNumber = String(nextNum).padStart(3, '0');
+      const inserted = await pool.query(
+        `INSERT INTO evaluation_entries (competition_id, entry_number, source_id, participant_id)
+         VALUES ($1, $2, $3, $4) RETURNING *`,
+        [competition.id, entryNumber, row.id, row.participant_id]
+      );
+      created.push(inserted.rows[0]);
+      nextNum++;
+    }
+
+    res.json({
+      success: true,
+      message: `${created.length} new entr${created.length === 1 ? 'y' : 'ies'} created`,
+      data: created,
+    });
+  } catch (error) {
+    console.error('Sync entries error:', error);
+    res.status(500).json({ success: false, message: 'Failed to sync entries', error: error.message });
+  }
+};
+
+export const getSettings = async (req, res) => {
+  try {
+    const competition = await getDefaultCompetition();
+    if (!competition) {
+      return res.status(404).json({ success: false, message: 'No competition configured' });
+    }
+    const result = await pool.query(
+      'SELECT * FROM evaluation_settings WHERE competition_id = $1',
+      [competition.id]
+    );
+    res.json({ success: true, data: { competition, settings: result.rows[0] } });
+  } catch (error) {
+    console.error('Get settings error:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch settings', error: error.message });
+  }
+};
+
+const SETTINGS_FIELDS = [
+  'round1_status',
+  'allow_reevaluation',
+  'qualification_method',
+  'qualification_value',
+  'verification_status',
+  'round2_status',
+  'round2_scoring_enabled',
+  'frozen',
+  'results_published',
+];
+
+export const updateSettings = async (req, res) => {
+  try {
+    const competition = await getDefaultCompetition();
+    if (!competition) {
+      return res.status(404).json({ success: false, message: 'No competition configured' });
+    }
+
+    const updates = [];
+    const values = [];
+    let i = 1;
+    for (const field of SETTINGS_FIELDS) {
+      if (Object.prototype.hasOwnProperty.call(req.body, field)) {
+        updates.push(`${field} = $${i}`);
+        values.push(req.body[field]);
+        i++;
+      }
+    }
+
+    if (updates.length === 0) {
+      return res.status(400).json({ success: false, message: 'No valid settings fields provided' });
+    }
+
+    values.push(competition.id);
+    const result = await pool.query(
+      `UPDATE evaluation_settings SET ${updates.join(', ')}, updated_at = NOW()
+       WHERE competition_id = $${i} RETURNING *`,
+      values
+    );
+
+    res.json({ success: true, message: 'Settings updated', data: result.rows[0] });
+  } catch (error) {
+    console.error('Update settings error:', error);
+    res.status(500).json({ success: false, message: 'Failed to update settings', error: error.message });
+  }
+};
+
+/**
+ * Round 1 results grid for admin: every entry, every judge's score,
+ * total, conflict level, participant identity (unmasked here only —
+ * judges never see this endpoint).
+ */
+export const getResults = async (req, res) => {
+  try {
+    const competition = await getDefaultCompetition();
+    if (!competition) {
+      return res.status(404).json({ success: false, message: 'No competition configured' });
+    }
+
+    const results = await recomputeRound1Results(competition.id);
+
+    const judgesRes = await pool.query(
+      'SELECT id, full_name FROM judges ORDER BY id ASC'
+    );
+    const judges = judgesRes.rows;
+
+    const scoresRes = await pool.query(
+      `SELECT s.entry_id, s.judge_id, s.score
+       FROM evaluation_scores s
+       JOIN evaluation_entries e ON e.id = s.entry_id
+       WHERE e.competition_id = $1 AND s.round = 1`,
+      [competition.id]
+    );
+    const scoreMap = new Map(); // entryId -> { judgeId: score }
+    for (const row of scoresRes.rows) {
+      if (!scoreMap.has(row.entry_id)) scoreMap.set(row.entry_id, {});
+      scoreMap.get(row.entry_id)[row.judge_id] = row.score;
+    }
+
+    const participantsRes = await pool.query(
+      `SELECT participant_id, full_name FROM participants`
+    );
+    const participantMap = new Map(participantsRes.rows.map((p) => [p.participant_id, p.full_name]));
+
+    const qualRes = await pool.query(
+      `SELECT q.entry_id, q.qualified, q.verification_status
+       FROM evaluation_qualifications q
+       JOIN evaluation_entries e ON e.id = q.entry_id
+       WHERE e.competition_id = $1`,
+      [competition.id]
+    );
+    const qualMap = new Map(qualRes.rows.map((r) => [r.entry_id, r]));
+
+    const data = results.map((r) => {
+      const perJudge = scoreMap.get(r.entryId) || {};
+      const qual = qualMap.get(r.entryId);
+      return {
+        entryId: r.entryId,
+        entryNumber: r.entryNumber,
+        participantId: r.participantId,
+        fullName: participantMap.get(r.participantId) || '',
+        judgeScores: judges.map((j) => ({
+          judgeId: j.id,
+          judgeName: j.full_name,
+          score: perJudge[j.id] ?? null,
+        })),
+        total: r.total,
+        conflict: r.conflict,
+        status: r.status,
+        qualified: qual?.qualified || false,
+        verificationStatus: qual?.verification_status || 'not_applicable',
+      };
+    });
+
+    res.json({ success: true, data, judges });
+  } catch (error) {
+    console.error('Get results error:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch results', error: error.message });
+  }
+};
+
+export const getConflicts = async (req, res) => {
+  try {
+    const { level } = req.query;
+    const competition = await getDefaultCompetition();
+    if (!competition) {
+      return res.status(404).json({ success: false, message: 'No competition configured' });
+    }
+
+    const results = await recomputeRound1Results(competition.id);
+    const filtered = level ? results.filter((r) => r.conflict === level.toUpperCase()) : results;
+
+    res.json({ success: true, data: filtered });
+  } catch (error) {
+    console.error('Get conflicts error:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch conflicts', error: error.message });
+  }
+};
+
+export const runQualification = async (req, res) => {
+  try {
+    const competition = await getDefaultCompetition();
+    if (!competition) {
+      return res.status(404).json({ success: false, message: 'No competition configured' });
+    }
+    const outcome = await applyQualification(competition.id);
+    res.json({ success: true, message: 'Qualification applied', data: outcome });
+  } catch (error) {
+    console.error('Run qualification error:', error);
+    res.status(500).json({ success: false, message: 'Failed to run qualification', error: error.message });
+  }
+};
+
+export const getAuditLog = async (req, res) => {
+  try {
+    const { search } = req.query;
+    const competition = await getDefaultCompetition();
+    if (!competition) {
+      return res.status(404).json({ success: false, message: 'No competition configured' });
+    }
+
+    const params = [competition.id];
+    let searchClause = '';
+    if (search) {
+      params.push(`%${search}%`);
+      searchClause = `AND (e.entry_number ILIKE $2 OR j.full_name ILIKE $2)`;
+    }
+
+    const result = await pool.query(
+      `SELECT a.id, a.round, a.old_score, a.new_score, a.changed_at,
+              e.entry_number, j.full_name AS judge_name
+       FROM evaluation_score_audit a
+       JOIN evaluation_entries e ON e.id = a.entry_id
+       JOIN judges j ON j.id = a.judge_id
+       WHERE e.competition_id = $1 ${searchClause}
+       ORDER BY a.changed_at DESC
+       LIMIT 500`,
+      params
+    );
+
+    res.json({ success: true, data: result.rows });
+  } catch (error) {
+    console.error('Get audit log error:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch audit log', error: error.message });
+  }
+};
+
+/**
+ * Builds the same flat row shape used by all three export formats.
+ */
+const buildExportRows = async (competitionId) => {
+  const results = await recomputeRound1Results(competitionId);
+
+  const judgesRes = await pool.query('SELECT id, full_name FROM judges ORDER BY id ASC');
+  const judges = judgesRes.rows;
+
+  const scoresRes = await pool.query(
+    `SELECT s.entry_id, s.judge_id, s.score
+     FROM evaluation_scores s
+     JOIN evaluation_entries e ON e.id = s.entry_id
+     WHERE e.competition_id = $1 AND s.round = 1`,
+    [competitionId]
+  );
+  const scoreMap = new Map();
+  for (const row of scoresRes.rows) {
+    if (!scoreMap.has(row.entry_id)) scoreMap.set(row.entry_id, {});
+    scoreMap.get(row.entry_id)[row.judge_id] = row.score;
+  }
+
+  const participantsRes = await pool.query(`SELECT participant_id, full_name FROM participants`);
+  const participantMap = new Map(participantsRes.rows.map((p) => [p.participant_id, p.full_name]));
+
+  return results.map((r) => {
+    const perJudge = scoreMap.get(r.entryId) || {};
+    const row = {
+      entryNumber: r.entryNumber,
+      participantId: r.participantId,
+      fullName: participantMap.get(r.participantId) || '',
+      total: r.total,
+      conflict: r.conflict,
+      status: r.status,
+    };
+    judges.forEach((j, idx) => {
+      row[`judge${idx + 1}`] = perJudge[j.id] ?? '';
+    });
+    return row;
+  });
+};
+
+export const exportResults = async (req, res) => {
+  try {
+    const { format } = req.params;
+    const competition = await getDefaultCompetition();
+    if (!competition) {
+      return res.status(404).json({ success: false, message: 'No competition configured' });
+    }
+
+    const rows = await buildExportRows(competition.id);
+    const filenameBase = `Round1_Results_${Date.now()}`;
+
+    if (format === 'csv') {
+      const csv = buildResultsCSV(rows);
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', `attachment; filename=${filenameBase}.csv`);
+      return res.send(csv);
+    }
+
+    if (format === 'excel') {
+      const buffer = await buildResultsExcel(rows);
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.setHeader('Content-Disposition', `attachment; filename=${filenameBase}.xlsx`);
+      return res.send(buffer);
+    }
+
+    if (format === 'pdf') {
+      const buffer = await buildResultsPDF(rows, { title: competition.name });
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename=${filenameBase}.pdf`);
+      return res.send(buffer);
+    }
+
+    return res.status(400).json({ success: false, message: 'Invalid export format. Use csv, excel, or pdf.' });
+  } catch (error) {
+    console.error('Export results error:', error);
+    res.status(500).json({ success: false, message: 'Failed to export results', error: error.message });
+  }
+};

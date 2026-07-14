@@ -2,6 +2,8 @@ import { Routes, Route } from "react-router-dom";
 
 import PublicRoute from "./PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
+import JudgePublicRoute from "./JudgePublicRoute";
+import JudgeProtectedRoute from "./JudgeProtectedRoute";
 
 // Layouts
 import PublicLayout from "../layouts/PublicLayout";
@@ -46,6 +48,10 @@ import TeacherProfile from "../pages/TeacherProfile";
 import AdminDashboard from "../pages/AdminDashboard";
 import AdminLogin from "../pages/AdminLogin";
 import CommunityAdmin from "../pages/CommunityAdmin";
+
+// Judge Portal Pages
+import JudgeLogin from "../pages/JudgeLogin";
+import JudgeDashboardPage from "../pages/JudgeDashboardPage";
 
 export default function AppRoutes() {
     return (
@@ -111,6 +117,14 @@ export default function AppRoutes() {
                     <Route path="/admin/reviews" element={<AdminDashboard />} />
                     <Route path="/admin/communities" element={<CommunityAdmin />} />
                 </Route>
+            </Route>
+
+            {/* JUDGE PORTAL — fully separate auth from Admin, own guards */}
+            <Route element={<JudgePublicRoute />}>
+                <Route path="/judge/login" element={<JudgeLogin />} />
+            </Route>
+            <Route element={<JudgeProtectedRoute />}>
+                <Route path="/judge/dashboard" element={<JudgeDashboardPage />} />
             </Route>
 
         </Routes>

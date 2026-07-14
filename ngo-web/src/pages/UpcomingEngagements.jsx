@@ -97,7 +97,7 @@ const UpcomingEngagements = () => {
     overview: {
       title: 'National Environment Awareness Competitions',
       subtitle: '2026–2027 · Painting & Quiz',
-      poster: '/images/competitions/quiznpaint1.png', // path to QuiznPaint-5.jpg
+      poster: '/images/competitions/QuiznPaint.png', // path to QuiznPaint-5.jpg
       tabActive: 'bg-emerald-700 text-white',
       tabHover: 'hover:bg-gray-50 text-gray-600',
       icon: Globe,

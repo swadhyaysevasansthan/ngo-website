@@ -27,19 +27,13 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Response interceptor
+// Response interceptor — pass errors through so every caller's
+// try/catch and error.response?.data?.message receives the real error
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => {
-    const message = error.response?.data?.message || 'Something went wrong';
-    apiClient.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
-  }
+  (error) => Promise.reject(error)
 );
+
 
 // 🔥 EXISTING APIs (your original code)
 export const participantAPI = {
@@ -334,5 +328,84 @@ uploadGallery: (id, formData) =>
   deleteCategory: (id) => apiClient.delete(`/farmers/categories/${id}`),
 };
 
+
+// 🔥 JUDGE MODULE — judge-facing auth + evaluation API
+// Uses a separate localStorage key (judgeToken) so it never collides
+// with the admin session, and a separate axios instance so judge
+// requests never carry the admin Authorization header.
+export const judgeApiClient = axios.create({
+  baseURL: API_BASE_URL,
+  headers: { 'Content-Type': 'application/json' },
+});
+
+judgeApiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem('judgeToken');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+export const judgeAuthAPI = {
+  login: (data) => judgeApiClient.post('/judge/login', data),
+};
+
+export const judgeAPI = {
+  me: () => judgeApiClient.get('/judge/me'),
+  getDashboard: () => judgeApiClient.get('/judge/dashboard'),
+  getEntries: (params = {}) => judgeApiClient.get('/judge/entries', { params }),
+  getNextPendingEntry: (round = 1) =>
+    judgeApiClient.get('/judge/entries/next', { params: { round } }),
+  getEntryDetail: (entryId, round = 1) =>
+    judgeApiClient.get(`/judge/entries/${entryId}`, { params: { round } }),
+  submitScore: (entryId, round, score) =>
+    judgeApiClient.post(`/judge/entries/${entryId}/score`, { round, score }),
+};
+
+// 🔥 JUDGE MODULE — admin-facing evaluation management API (uses the
+// existing admin apiClient/token, same as adminAPI above)
+export const evaluationAdminAPI = {
+  syncEntries: () => apiClient.post('/admin/evaluation/entries/sync'),
+
+  getJudges: () => apiClient.get('/admin/evaluation/judges'),
+  createJudge: (fullName) => apiClient.post('/admin/evaluation/judges', { fullName }),
+  updateJudge: (id, fullName) => apiClient.put(`/admin/evaluation/judges/${id}`, { fullName }),
+  deleteJudge: (id) => apiClient.delete(`/admin/evaluation/judges/${id}`),
+  toggleJudgeActive: (id, isActive) =>
+    apiClient.patch(`/admin/evaluation/judges/${id}/active`, { isActive }),
+  resetJudgePassword: (id) => apiClient.post(`/admin/evaluation/judges/${id}/reset-password`),
+
+  getSettings: () => apiClient.get('/admin/evaluation/settings'),
+  updateSettings: (data) => apiClient.put('/admin/evaluation/settings', data),
+
+  getResults: () => apiClient.get('/admin/evaluation/results'),
+  getConflicts: (level) =>
+    apiClient.get('/admin/evaluation/conflicts', { params: level ? { level } : {} }),
+  runQualification: () => apiClient.post('/admin/evaluation/qualify'),
+
+  disqualifyEntry: (entryId) => apiClient.patch(`/admin/evaluation/entries/${entryId}/disqualify`),
+  reinstateEntry: (entryId) => apiClient.patch(`/admin/evaluation/entries/${entryId}/reinstate`),
+
+  getVerificationQueue: () => apiClient.get('/admin/evaluation/verification-queue'),
+  updateVerificationStatus: (entryId, status) =>
+    apiClient.patch(`/admin/evaluation/entries/${entryId}/verification`, { status }),
+
+  getWinners: () => apiClient.get('/admin/evaluation/winners'),
+  assignWinner: (entryId, prizeType) =>
+    apiClient.post('/admin/evaluation/winners', { entryId, prizeType }),
+  removeWinner: (id) => apiClient.delete(`/admin/evaluation/winners/${id}`),
+
+  getAuditLog: (search) =>
+    apiClient.get('/admin/evaluation/audit-log', { params: search ? { search } : {} }),
+
+  exportResults: (format) => {
+    return axios({
+      url: `${API_BASE_URL}/admin/evaluation/export/${format}`,
+      method: 'GET',
+      responseType: 'blob',
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    });
+  },
+};
 
 export default apiClient;

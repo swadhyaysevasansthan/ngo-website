@@ -28,6 +28,9 @@ import visitorRoutes from './routes/visitorRoutes.js';
 import farmerRoutes from './routes/farmerRoutes.js';
 import adminFarmerRoutes from './routes/adminFarmerRoutes.js';
 
+import judgeRoutes from './routes/judgeRoutes.js';
+import evaluationRoutes from './routes/evaluationRoutes.js';
+
 // Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -137,6 +140,9 @@ app.use('/api/visitors', visitorRoutes);
 
 app.use('/api/farmers', farmerRoutes);
 app.use('/api/admin/farmers', adminFarmerRoutes);
+
+app.use('/api/judge', judgeRoutes);
+app.use('/api/admin/evaluation', evaluationRoutes);
 
 // 404 handler
 app.use((req, res) => {
