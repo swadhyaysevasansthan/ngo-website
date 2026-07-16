@@ -28,10 +28,29 @@ apiClient.interceptors.request.use(
 );
 
 // Response interceptor — pass errors through so every caller's
-// try/catch and error.response?.data?.message receives the real error
+// try/catch and error.response?.data?.message receives the real error.
+// Also handles 401 centrally: if the admin token is invalid/expired,
+// clear it and send the user to login. Doing this here (not in every
+// component's catch block) prevents the redirect loop that happens
+// when a stale token is left in localStorage — PublicRoute sees it,
+// bounces back to the dashboard, which fetches again, gets 401 again,
+// forever.
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => Promise.reject(error)
+  (error) => {
+    const url = error.config?.url || '';
+    const isAdminEndpoint = url.includes('/admin/') || url.startsWith('admin/');
+    if (
+      error.response?.status === 401 &&
+      isAdminEndpoint &&
+      !window.location.pathname.startsWith('/admin/login')
+    ) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('adminUsername');
+      window.location.href = '/admin/login';
+    }
+    return Promise.reject(error);
+  }
 );
 
 // 🔥 EXISTING APIs (your original code)
