@@ -4,8 +4,6 @@ import { X, MapPin, Calendar, Camera, Leaf, Maximize2, Loader2, Lock } from 'luc
 import { judgeAPI } from '../../utils/api';
 import JudgeImageViewer from './JudgeImageViewer';
 
-const SCORES = [0, 1, 2, 3, 4, 5];
-
 const LOCK_MESSAGES = {
   frozen: 'The competition is frozen. Scores cannot be submitted or changed.',
   round_closed: 'This round is not currently open for scoring. You can still view the entry.',
@@ -135,25 +133,44 @@ const JudgeEvaluationModal = ({ entryId, round, onClose, onSaved }) => {
             )}
 
             <div>
-              <p className="text-sm font-semibold text-gray-700 mb-2">Score</p>
-              <div className="grid grid-cols-6 gap-2">
-                {SCORES.map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => !locked && setSelectedScore(s)}
-                    disabled={locked}
-                    className={`py-3 rounded-lg font-bold text-lg border-2 transition-colors ${
-                      locked
-                        ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
-                        : selectedScore === s
-                        ? 'bg-primary text-white border-primary'
-                        : 'bg-white text-gray-700 border-gray-200 hover:border-primary'
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
+              <p className="text-sm font-semibold text-gray-700 mb-2">
+                Score {entry.maxScore ? `(0–${entry.maxScore})` : ''}
+              </p>
+              {entry.maxScore && entry.maxScore <= 20 ? (
+                <div className="flex flex-wrap gap-2">
+                  {Array.from({ length: entry.maxScore + 1 }, (_, s) => s).map((s) => (
+                    <button
+                      key={s}
+                      onClick={() => !locked && setSelectedScore(s)}
+                      disabled={locked}
+                      className={`w-12 h-12 rounded-lg font-bold text-lg border-2 transition-colors ${
+                        locked
+                          ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
+                          : selectedScore === s
+                          ? 'bg-primary text-white border-primary'
+                          : 'bg-white text-gray-700 border-gray-200 hover:border-primary'
+                      }`}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <input
+                  type="number"
+                  min={0}
+                  max={entry.maxScore || 100}
+                  step={1}
+                  value={selectedScore ?? ''}
+                  disabled={locked}
+                  onChange={(e) => {
+                    const v = e.target.value === '' ? null : Math.max(0, Math.min(entry.maxScore, Math.round(Number(e.target.value))));
+                    setSelectedScore(v);
+                  }}
+                  className="w-28 px-3 py-2.5 border-2 rounded-lg text-lg font-bold text-center disabled:bg-gray-50 disabled:text-gray-300"
+                  placeholder="0"
+                />
+              )}
             </div>
 
             <div className="flex gap-3 pt-2">

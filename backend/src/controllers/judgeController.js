@@ -75,6 +75,7 @@ export const getDashboard = async (req, res) => {
         frozen: settings.frozen,
         roundOpen: activeRound === ROUND1 ? settings.round1_status === 'open' : settings.round2_status === 'open',
         round2ScoringEnabled: settings.round2_scoring_enabled,
+        maxScore: settings.max_score ?? 5,
       },
     });
   } catch (error) {
@@ -235,6 +236,7 @@ export const getEntryDetail = async (req, res) => {
         cameraModel: sourceData?.cameraModel || null,
         environmentalMessage: sourceData?.environmentalMessage || null,
         myScore,
+        maxScore: settings.max_score ?? 5,
         canScore,
         lockReason,
       },
@@ -257,8 +259,8 @@ export const submitScore = async (req, res) => {
     if (![ROUND1, ROUND2].includes(roundNum)) {
       return res.status(400).json({ success: false, message: 'Invalid round' });
     }
-    if (!Number.isInteger(scoreNum) || scoreNum < 0 || scoreNum > 5) {
-      return res.status(400).json({ success: false, message: 'Score must be a whole number between 0 and 5' });
+    if (!Number.isInteger(scoreNum) || scoreNum < 0) {
+      return res.status(400).json({ success: false, message: 'Score must be a whole number of 0 or more' });
     }
 
     const competition = await getDefaultCompetition();
@@ -270,6 +272,14 @@ export const submitScore = async (req, res) => {
       [competition.id]
     );
     const settings = settingsRes.rows[0];
+
+    const maxScore = settings.max_score ?? 5;
+    if (scoreNum > maxScore) {
+      return res.status(400).json({
+        success: false,
+        message: `Score must be a whole number between 0 and ${maxScore}.`,
+      });
+    }
 
     if (settings.frozen) {
       return res.status(403).json({ success: false, message: 'The competition is frozen. Scoring is closed.' });

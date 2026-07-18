@@ -127,6 +127,34 @@ const EvaluationSettings = () => {
       )}
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <h3 className="font-bold text-gray-800 mb-1">Scoring Scale</h3>
+        <p className="text-xs text-gray-500 mb-3">
+          Judges score each entry as a whole number from 0 up to this maximum (e.g. 5, 10, 100).
+        </p>
+        <div className="flex items-center gap-3">
+          <input
+            type="number"
+            min={1}
+            value={settings.max_score}
+            onChange={(e) => setSettings({ ...settings, max_score: Number(e.target.value) })}
+            onBlur={(e) => save({ max_score: Number(e.target.value) })}
+            disabled={saving || settings.frozen}
+            className="w-28 px-3 py-2 border rounded-lg text-sm"
+          />
+          <p className="text-xs text-gray-500">
+            Max possible total per entry (5 judges): <strong>{settings.max_score * 5}</strong>
+          </p>
+        </div>
+        <div className="mt-3 bg-amber-50 border border-amber-100 rounded-lg p-3">
+          <p className="text-xs text-amber-700">
+            Changing this does <strong>not</strong> rescale scores already submitted. Change it
+            before Round 1 opens, or only between rounds — not mid-way through judging, or
+            existing scores and new scores will be on different scales in the same total.
+          </p>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
         <h3 className="font-bold text-gray-800 mb-1">Round 1</h3>
         <Toggle
           label="Round 1 Open"

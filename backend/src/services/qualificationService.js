@@ -11,6 +11,12 @@ import { calculateConflictLevel } from './conflictDetectionService.js';
  * was the actual cause of the multi-second load times.
  */
 export const computeRound1Results = async (competitionId) => {
+  const settingsRes = await pool.query(
+    'SELECT max_score FROM evaluation_settings WHERE competition_id = $1',
+    [competitionId]
+  );
+  const maxScore = settingsRes.rows[0]?.max_score ?? 5;
+
   const entriesRes = await pool.query(
     `SELECT
         e.id AS entry_id,
@@ -33,7 +39,7 @@ export const computeRound1Results = async (competitionId) => {
   return entriesRes.rows.map((row) => {
     const scores = row.scores || [];
     const total = scores.reduce((sum, s) => sum + s, 0);
-    const conflict = calculateConflictLevel(scores);
+    const conflict = calculateConflictLevel(scores, maxScore);
     return {
       entryId: row.entry_id,
       entryNumber: row.entry_number,

@@ -15,7 +15,7 @@ export const competitionRules = {
         points: [
           "Group A — Classes 3rd to 5th.",
           "Group B — Classes 6th to 8th.",
-          "Both groups are conducted and evaluated separately."
+          "Both groups will be conducted and evaluated separately."
         ]
       },
 
@@ -39,15 +39,15 @@ export const competitionRules = {
         title: "4. Artwork Specifications",
         points: [
           "Artwork must be on A3 size paper.",
-          "Water colours, crayons, oil pastels, pencil colours, acrylic colours, sketch pens and mixed media are allowed.",
-          "Digital artwork, AI generated artwork, printed artwork and tracing are not allowed."
+          "Any medium may be used, including water colours, crayons, oil pastels, pencil colours, acrylic colours, sketch pens, or mixed media.",
+          "Digital artwork, AI generated artwork, printed artwork and tracing are not permitted."
         ]
       },
 
       {
         title: "5. Competition Duration",
         points: [
-          "Competition may be conducted over 2–3 days.",
+          "The competition may be conducted over 2–3 days, depending on the number of participants in the school.",
           "Each participant gets 1.5 hours."
         ]
       },
@@ -55,8 +55,8 @@ export const competitionRules = {
       {
         title: "6. Student Explanation",
         points: [
-          "Students must submit a slogan, message or paragraph explaining the painting.",
-          "The explanation must NOT be written inside the artwork."
+          "Each participant must submit a short slogan, message, or paragraph explaining the environmental message conveyed through their painting.",
+          "The slogan/message must not be written on the artwork itself."
         ]
       },
 
@@ -186,7 +186,7 @@ export const competitionRules = {
         title: "4. Competition Format",
         points: [
           "School Level Online MCQ Quiz.",
-          "15-minute duration.",
+          "10-minute duration.",
           "Top performer qualifies for National Level."
         ]
       },

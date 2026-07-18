@@ -13,6 +13,7 @@ const CONFLICT_STYLE = {
 const EvaluationResultsGrid = () => {
   const [entries, setEntries] = useState([]);
   const [judges, setJudges] = useState([]);
+  const [maxTotal, setMaxTotal] = useState(25);
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
   const [qualifying, setQualifying] = useState(false);
@@ -26,6 +27,7 @@ const EvaluationResultsGrid = () => {
       const res = await evaluationAdminAPI.getResults();
       setEntries(res.data.data);
       setJudges(res.data.judges);
+      setMaxTotal(res.data.maxTotal || 25);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to load results');
     } finally {
@@ -183,7 +185,7 @@ const EvaluationResultsGrid = () => {
                 {judges.map((j, i) => (
                   <th key={j.id} className="px-3 py-3 text-center">J{i + 1}</th>
                 ))}
-                <th className="px-3 py-3 text-center">Total</th>
+                <th className="px-3 py-3 text-center">Total /{maxTotal}</th>
                 <th className="px-3 py-3 text-center">Conflict</th>
                 <th className="px-3 py-3 text-center">Qualified</th>
                 <th className="px-4 py-3 text-right">Actions</th>

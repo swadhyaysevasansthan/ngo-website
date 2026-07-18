@@ -4,7 +4,7 @@
  * CSV needs no extra dependency.
  */
 
-const REPORT_COLUMNS = [
+const buildColumns = (maxTotal = 25) => [
   { key: 'entryNumber', label: 'Entry' },
   { key: 'participantId', label: 'Participant ID' },
   { key: 'fullName', label: 'Participant' },
@@ -13,7 +13,7 @@ const REPORT_COLUMNS = [
   { key: 'judge3', label: 'Judge 3' },
   { key: 'judge4', label: 'Judge 4' },
   { key: 'judge5', label: 'Judge 5' },
-  { key: 'total', label: 'Total /25' },
+  { key: 'total', label: `Total /${maxTotal}` },
   { key: 'conflict', label: 'Conflict Level' },
   { key: 'status', label: 'Status' },
 ];
@@ -26,20 +26,20 @@ const csvEscape = (value) => {
   return str;
 };
 
-export const buildResultsCSV = (rows) => {
-  const header = REPORT_COLUMNS.map((c) => csvEscape(c.label)).join(',');
-  const lines = rows.map((row) =>
-    REPORT_COLUMNS.map((c) => csvEscape(row[c.key])).join(',')
-  );
+export const buildResultsCSV = (rows, { maxTotal = 25 } = {}) => {
+  const columns = buildColumns(maxTotal);
+  const header = columns.map((c) => csvEscape(c.label)).join(',');
+  const lines = rows.map((row) => columns.map((c) => csvEscape(row[c.key])).join(','));
   return [header, ...lines].join('\n');
 };
 
-export const buildResultsExcel = async (rows) => {
+export const buildResultsExcel = async (rows, { maxTotal = 25 } = {}) => {
+  const columns = buildColumns(maxTotal);
   const ExcelJS = (await import('exceljs')).default;
   const workbook = new ExcelJS.Workbook();
   const sheet = workbook.addWorksheet('Round 1 Results');
 
-  sheet.columns = REPORT_COLUMNS.map((c) => ({
+  sheet.columns = columns.map((c) => ({
     header: c.label,
     key: c.key,
     width: c.key === 'fullName' ? 28 : 16,
@@ -51,7 +51,8 @@ export const buildResultsExcel = async (rows) => {
   return workbook.xlsx.writeBuffer();
 };
 
-export const buildResultsPDF = async (rows, { title = 'Round 1 Results' } = {}) => {
+export const buildResultsPDF = async (rows, { title = 'Round 1 Results', maxTotal = 25 } = {}) => {
+  const columns = buildColumns(maxTotal);
   const PDFDocument = (await import('pdfkit')).default;
 
   return new Promise((resolve, reject) => {
@@ -70,7 +71,7 @@ export const buildResultsPDF = async (rows, { title = 'Round 1 Results' } = {}) 
 
     doc.fontSize(9).font('Helvetica-Bold');
     let x = startX;
-    REPORT_COLUMNS.forEach((c, i) => {
+    columns.forEach((c, i) => {
       doc.text(c.label, x, y, { width: colWidths[i] });
       x += colWidths[i];
     });
@@ -83,7 +84,7 @@ export const buildResultsPDF = async (rows, { title = 'Round 1 Results' } = {}) 
         y = doc.page.margins.top;
       }
       x = startX;
-      REPORT_COLUMNS.forEach((c, i) => {
+      columns.forEach((c, i) => {
         doc.text(String(row[c.key] ?? ''), x, y, { width: colWidths[i] });
         x += colWidths[i];
       });

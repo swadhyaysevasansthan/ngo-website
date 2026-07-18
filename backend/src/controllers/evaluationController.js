@@ -191,6 +191,7 @@ const SETTINGS_FIELDS = [
   'round2_scoring_enabled',
   'frozen',
   'results_published',
+  'max_score',
 ];
 
 export const updateSettings = async (req, res) => {
@@ -296,7 +297,13 @@ export const getResults = async (req, res) => {
       };
     });
 
-    res.json({ success: true, data, judges });
+    const settingsRes = await pool.query(
+      'SELECT max_score FROM evaluation_settings WHERE competition_id = $1',
+      [competition.id]
+    );
+    const maxScore = settingsRes.rows[0]?.max_score ?? 5;
+
+    res.json({ success: true, data, judges, maxScore, maxTotal: maxScore * judges.length });
   } catch (error) {
     console.error('Get results error:', error);
     res.status(500).json({ success: false, message: 'Failed to fetch results', error: error.message });
@@ -532,24 +539,30 @@ export const exportResults = async (req, res) => {
     }
 
     const rows = await buildExportRows(competition.id);
+    const settingsRes = await pool.query(
+      'SELECT max_score FROM evaluation_settings WHERE competition_id = $1',
+      [competition.id]
+    );
+    const maxScore = settingsRes.rows[0]?.max_score ?? 5;
+    const maxTotal = maxScore * 5; // 5 judges, fixed
     const filenameBase = `Round1_Results_${Date.now()}`;
 
     if (format === 'csv') {
-      const csv = buildResultsCSV(rows);
+      const csv = buildResultsCSV(rows, { maxTotal });
       res.setHeader('Content-Type', 'text/csv');
       res.setHeader('Content-Disposition', `attachment; filename=${filenameBase}.csv`);
       return res.send(csv);
     }
 
     if (format === 'excel') {
-      const buffer = await buildResultsExcel(rows);
+      const buffer = await buildResultsExcel(rows, { maxTotal });
       res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
       res.setHeader('Content-Disposition', `attachment; filename=${filenameBase}.xlsx`);
       return res.send(buffer);
     }
 
     if (format === 'pdf') {
-      const buffer = await buildResultsPDF(rows, { title: competition.name });
+      const buffer = await buildResultsPDF(rows, { title: competition.name, maxTotal });
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename=${filenameBase}.pdf`);
       return res.send(buffer);
