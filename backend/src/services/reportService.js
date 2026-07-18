@@ -8,6 +8,7 @@ const buildColumns = (maxTotal = 25) => [
   { key: 'entryNumber', label: 'Entry' },
   { key: 'participantId', label: 'Participant ID' },
   { key: 'fullName', label: 'Participant' },
+  { key: 'category', label: 'Category' },
   { key: 'judge1', label: 'Judge 1' },
   { key: 'judge2', label: 'Judge 2' },
   { key: 'judge3', label: 'Judge 3' },
@@ -65,7 +66,7 @@ export const buildResultsPDF = async (rows, { title = 'Round 1 Results', maxTota
     doc.fontSize(16).text(title, { align: 'center' });
     doc.moveDown();
 
-    const colWidths = [50, 90, 130, 45, 45, 45, 45, 45, 55, 65, 70];
+    const colWidths = [50, 90, 130, 55, 45, 45, 45, 45, 45, 55, 65, 70];
     const startX = doc.page.margins.left;
     let y = doc.y;
 

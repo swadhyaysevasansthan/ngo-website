@@ -192,7 +192,7 @@ export const getVerificationQueue = async (req, res) => {
     }
 
     const result = await pool.query(
-      `SELECT e.id AS entry_id, e.entry_number, e.participant_id, p.full_name, p.email, p.phone,
+      `SELECT e.id AS entry_id, e.entry_number, e.participant_id, p.full_name, p.email, p.phone, p.category,
               q.total_score, q.conflict_level, q.verification_status
        FROM evaluation_qualifications q
        JOIN evaluation_entries e ON e.id = q.entry_id
@@ -316,7 +316,7 @@ export const getWinners = async (req, res) => {
       return res.status(404).json({ success: false, message: 'No competition configured' });
     }
     const result = await pool.query(
-      `SELECT w.id, w.prize_type, w.assigned_at, w.entry_id, e.entry_number, e.participant_id, p.full_name
+      `SELECT w.id, w.prize_type, w.assigned_at, w.entry_id, e.entry_number, e.participant_id, p.full_name, p.category
        FROM evaluation_winners w
        JOIN evaluation_entries e ON e.id = w.entry_id
        JOIN participants p ON p.participant_id = e.participant_id

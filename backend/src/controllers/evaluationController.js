@@ -43,9 +43,11 @@ const applyCloudinaryTransform = (url, transform) => {
 export const getEntrySourceData = async (competition, entry) => {
   if (competition.source_table === 'submissions') {
     const result = await pool.query(
-      `SELECT capture_location, capture_date, camera_model, cloudinary_url,
-              file_path
-       FROM submissions WHERE id = $1`,
+      `SELECT s.capture_location, s.capture_date, s.camera_model, s.cloudinary_url,
+              s.file_path, p.category
+       FROM submissions s
+       JOIN participants p ON p.participant_id = s.participant_id
+       WHERE s.id = $1`,
       [entry.source_id]
     );
     const row = result.rows[0];
@@ -56,6 +58,7 @@ export const getEntrySourceData = async (competition, entry) => {
       captureLocation: row.capture_location,
       captureDate: row.capture_date,
       cameraModel: row.camera_model,
+      category: row.category || null,
       environmentalMessage: row.environmental_message || null,
     };
   }
@@ -107,6 +110,7 @@ export const getEntryPhoto = async (req, res) => {
         captureLocation: sourceData?.captureLocation || null,
         captureDate: sourceData?.captureDate || null,
         cameraModel: sourceData?.cameraModel || null,
+        category: sourceData?.category || null,
         environmentalMessage: sourceData?.environmentalMessage || null,
       },
     });
@@ -263,9 +267,11 @@ export const getResults = async (req, res) => {
     }
 
     const participantsRes = await pool.query(
-      `SELECT participant_id, full_name FROM participants`
+      `SELECT participant_id, full_name, category FROM participants`
     );
-    const participantMap = new Map(participantsRes.rows.map((p) => [p.participant_id, p.full_name]));
+    const participantMap = new Map(
+      participantsRes.rows.map((p) => [p.participant_id, { fullName: p.full_name, category: p.category }])
+    );
 
     const qualRes = await pool.query(
       `SELECT q.entry_id, q.qualified, q.verification_status
@@ -279,11 +285,13 @@ export const getResults = async (req, res) => {
     const data = results.map((r) => {
       const perJudge = scoreMap.get(r.entryId) || {};
       const qual = qualMap.get(r.entryId);
+      const participant = participantMap.get(r.participantId);
       return {
         entryId: r.entryId,
         entryNumber: r.entryNumber,
         participantId: r.participantId,
-        fullName: participantMap.get(r.participantId) || '',
+        fullName: participant?.fullName || '',
+        category: participant?.category || null,
         judgeScores: judges.map((j) => ({
           judgeId: j.id,
           judgeName: j.full_name,
@@ -398,15 +406,19 @@ const buildExportRows = async (competitionId) => {
     scoreMap.get(row.entry_id)[row.judge_id] = row.score;
   }
 
-  const participantsRes = await pool.query(`SELECT participant_id, full_name FROM participants`);
-  const participantMap = new Map(participantsRes.rows.map((p) => [p.participant_id, p.full_name]));
+  const participantsRes = await pool.query(`SELECT participant_id, full_name, category FROM participants`);
+  const participantMap = new Map(
+    participantsRes.rows.map((p) => [p.participant_id, { fullName: p.full_name, category: p.category }])
+  );
 
   return results.map((r) => {
     const perJudge = scoreMap.get(r.entryId) || {};
+    const participant = participantMap.get(r.participantId);
     const row = {
       entryNumber: r.entryNumber,
       participantId: r.participantId,
-      fullName: participantMap.get(r.participantId) || '',
+      fullName: participant?.fullName || '',
+      category: participant?.category || '',
       total: r.total,
       conflict: r.conflict,
       status: r.status,

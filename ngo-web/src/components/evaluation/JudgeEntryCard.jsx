@@ -1,5 +1,6 @@
 import React from 'react';
 import { CheckCircle2, Circle } from 'lucide-react';
+import { CategoryBadge } from './JudgeEvaluationModal';
 
 const JudgeEntryCard = ({ entry, onEvaluate }) => {
   const evaluated = entry.status === 'evaluated';
@@ -12,7 +13,10 @@ const JudgeEntryCard = ({ entry, onEvaluate }) => {
       }`}
     >
       <div>
-        <p className="font-bold text-gray-800">Entry #{entry.entryNumber}</p>
+        <div className="flex items-center gap-2">
+          <p className="font-bold text-gray-800">Entry #{entry.entryNumber}</p>
+          <CategoryBadge category={entry.category} />
+        </div>
         <p className="text-sm text-gray-500 mt-0.5">
           {evaluated ? `Your score: ${entry.myScore}` : 'Not yet reviewed'}
         </p>

@@ -13,18 +13,21 @@ const ROUND2 = 2;
 const getVisibleEntries = async (competitionId, round) => {
   if (round === ROUND1) {
     const result = await pool.query(
-      `SELECT id, entry_number FROM evaluation_entries
-       WHERE competition_id = $1 AND status = 'active'
-       ORDER BY entry_number ASC`,
+      `SELECT e.id, e.entry_number, p.category
+       FROM evaluation_entries e
+       JOIN participants p ON p.participant_id = e.participant_id
+       WHERE e.competition_id = $1 AND e.status = 'active'
+       ORDER BY e.entry_number ASC`,
       [competitionId]
     );
     return result.rows;
   }
 
   const result = await pool.query(
-    `SELECT e.id, e.entry_number
+    `SELECT e.id, e.entry_number, p.category
      FROM evaluation_entries e
      JOIN evaluation_qualifications q ON q.entry_id = e.id
+     JOIN participants p ON p.participant_id = e.participant_id
      WHERE e.competition_id = $1
        AND e.status = 'active'
        AND q.qualified = true
@@ -88,7 +91,7 @@ export const getEntries = async (req, res) => {
   try {
     const judgeId = req.judge.id;
     const round = parseInt(req.query.round, 10) === ROUND2 ? ROUND2 : ROUND1;
-    const { status, search } = req.query;
+    const { status, search, category } = req.query;
 
     const competition = await getDefaultCompetition();
     if (!competition) {
@@ -101,6 +104,9 @@ export const getEntries = async (req, res) => {
       const needle = search.trim().replace(/^entry\s*#?/i, '').padStart(3, '0');
       entries = entries.filter((e) => e.entry_number.includes(needle) || e.entry_number.includes(search.trim()));
     }
+    if (category) {
+      entries = entries.filter((e) => e.category === category);
+    }
 
     const scoresRes = await pool.query(
       `SELECT entry_id, score FROM evaluation_scores WHERE judge_id = $1 AND round = $2`,
@@ -111,6 +117,7 @@ export const getEntries = async (req, res) => {
     let data = entries.map((e) => ({
       entryId: e.id,
       entryNumber: e.entry_number,
+      category: e.category || null,
       myScore: scoreMap.has(e.id) ? scoreMap.get(e.id) : null,
       status: scoreMap.has(e.id) ? 'evaluated' : 'pending',
     }));
@@ -234,6 +241,7 @@ export const getEntryDetail = async (req, res) => {
         captureLocation: sourceData?.captureLocation || null,
         captureDate: sourceData?.captureDate || null,
         cameraModel: sourceData?.cameraModel || null,
+        category: sourceData?.category || null,
         environmentalMessage: sourceData?.environmentalMessage || null,
         myScore,
         maxScore: settings.max_score ?? 5,

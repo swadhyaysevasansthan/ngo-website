@@ -182,6 +182,7 @@ const EvaluationResultsGrid = () => {
               <tr>
                 <th className="px-4 py-3">Entry</th>
                 <th className="px-4 py-3">Participant</th>
+                <th className="px-4 py-3">Category</th>
                 {judges.map((j, i) => (
                   <th key={j.id} className="px-3 py-3 text-center">J{i + 1}</th>
                 ))}
@@ -205,6 +206,9 @@ const EvaluationResultsGrid = () => {
                     </td>
                     <td className="px-4 py-3 text-gray-700 max-w-[150px] truncate">
                       {entry.fullName || entry.participantId}
+                    </td>
+                    <td className="px-4 py-3 text-gray-700 capitalize">
+                      {entry.category || '—'}
                     </td>
                     {judges.map((j) => {
                       const js = entry.judgeScores.find((s) => s.judgeId === j.id);

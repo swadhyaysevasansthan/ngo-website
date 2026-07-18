@@ -98,7 +98,7 @@ const WinnerSelection = () => {
             <option value="">Select a verified entry…</option>
             {availableEntries.map((v) => (
               <option key={v.entry_id} value={v.entry_id}>
-                #{v.entry_number} — {v.full_name} (score {v.total_score})
+                #{v.entry_number} — {v.full_name} ({v.category || 'Unknown'}, score {v.total_score})
               </option>
             ))}
           </select>
@@ -138,7 +138,7 @@ const WinnerSelection = () => {
                   {assigned.map((w) => (
                     <div key={w.id} className="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2">
                       <div className="text-sm">
-                        <p className="font-medium text-gray-800">#{w.entry_number} — {w.full_name}</p>
+                        <p className="font-medium text-gray-800">#{w.entry_number} — {w.full_name} <span className="text-xs text-gray-500 capitalize">({w.category || 'Unknown'})</span></p>
                       </div>
                       <button onClick={() => handleRemove(w.id)} className="text-gray-400 hover:text-red-600">
                         <Trash2 size={15} />

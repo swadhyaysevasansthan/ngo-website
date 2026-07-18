@@ -77,7 +77,7 @@ const AdminEntryPhotoModal = ({ entryId, onClose }) => {
               <span className="flex items-center gap-1"><Phone size={13} /> {entry.phone}</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-sm">
               <div className="flex items-start gap-2 text-gray-600">
                 <MapPin size={16} className="mt-0.5 shrink-0 text-primary" />
                 <span>{entry.captureLocation || '—'}</span>
@@ -89,6 +89,10 @@ const AdminEntryPhotoModal = ({ entryId, onClose }) => {
               <div className="flex items-start gap-2 text-gray-600">
                 <Camera size={16} className="mt-0.5 shrink-0 text-primary" />
                 <span>{entry.cameraModel || '—'}</span>
+              </div>
+              <div className="flex items-start gap-2 text-gray-600 capitalize">
+                <span className="font-semibold text-primary">Category:</span>
+                <span>{entry.category || '—'}</span>
               </div>
             </div>
 

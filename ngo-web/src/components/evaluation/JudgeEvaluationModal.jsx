@@ -1,8 +1,26 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { toast } from 'react-toastify';
-import { X, MapPin, Calendar, Camera, Leaf, Maximize2, Loader2, Lock } from 'lucide-react';
+import { X, MapPin, Calendar, Camera, Leaf, Maximize2, Loader2, Lock, Tag } from 'lucide-react';
 import { judgeAPI } from '../../utils/api';
 import JudgeImageViewer from './JudgeImageViewer';
+
+export const CATEGORY_STYLE = {
+  wildlife: 'bg-orange-100 text-orange-700',
+  nature: 'bg-green-100 text-green-700',
+};
+
+export const CategoryBadge = ({ category }) => {
+  if (!category) return null;
+  return (
+    <span
+      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold capitalize ${
+        CATEGORY_STYLE[category] || 'bg-gray-100 text-gray-600'
+      }`}
+    >
+      <Tag size={11} /> {category}
+    </span>
+  );
+};
 
 const LOCK_MESSAGES = {
   frozen: 'The competition is frozen. Scores cannot be submitted or changed.',
@@ -108,7 +126,7 @@ const JudgeEvaluationModal = ({ entryId, round, onClose, onSaved }) => {
               )}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-sm">
               <div className="flex items-start gap-2 text-gray-600">
                 <MapPin size={16} className="mt-0.5 shrink-0 text-primary" />
                 <span>{entry.captureLocation || '—'}</span>
@@ -122,6 +140,9 @@ const JudgeEvaluationModal = ({ entryId, round, onClose, onSaved }) => {
               <div className="flex items-start gap-2 text-gray-600">
                 <Camera size={16} className="mt-0.5 shrink-0 text-primary" />
                 <span>{entry.cameraModel || '—'}</span>
+              </div>
+              <div className="flex items-start gap-2 text-gray-600">
+                <CategoryBadge category={entry.category} />
               </div>
             </div>
 

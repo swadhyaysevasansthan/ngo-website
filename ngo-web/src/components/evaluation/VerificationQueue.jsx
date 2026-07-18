@@ -96,6 +96,7 @@ const VerificationQueue = () => {
               <tr>
                 <th className="px-4 py-3">Entry</th>
                 <th className="px-4 py-3">Participant</th>
+                <th className="px-4 py-3">Category</th>
                 <th className="px-4 py-3">Contact</th>
                 <th className="px-4 py-3 text-center">Score</th>
                 <th className="px-4 py-3 text-center">Conflict</th>
@@ -110,6 +111,9 @@ const VerificationQueue = () => {
                   <td className="px-4 py-3 text-gray-700">
                     <p className="font-medium">{row.full_name}</p>
                     <p className="text-xs text-gray-400">{row.participant_id}</p>
+                  </td>
+                  <td className="px-4 py-3 text-gray-700 capitalize">
+                    {row.category || '—'}
                   </td>
                   <td className="px-4 py-3 text-gray-500 text-xs space-y-0.5">
                     <p className="flex items-center gap-1"><Mail size={12} /> {row.email}</p>
