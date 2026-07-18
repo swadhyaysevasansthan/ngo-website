@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { RefreshCw, Play, Download, Ban, RotateCcw, Loader2, Eye } from 'lucide-react';
 import { evaluationAdminAPI } from '../../utils/api';
 import AdminEntryPhotoModal from './AdminEntryPhotoModal';
+import CategoryBadge from './CategoryBadge';
 
 const CONFLICT_STYLE = {
   HIGH: 'bg-red-100 text-red-700',
@@ -20,6 +21,7 @@ const EvaluationResultsGrid = () => {
   const [exportingFmt, setExportingFmt] = useState(null);
   const [actionId, setActionId] = useState(null);
   const [viewingId, setViewingId] = useState(null);
+  const [categoryFilter, setCategoryFilter] = useState('');
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -111,6 +113,7 @@ const EvaluationResultsGrid = () => {
 
   const qualifiedCount = entries.filter((e) => e.qualified).length;
   const highConflicts = entries.filter((e) => e.conflict === 'HIGH').length;
+  const visibleEntries = categoryFilter ? entries.filter((e) => e.category === categoryFilter) : entries;
 
   return (
     <div className="space-y-5">
@@ -134,7 +137,16 @@ const EvaluationResultsGrid = () => {
             {qualifying ? 'Running…' : 'Run Qualification'}
           </button>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 items-center">
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-600"
+          >
+            <option value="">All Categories</option>
+            <option value="wildlife">Wildlife</option>
+            <option value="nature">Nature</option>
+          </select>
           {['csv', 'excel', 'pdf'].map((fmt) => (
             <button
               key={fmt}
@@ -171,9 +183,13 @@ const EvaluationResultsGrid = () => {
         <div className="flex justify-center py-16">
           <Loader2 className="animate-spin text-primary" size={28} />
         </div>
-      ) : entries.length === 0 ? (
+      ) : visibleEntries.length === 0 ? (
         <div className="bg-white rounded-xl border border-gray-100 p-12 text-center text-gray-400">
-          No entries yet. Click <strong>Sync Entries</strong> to import from submissions.
+          {entries.length === 0 ? (
+            <>No entries yet. Click <strong>Sync Entries</strong> to import from submissions.</>
+          ) : (
+            <>No entries in this category.</>
+          )}
         </div>
       ) : (
         <div className="overflow-x-auto bg-white rounded-xl shadow-sm border border-gray-100">
@@ -193,7 +209,7 @@ const EvaluationResultsGrid = () => {
               </tr>
             </thead>
             <tbody>
-              {entries.map((entry) => {
+              {visibleEntries.map((entry) => {
                 const isDisq = entry.status === 'disqualified';
                 const isActing = actionId === entry.entryId;
                 return (
@@ -207,8 +223,8 @@ const EvaluationResultsGrid = () => {
                     <td className="px-4 py-3 text-gray-700 max-w-[150px] truncate">
                       {entry.fullName || entry.participantId}
                     </td>
-                    <td className="px-4 py-3 text-gray-700 capitalize">
-                      {entry.category || '—'}
+                    <td className="px-4 py-3">
+                      <CategoryBadge category={entry.category} />
                     </td>
                     {judges.map((j) => {
                       const js = entry.judgeScores.find((s) => s.judgeId === j.id);

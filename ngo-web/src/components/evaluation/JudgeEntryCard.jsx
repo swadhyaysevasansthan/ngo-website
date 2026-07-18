@@ -1,6 +1,6 @@
 import React from 'react';
 import { CheckCircle2, Circle } from 'lucide-react';
-import { CategoryBadge } from './JudgeEvaluationModal';
+import CategoryBadge from './CategoryBadge';
 
 const JudgeEntryCard = ({ entry, onEvaluate }) => {
   const evaluated = entry.status === 'evaluated';

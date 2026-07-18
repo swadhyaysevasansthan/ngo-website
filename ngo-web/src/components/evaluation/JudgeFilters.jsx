@@ -7,10 +7,10 @@ const TABS = [
   { key: 'evaluated', label: 'Evaluated' },
 ];
 
-const JudgeFilters = ({ status, onStatusChange, search, onSearchChange }) => {
+const JudgeFilters = ({ status, onStatusChange, search, onSearchChange, category, onCategoryChange }) => {
   return (
     <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         {TABS.map((tab) => (
           <button
             key={tab.key}
@@ -25,15 +25,26 @@ const JudgeFilters = ({ status, onStatusChange, search, onSearchChange }) => {
           </button>
         ))}
       </div>
-      <div className="relative w-full sm:w-64">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => onSearchChange(e.target.value)}
-          placeholder="Search entry number…"
-          className="w-full pl-9 pr-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
-        />
+      <div className="flex gap-2 w-full sm:w-auto">
+        <select
+          value={category}
+          onChange={(e) => onCategoryChange(e.target.value)}
+          className="px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+        >
+          <option value="">All Categories</option>
+          <option value="wildlife">Wildlife</option>
+          <option value="nature">Nature</option>
+        </select>
+        <div className="relative flex-1 sm:w-64">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => onSearchChange(e.target.value)}
+            placeholder="Search entry number…"
+            className="w-full pl-9 pr-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+          />
+        </div>
       </div>
     </div>
   );

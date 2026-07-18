@@ -13,6 +13,7 @@ const JudgeDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState('all');
   const [search, setSearch] = useState('');
+  const [category, setCategory] = useState('');
   const [activeEntryId, setActiveEntryId] = useState(null);
 
   const round = dashboard?.round || 1;
@@ -28,14 +29,19 @@ const JudgeDashboard = () => {
 
   const loadEntries = useCallback(async () => {
     try {
-      const res = await judgeAPI.getEntries({ round, status, search: search || undefined });
+      const res = await judgeAPI.getEntries({
+        round,
+        status,
+        search: search || undefined,
+        category: category || undefined,
+      });
       setEntries(res.data.data);
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to load entries');
     } finally {
       setLoading(false);
     }
-  }, [round, status, search]);
+  }, [round, status, search, category]);
 
   useEffect(() => {
     loadDashboard();
@@ -44,7 +50,7 @@ const JudgeDashboard = () => {
   useEffect(() => {
     if (dashboard) loadEntries();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dashboard, status]);
+  }, [dashboard, status, category]);
 
   useEffect(() => {
     if (!dashboard) return;
@@ -77,7 +83,14 @@ const JudgeDashboard = () => {
       <JudgeProgress dashboard={dashboard} onContinueReviewing={handleContinueReviewing} />
 
       <div className="bg-white rounded-2xl shadow-md p-6 space-y-5">
-        <JudgeFilters status={status} onStatusChange={setStatus} search={search} onSearchChange={setSearch} />
+        <JudgeFilters
+          status={status}
+          onStatusChange={setStatus}
+          search={search}
+          onSearchChange={setSearch}
+          category={category}
+          onCategoryChange={setCategory}
+        />
 
         {loading ? (
           <div className="flex justify-center py-16">

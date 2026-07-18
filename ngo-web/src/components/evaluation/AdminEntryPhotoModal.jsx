@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { X, MapPin, Calendar, Camera, Leaf, Maximize2, Loader2, Mail, Phone } from 'lucide-react';
 import { evaluationAdminAPI } from '../../utils/api';
 import JudgeImageViewer from './JudgeImageViewer';
+import CategoryBadge from './CategoryBadge';
 
 const AdminEntryPhotoModal = ({ entryId, onClose }) => {
   const [entry, setEntry] = useState(null);
@@ -31,8 +32,9 @@ const AdminEntryPhotoModal = ({ entryId, onClose }) => {
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[92vh] overflow-y-auto">
         <div className="flex items-center justify-between px-6 py-4 border-b sticky top-0 bg-white rounded-t-2xl z-10">
-          <h2 className="text-lg font-bold text-gray-800">
+          <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
             {entry ? `Entry #${entry.entryNumber} — ${entry.fullName}` : 'Loading…'}
+            {entry && <CategoryBadge category={entry.category} />}
           </h2>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-700" aria-label="Close">
             <X size={22} />
@@ -77,7 +79,7 @@ const AdminEntryPhotoModal = ({ entryId, onClose }) => {
               <span className="flex items-center gap-1"><Phone size={13} /> {entry.phone}</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
               <div className="flex items-start gap-2 text-gray-600">
                 <MapPin size={16} className="mt-0.5 shrink-0 text-primary" />
                 <span>{entry.captureLocation || '—'}</span>
@@ -89,10 +91,6 @@ const AdminEntryPhotoModal = ({ entryId, onClose }) => {
               <div className="flex items-start gap-2 text-gray-600">
                 <Camera size={16} className="mt-0.5 shrink-0 text-primary" />
                 <span>{entry.cameraModel || '—'}</span>
-              </div>
-              <div className="flex items-start gap-2 text-gray-600 capitalize">
-                <span className="font-semibold text-primary">Category:</span>
-                <span>{entry.category || '—'}</span>
               </div>
             </div>
 

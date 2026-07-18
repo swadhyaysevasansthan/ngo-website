@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { Loader2, Mail, Phone, Lock, Eye } from 'lucide-react';
 import { evaluationAdminAPI } from '../../utils/api';
 import AdminEntryPhotoModal from './AdminEntryPhotoModal';
+import CategoryBadge from './CategoryBadge';
 
 const STATUS_STYLE = {
   pending_verification: 'bg-amber-100 text-amber-700',
@@ -96,7 +97,6 @@ const VerificationQueue = () => {
               <tr>
                 <th className="px-4 py-3">Entry</th>
                 <th className="px-4 py-3">Participant</th>
-                <th className="px-4 py-3">Category</th>
                 <th className="px-4 py-3">Contact</th>
                 <th className="px-4 py-3 text-center">Score</th>
                 <th className="px-4 py-3 text-center">Conflict</th>
@@ -111,9 +111,7 @@ const VerificationQueue = () => {
                   <td className="px-4 py-3 text-gray-700">
                     <p className="font-medium">{row.full_name}</p>
                     <p className="text-xs text-gray-400">{row.participant_id}</p>
-                  </td>
-                  <td className="px-4 py-3 text-gray-700 capitalize">
-                    {row.category || '—'}
+                    <div className="mt-1"><CategoryBadge category={row.category} /></div>
                   </td>
                   <td className="px-4 py-3 text-gray-500 text-xs space-y-0.5">
                     <p className="flex items-center gap-1"><Mail size={12} /> {row.email}</p>
