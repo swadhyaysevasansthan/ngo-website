@@ -7,6 +7,9 @@ import {
 import CompetitionRulesSection from "../components/CompetitionRulesSection";
 import CompetitionRulesModal from "../components/CompetitionRulesModal";
 import { competitionRules } from "../data/competitionRules";
+import PaintingJurySection from "../components/PaintingJurySection";
+import PaintingJuryModal from "../components/PaintingJuryModal";
+import { paintingJury } from "../data/paintingJury";
 
 /* ─── Animation Helpers ───────────────────────────────────────── */
 const fadeUp = {
@@ -75,6 +78,8 @@ const UpcomingEngagements = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedRules, setSelectedRules] = useState(null);
   const [showRulesModal, setShowRulesModal] = useState(false);
+  const [selectedJuror, setSelectedJuror] = useState(null);
+  const [showJuryModal, setShowJuryModal] = useState(false);
 
   useEffect(() => {
     document.title = 'SNEAC 2026-27';
@@ -90,6 +95,19 @@ const UpcomingEngagements = () => {
 
     setTimeout(() => {
       setSelectedRules(null);
+    }, 200);
+  };
+
+  const openJuror = (member) => {
+    setSelectedJuror(member);
+    setShowJuryModal(true);
+  };
+
+  const closeJuror = () => {
+    setShowJuryModal(false);
+
+    setTimeout(() => {
+      setSelectedJuror(null);
     }, 200);
   };
 
@@ -534,6 +552,9 @@ const UpcomingEngagements = () => {
         </motion.div>
       </section>
 
+      {/* ── PAINTING JURY ─────────────────────────────────────── */}
+      <PaintingJurySection jury={paintingJury} onOpen={openJuror} />
+
       {/* ── COMPETITION RULES ─────────────────────────────────── */}
       <CompetitionRulesSection
         competitionRules={competitionRules}
@@ -574,6 +595,12 @@ const UpcomingEngagements = () => {
         open={showRulesModal}
         competition={selectedRules}
         onClose={closeRules}
+      />
+
+      <PaintingJuryModal
+        open={showJuryModal}
+        member={selectedJuror}
+        onClose={closeJuror}
       />
 
     </div>
