@@ -33,7 +33,7 @@ export default function CompetitionRulesSection({
     const competitions = Object.values(competitionRules);
 
     return (
-        <section className="border-t border-gray-100 py-20">   
+        <section id="rules" className="border-t border-gray-100 py-20 scroll-mt-24">   
             <div className="max-w-6xl mx-auto px-4 sm:px-6">
                 {/* Heading */}
                 <motion.div

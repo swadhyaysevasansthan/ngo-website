@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import {
   Calendar, ArrowRight, Brush, BookOpen, Users, Trophy,
-  Leaf, Flame, Droplets, TreePine, Globe, Zap, Trash
+  Leaf, Flame, Droplets, TreePine, Globe, Zap, Trash, FileText
 } from 'lucide-react';
 import CompetitionRulesSection from "../components/CompetitionRulesSection";
 import CompetitionRulesModal from "../components/CompetitionRulesModal";
@@ -220,6 +220,13 @@ const UpcomingEngagements = () => {
                 className="px-7 py-3 rounded-full bg-yellow-400 text-gray-900 font-bold text-sm hover:bg-yellow-300 transition-colors shadow-lg"
               >
                 View Competitions
+              </a>
+              <a
+                href="#rules"
+                className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-orange-500 text-white font-bold text-sm hover:bg-orange-400 transition-colors shadow-lg"
+              >
+                <FileText size={16} />
+                View Rules & Regulations
               </a>
               <a
                 href="/school-competition"
