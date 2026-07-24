@@ -58,9 +58,9 @@ const PaintingJurySection = ({ jury, onOpen }) => {
               whileHover={{ y: -6 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               onClick={() => onOpen(member)}
-              className="w-full sm:w-[280px] bg-gray-100 hover:bg-orange-50 rounded-2xl border border-gray-300 hover:border-orange-200 shadow-sm hover:shadow-lg transition-all p-6 flex flex-col items-center text-center focus:outline-none focus:ring-2 focus:ring-orange-300"
+              className="w-full sm:w-[280px] bg-gray-50 hover:bg-white rounded-2xl border border-gray-100 hover:border-orange-200 shadow-sm hover:shadow-lg transition-all p-6 flex flex-col items-center text-center focus:outline-none focus:ring-2 focus:ring-orange-300"
             >
-              <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-white shadow-md mb-4 bg-gray-200">
+              <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-white shadow-md mb-4 bg-gray-200">
                 <img
                   src={member.image}
                   alt={member.name}

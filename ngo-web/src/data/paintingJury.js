@@ -18,20 +18,16 @@ export const paintingJury = [
       "Ph.D (Indian Sculpture & Iconography), B.H.U., Varanasi — 2002",
       "M.A. (Art History), B.H.U., Varanasi — 1991 (1st in Order of Merit)",
       "B.F.A (Applied Arts), B.H.U., Varanasi — 1989",
-      "Intermediate (Arts), U.P. Board, Varanasi — 1982",
-      "High School (Arts), U.P. Board, Allahabad — 1980",
     ],
     experience: [
       "Assistant Professor, Amity School of Fine Arts, Amity University Lucknow (2008–2022)",
       "Visiting Faculty, Amity School of Fine Arts, Amity University Lucknow (2022–Present)",
       "Subject Expert, College of Arts and Crafts, University of Lucknow (2022–Present)",
-      "Art Teacher, Glenhill School, Varanasi (1998–2008)",
     ],
     highlights: [
       "Junior Research Fellowship, Indian Council of Historical Research, New Delhi (1994–1996)",
       "Presented papers at multiple National & International Seminars on Indian art history, iconography and aesthetics",
       "Judge for numerous inter-school and university-level painting & art competitions across Lucknow",
-      "Well versed in English, Hindi, Bengali and Bhojpuri",
     ],
   },
 
