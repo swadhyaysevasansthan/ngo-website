@@ -68,9 +68,13 @@ const JudgeDashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
-  const handleEvaluate = (entry) => {
-    const idx = entries.findIndex((e) => e.entryId === entry.entryId);
-    setActiveIndex(idx >= 0 ? idx : 0);
+  const handleEvaluate = (entryId) => {
+    const idx = entries.findIndex((e) => e.entryId === entryId);
+    if (idx === -1) {
+      toast.error('Could not find that entry in the current list — try refreshing.');
+      return;
+    }
+    setActiveIndex(idx);
   };
 
   const handleCloseModal = () => {
