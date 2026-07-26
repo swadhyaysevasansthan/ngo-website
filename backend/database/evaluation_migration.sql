@@ -145,3 +145,41 @@ ON CONFLICT (slug) DO NOTHING;
 INSERT INTO evaluation_settings (competition_id)
 SELECT id FROM evaluation_competitions WHERE slug = 'snpc2026-photography'
 ON CONFLICT (competition_id) DO NOTHING;
+
+
+-- Judge Evaluation Module — configurable max score (incremental migration)
+-- Run this AFTER evaluation_migration.sql. Safe to run once; every
+-- statement is additive / idempotent.
+
+-- 1. Add the setting. Defaults to 5 so existing competitions are
+--    unaffected until an admin explicitly changes it.
+ALTER TABLE evaluation_settings
+    ADD COLUMN IF NOT EXISTS max_score INTEGER NOT NULL DEFAULT 5 CHECK (max_score > 0);
+
+-- 2. Relax the fixed 0-5 CHECK on evaluation_scores. Postgres CHECK
+--    constraints can't reference another table's value, so the upper
+--    bound (max_score) is enforced in the application layer instead
+--    (judgeController.js reads the competition's current max_score on
+--    every score submission). This constraint just guards against
+--    negative numbers and obvious nonsense.
+ALTER TABLE evaluation_scores DROP CONSTRAINT IF EXISTS evaluation_scores_score_check;
+ALTER TABLE evaluation_scores ADD CONSTRAINT evaluation_scores_score_check CHECK (score >= 0 AND score <= 1000);
+
+
+-- Judge Evaluation Module — minimum score is now 1, not 0
+-- Run this AFTER evaluation_maxscore_migration.sql. Safe to run once.
+--
+-- Scores of 0 already stored (e.g. from testing) are left as-is —
+-- this only changes validation for new/future submissions, both at
+-- the DB constraint level and in the application layer.
+
+ALTER TABLE evaluation_scores DROP CONSTRAINT IF EXISTS evaluation_scores_score_check;
+ALTER TABLE evaluation_scores ADD CONSTRAINT evaluation_scores_score_check CHECK (score >= 1 AND score <= 1000);
+
+
+-- miscellaneous
+ALTER SEQUENCE school_access_tokens_id_seq RESTART WITH 1;
+
+ALTER SEQUENCE school_competition_registrations_id_seq RESTART WITH 1;
+
+ALTER SEQUENCE competition_registration_teachers_id_seq RESTART WITH 1;

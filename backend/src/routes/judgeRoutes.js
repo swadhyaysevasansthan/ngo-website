@@ -21,7 +21,7 @@ const loginValidation = [
 
 const scoreValidation = [
   body('round').isInt({ min: 1, max: 2 }).withMessage('Round must be 1 or 2'),
-  body('score').isInt({ min: 0 }).withMessage('Score must be a whole number of 0 or more'),
+  body('score').isInt({ min: 1 }).withMessage('Score must be a whole number of 1 or more'),
 ];
 
 // Public

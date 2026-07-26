@@ -14,7 +14,7 @@ const JudgeDashboard = () => {
   const [status, setStatus] = useState('all');
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
-  const [activeEntryId, setActiveEntryId] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(null);
 
   const round = dashboard?.round || 1;
 
@@ -27,21 +27,30 @@ const JudgeDashboard = () => {
     }
   }, []);
 
+  const fetchEntries = useCallback(
+    async (overrides = {}) => {
+      const params = {
+        round,
+        status: overrides.status ?? status,
+        search: (overrides.search ?? search) || undefined,
+        category: (overrides.category ?? category) || undefined,
+      };
+      const res = await judgeAPI.getEntries(params);
+      return res.data.data;
+    },
+    [round, status, search, category]
+  );
+
   const loadEntries = useCallback(async () => {
     try {
-      const res = await judgeAPI.getEntries({
-        round,
-        status,
-        search: search || undefined,
-        category: category || undefined,
-      });
-      setEntries(res.data.data);
+      const data = await fetchEntries();
+      setEntries(data);
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to load entries');
     } finally {
       setLoading(false);
     }
-  }, [round, status, search, category]);
+  }, [fetchEntries]);
 
   useEffect(() => {
     loadDashboard();
@@ -59,10 +68,21 @@ const JudgeDashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
-  const refreshAfterSave = () => {
-    setActiveEntryId(null);
-    loadDashboard();
-    loadEntries();
+  const handleEvaluate = (entry) => {
+    const idx = entries.findIndex((e) => e.entryId === entry.entryId);
+    setActiveIndex(idx >= 0 ? idx : 0);
+  };
+
+  const handleCloseModal = () => {
+    setActiveIndex(null);
+    loadEntries(); // safe now — nothing is navigating off `entries` anymore
+  };
+
+  // Optimistic local update: keeps the queue's length/order stable
+  // while the modal is open, so auto-advance never shifts under the
+  // judge mid-navigation. A full reload happens on close instead.
+  const handleScored = () => {
+    loadDashboard(); // just refresh the progress numbers
   };
 
   const handleContinueReviewing = async () => {
@@ -72,7 +92,17 @@ const JudgeDashboard = () => {
         toast.info('All entries reviewed for this round');
         return;
       }
-      setActiveEntryId(res.data.data.entryId);
+      const targetId = res.data.data.entryId;
+
+      // Reset filters so the target entry is guaranteed to be in the
+      // queue, then fetch fresh (don't rely on state having settled).
+      setStatus('all');
+      setCategory('');
+      setSearch('');
+      const fresh = await fetchEntries({ status: 'all', category: '', search: '' });
+      setEntries(fresh);
+      const idx = fresh.findIndex((e) => e.entryId === targetId);
+      setActiveIndex(idx >= 0 ? idx : 0);
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to fetch next entry');
     }
@@ -101,18 +131,20 @@ const JudgeDashboard = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {entries.map((entry) => (
-              <JudgeEntryCard key={entry.entryId} entry={entry} onEvaluate={setActiveEntryId} />
+              <JudgeEntryCard key={entry.entryId} entry={entry} onEvaluate={handleEvaluate} />
             ))}
           </div>
         )}
       </div>
 
-      {activeEntryId && (
+      {activeIndex !== null && (
         <JudgeEvaluationModal
-          entryId={activeEntryId}
+          queue={entries}
+          currentIndex={activeIndex}
           round={round}
-          onClose={() => setActiveEntryId(null)}
-          onSaved={refreshAfterSave}
+          onClose={handleCloseModal}
+          onNavigate={setActiveIndex}
+          onScored={handleScored}
         />
       )}
     </div>

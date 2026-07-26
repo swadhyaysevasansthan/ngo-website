@@ -267,8 +267,8 @@ export const submitScore = async (req, res) => {
     if (![ROUND1, ROUND2].includes(roundNum)) {
       return res.status(400).json({ success: false, message: 'Invalid round' });
     }
-    if (!Number.isInteger(scoreNum) || scoreNum < 0) {
-      return res.status(400).json({ success: false, message: 'Score must be a whole number of 0 or more' });
+    if (!Number.isInteger(scoreNum) || scoreNum < 1) {
+      return res.status(400).json({ success: false, message: 'Score must be a whole number of 1 or more' });
     }
 
     const competition = await getDefaultCompetition();
@@ -285,7 +285,7 @@ export const submitScore = async (req, res) => {
     if (scoreNum > maxScore) {
       return res.status(400).json({
         success: false,
-        message: `Score must be a whole number between 0 and ${maxScore}.`,
+        message: `Score must be a whole number between 1 and ${maxScore}.`,
       });
     }
 
