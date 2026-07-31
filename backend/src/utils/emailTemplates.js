@@ -1353,11 +1353,13 @@ ${formattedSecondaryDate}
             font-size: 18px;
             letter-spacing: 0.08em;
             text-transform: uppercase;
+            color: #ffffff;
           }
 
           .header-subtitle {
             margin-top: 6px;
             font-size: 15px;
+            color: #ffffff;
           }
 
           .content {
