@@ -1174,12 +1174,13 @@ export const schoolDateAllotmentTemplate = (data) => {
     primaryAllottedDate,
     secondaryAllottedDate,
     totalParticipants,
+    hasAttendanceSheet,
   } = data;
 
   const competitionLabel =
     competitionType === 'painting'
       ? 'Swadhyay National Environmental Painting Competition (SNEPC)'
-      : 'Swadhyay National Environmental Quiz Competition';
+      : 'Swadhyay National Environmental Quiz Competition (SNEQC)';
 
   // ─────────────────────────────────────────────
   // FORMATTERS
@@ -1482,6 +1483,13 @@ ${formattedSecondaryDate}
               <p>
                 Please ensure that all registered participants are informed and prepared accordingly.
               </p>
+              ${
+                hasAttendanceSheet
+                  ? `<p>
+                We have attached the <strong>Student Information Sheet</strong> to this email. Kindly fill it in with the participant details and submit it before the competition date.
+              </p>`
+                  : ''
+              }
               <p>
                 In case of any scheduling conflict, kindly contact us immediately.
               </p>
@@ -1512,7 +1520,11 @@ ${dateText}
 
 Total Participants:
 ${totalParticipants}
-
+${
+  hasAttendanceSheet
+    ? '\nThe Student Information is attached to this email. Please fill it in with participant details and submit it before the competition date.\n'
+    : ''
+}
 Regards,
 Swadhyay Seva Foundation
 www.swadhyayseva.org

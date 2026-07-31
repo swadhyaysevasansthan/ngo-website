@@ -2,7 +2,7 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.SNEAC_RESEND_API_KEY);
 
-export const sendSneacEmail = async ({ to, subject, html, text }) => {
+export const sendSneacEmail = async ({ to, subject, html, text, attachments }) => {
   try {
     const { data, error } = await resend.emails.send({
       from: process.env.SNEAC_EMAIL_FROM || 'SNEAC 2026-27 <sneac@swadhyayseva.org>',
@@ -10,6 +10,8 @@ export const sendSneacEmail = async ({ to, subject, html, text }) => {
       subject,
       html,
       text,
+      // Resend expects: [{ filename: 'name.pdf', content: <Buffer|base64 string> }]
+      ...(attachments && attachments.length > 0 ? { attachments } : {}),
     });
 
     if (error) {

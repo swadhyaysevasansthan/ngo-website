@@ -1,4 +1,3 @@
-
 import pool from '../config/database.js';
 import { sendSneacEmail as sendEmail } from '../config/sneacEmail.js';
 import { hashToken, verifyTokenRecord } from '../utils/tokenService.js';
@@ -6,6 +5,7 @@ import {
   schoolCompetitionRegistrationTemplate,
   schoolDateAllotmentTemplate,
 } from '../utils/emailTemplates.js';
+import { getAttendanceSheetAttachment } from '../utils/attendanceSheets.js';
 
 const resolveToken = async (rawToken, res) => {
   if (!rawToken) {
@@ -747,6 +747,21 @@ export const sendConfirmation = async (req, res) => {
       );
 
     // ─────────────────────────────────────────────
+    // ATTENDANCE SHEET ATTACHMENT
+    // (different sheet depending on painting vs quiz)
+    // ─────────────────────────────────────────────
+
+    const attendanceSheetAttachment =
+      getAttendanceSheetAttachment(
+        registration.competition_type
+      );
+
+    const attendanceSheetAttachments =
+      attendanceSheetAttachment
+        ? [attendanceSheetAttachment]
+        : [];
+
+    // ─────────────────────────────────────────────
     // PAINTING FLOW
     // ─────────────────────────────────────────────
 
@@ -786,6 +801,7 @@ export const sendConfirmation = async (req, res) => {
             category: 'primary',
             primaryAllottedDate: registration.primary_allotted_date,
             totalParticipants: registration.primary_category_total,
+            hasAttendanceSheet: attendanceSheetAttachments.length > 0,
           });
 
         const primaryEmails =
@@ -800,6 +816,7 @@ export const sendConfirmation = async (req, res) => {
               primaryTemplate.subject,
             html: primaryTemplate.html,
             text: primaryTemplate.text,
+            attachments: attendanceSheetAttachments,
           });
         }
       }
@@ -833,6 +850,9 @@ export const sendConfirmation = async (req, res) => {
 
             totalParticipants:
               registration.secondary_category_total,
+
+            hasAttendanceSheet:
+              attendanceSheetAttachments.length > 0,
           });
 
         const secondaryEmails =
@@ -847,6 +867,7 @@ export const sendConfirmation = async (req, res) => {
               secondaryTemplate.subject,
             html: secondaryTemplate.html,
             text: secondaryTemplate.text,
+            attachments: attendanceSheetAttachments,
           });
         }
       }
@@ -878,6 +899,9 @@ export const sendConfirmation = async (req, res) => {
 
             totalParticipants:
               registration.total_participants,
+
+            hasAttendanceSheet:
+              attendanceSheetAttachments.length > 0,
           });
 
         await sendEmail({
@@ -891,6 +915,8 @@ export const sendConfirmation = async (req, res) => {
 
           text:
             schoolTemplate.text,
+
+          attachments: attendanceSheetAttachments,
         });
       }
 
@@ -934,6 +960,9 @@ export const sendConfirmation = async (req, res) => {
 
           totalParticipants:
             registration.total_participants,
+
+          hasAttendanceSheet:
+            attendanceSheetAttachments.length > 0,
         });
 
       await sendEmail({
@@ -944,6 +973,8 @@ export const sendConfirmation = async (req, res) => {
         html: template.html,
 
         text: template.text,
+
+        attachments: attendanceSheetAttachments,
       });
     }
 
@@ -981,4 +1012,3 @@ export const sendConfirmation = async (req, res) => {
     });
   }
 };
-
