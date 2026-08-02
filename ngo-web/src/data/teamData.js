@@ -144,6 +144,55 @@ export const teamMembers = [
       'https://res.cloudinary.com/demp2xljz/image/upload/v1782639635/eec882b1-5166-4538-ba15-57ae5e8dc363.png',
     ],
   },
+    {
+    name: "Yogini Jaya Bisht",
+    slug: "jaya-bisht",
+    page: true,
+    role: "M.A. Yoga, YTTC 300 Hours",
+    description: "National-Level Yoga Player, Corporate & Prenatal Yoga Trainer",
+    image: "/images/team/jaya-bisht.jpeg",
+    details: (
+      <div>
+        <p>Yogini Jaya Bisht is an experienced yoga trainer with over 9 years of dedicated practice and teaching experience. She specializes in helping individuals achieve physical strength, mental clarity, and holistic well-being through the timeless science of yoga.</p><br />
+        <p>She holds a Master's Degree in Yoga from Kumaun University, Nainital, and has completed a 300-Hour Yoga Teacher Training Course (YTTC) from Mysore. A former National-Level Yoga Player, she has earned Silver and Bronze Medals at State-Level Yoga Championships.</p><br />
+        <p>With a strong foundation in yoga philosophy, anatomy, and therapeutic practices, Jaya has conducted corporate wellness sessions for renowned organizations including IBM, Apollo Munich, Panasonic, and Anytime Fitness. Her professional experience also includes serving as a Prenatal Yoga Teacher at Jain Hospital, Karkardooma, New Delhi, where she guided expectant mothers toward healthier pregnancies through specialized yoga practices.</p><br />
+        <p>Currently working as a freelance yoga instructor, she conducts both online and offline yoga sessions for students of all age groups. Through her personalized teaching approach and commitment to wellness, Yogini Jaya Bisht continues to inspire individuals to embrace a balanced, healthy, and mindful lifestyle.</p>
+      </div>
+    ),
+    gallery : [
+        'https://res.cloudinary.com/demp2xljz/image/upload/v1785672606/jaya-yoga1_jajha9.jpg',
+        'https://res.cloudinary.com/demp2xljz/image/upload/v1785672605/jaya-yoga2_psriij.jpg',
+        'https://res.cloudinary.com/demp2xljz/image/upload/v1785672605/jaya-yoga3_snawl0.jpg',
+        'https://res.cloudinary.com/demp2xljz/image/upload/v1785672605/jaya-yoga4_b9p9yk.jpg',
+        'https://res.cloudinary.com/demp2xljz/image/upload/v1785672604/jaya-yoga5_bto1y3.jpg',
+        'https://res.cloudinary.com/demp2xljz/image/upload/v1785672604/jaya-yoga6_phjbto.jpg',
+    ],
+  },
+  {
+    name: "Minakshi Das",
+    slug: "minakshi-das",
+    page: true,
+    role: "Yoga Instructor",
+    description: "Internationally Acclaimed Yoga Instructor & Wellness Practitioner",
+    image: "/images/team/minakshi-das.jpg",
+    details: (
+      <div>
+        <p>Minakshi Das is an internationally acclaimed yoga instructor and dedicated wellness practitioner committed to promoting physical fitness, mental harmony, and holistic living through the timeless science of yoga.</p><br />
+        <p>Her journey in yoga has been marked by excellence and perseverance. She has been honored with First Position in the Delhi State Yoga Championship consecutively from 2016 to 2026, reflecting a decade of consistent dedication and achievement. On the international stage, she has secured First Position twice, Second Position once, and Third Position twice in International Yoga Championships, proudly representing India through her performances and demonstrations.</p><br />
+        <p>As part of her international exposure, she has conducted yoga demonstrations in China and Hong Kong, sharing the values and benefits of yoga with audiences across cultures and communities.</p><br />
+        <p>She has also served as a Yoga Instructor at Lady Shri Ram College, New Delhi, where she guided students toward healthier and more balanced lifestyles through regular yoga and wellness sessions.</p><br />
+        <p>Today, Minakshi Das conducts regular online yoga classes for students and wellness enthusiasts in the United Kingdom and the United States, offering personalized and group sessions focused on therapeutic yoga, flexibility, strength, posture correction, meditation, stress management, and overall well-being.</p>
+      </div>
+    ),
+    gallery: [
+        'https://res.cloudinary.com/demp2xljz/image/upload/v1785684938/minakshi-yoga1_tbmzga.jpg',
+        'https://res.cloudinary.com/demp2xljz/image/upload/v1785672451/minakshi-yoga2_ovk590.jpg',
+        'https://res.cloudinary.com/demp2xljz/image/upload/v1785672450/minakshi-yoga3_qg6hq4.jpg',
+        'https://res.cloudinary.com/demp2xljz/image/upload/v1785672451/minakshi-yoga4_pcy0yu.jpg',
+        'https://res.cloudinary.com/demp2xljz/image/upload/v1785672450/minakshi-yoga5_ygxpju.jpg',
+        'https://res.cloudinary.com/demp2xljz/image/upload/v1785672545/minakshi-yoga6_s2ffrr.jpg',
+    ],
+  },
   {
     name: "Dr. Shallu Gupta",
     slug: "shallu-gupta",
@@ -161,25 +210,9 @@ export const teamMembers = [
     ),
   },
   {
-    name: "Acharya Shishir Pokhriyal",
-    slug: "shishir-pokhriyal",
-    page: false,
-    role: "MA Yogic Science, Pranic Healer",
-    description: "Yoga Master, Founder – Shivaya Yog Sansthan, Holistic Health Expert",
-    image: "/images/team/shishir-pokhriyal.jpg",
-    details: (
-      <div>
-        <p>Acharya Shishir Pokhriyal is a distinguished yoga master and holistic wellness advocate with over 18 years of experience in the field of yogic science and natural healing.</p><br />
-        <p>He holds an M.A. in Yogic Science and specializes in Pranic Healing and Crystal Therapy, blending ancient traditions with modern therapeutic practices.</p><br />
-        <p>He is the Founder of Shivaya Yog Sansthan and Holistic Health Care, an institution devoted to promoting yoga, meditation, and a balanced lifestyle rooted in holistic well-being. As a Yoga Teacher and Academic Counselor at IGNOU, New Delhi, he continues to guide and mentor students in their spiritual and academic growth.</p><br />
-        <p>In recognition of his exceptional contribution to yoga and wellness, Acharya Pokhriyal was honored with the Atal Bharat Ratan Award in 2022. Through his dedicated efforts, he has inspired countless individuals to adopt a mindful, healthy, and harmonious way of living.</p>
-      </div>
-    ),
-  },
-  {
     name: "Acharya Vijay",
     slug: "vijay",
-    page: false,
+    page: true,
     role: "Masters in Yoga",
     description: "International Yoga Champion, Yoga Teacher, International Yoga Referee",
     image: "/images/team/vijay-yadav.jpeg",
@@ -190,48 +223,14 @@ export const teamMembers = [
         <p>Through his commitment to spreading yoga at national and international levels, Vijay Yadav continues to uplift the spirit of yoga as a path to personal transformation and global harmony.</p>
       </div>
     ),
-  },
-  // {
-  //   name: "Yogini Shushma",
-  //   role: "MA in YOGA, Diploma in Naturopathy",
-  //   description: "Yoga champion, pranic healer and referee.",
-  //   image: "/images/team/shushma.jpg",
-  //   details: (
-  //     <div>
-  //       <p>MA in YOGA, Diploma in naturopathy.</p><br/> 
-  //       <p>Pranic healer and Referee in India yoga federation, National yoga champion in yoga of 2021.</p>
-  //     </div>
-  //   ),
-  // },
-  // {
-  //   name: "Yogini Manju",
-  //   role: "Bachelors of Yoga and Naturopathy",
-  //   description: "Yoga Trainer, Naturopathy Practitioner, Bronze Medalist – Delhi Olympiad",
-  //   image: "/images/team/manju-goyal.jpg",
-  //   details: (
-  //     <div>
-  //       <p>Yogini Manju Goyal is a passionate and experienced yoga trainer with over 7 years of professional expertise in yoga instruction and holistic health. She is deeply committed to promoting physical fitness, mindfulness, and natural healing through yoga and naturopathy.</p><br/>
-  //       <p>She holds an M.A. in Yoga and a Diploma in Naturopathy, combining traditional knowledge with modern approaches to holistic well-being. Her expertise lies in yoga practice, therapeutic techniques, and lifestyle guidance aimed at improving physical, mental, and emotional health. Her dedication and skill have earned her recognition as a Bronze Medalist in the Delhi Olympiad and a National Award Winner.</p><br/>
-  //       <p>Having participated in numerous yoga competitions, Manju continues to inspire others with her graceful practice, disciplined teaching, and focus on well-being. Her mission is to help individuals achieve harmony of body, mind, and spirit through the timeless science of yoga.</p><br/>
-  //       <p>Through her work, Manju Goyal continues to promote the values of mindfulness, discipline, and natural living—helping people lead healthier, more harmonious lives.</p>
-  //     </div>
-  //   ),
-  // },
-  {
-    name: "Yogini Jaya Bisht",
-    slug: "jaya-bisht",
-    page: false,
-    role: "M.A. Yoga, YTTC 300 Hours",
-    description: "National-Level Yoga Player, Corporate & Prenatal Yoga Trainer",
-    image: "/images/team/jaya-bisht.jpeg",
-    details: (
-      <div>
-        <p>Yogini Jaya Bisht is an experienced yoga trainer with over 9 years of dedicated practice and teaching experience. She specializes in helping individuals achieve physical strength, mental clarity, and holistic well-being through the timeless science of yoga.</p><br />
-        <p>She holds a Master's Degree in Yoga from Kumaun University, Nainital, and has completed a 300-Hour Yoga Teacher Training Course (YTTC) from Mysore. A former National-Level Yoga Player, she has earned Silver and Bronze Medals at State-Level Yoga Championships.</p><br />
-        <p>With a strong foundation in yoga philosophy, anatomy, and therapeutic practices, Jaya has conducted corporate wellness sessions for renowned organizations including IBM, Apollo Munich, Panasonic, and Anytime Fitness. Her professional experience also includes serving as a Prenatal Yoga Teacher at Jain Hospital, Karkardooma, New Delhi, where she guided expectant mothers toward healthier pregnancies through specialized yoga practices.</p><br />
-        <p>Currently working as a freelance yoga instructor, she conducts both online and offline yoga sessions for students of all age groups. Through her personalized teaching approach and commitment to wellness, Yogini Jaya Bisht continues to inspire individuals to embrace a balanced, healthy, and mindful lifestyle.</p>
-      </div>
-    ),
+    gallery: [
+        'https://res.cloudinary.com/demp2xljz/image/upload/v1785685449/vijay-yoga1_qyx0y5.jpg',
+        'https://res.cloudinary.com/demp2xljz/image/upload/v1785685447/vijay-yoga2_v5ip2h.jpg',
+        'https://res.cloudinary.com/demp2xljz/image/upload/v1785685446/vijay-yoga3_l4xgsw.jpg',
+        'https://res.cloudinary.com/demp2xljz/image/upload/v1785685446/vijay-yoga4_uyjujb.jpg',
+        'https://res.cloudinary.com/demp2xljz/image/upload/v1785685445/vijay-yoga5_ef3uun.jpg',
+        'https://res.cloudinary.com/demp2xljz/image/upload/v1785685445/vijay-yoga6_bjv5hk.jpg',
+    ],
   },
   {
     name: "Dr. Brij Bhushan Goel",
@@ -309,6 +308,25 @@ export const environmentExperts = [
     ),
   },
 ];
+
+
+export const mentors = [
+  {
+    name: "Dr. Dipankar Saha",
+    role: "Former Member (HQ), CGWB & Former Member Secretary, CGWA",
+    description: "Chair Professor, MRIIRS, Faridabad | National Coordinator, National Aquifer Mapping and Management Programme",
+    image: "/images/team/dipankar-saha.jpeg",
+    details: (
+      <div>
+        <p>Dr. Dipankar Saha is former Member (HQ), Central Ground Water Board (CGWB) and former Member Secretary, Central Ground Water Authority (CGWA). He spearheaded the National Aquifer Mapping and Management Programme as National Coordinator.</p><br />
+        <p>He holds a Ph.D. in Ground Water Management from IIT-ISM Dhanbad and has authored 66 papers in International Peer Reviewed Journals. He is professionally trained from the Asian Institute of Technology, Bangkok, and from JICA, Tokyo. He has presented keynote addresses and papers on invitation from the World Bank at Kathmandu, the International Atomic Energy Agency at Ho-Chi Minh City and Vienna, the World Water Week at Stockholm, the India-UK Water Security Exchange at Wallingford, Oxfordshire, the IAH Congress at Daejeon, Korea, the University of Manchester, Lincoln University, and ASRT at Cairo, Egypt.</p><br />
+        <p>He has edited/co-edited 3 books published by Springer. He is a recipient of the National Geoscience Award – 2010, the Excellence in Ground Water Award conferred by the International Association of Hydrogeologists – India Chapter in 2014, and the Eminent Engineer's Award from the India Water Resources Society, IIT Roorkee.</p><br />
+        <p>He is presently Chair Professor, MRIIRS, Faridabad, and Board President of Water for People: India. Post superannuation, he has worked as Advisor, Groundwater, Government of Gujarat; Adjunct Professor, IIT Kharagpur; Consultant to IWMI Colombo and IAEA Vienna; and Chairman, Accreditation Committee for Ground Water Consultants, NABET, QCI.</p>
+      </div>
+    ),
+  },
+];
+
 
 export const generalBodyTeam = [
   { name: "Rajiv Kumar Garg", role: "Member", image: "/images/team/rajiv-garg.jpeg", },

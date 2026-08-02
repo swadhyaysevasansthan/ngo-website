@@ -9,6 +9,7 @@ import {
   patrons,
   teamMembers,
   environmentExperts,
+  mentors,
   generalBodyTeam,
   youngITTeam
 } from '../data/teamData';
@@ -71,12 +72,22 @@ const OurTeam = () => {
         setSelectedMember={setSelectedMember}
       />
       <TeamSection
+        members={mentors}
+        sectionHeader={{
+          Component: SectionHeader,
+          title: "Our Mentors",
+          subtitle: "Eminent experts guiding our mission with knowledge and experience",
+          bg: "bg-gray-50"
+        }}
+        setSelectedMember={setSelectedMember}
+      />
+      <TeamSection
         members={generalBodyTeam}
         sectionHeader={{
           Component: SectionHeader,
           title: "General Body Team",
           subtitle: "Core members supporting organizational initiatives",
-          bg: "bg-gray-50"
+          bg: "bg-white"
         }}
         selectable={false}
       />
@@ -86,7 +97,7 @@ const OurTeam = () => {
           Component: SectionHeader,
           title: "Young IT Team",
           subtitle: "Innovative minds driving our digital transformation",
-          bg: "bg-white"
+          bg: "bg-gray-50"
         }}
         setSelectedMember={setSelectedMember}
       />
