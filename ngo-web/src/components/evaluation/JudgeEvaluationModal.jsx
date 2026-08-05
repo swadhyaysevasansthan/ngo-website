@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { toast } from 'react-toastify';
-import { X, MapPin, Calendar, Camera, Leaf, Maximize2, Loader2, Lock, Tag, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, MapPin, Calendar, Camera, Leaf, Maximize2, Loader2, Lock, Tag, History, ChevronLeft, ChevronRight } from 'lucide-react';
 import { judgeAPI } from '../../utils/api';
 import JudgeImageViewer from './JudgeImageViewer';
 import CategoryBadge from './CategoryBadge';
@@ -178,6 +178,16 @@ const JudgeEvaluationModal = ({ queue, currentIndex, round, onClose, onNavigate,
               </div>
             )}
 
+            {round === 2 && entry.myRound1Score !== null && (
+              <div className="bg-blue-50 border border-blue-100 text-blue-700 rounded-lg p-3 flex items-center gap-2 text-sm">
+                <History size={16} className="shrink-0" />
+                <span>
+                  Your Round 1 score for this entry was <strong>{entry.myRound1Score}</strong>. This is just for
+                  your own reference — it has no effect on Round 2 scoring.
+                </span>
+              </div>
+            )}
+
             <div className="relative group">
               {entry.imageUrl ? (
                 <img
@@ -243,13 +253,12 @@ const JudgeEvaluationModal = ({ queue, currentIndex, round, onClose, onNavigate,
                       key={s}
                       onClick={() => handleScoreButtonClick(s)}
                       disabled={locked || saving}
-                      className={`w-12 h-12 rounded-lg font-bold text-lg border-2 transition-colors ${
-                        locked || saving
+                      className={`w-12 h-12 rounded-lg font-bold text-lg border-2 transition-colors ${locked || saving
                           ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
                           : selectedScore === s
-                          ? 'bg-primary text-white border-primary'
-                          : 'bg-white text-gray-700 border-gray-200 hover:border-primary'
-                      }`}
+                            ? 'bg-primary text-white border-primary'
+                            : 'bg-white text-gray-700 border-gray-200 hover:border-primary'
+                        }`}
                     >
                       {saving && selectedScore === s ? <Loader2 size={16} className="animate-spin mx-auto" /> : s}
                     </button>

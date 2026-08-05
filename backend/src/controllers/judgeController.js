@@ -4,12 +4,6 @@ import { getDefaultCompetition, getEntrySourceData } from './evaluationControlle
 const ROUND1 = 1;
 const ROUND2 = 2;
 
-/**
- * Entries visible to a judge for a given round:
- * - Round 1: every active entry in the competition
- * - Round 2: only entries qualified in Round 1 and not disqualified
- *   during verification
- */
 const getVisibleEntries = async (competitionId, round) => {
   if (round === ROUND1) {
     const result = await pool.query(
@@ -201,15 +195,26 @@ export const getEntryDetail = async (req, res) => {
     );
     const myScore = myScoreRes.rows[0]?.score ?? null;
 
+    // NEW: when reviewing in Round 2, also surface the judge's OWN
+    // Round 1 score for this same entry as reference context. This is
+    // never the total and never another judge's score — just what
+    // this judge themselves already gave it — so it doesn't violate
+    // "never show total, never show other judges' scores".
+    let myRound1Score = null;
+    if (round === ROUND2) {
+      const r1Res = await pool.query(
+        `SELECT score FROM evaluation_scores WHERE entry_id = $1 AND judge_id = $2 AND round = 1`,
+        [entryId, judgeId]
+      );
+      myRound1Score = r1Res.rows[0]?.score ?? null;
+    }
+
     const settingsRes = await pool.query(
       'SELECT * FROM evaluation_settings WHERE competition_id = $1',
       [competition.id]
     );
     const settings = settingsRes.rows[0];
 
-    // Determine, up front, whether this judge can currently score this
-    // entry — and why not, if not — so the UI can show it before the
-    // judge tries to save rather than only finding out on rejection.
     let canScore = true;
     let lockReason = null;
 
@@ -244,6 +249,7 @@ export const getEntryDetail = async (req, res) => {
         category: sourceData?.category || null,
         environmentalMessage: sourceData?.environmentalMessage || null,
         myScore,
+        myRound1Score,
         maxScore: settings.max_score ?? 5,
         canScore,
         lockReason,
