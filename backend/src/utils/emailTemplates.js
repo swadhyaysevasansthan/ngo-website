@@ -1090,7 +1090,7 @@ export const schoolCompetitionRegistrationTemplate = (data) => {
         <div class="wrapper">
           <div class="container">
             <div class="header">
-              <p class="header-title">National Environment Awareness Competitions 2026–27</p>
+              <p class="header-title">Swadhyay National Environment Awareness Competitions (SNEAC) 2026–27 — 2nd Edition</p>
               <p class="header-subtitle">${competitionLabel} — Registration confirmed</p>
             </div>
             <div class="content">
@@ -1302,6 +1302,34 @@ Secondary Category Date:
 ${formattedSecondaryDate}
 `;
   }
+
+  // ─────────────────────────────────────────────
+  // DOCUMENTATION RULE (adaptive by competition type)
+  // ─────────────────────────────────────────────
+
+  const documentationRuleText =
+    competitionType === 'painting'
+      ? 'Capture, for each category (Primary and Secondary), a minimum of 4 photographs and 1 video recording of the competition using GPS-enabled camera devices. Failure to provide this documentation may affect eligibility for National-Level evaluation.'
+      : 'Capture a minimum of 4 photographs and 1 video recording of the competition using GPS-enabled camera devices. Failure to provide this documentation may affect eligibility for National-Level qualification.';
+
+  const attendanceRuleText =
+    'Along with this date-allotment email, we have attached a Student Information Sheet. It must be filled in with the participating students\' details and submitted 3-4 days before the competition date.';
+
+  const rulesHtml = `
+    <div class="rules-box">
+      <div class="rules-title">Important Reminders</div>
+      <ul class="rules-list">
+        ${hasAttendanceSheet ? `<li>${attendanceRuleText}</li>` : ''}
+        <li>${documentationRuleText}</li>
+      </ul>
+    </div>
+  `;
+
+  const rulesText = `
+Important Reminders:
+${hasAttendanceSheet ? `- ${attendanceRuleText}\n` : ''}- ${documentationRuleText}
+`;
+
   return {
     subject: `Date Confirmed – ${competitionLabel} | SNEAC 2026–27`,
     html: `
@@ -1427,6 +1455,39 @@ ${formattedSecondaryDate}
             margin-bottom: 10px;
           }
 
+          .rules-box {
+            margin: 20px 0 18px 0;
+            padding: 16px 18px;
+            border-radius: 12px;
+            border: 1px solid #fde68a;
+            background-color: #fffbeb;
+          }
+
+          .rules-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #b45309;
+            font-weight: 700;
+            margin-bottom: 10px;
+          }
+
+          .rules-list {
+            margin: 0;
+            padding-left: 18px;
+            color: #78350f;
+          }
+
+          .rules-list li {
+            font-size: 13px;
+            line-height: 1.65;
+            margin-bottom: 8px;
+          }
+
+          .rules-list li:last-child {
+            margin-bottom: 0;
+          }
+
           .footer {
             padding: 14px 20px;
             text-align: center;
@@ -1442,7 +1503,7 @@ ${formattedSecondaryDate}
           <div class="container">
             <div class="header">
               <p class="header-title">
-                Swadhyay National Environment Awareness Competitions 2026–27
+                Swadhyay National Environment Awareness Competitions (SNEAC) 2026–27 — 2nd Edition
               </p>
               <p class="header-subtitle">
                 ${competitionLabel} — Date Confirmed
@@ -1485,13 +1546,7 @@ ${formattedSecondaryDate}
               <p>
                 Please ensure that all registered participants are informed and prepared accordingly.
               </p>
-              ${
-                hasAttendanceSheet
-                  ? `<p>
-                We have attached the <strong>Student Information Sheet</strong> to this email. Kindly fill it in with the participant details and submit it before the competition date.
-              </p>`
-                  : ''
-              }
+              ${rulesHtml}
               <p>
                 In case of any scheduling conflict, kindly contact us immediately.
               </p>
@@ -1522,11 +1577,8 @@ ${dateText}
 
 Total Participants:
 ${totalParticipants}
-${
-  hasAttendanceSheet
-    ? '\nThe Student Information is attached to this email. Please fill it in with participant details and submit it before the competition date.\n'
-    : ''
-}
+
+${rulesText}
 Regards,
 Swadhyay Seva Foundation
 www.swadhyayseva.org
