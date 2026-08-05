@@ -174,7 +174,7 @@ export const teamMembers = [
     page: true,
     role: "Yoga Instructor",
     description: "Internationally Acclaimed Yoga Instructor & Wellness Practitioner",
-    image: "/images/team/minakshi-das.jpg",
+    image: "/images/team/minakshi-das.jpeg",
     details: (
       <div>
         <p>Minakshi Das is an internationally acclaimed yoga instructor and dedicated wellness practitioner committed to promoting physical fitness, mental harmony, and holistic living through the timeless science of yoga.</p><br />
@@ -238,7 +238,7 @@ export const teamMembers = [
     page: false,
     role: "NDDY, D.PH, PGDIHC, DLIM",
     description: "Senior Naturopath since 1990.",
-    image: "/images/team/user-nobg.png",
+    image: "/images/team/brij-bhushan-goel.jpeg",
     details: (
       <div>
         <p>NDDY, D.PH, PGDIHC, DLIM, Senior Naturopath Since 1990.</p>
