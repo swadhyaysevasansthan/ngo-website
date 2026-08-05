@@ -14,6 +14,7 @@ const PRIZE_META = {
 const WinnerSelection = () => {
   const [winners, setWinners] = useState([]);
   const [verified, setVerified] = useState([]);
+  const [round2Active, setRound2Active] = useState(false);
   const [loading, setLoading] = useState(true);
   const [entryId, setEntryId] = useState('');
   const [prizeType, setPrizeType] = useState('first');
@@ -26,7 +27,10 @@ const WinnerSelection = () => {
         evaluationAdminAPI.getVerificationQueue(),
       ]);
       setWinners(winnersRes.data.data);
-      setVerified(queueRes.data.data.filter((q) => q.verification_status === 'verified'));
+      setRound2Active(queueRes.data.round2Active || false);
+      const verifiedOnly = queueRes.data.data.filter((q) => q.verification_status === 'verified');
+      verifiedOnly.sort((a, b) => b.active_total - a.active_total);
+      setVerified(verifiedOnly);
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to load winners');
     } finally {
@@ -90,6 +94,10 @@ const WinnerSelection = () => {
         <p className="text-xs text-gray-500 mb-4">
           Only verified entries can be assigned a prize. Winners are always manual — nothing here is automatic.
         </p>
+        <div className="mb-3 bg-blue-50 border border-blue-100 text-blue-700 rounded-lg px-3 py-2 text-xs font-medium">
+          Ranked by {round2Active ? 'Round 2' : 'Round 1'} totals
+          {round2Active ? ' (Round 2 scoring is enabled, so these are the current numbers)' : ' (Round 2 scoring is not enabled yet)'}.
+        </div>
         <form onSubmit={handleAssign} className="flex flex-col sm:flex-row gap-3">
           <select
             value={entryId}
@@ -99,7 +107,7 @@ const WinnerSelection = () => {
             <option value="">Select a verified entry…</option>
             {availableEntries.map((v) => (
               <option key={v.entry_id} value={v.entry_id}>
-                #{v.entry_number} — {v.full_name} ({v.category || 'uncategorized'}, score {v.total_score})
+                #{v.entry_number} — {v.full_name} ({v.category || 'uncategorized'}, R{v.active_round} score {v.active_total})
               </option>
             ))}
           </select>

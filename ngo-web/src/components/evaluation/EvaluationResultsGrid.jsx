@@ -22,11 +22,12 @@ const EvaluationResultsGrid = () => {
   const [actionId, setActionId] = useState(null);
   const [viewingId, setViewingId] = useState(null);
   const [categoryFilter, setCategoryFilter] = useState('');
+  const [round, setRound] = useState(1);
 
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await evaluationAdminAPI.getResults();
+      const res = await evaluationAdminAPI.getResults(round);
       setEntries(res.data.data);
       setJudges(res.data.judges);
       setMaxTotal(res.data.maxTotal || 25);
@@ -35,7 +36,7 @@ const EvaluationResultsGrid = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [round]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -69,12 +70,12 @@ const EvaluationResultsGrid = () => {
   const handleExport = async (format) => {
     setExportingFmt(format);
     try {
-      const res = await evaluationAdminAPI.exportResults(format);
+      const res = await evaluationAdminAPI.exportResults(format, round);
       const ext = format === 'excel' ? 'xlsx' : format;
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const a = document.createElement('a');
       a.href = url;
-      a.download = `Round1_Results.${ext}`;
+      a.download = `Round${round}_Results.${ext}`;
       a.click();
       window.URL.revokeObjectURL(url);
     } catch (err) {
@@ -119,19 +120,34 @@ const EvaluationResultsGrid = () => {
     <div className="space-y-5">
       {/* Action bar */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 items-center">
+          <div className="flex rounded-lg border border-gray-200 overflow-hidden mr-2">
+            {[1, 2].map((r) => (
+              <button
+                key={r}
+                onClick={() => setRound(r)}
+                className={`px-4 py-2 text-sm font-semibold transition-colors ${
+                  round === r ? 'bg-primary text-white' : 'bg-white text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                Round {r}
+              </button>
+            ))}
+          </div>
           <button
             onClick={handleSync}
-            disabled={syncing}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-700 text-sm font-semibold hover:border-primary hover:text-primary disabled:opacity-50 transition-colors"
+            disabled={syncing || round === 2}
+            title={round === 2 ? 'Entry sync is a Round 1 setup step' : ''}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-700 text-sm font-semibold hover:border-primary hover:text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             <RefreshCw size={14} className={syncing ? 'animate-spin' : ''} />
             {syncing ? 'Syncing…' : 'Sync Entries'}
           </button>
           <button
             onClick={handleQualify}
-            disabled={qualifying}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark disabled:opacity-50 transition-colors"
+            disabled={qualifying || round === 2}
+            title={round === 2 ? 'Qualification always runs against Round 1 scores' : ''}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             <Play size={14} />
             {qualifying ? 'Running…' : 'Run Qualification'}

@@ -397,7 +397,7 @@ export const evaluationAdminAPI = {
   getSettings: () => apiClient.get('/admin/evaluation/settings'),
   updateSettings: (data) => apiClient.put('/admin/evaluation/settings', data),
 
-  getResults: () => apiClient.get('/admin/evaluation/results'),
+  getResults: (round = 1) => apiClient.get('/admin/evaluation/results', { params: { round } }),
   getConflicts: (level) =>
     apiClient.get('/admin/evaluation/conflicts', { params: level ? { level } : {} }),
   runQualification: () => apiClient.post('/admin/evaluation/qualify'),
@@ -419,10 +419,11 @@ export const evaluationAdminAPI = {
 
   resetEvaluationData: (payload) => apiClient.post('/admin/evaluation/reset', payload),
 
-  exportResults: (format) => {
+  exportResults: (format, round = 1) => {
     return axios({
       url: `${API_BASE_URL}/admin/evaluation/export/${format}`,
       method: 'GET',
+      params: { round },
       responseType: 'blob',
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });

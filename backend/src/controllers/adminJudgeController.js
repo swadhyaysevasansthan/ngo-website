@@ -2,7 +2,7 @@ import pool from '../config/database.js';
 import bcrypt from 'bcryptjs';
 import { generateJudgeUsername, generateJudgePassword } from '../utils/judgeCredentials.js';
 import { getDefaultCompetition } from './evaluationController.js';
-import { promoteNextQualifiers } from '../services/qualificationService.js';
+import { promoteNextQualifiers, computeRoundResults } from '../services/qualificationService.js';
 
 const MAX_JUDGES = 5;
 
@@ -191,6 +191,12 @@ export const getVerificationQueue = async (req, res) => {
       return res.status(404).json({ success: false, message: 'No competition configured' });
     }
 
+    const settingsRes = await pool.query(
+      'SELECT round2_scoring_enabled FROM evaluation_settings WHERE competition_id = $1',
+      [competition.id]
+    );
+    const round2Active = settingsRes.rows[0]?.round2_scoring_enabled || false;
+
     const result = await pool.query(
       `SELECT e.id AS entry_id, e.entry_number, e.participant_id, p.full_name, p.email, p.phone, p.category,
               q.total_score, q.conflict_level, q.verification_status
@@ -202,7 +208,26 @@ export const getVerificationQueue = async (req, res) => {
       [competition.id]
     );
 
-    res.json({ success: true, data: result.rows });
+    let rows = result.rows.map((r) => ({ ...r, active_total: r.total_score, active_round: 1 }));
+
+    // Once Round 2 scoring is enabled, winner decisions should be
+    // based on Round 2 totals instead — Round 1's total_score stays
+    // untouched (it's what got these entries qualified in the first
+    // place), but we surface a separate active_total/active_round so
+    // the Winners panel can rank and display by the right number.
+    if (round2Active) {
+      const round2Results = await computeRoundResults(competition.id, 2);
+      const round2Map = new Map(round2Results.map((r) => [r.entryId, r.total]));
+      rows = rows
+        .map((r) => ({
+          ...r,
+          active_total: round2Map.has(r.entry_id) ? round2Map.get(r.entry_id) : r.total_score,
+          active_round: 2,
+        }))
+        .sort((a, b) => b.active_total - a.active_total);
+    }
+
+    res.json({ success: true, data: rows, round2Active });
   } catch (error) {
     console.error('Get verification queue error:', error);
     res.status(500).json({ success: false, message: 'Failed to fetch verification queue', error: error.message });

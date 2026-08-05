@@ -1,5 +1,5 @@
 import pool from '../config/database.js';
-import { computeRound1Results, applyQualification } from '../services/qualificationService.js';
+import { computeRoundResults, computeRound1Results, applyQualification } from '../services/qualificationService.js';
 import { buildResultsCSV, buildResultsExcel, buildResultsPDF } from '../services/reportService.js';
 
 /**
@@ -241,12 +241,14 @@ export const updateSettings = async (req, res) => {
  */
 export const getResults = async (req, res) => {
   try {
+    const round = parseInt(req.query.round, 10) === 2 ? 2 : 1;
+
     const competition = await getDefaultCompetition();
     if (!competition) {
       return res.status(404).json({ success: false, message: 'No competition configured' });
     }
 
-    const results = await computeRound1Results(competition.id);
+    const results = await computeRoundResults(competition.id, round);
 
     const judgesRes = await pool.query(
       'SELECT id, full_name FROM judges ORDER BY id ASC'
@@ -257,8 +259,8 @@ export const getResults = async (req, res) => {
       `SELECT s.entry_id, s.judge_id, s.score
        FROM evaluation_scores s
        JOIN evaluation_entries e ON e.id = s.entry_id
-       WHERE e.competition_id = $1 AND s.round = 1`,
-      [competition.id]
+       WHERE e.competition_id = $1 AND s.round = $2`,
+      [competition.id, round]
     );
     const scoreMap = new Map(); // entryId -> { judgeId: score }
     for (const row of scoresRes.rows) {
@@ -311,7 +313,7 @@ export const getResults = async (req, res) => {
     );
     const maxScore = settingsRes.rows[0]?.max_score ?? 5;
 
-    res.json({ success: true, data, judges, maxScore, maxTotal: maxScore * judges.length });
+    res.json({ success: true, data, judges, round, maxScore, maxTotal: maxScore * judges.length });
   } catch (error) {
     console.error('Get results error:', error);
     res.status(500).json({ success: false, message: 'Failed to fetch results', error: error.message });
@@ -387,8 +389,8 @@ export const getAuditLog = async (req, res) => {
 /**
  * Builds the same flat row shape used by all three export formats.
  */
-const buildExportRows = async (competitionId) => {
-  const results = await computeRound1Results(competitionId);
+const buildExportRows = async (competitionId, round = 1) => {
+  const results = await computeRoundResults(competitionId, round);
 
   const judgesRes = await pool.query('SELECT id, full_name FROM judges ORDER BY id ASC');
   const judges = judgesRes.rows;
@@ -397,8 +399,8 @@ const buildExportRows = async (competitionId) => {
     `SELECT s.entry_id, s.judge_id, s.score
      FROM evaluation_scores s
      JOIN evaluation_entries e ON e.id = s.entry_id
-     WHERE e.competition_id = $1 AND s.round = 1`,
-    [competitionId]
+     WHERE e.competition_id = $1 AND s.round = $2`,
+    [competitionId, round]
   );
   const scoreMap = new Map();
   for (const row of scoresRes.rows) {
@@ -545,19 +547,21 @@ export const resetEvaluationData = async (req, res) => {
 export const exportResults = async (req, res) => {
   try {
     const { format } = req.params;
+    const round = parseInt(req.query.round, 10) === 2 ? 2 : 1;
+
     const competition = await getDefaultCompetition();
     if (!competition) {
       return res.status(404).json({ success: false, message: 'No competition configured' });
     }
 
-    const rows = await buildExportRows(competition.id);
+    const rows = await buildExportRows(competition.id, round);
     const settingsRes = await pool.query(
       'SELECT max_score FROM evaluation_settings WHERE competition_id = $1',
       [competition.id]
     );
     const maxScore = settingsRes.rows[0]?.max_score ?? 5;
     const maxTotal = maxScore * 5; // 5 judges, fixed
-    const filenameBase = `Round1_Results_${Date.now()}`;
+    const filenameBase = `Round${round}_Results_${Date.now()}`;
 
     if (format === 'csv') {
       const csv = buildResultsCSV(rows, { maxTotal });
@@ -574,7 +578,7 @@ export const exportResults = async (req, res) => {
     }
 
     if (format === 'pdf') {
-      const buffer = await buildResultsPDF(rows, { title: competition.name, maxTotal });
+      const buffer = await buildResultsPDF(rows, { title: `${competition.name} — Round ${round}`, maxTotal });
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename=${filenameBase}.pdf`);
       return res.send(buffer);

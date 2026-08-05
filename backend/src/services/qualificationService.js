@@ -2,39 +2,58 @@ import pool from '../config/database.js';
 import { calculateConflictLevel } from './conflictDetectionService.js';
 
 /**
- * PURE READ — total score + conflict level for every entry in a
- * competition's Round 1. No writes. Two queries total regardless of
- * entry count, safe to call on every page load (Results, Conflicts,
- * dashboards). This used to also UPSERT a row per entry inside the
- * loop, which meant every read caused N sequential round trips to
- * the DB (104 entries = 104 queries just to render a table) — that
- * was the actual cause of the multi-second load times.
+ * PURE READ — total score + conflict level for every relevant entry
+ * in a given round. No writes.
+ *
+ * Round 1 scope: every active entry in the competition.
+ * Round 2 scope: only entries that qualified out of Round 1 and were
+ * not disqualified during verification — matching exactly what
+ * judges themselves are allowed to see/score in Round 2.
  */
-export const computeRound1Results = async (competitionId) => {
+export const computeRoundResults = async (competitionId, round = 1) => {
   const settingsRes = await pool.query(
     'SELECT max_score FROM evaluation_settings WHERE competition_id = $1',
     [competitionId]
   );
   const maxScore = settingsRes.rows[0]?.max_score ?? 5;
 
-  const entriesRes = await pool.query(
-    `SELECT
-        e.id AS entry_id,
-        e.entry_number,
-        e.participant_id,
-        e.status,
-        COALESCE(
-          json_agg(s.score ORDER BY s.judge_id) FILTER (WHERE s.score IS NOT NULL),
-          '[]'
-        ) AS scores
-     FROM evaluation_entries e
-     LEFT JOIN evaluation_scores s
-       ON s.entry_id = e.id AND s.round = 1
-     WHERE e.competition_id = $1
-     GROUP BY e.id
-     ORDER BY e.entry_number`,
-    [competitionId]
-  );
+  const entriesQuery =
+    round === 2
+      ? `SELECT
+            e.id AS entry_id,
+            e.entry_number,
+            e.participant_id,
+            e.status,
+            COALESCE(
+              json_agg(s.score ORDER BY s.judge_id) FILTER (WHERE s.score IS NOT NULL),
+              '[]'
+            ) AS scores
+         FROM evaluation_entries e
+         JOIN evaluation_qualifications q ON q.entry_id = e.id
+         LEFT JOIN evaluation_scores s
+           ON s.entry_id = e.id AND s.round = 2
+         WHERE e.competition_id = $1
+           AND q.qualified = true
+           AND q.verification_status != 'disqualified'
+         GROUP BY e.id
+         ORDER BY e.entry_number`
+      : `SELECT
+            e.id AS entry_id,
+            e.entry_number,
+            e.participant_id,
+            e.status,
+            COALESCE(
+              json_agg(s.score ORDER BY s.judge_id) FILTER (WHERE s.score IS NOT NULL),
+              '[]'
+            ) AS scores
+         FROM evaluation_entries e
+         LEFT JOIN evaluation_scores s
+           ON s.entry_id = e.id AND s.round = 1
+         WHERE e.competition_id = $1
+         GROUP BY e.id
+         ORDER BY e.entry_number`;
+
+  const entriesRes = await pool.query(entriesQuery, [competitionId]);
 
   return entriesRes.rows.map((row) => {
     const scores = row.scores || [];
@@ -52,6 +71,14 @@ export const computeRound1Results = async (competitionId) => {
     };
   });
 };
+
+/**
+ * Kept for backward compatibility — Round 1 specifically. Everything
+ * below (qualification, promotion) is deliberately Round-1-only:
+ * qualifying out of Round 1 is what Round 2 eligibility is based on,
+ * so these never need to run against Round 2 data.
+ */
+export const computeRound1Results = async (competitionId) => computeRoundResults(competitionId, 1);
 
 /**
  * Persist a results snapshot into evaluation_qualifications in a
@@ -80,7 +107,7 @@ const persistSnapshot = async (results) => {
  * a hot read path).
  */
 export const recomputeRound1Results = async (competitionId) => {
-  const results = await computeRound1Results(competitionId);
+  const results = await computeRoundResults(competitionId, 1);
   await persistSnapshot(results);
   return results;
 };
@@ -99,7 +126,7 @@ export const applyQualification = async (competitionId) => {
   const settings = settingsRes.rows[0];
   if (!settings) throw new Error('Competition settings not found');
 
-  const results = await computeRound1Results(competitionId);
+  const results = await computeRoundResults(competitionId, 1);
   await persistSnapshot(results);
 
   const eligible = results
@@ -153,7 +180,7 @@ export const promoteNextQualifiers = async (competitionId) => {
   const settings = settingsRes.rows[0];
   if (!settings || settings.qualification_method !== 'top_n') return { promoted: 0 };
 
-  const results = await computeRound1Results(competitionId);
+  const results = await computeRoundResults(competitionId, 1);
   const eligible = results
     .filter((r) => r.status !== 'disqualified')
     .sort((a, b) => b.total - a.total);
