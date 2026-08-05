@@ -13,20 +13,20 @@ export const competitionRules = {
       {
         title: "1. School Responsibilities & Documentation",
         points: [
+          <b>Capture, for each group, a minimum of 4 photographs and 1 video recording using GPS-enabled camera devices. Failure to provide this documentation may affect eligibility for National-Level evaluation.</b>,
           "Conduct the competition fairly and transparently within the school premises under proper supervision.",
           "Verify student eligibility and class details, obtain parental consent wherever required, and ensure the authenticity of all entries.",
           "Submit the selected entries within the specified timeline and preserve the original artworks safely before dispatch.",
-          "Capture, for each group, a minimum of 4 photographs and 1 video recording using GPS-enabled camera devices. Failure to provide this documentation may affect eligibility for National-Level evaluation."
         ]
       },
 
       {
         title: "2. School-Level Selection & National Evaluation",
         points: [
-          "Participating schools will conduct the competition internally and evaluate entries fairly.",
+          <b>Participating schools will conduct the competition internally and evaluate entries fairly.</b>,
           "Each school will select the Top 5 students from Primary and the Top 5 students from Secondary — a total of 10 national-level entries per school.",
           "There will be no separate physical national event for the Painting Competition; selected paintings from schools across India are evaluated by the National Jury Panel.",
-          "Schools must submit scanned copies/PDFs of selected paintings digitally, and courier the original paintings to the Foundation address (details to be shared later)."
+          <b>Schools must submit scanned copies/PDFs of selected paintings digitally, and courier the original paintings to the Foundation address (details to be shared later).</b>
         ]
       },
 
@@ -34,7 +34,7 @@ export const competitionRules = {
         title: "3. Student Explanation / Message",
         points: [
           "Each participant must submit a short slogan, message, or paragraph explaining the environmental message conveyed through their painting.",
-          "Important: the slogan/message must not be written on the artwork itself."
+          <b>Important: the slogan/message must not be written on the artwork itself.</b>
         ]
       },
 
@@ -47,7 +47,7 @@ export const competitionRules = {
           "Upon approval, the school will receive an approval email at the address provided in the form, along with a unique registration link valid for 2 months. This link can be used to register for both SNEQC and SNEPC.",
           "After the school registers for a competition, officials will review the submission and allot a date from the school's selected preferred dates.",
           "A date-allotment email will then be sent once again to the registered email address confirming the assigned competition date.",
-          "5 days before the allotted date, the school will receive a Student Information & Attendance Sheet, which must be filled in with participant details and submitted before the competition."
+          <b>Along with the date-allotment email, the school receives a Student Information Sheet, which must be filled in with participant details and submitted 3-4 days before the competition date.</b>
         ]
       },
 
@@ -169,9 +169,9 @@ export const competitionRules = {
       {
         title: "1. School Responsibilities & Documentation",
         points: [
+          <b>Capture a minimum of 4 photographs and 1 video recording of participating students using GPS-enabled camera devices; failure to provide this documentation may affect eligibility for National Level qualification.</b>,
           "Conduct the quiz fairly, transparently, and only within school premises, with proper supervision and discipline.",
           "Verify student eligibility, details, and authenticity of participation, and ensure stable technical arrangements.",
-          "Capture a minimum of 4 photographs and 1 video recording of participating students using GPS-enabled camera devices; failure to provide this documentation may affect eligibility for National Level qualification."
         ]
       },
 
@@ -184,7 +184,7 @@ export const competitionRules = {
           "Once approved, the school receives an approval email at the address provided in the form, along with a unique registration link valid for 2 months. This link can be used to register for both SNEQC and SNEPC.",
           "After the school registers for a competition, officials review the submission and allot a date from the school's selected preferred dates.",
           "A date-allotment email is sent once again to the registered email address confirming the assigned competition date.",
-          "5 days before the allotted date, the school receives a Student Information & Attendance Sheet, which must be filled in with participant details and submitted before the competition date."
+          <b>Along with the date-allotment email, the school receives a Student Information Sheet, which must be filled in with participant details and submitted 3-4 days before the competition date.</b>
         ]
       },
 
@@ -199,7 +199,17 @@ export const competitionRules = {
       },
 
       {
-        title: "4. Eligibility",
+        title: "4. Verification, Scoring & Evaluation",
+        points: [
+          "Schools must verify each participant's class, school enrollment, and student identity; incorrect or unverifiable details may lead to disqualification.",
+          "The quiz will be evaluated automatically via the online platform, and system-generated scores are final.",
+          <b>The quiz duration is 10 minutes. Rankings will be determined primarily by the number of correct answers. In the event of a tie, the participant who completes and submits the quiz in the shortest time, as recorded by the system, will be ranked higher.</b>,
+          "In case of any dispute, the Foundation's decision shall be final and binding."
+        ]
+      },
+
+      {
+        title: "5. Eligibility",
         points: [
           "Open to students of Classes 6th to 8th.",
           "The competition is conducted as a single combined category for all eligible classes."
@@ -207,14 +217,14 @@ export const competitionRules = {
       },
 
       {
-        title: "5. Maximum Participation",
+        title: "6. Maximum Participation",
         points: [
           "Up to 50 students per school."
         ]
       },
 
       {
-        title: "6. Theme & Topics",
+        title: "7. Theme & Topics",
         description: "Theme: Environment & Sustainability",
         points: [
           "Suggested topics: Global Warming, Renewable Energy, Pollution & Waste Management, Tree Plantation, Wildlife Conservation, Sustainable Living, Water Conservation, Climate Change, and Clean Environment."
@@ -222,20 +232,11 @@ export const competitionRules = {
       },
 
       {
-        title: "7. Language & Technical Requirements",
+        title: "8. Language & Technical Requirements",
         points: [
           "The quiz will be conducted in English only.",
           "Schools must ensure a stable internet connection, availability of computer systems, and proper supervision.",
           "Use of mobile phones is discouraged unless specifically permitted by the Foundation."
-        ]
-      },
-
-      {
-        title: "8. Verification, Scoring & Evaluation",
-        points: [
-          "Schools must verify each participant's class, school enrollment, and student identity; incorrect or unverifiable details may lead to disqualification.",
-          "The quiz will be evaluated automatically via the online platform, and system-generated scores are final.",
-          "In case of any dispute, the Foundation's decision shall be final and binding."
         ]
       },
 
