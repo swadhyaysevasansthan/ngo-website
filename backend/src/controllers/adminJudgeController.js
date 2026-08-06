@@ -59,20 +59,29 @@ export const listJudges = async (req, res) => {
   try {
     const competition = await getDefaultCompetition();
 
-    let totalEntries = 0;
+    let totalRound1 = 0;
+    let totalRound2 = 0;
     if (competition) {
       const totalRes = await pool.query(
-        `SELECT COUNT(*) FROM evaluation_entries WHERE competition_id = $1 AND status = 'active'`,
+        `SELECT
+            (SELECT COUNT(*) FROM evaluation_entries WHERE competition_id = $1 AND status = 'active') AS round1_total,
+            (SELECT COUNT(*) FROM evaluation_entries e
+               JOIN evaluation_qualifications q ON q.entry_id = e.id
+               WHERE e.competition_id = $1 AND e.status = 'active'
+                 AND q.qualified = true AND q.verification_status != 'disqualified') AS round2_total`,
         [competition.id]
       );
-      totalEntries = parseInt(totalRes.rows[0].count, 10);
+      totalRound1 = parseInt(totalRes.rows[0].round1_total, 10);
+      totalRound2 = parseInt(totalRes.rows[0].round2_total, 10);
     }
 
-    // Single aggregated query instead of one query per judge (N+1).
+    // Single aggregated query instead of one query per judge (N+1),
+    // now tracking both rounds' reviewed counts at once.
     const judgesRes = await pool.query(
       `SELECT
           j.id, j.full_name, j.username, j.is_active, j.last_login, j.last_activity, j.created_at,
-          COUNT(s.id) FILTER (WHERE s.round = 1 AND e.competition_id = $1) AS reviewed
+          COUNT(s.id) FILTER (WHERE s.round = 1 AND e.competition_id = $1) AS reviewed_r1,
+          COUNT(s.id) FILTER (WHERE s.round = 2 AND e.competition_id = $1) AS reviewed_r2
        FROM judges j
        LEFT JOIN evaluation_scores s ON s.judge_id = j.id
        LEFT JOIN evaluation_entries e ON e.id = s.entry_id
@@ -82,12 +91,27 @@ export const listJudges = async (req, res) => {
     );
 
     const data = judgesRes.rows.map((judge) => {
-      const reviewed = parseInt(judge.reviewed, 10);
+      const reviewedR1 = parseInt(judge.reviewed_r1, 10);
+      const reviewedR2 = parseInt(judge.reviewed_r2, 10);
       return {
         ...judge,
-        reviewed,
-        pending: totalEntries - reviewed,
-        completionPct: totalEntries > 0 ? Math.round((reviewed / totalEntries) * 100) : 0,
+        // Back-compat: existing consumers reading reviewed/pending/completionPct
+        // keep getting Round 1 numbers, unchanged.
+        reviewed: reviewedR1,
+        pending: totalRound1 - reviewedR1,
+        completionPct: totalRound1 > 0 ? Math.round((reviewedR1 / totalRound1) * 100) : 0,
+        round1: {
+          reviewed: reviewedR1,
+          total: totalRound1,
+          pending: totalRound1 - reviewedR1,
+          completionPct: totalRound1 > 0 ? Math.round((reviewedR1 / totalRound1) * 100) : 0,
+        },
+        round2: {
+          reviewed: reviewedR2,
+          total: totalRound2,
+          pending: totalRound2 - reviewedR2,
+          completionPct: totalRound2 > 0 ? Math.round((reviewedR2 / totalRound2) * 100) : 0,
+        },
       };
     });
 

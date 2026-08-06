@@ -180,7 +180,8 @@ const JudgeManagement = () => {
               <tr>
                 <th className="px-4 py-3">Name</th>
                 <th className="px-4 py-3">Username</th>
-                <th className="px-4 py-3">Progress</th>
+                <th className="px-4 py-3">Round 1 Progress</th>
+                <th className="px-4 py-3">Round 2 Progress</th>
                 <th className="px-4 py-3">Last Login</th>
                 <th className="px-4 py-3">Last Activity</th>
                 <th className="px-4 py-3">Status</th>
@@ -193,7 +194,14 @@ const JudgeManagement = () => {
                   <td className="px-4 py-3 font-medium text-gray-800">{judge.full_name}</td>
                   <td className="px-4 py-3 text-gray-500 font-mono">{judge.username}</td>
                   <td className="px-4 py-3 text-gray-600">
-                    {judge.reviewed}/{judge.reviewed + judge.pending} ({judge.completionPct}%)
+                    {judge.round1.reviewed}/{judge.round1.total} ({judge.round1.completionPct}%)
+                  </td>
+                  <td className="px-4 py-3 text-gray-600">
+                    {judge.round2.total > 0 ? (
+                      `${judge.round2.reviewed}/${judge.round2.total} (${judge.round2.completionPct}%)`
+                    ) : (
+                      <span className="text-gray-400 text-xs">Not started</span>
+                    )}
                   </td>
                   <td className="px-4 py-3 text-gray-500">{formatDate(judge.last_login)}</td>
                   <td className="px-4 py-3 text-gray-500">{formatDate(judge.last_activity)}</td>
@@ -226,7 +234,7 @@ const JudgeManagement = () => {
               ))}
               {judges.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-4 py-10 text-center text-gray-400">
+                  <td colSpan={8} className="px-4 py-10 text-center text-gray-400">
                     No judges yet. Add up to 5 to get started.
                   </td>
                 </tr>
