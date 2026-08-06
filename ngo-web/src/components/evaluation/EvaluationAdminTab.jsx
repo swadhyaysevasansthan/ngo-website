@@ -9,7 +9,7 @@ import AuditLog from './AuditLog';
 const SUB_TABS = [
   { id: 'judges', label: 'Judges' },
   { id: 'settings', label: 'Settings' },
-  { id: 'results', label: 'Round 1 Results' },
+  { id: 'results', label: 'Round 1 & 2 Results' },
   { id: 'verification', label: 'Verification' },
   { id: 'winners', label: 'Winners' },
   { id: 'audit', label: 'Audit Log' },
