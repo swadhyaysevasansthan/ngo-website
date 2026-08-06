@@ -178,15 +178,6 @@ const JudgeEvaluationModal = ({ queue, currentIndex, round, onClose, onNavigate,
               </div>
             )}
 
-            {round === 2 && entry.myRound1Score !== null && (
-              <div className="bg-blue-50 border border-blue-100 text-blue-700 rounded-lg p-3 flex items-center gap-2 text-sm">
-                <History size={16} className="shrink-0" />
-                <span>
-                  Your Round 1 score for this entry was <strong>{entry.myRound1Score}</strong>.
-                </span>
-              </div>
-            )}
-
             <div className="relative group">
               {entry.imageUrl ? (
                 <img
