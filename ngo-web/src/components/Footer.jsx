@@ -7,7 +7,8 @@ import {
   Heart,
   Instagram,
   Linkedin,
-  Youtube
+  Youtube,
+  Facebook
 } from 'lucide-react';
 
 
@@ -166,14 +167,14 @@ const Footer = () => {
                   <Instagram size={20} />
                 </a>
 
-                {/* <a
-                  href="https://www.linkedin.com/company/swadhyaysevasansthan"
+                <a
+                  href="https://www.facebook.com/share/1CJn3pSbCX/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-blue-400 transition-colors"
                 >
-                  <Linkedin size={20} />
-                </a> */}
+                  <Facebook size={20} />
+                </a>
 
                 <a
                   href="https://www.youtube.com/@swadhyaysevafoundation"

@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import AnnouncementBanner from "../components/AnnouncementBanner";
 import VisitorCounter from "../components/VisitorCounter";
+import WhatsAppButton from "../components/WhatsAppButton";
 
 const PublicLayout = () => {
     return (
@@ -13,6 +14,7 @@ const PublicLayout = () => {
             <main className="flex-grow">
                 <Outlet />
             </main>
+            <WhatsAppButton />
             <VisitorCounter />
             <Footer />
         </div>

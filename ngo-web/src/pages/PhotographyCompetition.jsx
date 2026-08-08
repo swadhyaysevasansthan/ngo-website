@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import {FileText, Camera, CheckCircle2, AlertCircle} from 'lucide-react';
+import { FileText, Camera, CheckCircle2, AlertCircle } from 'lucide-react';
 import Button from "../components/Button1";
 import Card from "../components/Card1";
 
@@ -22,7 +22,7 @@ const RulesModal = ({ isOpen, onClose, title, children }) => {
         {/* Header */}
         <div className="flex items-center px-4 py-3 border-b border-gray-100 bg-gray-50">
           <h3 className="text-xl font-bold text-gray-900">{title}</h3>
-          
+
         </div>
 
         {/* Body */}
@@ -139,9 +139,9 @@ const PhotographyCompetition = () => {
     };
   }, []);
 
-  const [openRulesModal, setOpenRulesModal] = useState(null); 
+  const [openRulesModal, setOpenRulesModal] = useState(null);
   const [openJury, setOpenJury] = useState(null);
-  
+
 
   const juryMembers = [
     {
@@ -216,40 +216,6 @@ const PhotographyCompetition = () => {
     },
   ];
 
-  // const testimonials = [
-  //   {
-  //     quote: "As a wildlife photographer from Assam, having judges of this caliber evaluate my work is a rare opportunity. SNPC 2026 feels like the real deal.",
-  //     name: "Riya Borah",
-  //     college: "Cotton University",
-  //     state: "Assam"
-  //   },
-  //   {
-  //     quote: "The themes — Nature and Wildlife — are exactly what I shoot. A national competition that actually gets photographers like us.",
-  //     name: "Arjun Mehta",
-  //     college: "Delhi College of Art",
-  //     state: "Delhi"
-  //   },
-  //   {
-  //     quote: "Padma Shri Anup Sah on the jury? I registered the same day I found out. This is the competition I've been waiting for.",
-  //     name: "Priya Nair",
-  //     college: "CEPT University",
-  //     state: "Gujarat"
-  //   },
-  //   {
-  //     quote: "The prize money is meaningful, but honestly it's the jury credentials that convinced me. These are people whose opinions actually matter in the field.",
-  //     name: "Karan Desai",
-  //     college: "Symbiosis Institute of Design",
-  //     state: "Maharashtra"
-  //   },
-  //   {
-  //     quote: "I love that it's open to all 17–23 year olds across India. Not just metro colleges — this competition actually wants to discover talent from everywhere.",
-  //     name: "Meghna Sinha",
-  //     college: "Patna University",
-  //     state: "Bihar"
-  //   },
-  // ];
-
-
   const currentJury = juryMembers.find((j) => j.id === openJury);
 
   return (
@@ -263,12 +229,10 @@ const PhotographyCompetition = () => {
               <span className="text-lg">📸</span>
               National Level Photography Competition
             </span>
-
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-forest leading-tight">
               Capture the Story of{" "}
               <span className="text-primary">Nature & Wildlife</span>
             </h1>
-
             <p className="text-lg text-gray-700 max-w-xl">
               <b>
                 Swadhyay National Photography Competition (SNPC) 2026 invites
@@ -277,10 +241,6 @@ const PhotographyCompetition = () => {
                 of our natural world.
               </b>
             </p>
-
-            {/* Live Participant Trust Bar */}
-            {/* <LiveParticipation /> */}
-
 
             {/* Key Info Strip */}
             <div className="grid sm:grid-cols-3 gap-4 text-sm">
@@ -317,23 +277,19 @@ const PhotographyCompetition = () => {
                   Register for ₹100
                 </Button>
               </Link>
-          
             </div>
-
             <p className="text-xs text-gray-500">
               <b>
                 Age group: 17-23 years • Open to college and university students
                 across India.
               </b>
-              </p>
-              
+            </p>
           </div>
 
           {/* Right: Visual / Highlights */}
           <div className="relative animate-slide-up">
             <div className="absolute -top-10 -right-6 w-32 h-32 bg-gradient-to-br from-amber-400/60 to-orange-500/60 rounded-full blur-3xl opacity-70" />
             <div className="absolute -bottom-10 -left-6 w-40 h-40 bg-gradient-to-br from-green-400/60 to-emerald-500/60 rounded-full blur-3xl opacity-70" />
-
             <Card className="relative bg-black/90 text-white overflow-hidden p-0 shadow-2xl">
               {/* Simulated photo collage */}
               <div className="grid grid-cols-2 gap-1 h-64 md:h-80">
@@ -354,7 +310,6 @@ const PhotographyCompetition = () => {
                   style={{ backgroundImage: `url(${hero4})` }}
                 />
               </div>
-
               <div className="p-5 border-t border-white/10 bg-gradient-to-r from-black/80 via-black/70 to-black/60">
                 <p className="text-xs font-semibold text-green-300 uppercase tracking-[0.25em] mb-1">
                   SNPC 2026 • Nature & Wildlife
@@ -366,10 +321,8 @@ const PhotographyCompetition = () => {
                 </p>
               </div>
             </Card>
-
             {/* Floating badge */}
             <div className="absolute -bottom-6 right-4 bg-white rounded-xl shadow-lg px-4 py-3 flex items-center gap-3">
-              
               <div>
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                   Top Awards
@@ -384,71 +337,57 @@ const PhotographyCompetition = () => {
       </section>
 
       {/* WHY PARTICIPATE */}
-<section className="py-20 px-4 bg-white">
-  <div className="max-w-6xl mx-auto">
-
-    <div className="text-center mb-14">
-      <span className="inline-flex items-center px-4 py-2 rounded-full bg-emerald-100 text-emerald-800 text-sm font-semibold">
-        Why Participate?
-      </span>
-
-      <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-4">
-        More Than Just a Competition
-      </h2>
-
-      <p className="mt-4 text-gray-600 max-w-3xl mx-auto">
-        SNPC 2026 is designed to discover and celebrate emerging
-        photographers who can tell compelling stories about nature,
-        wildlife, and conservation through their lens.
-      </p>
-    </div>
-
-    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-      <Card className="p-8 text-center border-emerald-100">
-       
-        <h3 className="font-bold text-lg mb-2">
-          National Recognition
-        </h3>
-        <p className="text-gray-600 text-sm">
-          Showcase your work on a national platform.
-        </p>
-      </Card>
-
-      <Card className="p-8 text-center border-emerald-100">
-       
-        <h3 className="font-bold text-lg mb-2">
-          Distinguished Jury
-        </h3>
-        <p className="text-gray-600 text-sm">
-          Evaluated by internationally acclaimed photographers and photography experts.
-        </p>
-      </Card>
-
-      <Card className="p-8 text-center border-emerald-100">
-       
-        <h3 className="font-bold text-lg mb-2">
-          Showcase Your Vision
-        </h3>
-        <p className="text-gray-600 text-sm">
-          Share your perspective of India’s natural world.
-        </p>
-      </Card>
-
-      <Card className="p-8 text-center border-emerald-100">
-        
-        <h3 className="font-bold text-lg mb-2">
-          ₹42,000 Prize Pool
-        </h3>
-        <p className="text-gray-600 text-sm">
-          Cash awards and national-level recognition.
-        </p>
-      </Card>
-
-    </div>
-
-  </div>
-</section>
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14">
+            <span className="inline-flex items-center px-4 py-2 rounded-full bg-emerald-100 text-emerald-800 text-sm font-semibold">
+              Why Participate?
+            </span>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-4">
+              More Than Just a Competition
+            </h2>
+            <p className="mt-4 text-gray-600 max-w-3xl mx-auto">
+              SNPC 2026 is designed to discover and celebrate emerging
+              photographers who can tell compelling stories about nature,
+              wildlife, and conservation through their lens.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="p-8 text-center border-emerald-100">
+              <h3 className="font-bold text-lg mb-2">
+                National Recognition
+              </h3>
+              <p className="text-gray-600 text-sm">
+                Showcase your work on a national platform.
+              </p>
+            </Card>
+            <Card className="p-8 text-center border-emerald-100">
+              <h3 className="font-bold text-lg mb-2">
+                Distinguished Jury
+              </h3>
+              <p className="text-gray-600 text-sm">
+                Evaluated by internationally acclaimed photographers and photography experts.
+              </p>
+            </Card>
+            <Card className="p-8 text-center border-emerald-100">
+              <h3 className="font-bold text-lg mb-2">
+                Showcase Your Vision
+              </h3>
+              <p className="text-gray-600 text-sm">
+                Share your perspective of India’s natural world.
+              </p>
+            </Card>
+            <Card className="p-8 text-center border-emerald-100">
+              <h3 className="font-bold text-lg mb-2">
+                ₹42,000 Prize Pool
+              </h3>
+              <p className="text-gray-600 text-sm">
+                Cash awards and national-level recognition.
+              </p>
+            </Card>
+          </div>
+        </div>
+      </section>
 
       {/* Jury Section */}
       <section className="py-10 sm:py-16 px-3 sm:px-4 bg-white/80">
@@ -459,7 +398,6 @@ const PhotographyCompetition = () => {
           <p className="text-center text-gray-600 mb-8 sm:mb-12 max-w-2xl mx-auto text-sm sm:text-base">
             Our jury brings together leading voices from photography, conservation, and academia.
           </p>
-
           <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
             {juryMembers.map((member) => (
               <button
@@ -502,136 +440,136 @@ const PhotographyCompetition = () => {
         </div>
       </section>
 
-            <SimpleModal
+      <SimpleModal
         isOpen={Boolean(currentJury)}
         onClose={() => setOpenJury(null)}
         title={currentJury?.name || ''}
-        role={currentJury?.role || ''} 
+        role={currentJury?.role || ''}
         photo={currentJury?.photo || ''}
         paragraphs={currentJury?.details || []}
       />
 
 
       {/* Final CTA */}
-<section className="relative overflow-hidden py-20 px-4 bg-gradient-to-br from-emerald-900 via-green-800 to-emerald-900">
+      <section className="relative overflow-hidden py-20 px-4 bg-gradient-to-br from-emerald-900 via-green-800 to-emerald-900">
 
-  {/* Background Glow Effects */}
-  <div className="absolute top-0 left-1/4 h-80 w-80 rounded-full bg-white/5 blur-3xl" />
-  <div className="absolute bottom-0 right-1/4 h-80 w-80 rounded-full bg-emerald-300/10 blur-3xl" />
+        {/* Background Glow Effects */}
+        <div className="absolute top-0 left-1/4 h-80 w-80 rounded-full bg-white/5 blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 h-80 w-80 rounded-full bg-emerald-300/10 blur-3xl" />
 
-  <div className="relative max-w-4xl mx-auto text-center">
+        <div className="relative max-w-4xl mx-auto text-center">
 
-    <p className="text-emerald-200 text-sm font-semibold uppercase tracking-[0.3em] mb-4">
-      Evaluated by Padma Shri Awardee, Former National Photo Editors, Internationally Acclaimed Photographers & Photography Educators
-    </p>
+          <p className="text-emerald-200 text-sm font-semibold uppercase tracking-[0.3em] mb-4">
+            Evaluated by Padma Shri Awardee, Former National Photo Editors, Internationally Acclaimed Photographers & Photography Educators
+          </p>
 
-    <h2 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-      Showcase Your Vision
-      <span className="block text-emerald-300">
-        On a National Stage
-      </span>
-    </h2>
+          <h2 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
+            Showcase Your Vision
+            <span className="block text-emerald-300">
+              On a National Stage
+            </span>
+          </h2>
 
-    <Link to="/register">
-      <Button
-        size="large"
-        variant="fancy"
-        className="px-10 py-4 text-lg font-bold shadow-2xl hover:scale-105 transition-all duration-300"
-      >
-        Register for SNPC 2026 →
-      </Button>
-    </Link>
+          <Link to="/register">
+            <Button
+              size="large"
+              variant="fancy"
+              className="px-10 py-4 text-lg font-bold shadow-2xl hover:scale-105 transition-all duration-300"
+            >
+              Register for SNPC 2026 →
+            </Button>
+          </Link>
 
-    <p className="mt-5 text-sm text-emerald-200">
-      Join photographers from across India and be part of a growing national community of visual storytellers.
-    </p>
+          <p className="mt-5 text-sm text-emerald-200">
+            Join photographers from across India and be part of a growing national community of visual storytellers.
+          </p>
 
-  </div>
-</section>
+        </div>
+      </section>
 
       {/* PRIZES */}
-<section className="py-20 px-4 bg-gradient-to-br from-amber-50 via-white to-orange-50">
+      <section className="py-20 px-4 bg-gradient-to-br from-amber-50 via-white to-orange-50">
 
-  <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto">
 
-    <div className="text-center mb-14">
-      <span className="inline-flex px-4 py-2 rounded-full bg-amber-100 text-amber-800 font-semibold text-sm">
-        Awards & Recognition
-      </span>
+          <div className="text-center mb-14">
+            <span className="inline-flex px-4 py-2 rounded-full bg-amber-100 text-amber-800 font-semibold text-sm">
+              Awards & Recognition
+            </span>
 
-      <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-4">
-        ₹42,000 Prize Pool
-      </h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-4">
+              ₹42,000 Prize Pool
+            </h2>
 
-      <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-        Recognising excellence in nature and wildlife photography by young
-        photographers across India.
-      </p>
-    </div>
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+              Recognising excellence in nature and wildlife photography by young
+              photographers across India.
+            </p>
+          </div>
 
-    <div className="grid md:grid-cols-3 gap-8 mb-10">
+          <div className="grid md:grid-cols-3 gap-8 mb-10">
 
-      <div className="bg-gradient-to-br from-yellow-400 to-amber-500 rounded-3xl p-8 text-center shadow-xl">
-        <div className="text-6xl mb-4">🥇</div>
-        <h3 className="text-white text-2xl font-bold mb-2">
-          First Prize
-        </h3>
-        <div className="text-5xl font-extrabold text-white">
-          ₹21,000
+            <div className="bg-gradient-to-br from-yellow-400 to-amber-500 rounded-3xl p-8 text-center shadow-xl">
+              <div className="text-6xl mb-4">🥇</div>
+              <h3 className="text-white text-2xl font-bold mb-2">
+                First Prize
+              </h3>
+              <div className="text-5xl font-extrabold text-white">
+                ₹21,000
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-slate-300 to-slate-400 rounded-3xl p-8 text-center shadow-xl">
+              <div className="text-6xl mb-4">🥈</div>
+              <h3 className="text-white text-2xl font-bold mb-2">
+                Second Prize
+              </h3>
+              <div className="text-5xl font-extrabold text-white">
+                ₹11,000
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-orange-500 to-amber-700 rounded-3xl p-8 text-center shadow-xl">
+              <div className="text-6xl mb-4">🥉</div>
+              <h3 className="text-white text-2xl font-bold mb-2">
+                Third Prize
+              </h3>
+              <div className="text-5xl font-extrabold text-white">
+                ₹5,000
+              </div>
+            </div>
+
+          </div>
+
+          <Card className="p-8 text-center border-emerald-100">
+            <h3 className="text-2xl font-bold mb-4">
+              Every Participant Receives
+            </h3>
+
+            <div className="grid md:grid-cols-3 gap-4 text-sm">
+
+              <div>
+                ✓ Participation Certificate
+              </div>
+
+              <div>
+                ✓ National-Level Exposure
+              </div>
+
+              <div>
+                ✓ Evaluation by Expert Jury
+              </div>
+
+            </div>
+
+            <div className="mt-6 font-semibold text-emerald-700">
+              + 5 Consolation Awards of ₹1,000 each
+            </div>
+          </Card>
+
         </div>
-      </div>
 
-      <div className="bg-gradient-to-br from-slate-300 to-slate-400 rounded-3xl p-8 text-center shadow-xl">
-        <div className="text-6xl mb-4">🥈</div>
-        <h3 className="text-white text-2xl font-bold mb-2">
-          Second Prize
-        </h3>
-        <div className="text-5xl font-extrabold text-white">
-          ₹11,000
-        </div>
-      </div>
-
-      <div className="bg-gradient-to-br from-orange-500 to-amber-700 rounded-3xl p-8 text-center shadow-xl">
-        <div className="text-6xl mb-4">🥉</div>
-        <h3 className="text-white text-2xl font-bold mb-2">
-          Third Prize
-        </h3>
-        <div className="text-5xl font-extrabold text-white">
-          ₹5,000
-        </div>
-      </div>
-
-    </div>
-
-    <Card className="p-8 text-center border-emerald-100">
-      <h3 className="text-2xl font-bold mb-4">
-        Every Participant Receives
-      </h3>
-
-      <div className="grid md:grid-cols-3 gap-4 text-sm">
-
-        <div>
-          ✓ Participation Certificate
-        </div>
-
-        <div>
-          ✓ National-Level Exposure
-        </div>
-
-        <div>
-          ✓ Evaluation by Expert Jury
-        </div>
-
-      </div>
-
-      <div className="mt-6 font-semibold text-emerald-700">
-        + 5 Consolation Awards of ₹1,000 each
-      </div>
-    </Card>
-
-  </div>
-
-</section>
+      </section>
 
 
 
@@ -698,66 +636,66 @@ const PhotographyCompetition = () => {
         </div>
       </section>
 
-{/* IMPORTANT DATES */}
-<section className="py-20 px-4 bg-emerald-50/60">
+      {/* IMPORTANT DATES */}
+      <section className="py-20 px-4 bg-emerald-50/60">
 
-  <div className="max-w-5xl mx-auto">
+        <div className="max-w-5xl mx-auto">
 
-    <div className="text-center mb-14">
-      <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-        Important Dates
-      </h2>
-    </div>
-
-    <div className="relative">
-
-      <div className="absolute left-8 top-0 bottom-0 w-1 bg-emerald-200 hidden md:block" />
-
-      {[
-        {
-          date: "10 Feb 2026",
-          title: "Registrations Open"
-        },
-        {
-          date: "30 Jun 2026",
-          title: "Registration Deadline"
-        },
-        {
-          date: "7 Jul 2026",
-          title: "Submission Deadline"
-        },
-        {
-          date: "TBA",
-          title: "Results & Awards"
-        }
-      ].map((item, idx) => (
-        <div
-          key={idx}
-          className="relative flex items-center gap-6 mb-8"
-        >
-
-          <div className="hidden md:flex h-16 w-16 rounded-full bg-emerald-600 text-white font-bold items-center justify-center z-10">
-            {idx + 1}
+          <div className="text-center mb-14">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+              Important Dates
+            </h2>
           </div>
 
-          <Card className="flex-1 p-6">
-            <div className="text-sm uppercase tracking-wider text-emerald-700 font-semibold">
-              {item.date}
-            </div>
+          <div className="relative">
 
-            <div className="text-xl font-bold mt-2">
-              {item.title}
-            </div>
-          </Card>
+            <div className="absolute left-8 top-0 bottom-0 w-1 bg-emerald-200 hidden md:block" />
+
+            {[
+              {
+                date: "10 Feb 2026",
+                title: "Registrations Open"
+              },
+              {
+                date: "30 Jun 2026",
+                title: "Registration Deadline"
+              },
+              {
+                date: "7 Jul 2026",
+                title: "Submission Deadline"
+              },
+              {
+                date: "TBA",
+                title: "Results & Awards"
+              }
+            ].map((item, idx) => (
+              <div
+                key={idx}
+                className="relative flex items-center gap-6 mb-8"
+              >
+
+                <div className="hidden md:flex h-16 w-16 rounded-full bg-emerald-600 text-white font-bold items-center justify-center z-10">
+                  {idx + 1}
+                </div>
+
+                <Card className="flex-1 p-6">
+                  <div className="text-sm uppercase tracking-wider text-emerald-700 font-semibold">
+                    {item.date}
+                  </div>
+
+                  <div className="text-xl font-bold mt-2">
+                    {item.title}
+                  </div>
+                </Card>
+
+              </div>
+            ))}
+
+          </div>
 
         </div>
-      ))}
 
-    </div>
-
-  </div>
-
-</section>
+      </section>
 
 
       {/* Rules Overview Section */}
@@ -769,7 +707,7 @@ const PhotographyCompetition = () => {
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* Technical */}
-            <div 
+            <div
               className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 flex flex-col justify-between cursor-pointer hover:shadow-md hover:border-emerald-200 transition"
               onClick={() => setOpenRulesModal('technical')}
             >
@@ -788,7 +726,7 @@ const PhotographyCompetition = () => {
             </div>
 
             {/* Ethical */}
-            <div 
+            <div
               className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 flex flex-col justify-between cursor-pointer hover:shadow-md hover:border-emerald-200 transition"
               onClick={() => setOpenRulesModal('ethical')}
             >
@@ -807,7 +745,7 @@ const PhotographyCompetition = () => {
             </div>
 
             {/* Judging */}
-            <div 
+            <div
               className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 flex flex-col justify-between cursor-pointer hover:shadow-md hover:border-emerald-200 transition"
               onClick={() => setOpenRulesModal('judging')}
             >
@@ -826,7 +764,7 @@ const PhotographyCompetition = () => {
             </div>
 
             {/* Registration */}
-            <div 
+            <div
               className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 flex flex-col justify-between cursor-pointer hover:shadow-md hover:border-emerald-200 transition"
               onClick={() => setOpenRulesModal('registration')}
             >
@@ -855,62 +793,62 @@ const PhotographyCompetition = () => {
       >
         <div className="space-y-8 text-gray-700 text-sm">
           <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Eligibility of Photographs</h4>
-                  <p>All photographs must have been captured between <b>01 Sep 2025 to 7 July 2026</b>.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Location</h4>
-                  <p>Photographs may be taken <b>anywhere within India</b>.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Competition only for Indian Nationals.</h4>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">File Format & Color Mode</h4>
-                  <p>Only <b>digital photographs</b> are accepted. Images must be submitted in <b>JPEG (.jpg/.jpeg) format</b> and <b>RGB color mode</b>.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Image Dimensions</h4>
-                  <p>The maximum size permitted is <b>1920 pixels on the longer side</b>.</p>
-                  <p>Examples:</p>
-                  <p className="ml-4">• Horizontal: 1920 × 1280 px</p>
-                  <p className="ml-4">• Vertical: 1280 × 1920 px</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">File Size & Resolution</h4>
-                  <p>The file size must be <b>between 2 MB to  5 MB</b>.</p>
-                  <p>A resolution of <b>72–150 DPI</b> is recommended to maintain optimal quality within the size limit.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Image Integrity</h4>
-                  <p>Photographs containing <b>borders, frames, logos, watermarks, timestamps, or signatures will be automatically disqualified</b>.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">File Naming Convention</h4>
-                  <p>The participant’s <b>full name must be included in the filename</b> for easy identification.</p>
-                  <p>Example: AmanSharma_Wetlands.jpg</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Authenticity Verification</h4>
-                  <p>The jury reserves the right to request <b>original RAW files</b> and/or a sequence of images captured immediately before and after the submitted photograph to verify authenticity.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Technical Information</h4>
-                  <p> Participants must provide the following details in the <b>submission form</b>:</p>
-                  <p className="ml-4">• Date of capture</p>
-                  <p className="ml-4">• Camera model/Mobile model used</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Editing & Post-Processing</h4>
-                  <p><b>Editing and post-processing are not permitted</b>. Only minimal adjustments in colour and contrast are acceptable (without altering the original content).</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Combing multiple images into one is not permitted.</h4>                
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Verification Documents</h4>
-                  <p>For the final round of judging, shortlisted participants may be required to submit <b>additional documents or original files</b> for verification.</p>
-                </div>
+            <h4 className="font-bold text-gray-900 mb-2">Eligibility of Photographs</h4>
+            <p>All photographs must have been captured between <b>01 Sep 2025 to 7 July 2026</b>.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Location</h4>
+            <p>Photographs may be taken <b>anywhere within India</b>.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Competition only for Indian Nationals.</h4>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">File Format & Color Mode</h4>
+            <p>Only <b>digital photographs</b> are accepted. Images must be submitted in <b>JPEG (.jpg/.jpeg) format</b> and <b>RGB color mode</b>.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Image Dimensions</h4>
+            <p>The maximum size permitted is <b>1920 pixels on the longer side</b>.</p>
+            <p>Examples:</p>
+            <p className="ml-4">• Horizontal: 1920 × 1280 px</p>
+            <p className="ml-4">• Vertical: 1280 × 1920 px</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">File Size & Resolution</h4>
+            <p>The file size must be <b>between 2 MB to  5 MB</b>.</p>
+            <p>A resolution of <b>72–150 DPI</b> is recommended to maintain optimal quality within the size limit.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Image Integrity</h4>
+            <p>Photographs containing <b>borders, frames, logos, watermarks, timestamps, or signatures will be automatically disqualified</b>.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">File Naming Convention</h4>
+            <p>The participant’s <b>full name must be included in the filename</b> for easy identification.</p>
+            <p>Example: AmanSharma_Wetlands.jpg</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Authenticity Verification</h4>
+            <p>The jury reserves the right to request <b>original RAW files</b> and/or a sequence of images captured immediately before and after the submitted photograph to verify authenticity.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Technical Information</h4>
+            <p> Participants must provide the following details in the <b>submission form</b>:</p>
+            <p className="ml-4">• Date of capture</p>
+            <p className="ml-4">• Camera model/Mobile model used</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Editing & Post-Processing</h4>
+            <p><b>Editing and post-processing are not permitted</b>. Only minimal adjustments in colour and contrast are acceptable (without altering the original content).</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Combing multiple images into one is not permitted.</h4>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Verification Documents</h4>
+            <p>For the final round of judging, shortlisted participants may be required to submit <b>additional documents or original files</b> for verification.</p>
+          </div>
         </div>
       </RulesModal>
 
@@ -922,53 +860,53 @@ const PhotographyCompetition = () => {
       >
         <div className="space-y-8 text-gray-700 text-sm">
           <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Animal Welfare</h4>
-                  <p>Participants must prioritize the <b>safety and well-being of wildlife</b> at all times. No photograph should cause harm, injury, stress, or disturbance to animals or their natural habitats.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Domestic & Staged Subjects</h4>
-                  <p>Images featuring <b>farm animals, domestic pets, or staged animal models</b> are not permitted.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Nesting Wildlife</h4>
-                  <p>Photographs of <b>nesting birds or vulnerable breeding sites</b> will not be accepted to prevent disturbance during sensitive periods.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Captive Animals</h4>
-                  <p>Images of animals in captivity are generally not permitted. Exceptions may be considered <b>only when the photograph is intended to document conservation, rescue, or welfare issues</b> related to captivity.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Use of Bait</h4>
-                  <p>Photographs captured using <b>live bait or any method that manipulates or endangers wildlife behavior</b> are strictly prohibited.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Photographer Conduct</h4>
-                  <p>Entries may be disqualified if the photographer's presence or actions are deemed to have <b>disturbed, stressed, or placed wildlife at risk</b>.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Truthful Representation</h4>
-                  <p> Participants must not <b>mislead viewers</b> by staging, manipulating, or misrepresenting the natural scene or wildlife behavior.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Legal Compliance</h4>
-                  <p>Participants are responsible for complying with <b>all applicable local, national, and international laws</b>, including obtaining any necessary permissions or permits required for photography.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Unethical Practices</h4>
-                  <p>Any photograph suspected to have been obtained through <b>cruel, exploitative, or unethical practices</b> will be immediately disqualified.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Accurate Information</h4>
-                  <p>All details provided in captions, descriptions, and location information must be <b>complete, accurate, and truthful</b>.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Conflict of Interest</h4>
-                  <p> Members of the <b>organizing committee, sponsors, partners, and jury</b> are not eligible to participate in the competition.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Rule Enforcement</h4>
-                  <p>Any violation of these ethical standards will be treated as a <b>breach of competition rules</b> and may result in disqualification.</p>
-                </div>
+            <h4 className="font-bold text-gray-900 mb-2">Animal Welfare</h4>
+            <p>Participants must prioritize the <b>safety and well-being of wildlife</b> at all times. No photograph should cause harm, injury, stress, or disturbance to animals or their natural habitats.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Domestic & Staged Subjects</h4>
+            <p>Images featuring <b>farm animals, domestic pets, or staged animal models</b> are not permitted.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Nesting Wildlife</h4>
+            <p>Photographs of <b>nesting birds or vulnerable breeding sites</b> will not be accepted to prevent disturbance during sensitive periods.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Captive Animals</h4>
+            <p>Images of animals in captivity are generally not permitted. Exceptions may be considered <b>only when the photograph is intended to document conservation, rescue, or welfare issues</b> related to captivity.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Use of Bait</h4>
+            <p>Photographs captured using <b>live bait or any method that manipulates or endangers wildlife behavior</b> are strictly prohibited.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Photographer Conduct</h4>
+            <p>Entries may be disqualified if the photographer's presence or actions are deemed to have <b>disturbed, stressed, or placed wildlife at risk</b>.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Truthful Representation</h4>
+            <p> Participants must not <b>mislead viewers</b> by staging, manipulating, or misrepresenting the natural scene or wildlife behavior.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Legal Compliance</h4>
+            <p>Participants are responsible for complying with <b>all applicable local, national, and international laws</b>, including obtaining any necessary permissions or permits required for photography.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Unethical Practices</h4>
+            <p>Any photograph suspected to have been obtained through <b>cruel, exploitative, or unethical practices</b> will be immediately disqualified.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Accurate Information</h4>
+            <p>All details provided in captions, descriptions, and location information must be <b>complete, accurate, and truthful</b>.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Conflict of Interest</h4>
+            <p> Members of the <b>organizing committee, sponsors, partners, and jury</b> are not eligible to participate in the competition.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Rule Enforcement</h4>
+            <p>Any violation of these ethical standards will be treated as a <b>breach of competition rules</b> and may result in disqualification.</p>
+          </div>
         </div>
       </RulesModal>
 
@@ -980,51 +918,51 @@ const PhotographyCompetition = () => {
       >
         <div className="space-y-8 text-gray-700 text-sm">
           <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Jury Panel</h4>
-                  <p>Entries will be evaluated by an independent jury comprising <b>renowned professionals from the fields of photography, wildlife research, and conservation</b>.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Judging Criteria</h4>
-                  <p>Photographs will be assessed based on the following parameters:</p>
-                  <p className="ml-4">• Suitability to Theme</p>
-                  <p className="ml-4">• Creativity</p>
-                  <p className="ml-4">• Originality</p>
-                  <p className="ml-4">• Composition</p>
-                  <p className="ml-4">• Technical excellence</p>
-                  <p className="ml-4">• Ethical integrity</p>
-                  <p className="ml-4">• Artistic impact</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Category Reassignment</h4>
-                  <p>The jury reserves the right to <b>reassign entries to a more suitable category</b>, where deemed appropriate.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Awards & Prize Decisions</h4>
-                  <p>The jury may, at its discretion:</p>
-                  <p className="ml-4">• Declare a tie for any prize.</p>
-                  <p className="ml-4">• Modify the number of prizes.</p>
-                  <p className="ml-4">• Withhold an award if entries do not meet the required standards of merit.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Fair Conduct Policy</h4>
-                  <p> Any participant who attempts to <b>contact, influence, or lobby jury members or organizers</b> regarding the judging process will be <b>immediately disqualified</b>.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Shortlisting Communication</h4>
-                  <p> After submissions close, only participants whose entries are <b>shortlisted</b> will be contacted by the organizers.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Confidentiality of Shortlisting</h4>
-                  <p> Shortlisted participants will be informed in <b>strict confidence</b>. Public disclosure or social media announcements prior to official results may lead to <b>withdrawal of the entry</b>.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Final Decision</h4>
-                  <p>Final results will be announced <b>only during the official award ceremony</b> as scheduled by the organizers.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Binding Authority</h4>
-                  <p>All decisions made by the jury and organizing committee shall be <b>final and binding</b>, and no correspondence or appeals regarding the results will be entertained.</p>
-                </div>
+            <h4 className="font-bold text-gray-900 mb-2">Jury Panel</h4>
+            <p>Entries will be evaluated by an independent jury comprising <b>renowned professionals from the fields of photography, wildlife research, and conservation</b>.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Judging Criteria</h4>
+            <p>Photographs will be assessed based on the following parameters:</p>
+            <p className="ml-4">• Suitability to Theme</p>
+            <p className="ml-4">• Creativity</p>
+            <p className="ml-4">• Originality</p>
+            <p className="ml-4">• Composition</p>
+            <p className="ml-4">• Technical excellence</p>
+            <p className="ml-4">• Ethical integrity</p>
+            <p className="ml-4">• Artistic impact</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Category Reassignment</h4>
+            <p>The jury reserves the right to <b>reassign entries to a more suitable category</b>, where deemed appropriate.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Awards & Prize Decisions</h4>
+            <p>The jury may, at its discretion:</p>
+            <p className="ml-4">• Declare a tie for any prize.</p>
+            <p className="ml-4">• Modify the number of prizes.</p>
+            <p className="ml-4">• Withhold an award if entries do not meet the required standards of merit.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Fair Conduct Policy</h4>
+            <p> Any participant who attempts to <b>contact, influence, or lobby jury members or organizers</b> regarding the judging process will be <b>immediately disqualified</b>.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Shortlisting Communication</h4>
+            <p> After submissions close, only participants whose entries are <b>shortlisted</b> will be contacted by the organizers.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Confidentiality of Shortlisting</h4>
+            <p> Shortlisted participants will be informed in <b>strict confidence</b>. Public disclosure or social media announcements prior to official results may lead to <b>withdrawal of the entry</b>.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Final Decision</h4>
+            <p>Final results will be announced <b>only during the official award ceremony</b> as scheduled by the organizers.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Binding Authority</h4>
+            <p>All decisions made by the jury and organizing committee shall be <b>final and binding</b>, and no correspondence or appeals regarding the results will be entertained.</p>
+          </div>
         </div>
       </RulesModal>
 
@@ -1036,70 +974,70 @@ const PhotographyCompetition = () => {
       >
         <div className="space-y-8 text-gray-700 text-sm">
           <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Registration Period</h4>
-                  <p>Registrations will remain open from <b>10 February 2026 to 30 June 2026</b>.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Registration Process</h4>
-                  <p>Participants must complete the <b>online registration form</b> available on the official website of <b>Swadhyay Seva Foundation</b>.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Submission Period</h4>
-                  <p>Photograph submissions will be accepted from <b>12 February 2026 until 11:59 PM (IST) on 7 July 2026</b>.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Submission Platform</h4>
-                  <p>Entries must be submitted <b>only through the official website</b>: <u>www.swadhyayseva.org</u>. Submissions via email or other platforms will not be accepted.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Support & Queries</h4>
-                  <p>For assistance or technical issues, participants may contact:</p>
-                  <p className="ml-4">• Email: swadhyaysevafoundation@gmail.com</p>
-                  <p className="ml-4">• WhatsApp: +91 9599224323</p>
-                  <p>Participants are advised to <b>carefully read all guidelines</b> before reaching out.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Competition Categories</h4>
-                  <p>Participants may submit entries under either of the following categories:</p>
-                  <p className="ml-4">• Nature</p>
-                  <p className="ml-4">• Wildlife</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Registration Fee</h4>
-                  <p className="ml-4">A <b>non-refundable registration fee of ₹100</b> is applicable per participant.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Cancellation & Refund Policy</h4>
-                  <p className="ml-4">Registration fees are <b>non-refundable</b>, and cancellations or withdrawals will not be entertained once registration is completed.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Entry Limit</h4>
-                  <p>Each participant may submit <b>only one photograph</b> in <b>any one category</b>.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Usage Rights (Organizers)</h4>
-                  <p>By submitting an entry, participants grant the organizers the right to <b>use the photographs for promotional, educational, exhibition, and publicity purposes</b> related to the competition and future events, with due credit to the photographer.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Sponsor Rights</h4>
-                  <p>Official sponsors may use selected photographs or related information <b>strictly for competition promotion and documentation purposes</b>, with appropriate acknowledgment.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Prize Disbursement</h4>
-                  <p>Prize money is <b>non-transferable</b> and will be awarded directly to the registered participant.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Tie Situation</h4>
-                  <p>In the event of a tie, the <b>cash prize will be equally shared</b> among the winners of that category.</p>
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-2">Jurisdiction</h4>
-                  <p>Any disputes arising from the competition shall be subject to the jurisdiction of Delhi courts only.</p>
-                </div>
+            <h4 className="font-bold text-gray-900 mb-2">Registration Period</h4>
+            <p>Registrations will remain open from <b>10 February 2026 to 30 June 2026</b>.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Registration Process</h4>
+            <p>Participants must complete the <b>online registration form</b> available on the official website of <b>Swadhyay Seva Foundation</b>.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Submission Period</h4>
+            <p>Photograph submissions will be accepted from <b>12 February 2026 until 11:59 PM (IST) on 7 July 2026</b>.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Submission Platform</h4>
+            <p>Entries must be submitted <b>only through the official website</b>: <u>www.swadhyayseva.org</u>. Submissions via email or other platforms will not be accepted.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Support & Queries</h4>
+            <p>For assistance or technical issues, participants may contact:</p>
+            <p className="ml-4">• Email: swadhyaysevafoundation@gmail.com</p>
+            <p className="ml-4">• WhatsApp: +91 9599224323</p>
+            <p>Participants are advised to <b>carefully read all guidelines</b> before reaching out.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Competition Categories</h4>
+            <p>Participants may submit entries under either of the following categories:</p>
+            <p className="ml-4">• Nature</p>
+            <p className="ml-4">• Wildlife</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Registration Fee</h4>
+            <p className="ml-4">A <b>non-refundable registration fee of ₹100</b> is applicable per participant.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Cancellation & Refund Policy</h4>
+            <p className="ml-4">Registration fees are <b>non-refundable</b>, and cancellations or withdrawals will not be entertained once registration is completed.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Entry Limit</h4>
+            <p>Each participant may submit <b>only one photograph</b> in <b>any one category</b>.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Usage Rights (Organizers)</h4>
+            <p>By submitting an entry, participants grant the organizers the right to <b>use the photographs for promotional, educational, exhibition, and publicity purposes</b> related to the competition and future events, with due credit to the photographer.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Sponsor Rights</h4>
+            <p>Official sponsors may use selected photographs or related information <b>strictly for competition promotion and documentation purposes</b>, with appropriate acknowledgment.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Prize Disbursement</h4>
+            <p>Prize money is <b>non-transferable</b> and will be awarded directly to the registered participant.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Tie Situation</h4>
+            <p>In the event of a tie, the <b>cash prize will be equally shared</b> among the winners of that category.</p>
+          </div>
+          <div>
+            <h4 className="font-bold text-gray-900 mb-2">Jurisdiction</h4>
+            <p>Any disputes arising from the competition shall be subject to the jurisdiction of Delhi courts only.</p>
+          </div>
         </div>
       </RulesModal>
 
-      
+
       {/* FAQ Section */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-3xl mx-auto">
@@ -1143,83 +1081,72 @@ const PhotographyCompetition = () => {
               </details>
             ))}
           </div>
-          </div>
-        </section>
-      
-    
+        </div>
+      </section>
 
-{/* FINAL CTA */}
-<section className="relative overflow-hidden py-24 px-4 bg-gradient-to-br from-emerald-900 via-green-800 to-emerald-900">
-
-  <div className="absolute top-0 left-1/4 h-96 w-96 bg-white/5 rounded-full blur-3xl" />
-  <div className="absolute bottom-0 right-1/4 h-96 w-96 bg-emerald-300/10 rounded-full blur-3xl" />
-
-  <div className="relative max-w-5xl mx-auto text-center">
-
-    <span className="inline-flex items-center px-5 py-2 rounded-full bg-white/10 text-emerald-200 text-sm font-semibold mb-6">
-      📸 Swadhyay National Photography Competition 2026
-    </span>
-
-    <h2 className="text-4xl md:text-6xl font-extrabold text-white leading-tight">
-      Your Best Photograph
-      <span className="block text-emerald-300">
-        Deserves a National Audience
-      </span>
-    </h2>
-
-    <Link to="/register">
-      <Button
-        size="large"
-        variant="fancy"
-        className="px-12 py-5 text-lg font-bold shadow-2xl hover:scale-105 transition-all duration-300"
-      >
-        Register for SNPC 2026 →
-      </Button>
-    </Link>
-
-    <p className="mt-6 text-sm text-emerald-200">
-      Registration closes on <strong>30 June 2026</strong> • Open to participants aged 17–23 years across India
-    </p>
-
-  </div>
-
-</section>
+      {/* FINAL CTA */}
+      <section className="relative overflow-hidden py-24 px-4 bg-gradient-to-br from-emerald-900 via-green-800 to-emerald-900">
+        <div className="absolute top-0 left-1/4 h-96 w-96 bg-white/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 h-96 w-96 bg-emerald-300/10 rounded-full blur-3xl" />
+        <div className="relative max-w-5xl mx-auto text-center">
+          <span className="inline-flex items-center px-5 py-2 rounded-full bg-white/10 text-emerald-200 text-sm font-semibold mb-6">
+            📸 Swadhyay National Photography Competition 2026
+          </span>
+          <h2 className="text-4xl md:text-6xl font-extrabold text-white leading-tight">
+            Your Best Photograph
+            <span className="block text-emerald-300">
+              Deserves a National Audience
+            </span>
+          </h2>
+          <Link to="/register">
+            <Button
+              size="large"
+              variant="fancy"
+              className="px-12 py-5 text-lg font-bold shadow-2xl hover:scale-105 transition-all duration-300"
+            >
+              Register for SNPC 2026 →
+            </Button>
+          </Link>
+          <p className="mt-6 text-sm text-emerald-200">
+            Registration closes on <strong>7 May 2026</strong> • Open to participants aged 17–23 years across India
+          </p>
+        </div>
+      </section>
 
 {/* Photography Club CTA */}
 <section className="py-8 px-4 bg-white">
-
   <div className="max-w-4xl mx-auto">
-
     <div className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl p-6 text-center">
-
       <div className="text-3xl mb-2">📸</div>
-
       <h3 className="text-xl font-bold text-emerald-900 mb-2">
         Photography Club or College Society?
       </h3>
-
       <p className="text-gray-600 text-sm mb-5 max-w-xl mx-auto">
         Interested in promoting SNPC 2026 within your photography club,
-        media society, or student community? We'd love to connect.
+        media society, or student community? Join our WhatsApp group to
+        connect with fellow photographers and stay updated.
       </p>
-
-      <a
-        href="https://wa.me/919599224323?text=Hi%2C%20I'm%20interested%20in%20SNPC%202026%20for%20our%20Photography%20Club."
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-700 text-white font-semibold text-sm hover:bg-emerald-800 transition"
-      >
-        Chat on WhatsApp
-      </a>
-
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        <a
+          href="https://chat.whatsapp.com/DdSY6A6qzyb2jFLXsfpwCu"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-700 text-white font-semibold text-sm hover:bg-emerald-800 transition"
+        >
+          Join Our WhatsApp Group
+        </a>
+        <a
+          href="https://wa.me/919599224323?text=Hi%2C%20I'm%20interested%20in%20SNPC%202026%20for%20our%20Photography%20Club."
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-emerald-700 text-emerald-700 font-semibold text-sm hover:bg-emerald-50 transition"
+        >
+          Chat with Us
+        </a>
+      </div>
     </div>
-
   </div>
-
 </section>
-       
-      
-
     </main>
   );
 };
