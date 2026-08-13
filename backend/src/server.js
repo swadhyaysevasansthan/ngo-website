@@ -100,7 +100,7 @@ app.use(
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'OK', 
-    message: 'SNPC 2026 API is running',
+    message: 'SSF API is running',
     timestamp: new Date().toISOString(),
   });
 });

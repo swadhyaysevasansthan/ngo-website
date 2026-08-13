@@ -237,6 +237,26 @@ const UpcomingEngagements = () => {
               </a>
             </motion.div>
           </motion.div>
+
+          {/* Top Note */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="mt-10 rounded-3xl border border-emerald-200 bg-emerald-50 px-8 py-6"
+          >
+            <h3 className="font-bold text-emerald-800 text-lg mb-2">
+              Before You Register
+            </h3>
+            <p className="text-gray-700 leading-relaxed">
+              Schools and teachers are strongly advised to read the complete
+              Rules & Regulations before registration. Participation in the
+              competition constitutes acceptance of all rules, eligibility
+              conditions, evaluation criteria and decisions of the Swadhyay Seva
+              Foundation.
+            </p>
+          </motion.div>
         </div>
       </section>
 
