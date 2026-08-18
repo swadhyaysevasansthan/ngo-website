@@ -46,6 +46,7 @@ const PORT = process.env.PORT || 5000;
 
 const allowedOrigins = [
   'http://localhost:3000',
+  'http://localhost:8081',  // Expo web dev server
   'https://ngo-website-rouge-five.vercel.app',
   'https://www.swadhyayseva.org'
 ]
@@ -101,8 +102,8 @@ app.use(
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
+  res.json({
+    status: 'OK',
     message: 'SSF API is running',
     timestamp: new Date().toISOString(),
   });
@@ -112,16 +113,16 @@ app.get('/health', (req, res) => {
 app.get('/api/test-db', async (req, res) => {
   try {
     const result = await pool.query('SELECT NOW()');
-    res.json({ 
-      success: true, 
-      message: 'Database connected', 
-      timestamp: result.rows[0].now 
+    res.json({
+      success: true,
+      message: 'Database connected',
+      timestamp: result.rows[0].now
     });
   } catch (error) {
-    res.status(500).json({ 
-      success: false, 
-      message: 'Database connection failed', 
-      error: error.message 
+    res.status(500).json({
+      success: false,
+      message: 'Database connection failed',
+      error: error.message
     });
   }
 });
@@ -152,9 +153,9 @@ app.use('/api/scanner', scannerRoutes);
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ 
-    success: false, 
-    message: 'Route not found' 
+  res.status(404).json({
+    success: false,
+    message: 'Route not found'
   });
 });
 

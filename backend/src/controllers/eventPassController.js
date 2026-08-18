@@ -425,7 +425,7 @@ export const getScannerDevices = async (req, res) => {
     res.json({ success: true, scanners: result.rows });
   } catch (error) {
     console.error('Get scanners error:', error);
-    res.status(500).json({ success: false, message: 'Failed to retrieve scanner devices' });
+    res.status(500).json({ success: false, message: 'Failed to retrieve scanner devices', error: error.message });
   }
 };
 

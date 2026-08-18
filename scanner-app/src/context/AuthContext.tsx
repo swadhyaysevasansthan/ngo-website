@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import * as SecureStore from 'expo-secure-store';
 import { scannerAuthAPI } from '../api/auth';
+import { secureStorage } from '../utils/secureStorage';
 import { useRouter, useSegments } from 'expo-router';
 
 interface ScannerProfile {
@@ -32,19 +32,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const loadSession = async () => {
     try {
       setIsLoading(true);
-      const token = await SecureStore.getItemAsync('scannerToken');
+      const token = await secureStorage.getItem('scannerToken');
       if (token) {
         const res = await scannerAuthAPI.getProfile();
         if (res.data.success) {
           setScanner(res.data.scanner);
         } else {
-          await SecureStore.deleteItemAsync('scannerToken');
+          await secureStorage.removeItem('scannerToken');
           setScanner(null);
         }
       }
     } catch (error) {
       console.error('Session load error:', error);
-      await SecureStore.deleteItemAsync('scannerToken');
+      await secureStorage.removeItem('scannerToken');
       setScanner(null);
     } finally {
       setIsLoading(false);
@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (deviceCode: string, password: string) => {
     const res = await scannerAuthAPI.login(deviceCode, password);
     if (res.data.success && res.data.token) {
-      await SecureStore.setItemAsync('scannerToken', res.data.token);
+      await secureStorage.setItem('scannerToken', res.data.token);
       setScanner(res.data.scanner);
       router.replace('/');
     } else {
@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = async () => {
-    await SecureStore.deleteItemAsync('scannerToken');
+    await secureStorage.removeItem('scannerToken');
     setScanner(null);
     router.replace('/login');
   };
