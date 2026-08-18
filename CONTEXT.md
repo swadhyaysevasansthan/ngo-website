@@ -1901,18 +1901,657 @@ None — Phase 1 is additive SQL only.
 
 ---
 
+## Phase 1 Checkpoint
+
+Phase: PHASE 1 — Database Design and Migration
+
+Status: **COMPLETE**
+
+### Completed
+
+- Created `backend/database/event_pass_migration.sql` with all four new tables.
+- Created `backend/database/run_event_pass_migration.js` (transactional runner).
+- Migration was **executed manually** by the user against the Aiven PostgreSQL database.
+- The agent did NOT run the migration script.
+
+### Files Modified
+
+- `backend/database/event_pass_migration.sql` ← **new file**
+- `backend/database/run_event_pass_migration.js` ← **new file**
+
+### Database Changes
+
+Four new tables added (additive only — no existing tables modified):
+
+| Table | Purpose |
+|---|---|
+| `events` | One row per physical event; `status` ∈ draft/active/completed/cancelled |
+| `scanner_devices` | One row per scanner phone/tablet; `device_code` + bcrypt `password_hash`; `is_active` flag |
+| `event_passes` | One row per guest pass; `qr_token` (UNIQUE, 64-char hex); `status` ∈ ISSUED/CHECKED_IN/CANCELLED |
+| `checkin_logs` | Append-only scan audit log; every attempt recorded regardless of result |
+
+Indexes created:
+
+- `idx_events_status`, `idx_events_slug`
+- `idx_scanner_devices_event`, `idx_scanner_devices_active`
+- `idx_event_passes_qr_token` (UNIQUE — hot path), `idx_event_passes_event`, `idx_event_passes_status`, `idx_event_passes_guest`, `idx_event_passes_mobile`, `idx_event_passes_number`
+- `idx_checkin_logs_event`, `idx_checkin_logs_pass`, `idx_checkin_logs_scanner`, `idx_checkin_logs_scanned_at`, `idx_checkin_logs_result`
+
+### Migration Status
+
+- Applied: **YES** (manually by user)
+- Verified: Confirmed by user
+- Rolled back: No
+
+### Tests Performed
+
+- Schema created and applied to Aiven PostgreSQL by user manually.
+- Database tables (events, scanner_devices, event_passes, checkin_logs) and their indexes were verified successfully using the `backend/database/verify_schema.js` script.
+
+### Important Decisions
+
+- **No Prisma** — followed existing raw SQL pattern.
+- `qr_token` is UNIQUE at DB level AND the check-in API will use `SELECT FOR UPDATE` inside a transaction — two independent layers of concurrent duplicate protection.
+- `checked_in_by` and `gate` are stored directly on `event_passes` (denormalised at check-in time) so the audit record survives scanner device deletion.
+- `checkin_logs.pass_id` is nullable — allows logging `INVALID` scan attempts where the token is not in the DB.
+- `scanner_devices.event_id` is nullable — a scanner can be event-agnostic if needed.
+- `event_passes` uses `ON DELETE RESTRICT` for `event_id` — prevents accidental event deletion while passes exist.
+
+### Known Issues
+
+- None.
+
+---
+
+## Phase 2 Checkpoint
+
+Phase: PHASE 2 — Secure QR Token Generation
+
+Status: **COMPLETE**
+
+### Completed
+
+- Implemented token generation utility using cryptographically secure random bytes (256 bits of entropy, 64-character hex string).
+- Designed the human-readable pass number generator using the structure `<PREFIX>-<YEAR>-<SEQUENCE>` (padded to 4 digits).
+- Added a `getNextPassSequence` database utility to query/derive the next sequence number inside a transaction.
+- Designed a scanner password generator using a cryptographically secure random integer charset excluding ambiguous characters (0, O, 1, I, l).
+- Created a `verifyPassRecord` helper logic validating status flow constraints (issued, checked in, cancelled, and event mismatches) and mapping them directly to `checkin_logs` results.
+- Built a unit test suite to test all components of token generation and pass verification logic.
+
+### Files Modified/Created
+
+- `backend/src/utils/passQRUtils.js` ← **new utility file**
+- `backend/database/test_pass_qr_utils.js` ← **new test file**
+
+### Token Design Decisions
+
+- **Stored Raw in DB:** Instead of hashing the token, the raw 64-char hex string is stored directly in `event_passes.qr_token`. This allows O(1) indexed lookup when the scanner sends the token. Security is maintained by using a cryptographically secure random generator (256 bits of entropy) and transport-layer encryption (HTTPS POST body only).
+- **Decoupled Validation Logic:** The verification logic is fully encapsulated in `verifyPassRecord()`, which makes it testable without DB access and ensures the exact same verification rule is used by both the check-in API and the manual check-in process.
+
+### Tests Performed
+
+- Executed `node database/test_pass_qr_utils.js` checking:
+  - Token uniqueness and 64-character hex format (PASSED).
+  - Pass number format with sequence padding (PASSED).
+  - Unambiguous password generation (PASSED).
+  - Null pass validation logic mapping to `INVALID` (PASSED).
+  - Cancelled status mapping to `CANCELLED` (PASSED).
+  - Checked-in status mapping to `ALREADY_CHECKED_IN` (PASSED).
+  - Wrong event mapping to `WRONG_EVENT` (PASSED).
+  - Valid pass mapping to `SUCCESS` (PASSED).
+
 ### Next Step
 
-**PHASE 1 — Database Design and Migration**
+**PHASE 6 — Admin Panel (Frontend UI Integration)**
 
-Create `backend/database/event_pass_migration.sql` containing:
-- `CREATE TABLE IF NOT EXISTS events ...`
-- `CREATE TABLE IF NOT EXISTS event_passes ...`
-- `CREATE TABLE IF NOT EXISTS scanner_devices ...`
-- `CREATE TABLE IF NOT EXISTS checkin_logs ...`
-- Indexes
-- No data seeding required
+---
 
-Then apply to Aiven PostgreSQL and verify schema.
+## Phase 3 Checkpoint
 
-**Do not begin Phase 1 until this is approved.**
+Phase: PHASE 3 — Backend API Development
+
+Status: **COMPLETE**
+
+### Completed
+
+- Implemented full CRUD controllers and routes for Events (`events` table).
+- Implemented single Pass creation, query listing (with search and filters), cancellation, and reissue endpoints.
+- Implemented bulk Guest/Pass import endpoint.
+- Integrated all routes into the main Express application routing scheme in `server.js`.
+- Implemented database cleanups in the test suite to keep the DB free of test relics.
+
+### Files Modified/Created
+
+- `backend/src/routes/eventPassRoutes.js` ← **new route file**
+- `backend/src/controllers/eventPassController.js` ← **new controller file**
+- `backend/src/server.js` ← **mounted router**
+- `backend/.env.example` ← **new configuration template**
+
+---
+
+## Phase 4 Checkpoint
+
+Phase: PHASE 4 — Check-In API
+
+Status: **COMPLETE**
+
+### Completed
+
+- Created check-in processing endpoint `POST /api/scanner/checkin` and manual fallback check-in `POST /api/event-passes/manual-checkin`.
+- Designed robust concurrent check-in security using PostgreSQL row-level locks (`SELECT ... FOR UPDATE`) wrapped inside a transaction.
+- Standardized response schemas matching all state conditions (SUCCESS, ALREADY_CHECKED_IN, CANCELLED, INVALID, WRONG_EVENT).
+- Implemented append-only audit trail logger writing every transaction outcome into the `checkin_logs` table.
+
+### Files Modified/Created
+
+- `backend/src/controllers/checkInController.js` ← **new check-in controller**
+
+---
+
+## Phase 5 Checkpoint
+
+Phase: PHASE 5 — Scanner Authentication
+
+Status: **COMPLETE**
+
+### Completed
+
+- Designed a secure device-login credential system.
+- Created `verifyScanner` middleware enforcing `QR_PASS_JWT_SECRET` JWT check, role constraint checks, and database-level `is_active` validation of scanner devices.
+- Created profile detail endpoint `GET /api/scanner/me`.
+- Added automatic activity tracking logging timestamps (`last_seen_at`) on scanner logins and validated access attempts.
+
+### Files Modified/Created
+
+- `backend/src/middleware/scannerAuth.js` ← **new auth middleware**
+- `backend/src/controllers/scannerAuthController.js` ← **new scanner auth controller**
+- `backend/src/routes/scannerRoutes.js` ← **new scanner route file**
+
+### Tests Performed
+
+A comprehensive E2E integration test suite (`backend/database/test_event_pass_apis.js`) was written and run successfully, verifying:
+- Event creation, listing, and updates.
+- Scanner device registration, bcrypt password hashing, and token-based login.
+- Accessing profile details via authenticated scanner tokens.
+- Secure pass generation.
+- Valid scan check-ins returning `SUCCESS`.
+- Duplicate check-ins blocked instantly returning `ALREADY_CHECKED_IN` (atomic check).
+- Check-in attempts on cancelled passes returning `CANCELLED`.
+- Pass reissues generating a new token and resetting status back to `ISSUED`.
+- Bulk guest pass importing.
+- Manual admin check-ins returning `SUCCESS`.
+- Retrieving live attendance stats and scan logs.
+- Scanner deactivation disabling the device token immediately (returning `403 Forbidden`).
+- Automatic test database cleanup leaving zero junk records.
+
+---
+
+## Phase 6 Checkpoint — CURRENT RECOVERY STATE
+
+Phase: **PHASE 6 — Admin Panel (Frontend UI Integration)**
+
+Status: **IN PROGRESS — PARTIALLY IMPLEMENTED / REFACTOR REQUIRED**
+
+### What happened
+
+The previous AI session was instructed to proceed with Phase 6. It created the Event Pass admin UI before reaching its quota limit.
+
+The current implementation is **not in the desired architecture**.
+
+It created:
+
+```text
+ngo-web/src/components/admin/EventPassAdminTab.jsx
+```
+
+and placed almost the entire Event Pass admin system into that single file.
+
+The file is approximately **1500+ lines**.
+
+This is too large and is **not acceptable as the final architecture**.
+
+### Critical architectural requirement
+
+The Event Pass module must be structured similarly to the existing **Evaluation module**, where the main admin tab is an orchestrator and the actual functionality is separated into focused components under a dedicated feature directory.
+
+The desired structure is:
+
+```text
+ngo-web/src/components/event-passes/
+  EventPassAdminTab.jsx
+  EventsManager.jsx
+  PassList.jsx
+  PassDetail.jsx
+  BulkImport.jsx
+  AttendanceDashboard.jsx
+  ScannerDevices.jsx
+  ManualCheckIn.jsx
+```
+
+Optional shared/state files may be added if genuinely useful, for example:
+
+```text
+ngo-web/src/components/event-passes/
+  hooks/
+    useEventPassAdmin.js
+  utils/
+    eventPassHelpers.js
+```
+
+Do not create these merely for the sake of creating files.
+
+### Required role of EventPassAdminTab.jsx
+
+`EventPassAdminTab.jsx` should be a **small orchestration component**, similar in responsibility to the existing evaluation feature's top-level admin component.
+
+It should primarily:
+
+- define the Event Pass sub-navigation
+- determine the active Event Pass section
+- render the appropriate child component
+- provide only genuinely shared state/context if necessary
+
+It should **NOT** contain the complete implementation of:
+
+- Events management
+- Pass listing
+- Pass creation
+- Bulk import
+- Attendance dashboard
+- Scanner management
+- Manual check-in
+- Printable pass logic
+
+Target: keep `EventPassAdminTab.jsx` **small and maintainable**, ideally around 100–250 lines depending on actual shared logic.
+
+### Existing implementation that must be preserved
+
+The previous AI already created:
+
+```text
+ngo-web/src/components/admin/EventPassAdminTab.jsx
+ngo-web/src/utils/api.js
+```
+
+`api.js` now contains an `eventPassAPI` namespace.
+
+The reported API methods include:
+
+```text
+createEvent
+listEvents
+getEventById
+updateEvent
+createPass
+bulkImportPasses
+listPasses
+getPassById
+cancelPass
+reissueQR
+manualCheckIn
+getAttendanceStats
+getCheckInLogs
+listScannerDevices
+createScannerDevice
+toggleScannerActive
+```
+
+**Do not recreate these API methods if they already exist.**
+
+### Refactoring strategy
+
+The next AI must **inspect the existing 1500+ line `EventPassAdminTab.jsx` first**.
+
+Do not simply delete it and write a new Event Pass module from scratch.
+
+Instead:
+
+1. Identify the existing sections/functions/state.
+2. Map each section to the appropriate child component.
+3. Extract functionality incrementally.
+4. Preserve existing API calls and working behavior.
+5. Move the resulting components into:
+   ```text
+   ngo-web/src/components/event-passes/
+   ```
+6. Update imports in `AdminDashboard.jsx` so it imports:
+   ```text
+   components/event-passes/EventPassAdminTab
+   ```
+7. Remove the old `components/admin/EventPassAdminTab.jsx` only after the new modular implementation is working and verified.
+8. Keep unrelated admin components untouched.
+
+### Recommended component responsibilities
+
+#### `EventPassAdminTab.jsx`
+
+Only:
+
+- Event Pass sub-navigation
+- active section state
+- render child component
+- shared selected event state if required
+
+#### `EventsManager.jsx`
+
+Handle:
+
+- event list
+- create event
+- edit event
+- event status
+- event selection
+- event-level statistics if already part of the existing implementation
+
+#### `PassList.jsx`
+
+Handle:
+
+- pass list
+- search
+- filters
+- status display
+- cancel
+- reissue
+- opening pass details
+- opening printable pass
+
+#### `PassDetail.jsx`
+
+Handle:
+
+- individual pass information
+- QR preview
+- printable pass
+- download/print actions
+- pass status
+- cancel/reissue actions where appropriate
+
+#### `BulkImport.jsx`
+
+Handle:
+
+- CSV/Excel upload
+- validation
+- preview
+- duplicate detection
+- invalid rows
+- import
+- import summary
+
+#### `AttendanceDashboard.jsx`
+
+Handle:
+
+- total passes
+- checked in
+- pending
+- cancelled
+- check-in percentage
+- recent check-in logs
+- filters
+- refresh
+
+#### `ScannerDevices.jsx`
+
+Handle:
+
+- scanner list
+- scanner creation
+- device code
+- gate
+- event assignment
+- activate/deactivate
+- scanner status
+
+#### `ManualCheckIn.jsx`
+
+Handle:
+
+- fallback manual pass search
+- manual check-in
+- result/status display
+
+### Relationship to the existing Evaluation module
+
+Use the existing Evaluation module as the **architectural reference**, not as something to copy blindly.
+
+The repository already organizes feature-specific components under:
+
+```text
+ngo-web/src/components/evaluation/
+```
+
+with components such as:
+
+```text
+EvaluationAdminTab
+JudgeManagement
+EvaluationResultsGrid
+```
+
+The Event Pass feature should follow the same principle:
+
+```text
+AdminDashboard
+    ↓
+EventPassAdminTab
+    ↓
+---------------------------------
+| Events                       |
+| Passes                       |
+| Bulk Import                  |
+| Attendance                   |
+| Scanner Devices              |
+| Manual Check-In              |
+---------------------------------
+```
+
+The `AdminDashboard.jsx` should remain the high-level admin container. The Event Pass module should own its internal feature navigation.
+
+### Current known state
+
+- Phase 1 — Database Migration: **COMPLETE**
+- Phase 2 — Secure QR Token Generation: **COMPLETE**
+- Phase 3 — Backend APIs: **COMPLETE**
+- Phase 4 — Check-In API: **COMPLETE**
+- Phase 5 — Scanner Authentication: **COMPLETE**
+- Phase 6 — Admin Panel: **IN PROGRESS**
+- Phase 6 current UI: **FUNCTIONAL PARTIAL IMPLEMENTATION, BUT MONOLITHIC AND MUST BE REFACTORED**
+- Expo scanner APK: **NOT STARTED**
+- Database migration: **DO NOT RERUN**
+- Previous AI session ended due to quota exhaustion.
+
+### Immediate next task — Phase 6 Recovery
+
+Before making substantial changes:
+
+```bash
+git status
+git diff --stat
+git diff
+git log --oneline -10
+```
+
+Then inspect:
+
+```text
+CLAUDE.md
+CONTEXT.md
+ngo-web/src/components/admin/EventPassAdminTab.jsx
+ngo-web/src/utils/api.js
+ngo-web/src/pages/AdminDashboard.jsx
+ngo-web/src/components/evaluation/
+```
+
+Determine exactly what has already been implemented.
+
+### Do NOT do these things
+
+- Do not restart Phases 0–5.
+- Do not rerun the database migration.
+- Do not rebuild the backend APIs.
+- Do not start the Expo scanner APK.
+- Do not create a second API client.
+- Do not duplicate `eventPassAPI`.
+- Do not rewrite unrelated AdminDashboard functionality.
+- Do not leave the Event Pass feature as a 1500+ line component.
+- Do not simply rename the existing 1500-line file and call the refactor complete.
+- Do not delete existing working functionality before understanding it.
+
+### Required Phase 6 refactor outcome
+
+The final structure should look approximately like:
+
+```text
+ngo-web/
+└── src/
+    ├── components/
+    │   ├── admin/
+    │   │   ├── FarmersAdminTab.jsx
+    │   │   └── ...
+    │   │
+    │   ├── evaluation/
+    │   │   ├── EvaluationAdminTab.jsx
+    │   │   ├── JudgeManagement.jsx
+    │   │   ├── EvaluationResultsGrid.jsx
+    │   │   └── ...
+    │   │
+    │   └── event-passes/
+    │       ├── EventPassAdminTab.jsx
+    │       ├── EventsManager.jsx
+    │       ├── PassList.jsx
+    │       ├── PassDetail.jsx
+    │       ├── BulkImport.jsx
+    │       ├── AttendanceDashboard.jsx
+    │       ├── ScannerDevices.jsx
+    │       └── ManualCheckIn.jsx
+    │
+    ├── pages/
+    │   └── AdminDashboard.jsx
+    │
+    └── utils/
+        └── api.js
+```
+
+### Phase 6 implementation requirements
+
+The Event Pass module must eventually provide:
+
+- Events management
+- Pass creation
+- Pass listing/search/filtering
+- Pass details
+- Pass cancellation
+- QR reissue
+- Printable QR pass
+- Bulk guest/pass import
+- Attendance dashboard
+- Check-in logs
+- Manual check-in
+- Scanner device management
+- Loading states
+- Error states
+- Empty states
+- Responsive Tailwind UI
+- Consistent styling with the existing admin/evaluation modules
+
+### Testing after refactoring
+
+After extracting the components:
+
+1. Run frontend build/lint as appropriate.
+2. Confirm `AdminDashboard` still loads.
+3. Confirm Event Passes tab opens.
+4. Confirm each Event Pass sub-section opens.
+5. Confirm existing API calls still work.
+6. Confirm event creation/listing works.
+7. Confirm pass creation/listing works.
+8. Confirm search/filter works.
+9. Confirm cancel/reissue works.
+10. Confirm bulk import works.
+11. Confirm attendance data/logs load.
+12. Confirm manual check-in works.
+13. Confirm scanner device management works.
+14. Confirm printable QR pass still works.
+15. Confirm all existing admin tabs remain unaffected.
+
+### Checkpoint rule
+
+Work in **small stages**.
+
+Recommended order:
+
+```text
+Step 1
+Inspect current 1500+ line component
+        ↓
+Step 2
+Map existing code to feature responsibilities
+        ↓
+Step 3
+Create components/event-passes/
+        ↓
+Step 4
+Extract EventsManager + PassList
+        ↓
+Step 5
+Extract PassDetail + BulkImport
+        ↓
+Step 6
+Extract AttendanceDashboard + ManualCheckIn
+        ↓
+Step 7
+Extract ScannerDevices
+        ↓
+Step 8
+Reduce EventPassAdminTab to orchestration only
+        ↓
+Step 9
+Update AdminDashboard import
+        ↓
+Step 10
+Build/lint/test
+        ↓
+Step 11
+Update CONTEXT.md
+```
+
+Do not attempt all of these in one response if the changes are large.
+
+### CONTEXT.md checkpoint requirement
+
+After each meaningful sub-stage, update this document with:
+
+- Current status
+- Files created
+- Files modified
+- What was extracted
+- What remains
+- Tests performed
+- Known issues
+- Exact next step
+
+Do not write only "Phase 6 complete."
+
+### Next major phases
+
+Only after the modular Event Pass admin panel is stable:
+
+1. Complete any remaining printable pass functionality.
+2. Complete/verify attendance and manual check-in functionality.
+3. Perform final backend/frontend end-to-end testing.
+4. Then begin the Expo scanner APK.
+
+### Recovery instruction for future AI
+
+**Continue from this CURRENT RECOVERY STATE.**
+
+The Event Pass backend is already implemented.
+
+The current frontend implementation exists but is incorrectly concentrated in a 1500+ line `EventPassAdminTab.jsx`.
+
+**The immediate priority is to refactor the existing implementation into `src/components/event-passes/` using the same modular architecture as the Evaluation module, while preserving existing functionality.**
+
+**Do not rebuild the Event Pass system from scratch.**
+

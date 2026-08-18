@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = `${
-  process.env.REACT_APP_API_URL || 'http://localhost:5000'
-}/api`;
+const API_BASE_URL = `${process.env.REACT_APP_API_URL || 'http://localhost:5000'
+  }/api`;
 
 // Create axios instance
 export const apiClient = axios.create({
@@ -83,9 +82,9 @@ export const adminAPI = {
   getSubmissions: () => apiClient.get('/admin/submissions'),
   sendBulkEmail: (data) => apiClient.post('/admin/bulk-email', data),
   getEmailPreview: (templateType) =>
-  apiClient.get(
-    `/admin/email-preview?templateType=${templateType}`
-  ),
+    apiClient.get(
+      `/admin/email-preview?templateType=${templateType}`
+    ),
 
   getAdminReviews: (status = 'pending') =>
     apiClient.get(`/admin/reviews?status=${status}`),
@@ -279,40 +278,40 @@ export const farmerAPI = {
     apiClient.delete(`/farmers/admin/${id}`),
 
   uploadProfileImage: (id, formData) =>
-  apiClient.post(
-    `/admin/farmers/${id}/profile-image`,
-    formData,
-    {
-      headers: {
-        'Content-Type':
-          'multipart/form-data',
-      },
-    }
-  ),
+    apiClient.post(
+      `/admin/farmers/${id}/profile-image`,
+      formData,
+      {
+        headers: {
+          'Content-Type':
+            'multipart/form-data',
+        },
+      }
+    ),
 
-uploadCoverImage: (id, formData) =>
-  apiClient.post(
-    `/admin/farmers/${id}/cover-image`,
-    formData,
-    {
-      headers: {
-        'Content-Type':
-          'multipart/form-data',
-      },
-    }
-  ),
+  uploadCoverImage: (id, formData) =>
+    apiClient.post(
+      `/admin/farmers/${id}/cover-image`,
+      formData,
+      {
+        headers: {
+          'Content-Type':
+            'multipart/form-data',
+        },
+      }
+    ),
 
-uploadGallery: (id, formData) =>
-  apiClient.post(
-    `/admin/farmers/${id}/gallery`,
-    formData,
-    {
-      headers: {
-        'Content-Type':
-          'multipart/form-data',
-      },
-    }
-  ),
+  uploadGallery: (id, formData) =>
+    apiClient.post(
+      `/admin/farmers/${id}/gallery`,
+      formData,
+      {
+        headers: {
+          'Content-Type':
+            'multipart/form-data',
+        },
+      }
+    ),
 
   deleteProfileImage: (id) =>
     apiClient.delete(
@@ -428,6 +427,29 @@ export const evaluationAdminAPI = {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
   },
+};
+
+// 🔥 EVENT PASS & CHECK-IN API (Admin)
+export const eventPassAPI = {
+  createEvent: (data) => apiClient.post('/event-passes/events', data),
+  listEvents: () => apiClient.get('/event-passes/events'),
+  getEventById: (id) => apiClient.get(`/event-passes/events/${id}`),
+  updateEvent: (id, data) => apiClient.put(`/event-passes/events/${id}`, data),
+
+  createPass: (data) => apiClient.post('/event-passes', data),
+  bulkImportPasses: (data) => apiClient.post('/event-passes/import', data),
+  listPasses: (params) => apiClient.get('/event-passes', { params }),
+  getPassById: (id) => apiClient.get(`/event-passes/${id}`),
+  cancelPass: (id) => apiClient.post(`/event-passes/${id}/cancel`),
+  reissueQR: (id) => apiClient.post(`/event-passes/${id}/reissue`),
+  manualCheckIn: (data) => apiClient.post('/event-passes/manual-checkin', data),
+
+  getAttendanceStats: (eventId) => apiClient.get(`/event-passes/attendance/${eventId}`),
+  getCheckInLogs: (eventId) => apiClient.get(`/event-passes/check-in-logs/${eventId}`),
+
+  listScannerDevices: () => apiClient.get('/event-passes/scanners'),
+  createScannerDevice: (data) => apiClient.post('/event-passes/scanners', data),
+  toggleScannerActive: (id, isActive) => apiClient.patch(`/event-passes/scanners/${id}/active`, { isActive }),
 };
 
 export default apiClient;

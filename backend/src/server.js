@@ -30,6 +30,9 @@ import adminFarmerRoutes from './routes/adminFarmerRoutes.js';
 
 import judgeRoutes from './routes/judgeRoutes.js';
 import evaluationRoutes from './routes/evaluationRoutes.js';
+import eventPassRoutes from './routes/eventPassRoutes.js';
+import scannerRoutes from './routes/scannerRoutes.js';
+
 
 // Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -143,6 +146,9 @@ app.use('/api/admin/farmers', adminFarmerRoutes);
 
 app.use('/api/judge', judgeRoutes);
 app.use('/api/admin/evaluation', evaluationRoutes);
+app.use('/api/event-passes', eventPassRoutes);
+app.use('/api/scanner', scannerRoutes);
+
 
 // 404 handler
 app.use((req, res) => {
