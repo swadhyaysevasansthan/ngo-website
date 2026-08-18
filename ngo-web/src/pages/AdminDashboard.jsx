@@ -9,6 +9,7 @@ import SneacAdminTab from '../components/sneac/SneacAdminTab';
 import useSneacAdmin from '../components/sneac/useSneacAdmin';
 import FarmersAdminTab from '../components/admin/FarmersAdminTab';
 import EvaluationAdminTab from '../components/evaluation/EvaluationAdminTab';
+import EventPassAdminTab from '../components/event-passes/EventPassAdminTab';
 
 // 🔥 7 days is the window used for "recent registrations" across both
 // competitions, kept in one place so SNPC and SNEAC stay consistent.
@@ -283,6 +284,7 @@ const AdminDashboard = () => {
               { id: 'sneac', label: '🏫 SNEAC Schools' },
               { id: 'farmers', label: '👨‍🌾 Farmers' },
               { id: 'evaluation', label: '🏆 Evaluation' },
+              { id: 'event-passes', label: '🎫 Event Passes' },
               { id: 'email', label: '✉️ Send Email' },
             ].map((tab) => (
               <button
@@ -872,6 +874,11 @@ const AdminDashboard = () => {
         {/* EVALUATION TAB */}
         {activeTab === 'evaluation' && (
           <EvaluationAdminTab />
+        )}
+
+        {/* EVENT PASSES TAB */}
+        {activeTab === 'event-passes' && (
+          <EventPassAdminTab />
         )}
       </div>
     </div>

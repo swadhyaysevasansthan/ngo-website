@@ -30,18 +30,14 @@ router.get('/events', getEvents);
 router.get('/events/:id', getEventById);
 router.put('/events/:id', updateEvent);
 
-// Pass routes
-router.post('/', createPass);
-router.post('/import', bulkImportPasses);
-router.get('/', getPasses);
-router.get('/:id', getPassById);
-router.post('/:id/cancel', cancelPass);
-router.post('/:id/reissue', reissueQR);
-
+// ── IMPORTANT: Specific named sub-routes MUST come before the generic /:id ──
 // Manual fallback check-in
 router.post('/manual-checkin', manualCheckIn);
 
-// Stats & logs
+// Bulk import
+router.post('/import', bulkImportPasses);
+
+// Stats & logs (must be before /:id to avoid being caught as a pass ID)
 router.get('/attendance/:eventId', getAttendanceStats);
 router.get('/check-in-logs/:eventId', getCheckInLogs);
 
@@ -49,5 +45,13 @@ router.get('/check-in-logs/:eventId', getCheckInLogs);
 router.get('/scanners', getScannerDevices);
 router.post('/scanners', createScannerDevice);
 router.patch('/scanners/:id/active', toggleScannerActive);
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Pass routes (generic /:id MUST come last)
+router.post('/', createPass);
+router.get('/', getPasses);
+router.get('/:id', getPassById);
+router.post('/:id/cancel', cancelPass);
+router.post('/:id/reissue', reissueQR);
 
 export default router;
