@@ -2201,89 +2201,49 @@ Phase 7 — QR / Printable Pass           COMPLETE
 Phase 8 — Attendance Dashboard          COMPLETE
 Phase 9 — Manual Check-In               COMPLETE
 Phase 10 — Backend Testing              COMPLETE
-Phase 11 — Expo Scanner APK             NOT STARTED
+Phase 11 — Expo Scanner APK             COMPLETE
 ```
 
 ### Known Issues
 
-- No known Phase 6–10 frontend or backend build issues.
+- No known Phase 6–11 frontend, backend, or app build issues.
 - Do not rerun the already-applied database migration.
 
 ### Next Step
 
-**PHASE 11 — Expo Scanner APK**
+**Final End-to-End / Production Verification**
 
-Phase 11 is the final remaining implementation phase. This involves building
-the Expo/React-Native mobile scanner application that authenticates scanner
-devices, opens the camera, scans QR codes, and calls the backend check-in API.
+This is the final phase before deployment. It involves verifying that all components (backend, web admin dashboard, and scanner APK) work together seamlessly in a production-like environment.
 
-The backend scanner endpoints it will use are:
+### Phase 11 Completion Status
 
-```text
-POST /api/scanner/login      — device authentication → JWT
-GET  /api/scanner/me         — verify token / profile
-POST /api/scanner/checkin    — scan QR and perform check-in
-```
-
-### Phase 10 Completion Status
-
-**Critical Bug Fixed:**
-- **Route ordering bug in `eventPassRoutes.js`:** The generic `/:id` route handler was registered *before* named sub-routes like `/attendance/:eventId`, `/check-in-logs/:eventId`, `/import`, `/manual-checkin`, and `/scanners`. Express matches routes top-to-bottom, so those specific routes were silently intercepted and returned 404. Fixed by reordering: all named specific routes now come before `/:id`.
-
-**Test Script Added:**
-- Added `"test:api": "node database/test_event_pass_apis.js"` to `backend/package.json`.
-
-**All 21 integration tests PASSED (`npm run test:api`):**
-
-| # | Test | Result |
-|---|------|--------|
-| 1 | Admin JWT generation | ✅ PASSED |
-| 2 | Create event | ✅ PASSED |
-| 3 | List events | ✅ PASSED |
-| 4 | Update event | ✅ PASSED |
-| 5 | Create scanner device | ✅ PASSED |
-| 6 | Scanner login (JWT) | ✅ PASSED |
-| 7 | Scanner /me profile | ✅ PASSED |
-| 8 | Create Pass 1 | ✅ PASSED |
-| 9 | QR scan check-in (SUCCESS) | ✅ PASSED |
-| 10 | Duplicate scan rejection (ALREADY_CHECKED_IN) | ✅ PASSED |
-| 11 | Create Pass 2 | ✅ PASSED |
-| 12 | Cancel Pass 2 | ✅ PASSED |
-| 13 | Scan cancelled pass rejection | ✅ PASSED |
-| 14 | Reissue QR (new token, old invalidated) | ✅ PASSED |
-| 15 | Scan reissued pass (SUCCESS) | ✅ PASSED |
-| 16 | Bulk import (2 guests) | ✅ PASSED |
-| 17 | Manual admin check-in | ✅ PASSED |
-| 18 | Attendance statistics query | ✅ PASSED |
-| 19 | Check-in audit log count | ✅ PASSED |
-| 20 | Disable scanner device | ✅ PASSED |
-| 21 | Deactivated scanner 403 enforcement | ✅ PASSED |
-
-Database cleaned up after every test run (no leftover data).
+- **API Client:** Implemented in `src/api/` with `client.ts` configured for the `EXPO_PUBLIC_API_URL` and `AuthContext` to manage `SecureStore` persistence of JWT.
+- **Login Screen:** Added `app/login.tsx` for secure device code and password login.
+- **Scanner Dashboard:** Added `app/index.tsx` for displaying active event details and scanner assignments, providing a quick launch into scanning mode.
+- **Camera Scanner:** Added `app/scanner.tsx` leveraging `expo-camera` with proper permissions checking, QR parsing, duplicate scan prevention (UI lock), and API requests.
+- **Result UI:** Added `app/result.tsx` with dynamic styling mapping to states (`SUCCESS`, `ALREADY_CHECKED_IN`, `INVALID`, `CANCELLED`, `CONNECTION_ERROR`).
 
 ### Subsequent Phase Order
 
 ```text
-Phase 10 Backend Testing                (COMPLETE)
+Phase 11 Expo Scanner APK               (COMPLETE)
    ↓
-Phase 11 Expo Scanner APK               ← NEXT
-   ↓
-Final End-to-End / Production Verification
+Final End-to-End / Production Verification ← NEXT
 ```
 
 ---
 
 ## Final Handoff Status
 
-The QR Event Pass backend is now fully tested. All Phases 1–10 are complete.
+The QR Event Pass backend, Admin Panel, Printable Pass formats, Attendance Dashboard, Manual Check-In methods, Backend Testing, and Expo Scanner APK are complete through **Phase 11**.
 
 The project is now ready to move to:
 
-**PHASE 11 — Expo Scanner APK**
+**Final End-to-End / Production Verification**
 
 ### Recovery Rule
 
-Before making Phase 11 changes, inspect:
+Before making final verification changes, inspect:
 
 ```bash
 git status
@@ -2323,10 +2283,11 @@ Phase 9  Manual Check-In                    (COMPLETE)
    ↓
 Phase 10 Backend Testing                    (COMPLETE)
    ↓
-Phase 11 Expo Scanner APK                   ← NEXT
+Phase 11 Expo Scanner APK                   (COMPLETE)
    ↓
-Final End-to-End / Production Verification
+Final End-to-End / Production Verification  ← NEXT
 ```
+
 
 Phase 11 is the final implementation phase. After the scanner APK is built and
 verified end-to-end, final production verification should be performed.
