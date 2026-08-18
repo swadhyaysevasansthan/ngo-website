@@ -1450,13 +1450,469 @@ multiple simultaneous scanner devices.
 
 # 36. Current Project Status
 
-Phase: PHASE 0 --- Repository Reconnaissance
+Phase: PHASE 0 — Repository Reconnaissance
 
-Status: NOT STARTED
+Status: **COMPLETE**
 
-No implementation should be assumed to exist yet.
+---
 
-Next step:
+## Phase 0 Findings
 
-**Inspect the actual GitHub repository and existing project architecture
-before making any code changes.**
+### 1. Repository Layout
+
+```
+ngo-website/
+├── CLAUDE.md
+├── CONTEXT.md
+├── backend/                 ← Node.js / Express backend (ES modules)
+│   ├── database/            ← Raw SQL migration files + run_migration.js
+│   ├── src/
+│   │   ├── config/          ← database.js, email.js, cloudinary.js, razorpay.js, sneacEmail.js
+│   │   ├── controllers/     ← One file per feature domain
+│   │   ├── middleware/      ← auth.js, judgeAuth.js, rateLimiter.js, upload.js, validation.js
+│   │   ├── models/          ← reviewModel.js (only one model file; most logic is inline SQL)
+│   │   ├── routes/          ← One file per feature domain
+│   │   ├── services/        ← conflictDetectionService, qualificationService, recaptchaService, reportService
+│   │   ├── utils/           ← emailTemplates.js, idGenerator.js, judgeCredentials.js, tokenService.js, ...
+│   │   └── server.js        ← Express entry point
+│   └── package.json
+└── ngo-web/                 ← React 18 frontend (CRA / react-scripts)
+    ├── src/
+    │   ├── components/      ← Shared + feature-specific components
+    │   │   ├── admin/       ← FarmersAdminTab, FarmerForm, FarmerCategoriesPanel
+    │   │   ├── evaluation/  ← EvaluationAdminTab, JudgeManagement, EvaluationResultsGrid, ...
+    │   │   └── sneac/       ← SneacAdminTab, useSneacAdmin hook
+    │   ├── layouts/         ← AdminLayout (thin Outlet wrapper), PublicLayout
+    │   ├── pages/           ← One file per page; AdminDashboard is the monolithic admin SPA
+    │   ├── routes/          ← AppRoutes, ProtectedRoute, PublicRoute, JudgeProtectedRoute, JudgePublicRoute
+    │   └── utils/
+    │       └── api.js       ← Axios client + all API namespaces (adminAPI, judgeAPI, evaluationAdminAPI, …)
+    └── package.json
+```
+
+---
+
+### 2. Frontend Architecture
+
+- **Framework:** React 18 with CRA (`react-scripts 5`).
+- **Router:** React Router v6 (`<Routes>` / `<Route>`).
+- **Styling:** Tailwind CSS v3. Custom tokens: `primary` (amber-500), `forest` (#0f172a), `leaf`, `earth`, `sky`, `sunset`, `saffron`. Animations: `fade-in`, `slide-up`, `slide-down`, `scale-in`.
+- **HTTP:** Single shared `apiClient` (Axios instance, base `REACT_APP_API_URL/api`). Separate `judgeApiClient` for judge routes (separate `judgeToken` in `localStorage`).
+- **State:** Local `useState`/`useEffect`; `@tanstack/react-query` is installed but not widely used yet.
+- **UI Libraries:** `lucide-react`, `react-icons`, `@heroicons/react`, `framer-motion`, `react-toastify`, `swiper`.
+- **Key pages:** `AdminDashboard.jsx` (~880 lines) — monolithic, tab-based admin SPA. Tabs: `dashboard`, `participants`, `reviews`, `sneac`, `farmers`, `evaluation`, `email`.
+- **Route guards:**
+  - `ProtectedRoute` — checks `localStorage.getItem('token')` → `/admin/login`.
+  - `JudgeProtectedRoute` — checks `localStorage.getItem('judgeToken')` → `/judge/login`.
+- **No server-side rendering.** All rendering is client-side.
+
+---
+
+### 3. Backend Architecture
+
+- **Runtime:** Node.js (ES modules — `"type": "module"` in package.json).
+- **Framework:** Express 5.
+- **Entry:** `backend/src/server.js` — registers all routes, CORS, helmet, JSON body parsing.
+- **CORS origins:** `localhost:3000`, Vercel preview URL, `www.swadhyayseva.org`, plus `process.env.FRONTEND_URL`.
+- **Deployment:** Render (backend), Aiven PostgreSQL (database).
+- **No Prisma.** Raw `pg` Pool with parameterized queries throughout. No ORM.
+- **Database config:** `src/config/database.js` — single `Pool` from `DATABASE_URL`, SSL enabled (`rejectUnauthorized: false`). Also exports a `query()` helper with timing logs.
+- **Pattern:** Routes → Controllers → Direct `pool.query()` calls. No service layer except for evaluation.
+- **PDF/Excel:** `pdfkit` + `exceljs` used for report/certificate generation.
+- **File uploads:** `multer` + Cloudinary (`cloudinary.js`).
+- **Email:** `resend` SDK (primary) via `config/email.js`; `nodemailer` also present; SNEAC has its own `sneacEmail.js`.
+- **Installed but relevant for us:** `nanoid` (ID generation), `crypto` (built-in, used for tokens), `express-rate-limit`, `express-validator`, `bcryptjs`, `jsonwebtoken`.
+
+---
+
+### 4. Authentication & Authorization
+
+Two completely separate auth systems exist side-by-side:
+
+#### Admin Auth
+| Item | Detail |
+|---|---|
+| Table | `admins` (id, username, password_hash, email, created_at) |
+| Login endpoint | `POST /api/admin/login` |
+| Token type | JWT signed with `JWT_SECRET`, 24h expiry |
+| localStorage key | `token` |
+| Middleware | `verifyAdmin` in `middleware/auth.js` — Bearer header, no DB re-check |
+| Payload | `{ id, username }` |
+
+#### Judge Auth
+| Item | Detail |
+|---|---|
+| Table | `judges` (id, full_name, username, password_hash, is_active, last_login, last_activity, ...) |
+| Login endpoint | `POST /api/judge/login` |
+| Token type | JWT signed with `JWT_JUDGE_SECRET`, 12h expiry |
+| localStorage key | `judgeToken` |
+| Middleware | `verifyJudge` in `middleware/judgeAuth.js` — verifies role=`judge`, **re-checks `judges` table on every request** (handles deactivation mid-session) |
+| Payload | `{ id, username, role: 'judge' }` |
+
+**For the Scanner system** a third auth identity is needed: scanner devices. The `judgeAuth.js` pattern (separate secret, DB re-check for `is_active`) is the model to follow.
+
+---
+
+### 5. Database / PostgreSQL Setup
+
+**No Prisma.** Raw SQL only.
+
+#### Existing Tables (confirmed from SQL files)
+| Table | Purpose |
+|---|---|
+| `participants` | Photography competition registrants |
+| `payments` | Razorpay payment records |
+| `submissions` | Photo submission records |
+| `admins` | Admin user credentials |
+| `email_logs` | Email send history |
+| `judges` | Judge credentials (separate from admins) |
+| `evaluation_competitions` | Competition definitions |
+| `evaluation_entries` | Anonymized judge-visible entries |
+| `evaluation_settings` | Per-competition toggle settings |
+| `evaluation_scores` | Judge scores per entry/round |
+| `evaluation_score_audit` | Immutable score change log |
+| `evaluation_qualifications` | Round 1 derived results |
+| `evaluation_winners` | Admin-assigned prize records |
+| Community tables | (community_topics, images, albums, events, sections, stats) |
+| Farmer tables | (farmers, farmer_categories) |
+| SNEAC tables | (school_access_tokens, school_competition_registrations, competition_registration_teachers) |
+| `visitors` | Visitor tracking |
+
+#### Migration Strategy
+- Migrations are plain `.sql` files in `backend/database/`.
+- Applied manually by running `node backend/database/run_migration.js` (or `psql` directly).
+- **No migration framework (no Flyway, Liquibase, node-pg-migrate, etc.).**
+- The `run_migration.js` script is edited per migration — it is not a generic runner.
+
+---
+
+### 6. Existing API Conventions
+
+All routes are under `/api/`. Pattern examples:
+
+```
+POST   /api/admin/login
+GET    /api/admin/participants
+GET    /api/admin/stats
+POST   /api/admin/bulk-email
+
+POST   /api/judge/login
+GET    /api/judge/me
+GET    /api/judge/dashboard
+POST   /api/judge/entries/:entryId/score
+
+GET    /api/admin/evaluation/judges
+POST   /api/admin/evaluation/judges
+PUT    /api/admin/evaluation/settings
+GET    /api/admin/evaluation/results
+POST   /api/admin/evaluation/qualify
+GET    /api/admin/evaluation/export/:format
+
+POST   /api/participants/register
+POST   /api/submissions/submit
+POST   /api/payments/create-order
+```
+
+**Conventions observed:**
+- Admin-protected routes grouped under `/api/admin/` with `verifyAdmin` applied via `router.use()`.
+- Domain-specific routes grouped by prefix (`/api/judge/`, `/api/farmers/`, `/api/communities/`).
+- Response shape: `{ success: true|false, message, data?, count? }`.
+- Validation via `express-validator` (`body()` validators) + `validateRequest` middleware.
+- Rate limiting: `express-rate-limit` (currently only on registration endpoint).
+
+---
+
+### 7. Existing Utilities Available for Reuse
+
+| Utility | Location | Relevance |
+|---|---|---|
+| `generateRawToken()` | `utils/tokenService.js` | `crypto.randomBytes(32).toString('hex')` — perfect for QR tokens |
+| `hashToken()` | `utils/tokenService.js` | SHA-256 hash for DB storage |
+| `generateParticipantId()` | `utils/idGenerator.js` | Pattern for pass number generation (`nanoid`) |
+| `generateJudgeUsername/Password()` | `utils/judgeCredentials.js` | Pattern for scanner credential generation |
+| `verifyAdmin` | `middleware/auth.js` | Admin route protection |
+| `verifyJudge` | `middleware/judgeAuth.js` | **Exact template for `verifyScanner` middleware** |
+| `validateRequest` | `middleware/validation.js` | Reuse for all new route validators |
+| `rateLimiter` | `middleware/rateLimiter.js` | Extend/reuse for check-in endpoint |
+| `pool` / `query()` | `config/database.js` | Use for all new DB queries |
+
+---
+
+### 8. Proposed Integration Points
+
+#### Backend — New Files
+```
+backend/src/routes/
+  eventPassRoutes.js        ← /api/event-passes/* (admin-managed)
+  scannerRoutes.js          ← /api/scanner/* (scanner auth + check-in)
+
+backend/src/controllers/
+  eventPassController.js    ← CRUD for Events + Passes
+  eventPassImportController.js ← Bulk import (Excel/CSV)
+  checkInController.js      ← Atomic check-in logic
+  scannerAuthController.js  ← Scanner login/me
+
+backend/src/middleware/
+  scannerAuth.js            ← verifyScanner (mirrors judgeAuth.js pattern)
+
+backend/src/utils/
+  passQRUtils.js            ← generatePassToken(), generatePassNumber()
+
+backend/database/
+  event_pass_migration.sql  ← New tables: events, event_passes, scanner_devices, checkin_logs
+```
+
+#### Backend — server.js Changes
+Register two new route groups:
+```js
+import eventPassRoutes from './routes/eventPassRoutes.js';
+import scannerRoutes from './routes/scannerRoutes.js';
+
+app.use('/api/event-passes', eventPassRoutes);
+app.use('/api/scanner', scannerRoutes);
+```
+
+#### Frontend — New Files
+```
+ngo-web/src/components/event-passes/
+  EventPassAdminTab.jsx     ← Tab component (sub-tabs within AdminDashboard)
+  EventsManager.jsx         ← Create/edit events
+  PassList.jsx              ← Search/filter/view passes
+  PassDetail.jsx            ← Individual pass + QR preview + print
+  BulkImport.jsx            ← Excel upload + preview + import
+  AttendanceDashboard.jsx   ← Live stats + check-in log
+  ScannerDevices.jsx        ← Create/disable scanner devices
+  ManualCheckIn.jsx         ← Fallback manual check-in search
+
+ngo-web/src/utils/api.js    ← Add eventPassAPI and scannerAdminAPI namespaces
+```
+
+#### Frontend — AdminDashboard.jsx
+Add a new tab entry:
+```js
+{ id: 'event-passes', label: '🎫 Event Passes' }
+```
+Render `<EventPassAdminTab />` when active. No other existing tab is modified.
+
+#### Frontend — AppRoutes.jsx
+No new protected routes are required for admin (stays within `/admin/dashboard` tab system). The scanner APK is a separate React Native project.
+
+---
+
+### 9. Proposed Database Schema
+
+#### `events`
+```sql
+id            SERIAL PRIMARY KEY
+name          VARCHAR(255) NOT NULL
+slug          VARCHAR(100) UNIQUE NOT NULL
+description   TEXT
+event_date    DATE
+venue         VARCHAR(255)
+status        VARCHAR(20) DEFAULT 'draft' CHECK (status IN ('draft','active','completed','cancelled'))
+created_at    TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+updated_at    TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+```
+
+#### `event_passes`
+```sql
+id            SERIAL PRIMARY KEY
+event_id      INTEGER NOT NULL REFERENCES events(id) ON DELETE RESTRICT
+pass_number   VARCHAR(30) UNIQUE NOT NULL  -- e.g. SNEPC-2026-0001
+guest_name    VARCHAR(255) NOT NULL
+mobile        VARCHAR(20)
+email         VARCHAR(255)
+category      VARCHAR(100)                 -- VIP / Guest / Staff / etc.
+qr_token      VARCHAR(128) UNIQUE NOT NULL -- crypto.randomBytes(32).toString('hex')
+status        VARCHAR(20) DEFAULT 'ISSUED' CHECK (status IN ('ISSUED','CHECKED_IN','CANCELLED'))
+issued_at     TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+checked_in_at TIMESTAMP WITH TIME ZONE
+checked_in_by INTEGER REFERENCES scanner_devices(id)
+gate          VARCHAR(100)
+created_at    TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+updated_at    TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+```
+
+#### `scanner_devices`
+```sql
+id            SERIAL PRIMARY KEY
+name          VARCHAR(100) NOT NULL       -- e.g. "Main Gate – Phone 1"
+device_code   VARCHAR(50) UNIQUE NOT NULL -- e.g. "MAIN-GATE-01"
+password_hash VARCHAR(255) NOT NULL
+event_id      INTEGER REFERENCES events(id)  -- optional: restrict to one event
+gate          VARCHAR(100)
+is_active     BOOLEAN DEFAULT true
+last_seen_at  TIMESTAMP WITH TIME ZONE
+created_at    TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+updated_at    TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+```
+
+#### `checkin_logs`
+```sql
+id            SERIAL PRIMARY KEY
+event_id      INTEGER NOT NULL REFERENCES events(id)
+pass_id       INTEGER REFERENCES event_passes(id)
+scanner_id    INTEGER REFERENCES scanner_devices(id)
+gate          VARCHAR(100)
+action        VARCHAR(30) NOT NULL  -- 'SCAN' | 'MANUAL_CHECKIN'
+result        VARCHAR(30) NOT NULL  -- SUCCESS | ALREADY_CHECKED_IN | INVALID | CANCELLED | WRONG_EVENT
+scanned_at    TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+ip_address    INET
+user_agent    TEXT
+raw_token     VARCHAR(128)         -- log what was actually scanned, for forensics
+```
+
+**Critical constraint (concurrent duplicate protection):**
+```sql
+-- Enforced in application via SELECT ... FOR UPDATE in a transaction;
+-- PostgreSQL row-level locking ensures only one concurrent check-in wins.
+-- No second unique constraint needed beyond qr_token UNIQUE on event_passes.
+```
+
+---
+
+### 10. Proposed API Design
+
+#### Admin-protected (Bearer admin JWT)
+```
+POST   /api/event-passes/events               Create event
+GET    /api/event-passes/events               List events
+GET    /api/event-passes/events/:id           Get event
+PUT    /api/event-passes/events/:id           Update event
+
+POST   /api/event-passes                      Create single pass
+POST   /api/event-passes/import               Bulk import (Excel/CSV)
+GET    /api/event-passes                      List passes (?eventId=&status=&search=)
+GET    /api/event-passes/:id                  Get pass detail
+POST   /api/event-passes/:id/cancel           Cancel pass
+POST   /api/event-passes/:id/reissue          Regenerate QR token
+
+GET    /api/event-passes/attendance/:eventId  Attendance stats
+GET    /api/event-passes/checkin-logs/:eventId Check-in log
+
+POST   /api/event-passes/manual-checkin       Manual fallback check-in
+
+GET    /api/event-passes/scanners             List scanner devices
+POST   /api/event-passes/scanners             Create scanner device
+PATCH  /api/event-passes/scanners/:id/active  Enable/disable scanner
+```
+
+#### Scanner-authenticated (Bearer scanner JWT)
+```
+POST   /api/scanner/login    Scanner device login
+GET    /api/scanner/me       Get scanner profile / assigned event
+POST   /api/scanner/checkin  THE critical check-in endpoint
+```
+
+---
+
+### 11. Proposed Admin UI Structure
+
+New tab `🎫 Event Passes` inside `AdminDashboard.jsx` → renders `EventPassAdminTab.jsx`.
+
+Sub-tabs inside `EventPassAdminTab`:
+```
+Events          → EventsManager.jsx
+Passes          → PassList.jsx (search, filter, view, cancel, reissue, print)
+Import Guests   → BulkImport.jsx (Excel/CSV upload, preview, import)
+Attendance      → AttendanceDashboard.jsx (live stats + check-in log)
+Scanner Devices → ScannerDevices.jsx (create, enable/disable)
+Manual Check-In → ManualCheckIn.jsx (search by name/mobile/pass number)
+```
+
+Follows exact same sub-tab pattern as `EvaluationAdminTab.jsx`.
+
+---
+
+### 12. Proposed Expo APK Architecture
+
+Separate project (not inside this repo):
+```
+scanner-app/   (new Expo + TypeScript project)
+  app/
+    _layout.tsx        ← Root layout, auth guard
+    index.tsx          ← Redirect to /login or /scanner
+    login.tsx          ← Scanner ID + password form
+    scanner.tsx        ← Camera QR scanner (main screen)
+    result.tsx         ← Check-in result display
+    profile.tsx        ← Device info + logout
+  src/
+    api/
+      client.ts        ← Axios instance (EXPO_PUBLIC_API_URL)
+      auth.ts          ← login(), me()
+      checkin.ts       ← checkin(token)
+    hooks/
+      useAuth.ts
+      useCheckin.ts
+    store/
+      authStore.ts     ← SecureStore token persistence
+```
+
+Token stored with `expo-secure-store`. QR scanning via `expo-camera` + `expo-barcode-scanner` (or `react-native-vision-camera` depending on Expo SDK version).
+
+---
+
+### 13. New Environment Variables Required
+
+**Backend (`backend/.env`):**
+```
+QR_PASS_JWT_SECRET=<strong-random-secret>   ← for scanner JWT (mirrors JWT_JUDGE_SECRET pattern)
+```
+No other new backend env vars are needed — QR tokens are stored as raw hex, not JWT.
+
+**Frontend (`ngo-web/.env`):**
+No new variables needed (uses same `REACT_APP_API_URL`).
+
+**Expo APK (`.env` / `app.config.js`):**
+```
+EXPO_PUBLIC_API_URL=https://your-render-backend.onrender.com
+```
+
+---
+
+### 14. Risks & Compatibility Notes
+
+| Risk | Mitigation |
+|---|---|
+| No migration framework — SQL files applied manually | Continue same pattern; create `event_pass_migration.sql`, document exact run command |
+| Atomic check-in under concurrent load | Use `BEGIN ... SELECT FOR UPDATE ... UPDATE ... COMMIT` transaction in PostgreSQL; never `UPDATE` without first locking the row |
+| `run_migration.js` is not a generic runner — it contains hard-coded SQL | Write the new migration as a standalone `.sql` file; apply with `psql` directly or a one-off node script |
+| No model layer — all logic in controllers | Follow existing pattern; keep inline SQL in controller functions |
+| Admin dashboard is a monolith (~880-line single file) | Add tab entry + delegate to `EventPassAdminTab` component; don't restructure existing tabs |
+| Frontend uses `localStorage` for auth — no HttpOnly cookies | Match existing pattern; scanner APK uses `expo-secure-store` (safe on mobile) |
+| `nanoid` already installed — use for pass number suffixes | No new deps needed for ID generation |
+| `pdfkit` already installed — usable for printable pass PDF generation | No new deps needed for PDF |
+| QR code image generation in browser (admin UI) | Use `qrcode` npm package (small, no native deps) — add to frontend |
+| `exceljs` already installed in backend — usable for bulk import parsing | No new backend deps needed |
+| CORS: scanner APK hits same Render backend | APK is not a browser origin; CORS is irrelevant for native apps. No CORS change needed |
+| Render cold-start latency | Out of scope for Phase 0; document in APK error-handling phase |
+
+---
+
+### 15. Files to Create in Phase 1
+
+```
+backend/database/event_pass_migration.sql
+```
+
+### Files to Modify in Phase 1
+
+None — Phase 1 is additive SQL only.
+
+---
+
+### Next Step
+
+**PHASE 1 — Database Design and Migration**
+
+Create `backend/database/event_pass_migration.sql` containing:
+- `CREATE TABLE IF NOT EXISTS events ...`
+- `CREATE TABLE IF NOT EXISTS event_passes ...`
+- `CREATE TABLE IF NOT EXISTS scanner_devices ...`
+- `CREATE TABLE IF NOT EXISTS checkin_logs ...`
+- Indexes
+- No data seeding required
+
+Then apply to Aiven PostgreSQL and verify schema.
+
+**Do not begin Phase 1 until this is approved.**
