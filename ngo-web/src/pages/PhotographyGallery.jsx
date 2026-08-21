@@ -424,7 +424,7 @@ const PhotographyGallery = () => {
       </section>
 
       <footer className="text-center pb-10 text-[11px] tracking-widest uppercase" style={{ ...mono, color: '#4A423A' }}>
-        Swadhyay Seva Sansthan — Photography Competition
+        Swadhyay Seva Foundation — Swadhyay National Photography Competition —  SNPC 2026
       </footer>
 
       <Lightbox entry={lightboxEntry} onClose={() => setLightboxEntry(null)} />
