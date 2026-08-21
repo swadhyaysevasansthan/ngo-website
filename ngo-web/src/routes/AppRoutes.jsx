@@ -51,6 +51,7 @@ import CommunityAdmin from "../pages/CommunityAdmin";
 
 // Judge Portal Pages
 import JudgeLogin from "../pages/JudgeLogin";
+import PhotographyGallery from "../pages/PhotographyGallery";
 import JudgeDashboardPage from "../pages/JudgeDashboardPage";
 
 export default function AppRoutes() {
@@ -59,6 +60,7 @@ export default function AppRoutes() {
             {/* PUBLIC WEBSITE */}
             <Route element={<PublicLayout />}>
                 <Route path="/" element={<Home />} />
+                <Route path="/photography-gallery" element={<PhotographyGallery />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/quiz" element={<Quiz />} />
                 <Route path="/question-bank" element={<QuestionBank />} />

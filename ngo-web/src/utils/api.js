@@ -452,4 +452,12 @@ export const eventPassAPI = {
   toggleScannerActive: (id, isActive) => apiClient.patch(`/event-passes/scanners/${id}/active`, { isActive }),
 };
 
+// 🔥 PUBLIC EVALUATION RESULTS — no auth required, powers the public
+// results gallery page. Uses apiClient purely for consistency; the
+// backend never checks auth on this route regardless of whether a
+// token happens to be attached.
+export const evaluationPublicAPI = {
+  getGallery: () => apiClient.get('/public/evaluation/gallery'),
+};
+
 export default apiClient;

@@ -247,11 +247,39 @@ const EvaluationSettings = () => {
         <h3 className="font-bold text-gray-800 mb-1">Publishing</h3>
         <Toggle
           label="Publish Results"
-          description="Make final results visible externally"
+          description="Make the public results gallery page visible to visitors"
           checked={settings.results_published}
           onChange={(v) => save({ results_published: v })}
           disabled={saving || settings.frozen}
         />
+        <div className="mt-3 pt-3 border-t border-gray-100">
+          <label className="text-sm font-medium text-gray-700 block mb-1">Gallery size (top entries shown)</label>
+          <div className="flex items-center gap-3">
+            <input
+              type="number"
+              min={1}
+              value={settings.gallery_top_n}
+              onChange={(e) => setSettings({ ...settings, gallery_top_n: Number(e.target.value) })}
+              onBlur={(e) => save({ gallery_top_n: Number(e.target.value) })}
+              disabled={saving || settings.frozen}
+              className="w-24 px-3 py-2 border rounded-lg text-sm"
+            />
+            <p className="text-xs text-gray-500">
+              The top {settings.gallery_top_n} highest-ranked, non-disqualified photographs will appear in the
+              public gallery. Ranked by Round 2 totals once Round 2 scoring is enabled, otherwise Round 1.
+            </p>
+          </div>
+          {settings.results_published && (
+            <a
+              href="/photography-gallery"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block mt-3 text-xs font-semibold text-primary hover:underline"
+            >
+              View the live public gallery →
+            </a>
+          )}
+        </div>
       </div>
 
       <div className="bg-red-50 rounded-xl border border-red-100 p-5">

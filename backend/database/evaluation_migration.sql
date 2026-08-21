@@ -183,3 +183,11 @@ ALTER SEQUENCE school_access_tokens_id_seq RESTART WITH 1;
 ALTER SEQUENCE school_competition_registrations_id_seq RESTART WITH 1;
 
 ALTER SEQUENCE competition_registration_teachers_id_seq RESTART WITH 1;
+
+
+-- Judge Evaluation Module — public results gallery setting
+-- Run this after the previous evaluation_*_migration.sql files. Safe
+-- to run once.
+
+ALTER TABLE evaluation_settings
+    ADD COLUMN IF NOT EXISTS gallery_top_n INTEGER NOT NULL DEFAULT 60 CHECK (gallery_top_n > 0);

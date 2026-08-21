@@ -30,6 +30,7 @@ import adminFarmerRoutes from './routes/adminFarmerRoutes.js';
 
 import judgeRoutes from './routes/judgeRoutes.js';
 import evaluationRoutes from './routes/evaluationRoutes.js';
+import publicResultsRoutes from './routes/publicResultsRoutes.js';
 import eventPassRoutes from './routes/eventPassRoutes.js';
 import scannerRoutes from './routes/scannerRoutes.js';
 
@@ -147,6 +148,7 @@ app.use('/api/admin/farmers', adminFarmerRoutes);
 
 app.use('/api/judge', judgeRoutes);
 app.use('/api/admin/evaluation', evaluationRoutes);
+app.use('/api/public/evaluation', publicResultsRoutes);
 app.use('/api/event-passes', eventPassRoutes);
 app.use('/api/scanner', scannerRoutes);
 

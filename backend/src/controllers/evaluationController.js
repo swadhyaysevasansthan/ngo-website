@@ -23,7 +23,7 @@ export const getDefaultCompetition = async () => {
  * caps dimensions and lets Cloudinary pick optimal format/quality —
  * usually a 90%+ size reduction with no visible quality loss on screen.
  */
-const applyCloudinaryTransform = (url, transform) => {
+export const applyCloudinaryTransform = (url, transform) => {
   if (!url || !url.includes('/upload/')) return url;
   return url.replace('/upload/', `/upload/${transform}/`);
 };
@@ -196,6 +196,7 @@ const SETTINGS_FIELDS = [
   'frozen',
   'results_published',
   'max_score',
+  'gallery_top_n',
 ];
 
 export const updateSettings = async (req, res) => {
