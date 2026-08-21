@@ -1,14 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Camera, X, MapPin, Sparkles, Trophy, Award, Star } from 'lucide-react';
+import { Camera, X, MapPin, Sparkles, Star } from 'lucide-react';
 import { evaluationPublicAPI } from '../utils/api';
-
-const PRIZE_META = {
-  first: { label: 'First Prize', icon: '🥇', ring: 'ring-4 ring-yellow-400', glow: 'shadow-[0_0_40px_rgba(250,204,21,0.5)]' },
-  second: { label: 'Second Prize', icon: '🥈', ring: 'ring-4 ring-slate-300', glow: 'shadow-[0_0_30px_rgba(203,213,225,0.5)]' },
-  third: { label: 'Third Prize', icon: '🥉', ring: 'ring-4 ring-amber-600', glow: 'shadow-[0_0_30px_rgba(180,83,9,0.4)]' },
-  consolation: { label: 'Consolation', icon: '⭐', ring: 'ring-2 ring-emerald-400', glow: '' },
-};
 
 const CATEGORY_STYLE = {
   wildlife: 'bg-orange-500/90 text-white',
@@ -44,8 +37,6 @@ const FloatingParticles = () => (
 );
 
 const PhotoCard = ({ entry, onClick, index }) => {
-  const prize = entry.prizeType ? PRIZE_META[entry.prizeType] : null;
-
   return (
     <motion.button
       onClick={() => onClick(entry)}
@@ -55,15 +46,13 @@ const PhotoCard = ({ entry, onClick, index }) => {
       viewport={{ once: true, margin: '-60px' }}
       variants={fadeUp}
       whileHover={{ y: -8 }}
-      className={`group relative block w-full overflow-hidden rounded-2xl bg-slate-900 text-left ${
-        prize ? `${prize.ring} ${prize.glow}` : 'ring-1 ring-white/10'
-      }`}
+      className="group relative block w-full overflow-hidden rounded-2xl bg-slate-900 text-left ring-1 ring-white/10"
     >
       <div className="aspect-[4/5] w-full overflow-hidden">
         {entry.imageUrl ? (
           <img
             src={entry.imageUrl}
-            alt={entry.fullName || `Entry #${entry.entryNumber}`}
+            alt={entry.fullName || 'Photography entry'}
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
           />
@@ -76,20 +65,11 @@ const PhotoCard = ({ entry, onClick, index }) => {
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent opacity-90 transition-opacity group-hover:opacity-100" />
 
-      <div className="absolute top-3 left-3 flex items-center gap-1.5">
-        <span className="rounded-full bg-black/50 backdrop-blur-sm px-2.5 py-1 text-[11px] font-bold text-amber-300">
-          #{entry.rank}
-        </span>
-        {entry.category && (
+      {entry.category && (
+        <div className="absolute top-3 left-3">
           <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${CATEGORY_STYLE[entry.category] || 'bg-white/20 text-white'}`}>
             {entry.category}
           </span>
-        )}
-      </div>
-
-      {prize && (
-        <div className="absolute top-3 right-3 text-2xl drop-shadow-lg" title={prize.label}>
-          {prize.icon}
         </div>
       )}
 
@@ -105,41 +85,8 @@ const PhotoCard = ({ entry, onClick, index }) => {
   );
 };
 
-const WinnerPodiumCard = ({ entry, size = 'md' }) => {
-  const prize = PRIZE_META[entry.prizeType];
-  const dims = size === 'lg' ? 'w-56 sm:w-64' : 'w-44 sm:w-52';
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.85, y: 30 }}
-      whileInView={{ opacity: 1, scale: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className={`flex flex-col items-center ${dims}`}
-    >
-      <div className="text-3xl mb-2">{prize.icon}</div>
-      <div className={`relative w-full aspect-[4/5] rounded-2xl overflow-hidden ${prize.ring} ${prize.glow}`}>
-        {entry.imageUrl ? (
-          <img src={entry.imageUrl} alt={entry.fullName} className="h-full w-full object-cover" />
-        ) : (
-          <div className="flex h-full items-center justify-center bg-slate-800 text-slate-500">
-            <Camera size={28} />
-          </div>
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-3">
-          <p className="font-bold text-white text-sm truncate">{entry.fullName}</p>
-          {entry.category && <p className="text-[10px] uppercase tracking-wide text-amber-300">{entry.category}</p>}
-        </div>
-      </div>
-      <p className="mt-3 text-sm font-bold text-amber-300 tracking-wide uppercase">{prize.label}</p>
-    </motion.div>
-  );
-};
-
 const Lightbox = ({ entry, onClose }) => {
   if (!entry) return null;
-  const prize = entry.prizeType ? PRIZE_META[entry.prizeType] : null;
 
   return (
     <AnimatePresence>
@@ -167,7 +114,6 @@ const Lightbox = ({ entry, onClose }) => {
               <div>
                 <p className="text-white font-bold text-lg">{entry.fullName || 'Anonymous Photographer'}</p>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <span className="text-amber-400 text-sm font-semibold">Entry #{entry.entryNumber}</span>
                   {entry.category && (
                     <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase ${CATEGORY_STYLE[entry.category] || 'bg-white/20 text-white'}`}>
                       {entry.category}
@@ -180,11 +126,6 @@ const Lightbox = ({ entry, onClose }) => {
                   )}
                 </div>
               </div>
-              {prize && (
-                <div className="flex items-center gap-2 text-amber-300 font-bold">
-                  <span className="text-2xl">{prize.icon}</span> {prize.label}
-                </div>
-              )}
             </div>
           </div>
         </motion.div>
@@ -250,12 +191,6 @@ const PhotographyGallery = () => {
     return <NotPublishedYet competitionName={competitionName} />;
   }
 
-  const podium = ['first', 'second', 'third']
-    .map((p) => entries.find((e) => e.prizeType === p))
-    .filter(Boolean);
-  const consolations = entries.filter((e) => e.prizeType === 'consolation');
-  const fullGallery = entries;
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-emerald-950 via-slate-900 to-slate-950">
       {/* HERO */}
@@ -281,51 +216,7 @@ const PhotographyGallery = () => {
         </motion.div>
       </section>
 
-      {/* WINNERS PODIUM */}
-      {podium.length > 0 && (
-        <section className="relative px-4 pb-20">
-          <motion.h2
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-center text-white/80 font-bold tracking-widest uppercase text-xs sm:text-sm mb-10 flex items-center justify-center gap-2"
-          >
-            <Trophy size={16} className="text-amber-400" /> The Winners
-          </motion.h2>
-          <div className="flex flex-wrap items-end justify-center gap-6 sm:gap-10 max-w-4xl mx-auto">
-            {podium.find((e) => e.prizeType === 'second') && (
-              <WinnerPodiumCard entry={podium.find((e) => e.prizeType === 'second')} />
-            )}
-            {podium.find((e) => e.prizeType === 'first') && (
-              <WinnerPodiumCard entry={podium.find((e) => e.prizeType === 'first')} size="lg" />
-            )}
-            {podium.find((e) => e.prizeType === 'third') && (
-              <WinnerPodiumCard entry={podium.find((e) => e.prizeType === 'third')} />
-            )}
-          </div>
-        </section>
-      )}
-
-      {/* CONSOLATION PRIZES */}
-      {consolations.length > 0 && (
-        <section className="px-4 pb-20 max-w-6xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-center text-white/80 font-bold tracking-widest uppercase text-xs sm:text-sm mb-8 flex items-center justify-center gap-2"
-          >
-            <Award size={16} className="text-emerald-400" /> Consolation Prizes
-          </motion.h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6">
-            {consolations.map((entry, i) => (
-              <PhotoCard key={entry.entryNumber} entry={entry} onClick={setLightboxEntry} index={i} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* FULL GALLERY WALL */}
+      {/* GALLERY WALL */}
       <section className="px-4 pb-28 max-w-7xl mx-auto">
         <motion.h2
           initial={{ opacity: 0 }}
@@ -333,14 +224,14 @@ const PhotographyGallery = () => {
           viewport={{ once: true }}
           className="text-center text-white/80 font-bold tracking-widest uppercase text-xs sm:text-sm mb-10 flex items-center justify-center gap-2"
         >
-          <Star size={16} className="text-amber-400" /> The Full Gallery
+          <Star size={16} className="text-amber-400" /> The Gallery
         </motion.h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
-          {fullGallery.map((entry, i) => (
-            <PhotoCard key={entry.entryNumber} entry={entry} onClick={setLightboxEntry} index={i} />
+          {entries.map((entry, i) => (
+            <PhotoCard key={`${entry.fullName}-${i}`} entry={entry} onClick={setLightboxEntry} index={i} />
           ))}
         </div>
-        {fullGallery.length === 0 && (
+        {entries.length === 0 && (
           <p className="text-center text-white/50 py-16">No entries to display yet.</p>
         )}
       </section>

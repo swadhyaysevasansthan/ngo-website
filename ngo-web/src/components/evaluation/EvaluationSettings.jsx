@@ -265,8 +265,9 @@ const EvaluationSettings = () => {
               className="w-24 px-3 py-2 border rounded-lg text-sm"
             />
             <p className="text-xs text-gray-500">
-              The top {settings.gallery_top_n} highest-ranked, non-disqualified photographs will appear in the
-              public gallery. Ranked by Round 2 totals once Round 2 scoring is enabled, otherwise Round 1.
+              The top {settings.gallery_top_n} highest-ranked, non-disqualified photographs from Round 1 will
+              appear in the public gallery, showing photo, name, place, and category only — no ranks or
+              prize labels.
             </p>
           </div>
           {settings.results_published && (
