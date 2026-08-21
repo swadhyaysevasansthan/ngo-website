@@ -54,7 +54,7 @@ const Navbar = () => {
   ];
 
   const gallerySubLinks = [
-    { name: 'SNPC 2026', path: '/photography-competition' },
+    { name: 'SNPC 2026', path: '/photography-gallery' },
   ];
 
   const eventsSubLinks = [
