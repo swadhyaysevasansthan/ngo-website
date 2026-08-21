@@ -18,8 +18,8 @@ const PARCHMENT_DIM = '#8A7C67';
 const GOLD = '#E7A93B';
 
 const CATEGORY_META = {
-  wildlife: { label: 'Wildlife', color: '#B5502C' },
-  nature: { label: 'Nature', color: '#5C7A5E' },
+  wildlife: { label: 'Wildlife', color: '#d65a2e' },
+  nature: { label: 'Nature', color: '#32ab3a' },
 };
 
 const serif = { fontFamily: "'Fraunces', serif" };
