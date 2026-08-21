@@ -18,6 +18,7 @@ const Navbar = () => {
   const schoolStoriesDropdownRef = useRef(null);
   const competitionDropdownRef = useRef(null);
   const eventsDropdownRef = useRef(null);
+  const galleryDropdownRef = useRef(null);
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -26,6 +27,7 @@ const Navbar = () => {
     { name: 'School Stories', dropdown: true, type: 'schoolstories' },
     { name: 'Voices', dropdown: true, type: 'voices' }, // updated
     { name: 'Competitions', dropdown: true, type: 'competitions' },
+    { name: 'Gallery', dropdown: true, type: 'gallery' },
     { name: 'Events', dropdown: true, type: 'events'},
     { name: 'Our Communities', dropdown: true, type: 'ourcommunities' },
     { name: 'Contact', path: '/contact' },
@@ -49,6 +51,10 @@ const Navbar = () => {
   const competitionSubLinks = [
     { name: 'SNPC 2026', path: '/photography-competition' },
     { name: 'SNEAC 2026-27', path: '/upcoming-engagements' },
+  ];
+
+  const gallerySubLinks = [
+    { name: 'SNPC 2026', path: '/photography-competition' },
   ];
 
   const eventsSubLinks = [
@@ -154,6 +160,12 @@ const Navbar = () => {
         !schoolStoriesDropdownRef.current.contains(event.target)
       )
         setActiveDesktopDropdown('');
+      if (
+        activeDesktopDropdown === 'gallery' &&
+        galleryDropdownRef.current &&
+        !galleryDropdownRef.current.contains(event.target)
+      )
+        setActiveDesktopDropdown('');
     }
 
     if (activeDesktopDropdown) {
@@ -171,6 +183,7 @@ const Navbar = () => {
     if (type === 'competitions') return competitionDropdownRef;
     if (type === 'events') return eventsDropdownRef;
     if (type === 'schoolstories') return schoolStoriesDropdownRef;
+    if (type === 'gallery') return galleryDropdownRef;
     return null;
   };
 
@@ -182,6 +195,7 @@ const Navbar = () => {
     if (type === 'competitions') return competitionSubLinks;
     if (type === 'events') return eventsSubLinks;
     if (type === 'schoolstories') return schoolStoriesSubLinks;
+    if (type === 'gallery') return gallerySubLinks;
     // Merge static + dynamic community topics
     const staticPaths = new Set(ourCommunitiesSubLinks.map(l => l.path));
     const dynamicLinks = dynamicCommunities
