@@ -27,6 +27,33 @@ const AttendanceDashboard = ({ selectedEventId }) => {
     }
   }, [selectedEventId]);
 
+  const handleClearAllLogs = async () => {
+    if (!selectedEventId) return;
+    if (!window.confirm('Are you sure you want to PERMANENTLY delete all check-in/scan logs for this event? This action cannot be undone.')) return;
+    try {
+      const res = await eventPassAPI.clearAllCheckInLogs(selectedEventId);
+      if (res.data.success) {
+        toast.success(res.data.message || 'All scan logs cleared successfully');
+        loadEventData();
+      }
+    } catch {
+      toast.error('Failed to clear scan logs');
+    }
+  };
+
+  const handleDeleteLog = async (logId) => {
+    if (!window.confirm('Are you sure you want to permanently delete this scan log entry?')) return;
+    try {
+      const res = await eventPassAPI.deleteCheckInLog(logId);
+      if (res.data.success) {
+        toast.success('Scan log entry deleted');
+        loadEventData();
+      }
+    } catch {
+      toast.error('Failed to delete scan log entry');
+    }
+  };
+
   useEffect(() => {
     loadEventData();
   }, [loadEventData]);
@@ -173,6 +200,14 @@ const AttendanceDashboard = ({ selectedEventId }) => {
             >
               🔄 Refresh Logs
             </Button>
+            {logs.length > 0 && (
+              <Button
+                className="text-xs px-3 py-1.5 hover:scale-100 flex items-center gap-1.5 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-lg"
+                onClick={handleClearAllLogs}
+              >
+                🗑️ Clear All Logs
+              </Button>
+            )}
           </div>
         </div>
 
@@ -186,6 +221,7 @@ const AttendanceDashboard = ({ selectedEventId }) => {
                 <th className="p-3">Gate/Device</th>
                 <th className="p-3">Method</th>
                 <th className="p-3 text-center">Result</th>
+                <th className="p-3 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
@@ -228,11 +264,19 @@ const AttendanceDashboard = ({ selectedEventId }) => {
                       {log.result}
                     </span>
                   </td>
+                  <td className="p-3 text-right">
+                    <button
+                      className="text-xs px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-medium"
+                      onClick={() => handleDeleteLog(log.id)}
+                    >
+                      🗑️ Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
               {logs.length === 0 && (
                 <tr>
-                  <td colSpan="6" className="text-center text-gray-400 py-8">
+                  <td colSpan="7" className="text-center text-gray-400 py-8">
                     No scan logs recorded.
                   </td>
                 </tr>

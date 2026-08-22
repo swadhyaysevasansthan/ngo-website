@@ -15,7 +15,7 @@ import ngoLogo from '../../assets/ngo-logo.png';
  *   onPassUpdated - callback(updatedPass) when pass state changes
  *   eventName     - display name of the current event
  */
-const PassDetail = ({ pass, onClose, onPassUpdated, eventName }) => {
+const PassDetail = ({ pass, onClose, onPassUpdated, onPassDeleted, eventName }) => {
   if (!pass) return null;
 
   const handleManualCheckIn = async () => {
@@ -42,6 +42,19 @@ const PassDetail = ({ pass, onClose, onPassUpdated, eventName }) => {
       }
     } catch {
       toast.error('Failed to reissue QR pass');
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm('Are you sure you want to PERMANENTLY delete this pass? This will also delete any associated scan logs. This action is irreversible.')) return;
+    try {
+      const res = await eventPassAPI.deletePass(pass.id);
+      if (res.data.success) {
+        toast.success('Pass permanently deleted');
+        onPassDeleted?.(pass.id);
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to delete pass');
     }
   };
 
@@ -203,6 +216,13 @@ const PassDetail = ({ pass, onClose, onPassUpdated, eventName }) => {
             onClick={handleReissue}
           >
             🔄 Reissue New QR
+          </button>
+          <button
+            type="button"
+            className="text-xs px-4 py-2 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-semibold"
+            onClick={handleDelete}
+          >
+            🗑️ Delete Pass
           </button>
         </div>
       </div>

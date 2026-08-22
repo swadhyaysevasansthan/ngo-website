@@ -442,10 +442,14 @@ export const eventPassAPI = {
   getPassById: (id) => apiClient.get(`/event-passes/${id}`),
   cancelPass: (id) => apiClient.post(`/event-passes/${id}/cancel`),
   reissueQR: (id) => apiClient.post(`/event-passes/${id}/reissue`),
+  deletePass: (id) => apiClient.delete(`/event-passes/${id}`),
+  deletePassesBulk: (ids) => apiClient.post('/event-passes/delete-bulk', { ids }),
   manualCheckIn: (data) => apiClient.post('/event-passes/manual-checkin', data),
 
   getAttendanceStats: (eventId) => apiClient.get(`/event-passes/attendance/${eventId}`),
   getCheckInLogs: (eventId) => apiClient.get(`/event-passes/check-in-logs/${eventId}`),
+  clearAllCheckInLogs: (eventId) => apiClient.delete(`/event-passes/check-in-logs/event/${eventId}`),
+  deleteCheckInLog: (id) => apiClient.delete(`/event-passes/check-in-logs/log/${id}`),
 
   listScannerDevices: () => apiClient.get('/event-passes/scanners'),
   createScannerDevice: (data) => apiClient.post('/event-passes/scanners', data),

@@ -13,6 +13,10 @@ import {
   reissueQR,
   getAttendanceStats,
   getCheckInLogs,
+  deletePass,
+  deletePassesBulk,
+  clearAllCheckInLogs,
+  deleteCheckInLog,
   getScannerDevices,
   createScannerDevice,
   toggleScannerActive
@@ -36,10 +40,13 @@ router.post('/manual-checkin', manualCheckIn);
 
 // Bulk import
 router.post('/import', bulkImportPasses);
+router.post('/delete-bulk', deletePassesBulk);
 
 // Stats & logs (must be before /:id to avoid being caught as a pass ID)
 router.get('/attendance/:eventId', getAttendanceStats);
 router.get('/check-in-logs/:eventId', getCheckInLogs);
+router.delete('/check-in-logs/event/:eventId', clearAllCheckInLogs);
+router.delete('/check-in-logs/log/:id', deleteCheckInLog);
 
 // Scanner devices management
 router.get('/scanners', getScannerDevices);
@@ -53,5 +60,6 @@ router.get('/', getPasses);
 router.get('/:id', getPassById);
 router.post('/:id/cancel', cancelPass);
 router.post('/:id/reissue', reissueQR);
+router.delete('/:id', deletePass);
 
 export default router;

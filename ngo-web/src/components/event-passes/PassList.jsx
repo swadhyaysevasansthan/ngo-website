@@ -88,6 +88,37 @@ const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
     }
   };
 
+  const handleDeletePass = async (passId) => {
+    if (!window.confirm('Are you sure you want to PERMANENTLY delete this pass? This will also delete any associated scan logs. This action is irreversible.')) return;
+    try {
+      const res = await eventPassAPI.deletePass(passId);
+      if (res.data.success) {
+        toast.success('Pass permanently deleted');
+        loadPasses();
+        onStatsRefreshNeeded?.();
+        if (selectedPass?.id === passId) setSelectedPass(null);
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to delete pass');
+    }
+  };
+
+  const handleDeletePassesBulk = async () => {
+    if (selectedPassIds.length === 0) return;
+    if (!window.confirm(`Are you sure you want to PERMANENTLY delete the ${selectedPassIds.length} selected passes? This will also delete any associated scan logs. This action is irreversible.`)) return;
+    try {
+      const res = await eventPassAPI.deletePassesBulk(selectedPassIds);
+      if (res.data.success) {
+        toast.success(res.data.message || `Successfully deleted ${selectedPassIds.length} passes`);
+        setSelectedPassIds([]);
+        loadPasses();
+        onStatsRefreshNeeded?.();
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed bulk delete passes');
+    }
+  };
+
   const handleManualCheckIn = async (passId) => {
     if (!window.confirm('Check in this guest manually?')) return;
     try {
@@ -287,13 +318,21 @@ const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
           <h3 className="font-bold text-gray-800 text-lg">Passes Directory ({totalPassesCount})</h3>
           <div className="flex gap-2">
             {selectedPassIds.length > 0 && (
-              <Button
-                variant="secondary"
-                className="text-xs px-4 py-2 hover:scale-100"
-                onClick={handlePrintBulk}
-              >
-                🖨️ Print Selected ({selectedPassIds.length})
-              </Button>
+              <>
+                <Button
+                  variant="secondary"
+                  className="text-xs px-4 py-2 hover:scale-100"
+                  onClick={handlePrintBulk}
+                >
+                  🖨️ Print Selected ({selectedPassIds.length})
+                </Button>
+                <Button
+                  className="text-xs px-4 py-2 hover:scale-100 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-lg"
+                  onClick={handleDeletePassesBulk}
+                >
+                  🗑️ Delete Selected ({selectedPassIds.length})
+                </Button>
+              </>
             )}
             <Button
               variant="primary"
@@ -446,6 +485,12 @@ const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
                         🚫 Cancel
                       </button>
                     )}
+                    <button
+                      className="text-xs px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-medium"
+                      onClick={() => handleDeletePass(pass.id)}
+                    >
+                      🗑️ Delete
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -549,6 +594,11 @@ const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
         pass={selectedPass}
         onClose={() => setSelectedPass(null)}
         onPassUpdated={handlePassUpdated}
+        onPassDeleted={(passId) => {
+          setSelectedPass(null);
+          loadPasses();
+          onStatsRefreshNeeded?.();
+        }}
         eventName={currentEventName}
       />
     </>

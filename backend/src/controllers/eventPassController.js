@@ -410,6 +410,99 @@ export const getCheckInLogs = async (req, res) => {
   }
 };
 
+export const deletePass = async (req, res) => {
+  const { id } = req.params;
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    
+    // First delete any associated check-in logs
+    await client.query('DELETE FROM checkin_logs WHERE pass_id = $1', [id]);
+    
+    // Then delete the pass itself
+    const result = await client.query(
+      'DELETE FROM event_passes WHERE id = $1 RETURNING *',
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ success: false, message: 'Pass not found' });
+    }
+
+    await client.query('COMMIT');
+    res.json({ success: true, message: 'Pass permanently deleted successfully' });
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error('Delete pass error:', error);
+    res.status(500).json({ success: false, message: 'Failed to delete pass permanently', error: error.message });
+  } finally {
+    client.release();
+  }
+};
+
+export const deletePassesBulk = async (req, res) => {
+  const { ids } = req.body;
+
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({ success: false, message: 'Pass IDs are required' });
+  }
+
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // Delete check-in logs for these passes
+    await client.query('DELETE FROM checkin_logs WHERE pass_id = ANY($1)', [ids]);
+
+    // Delete passes
+    const result = await client.query(
+      'DELETE FROM event_passes WHERE id = ANY($1) RETURNING *',
+      [ids]
+    );
+
+    await client.query('COMMIT');
+    res.json({ success: true, count: result.rows.length, message: `Successfully deleted ${result.rows.length} passes permanently` });
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error('Bulk delete passes error:', error);
+    res.status(500).json({ success: false, message: 'Failed bulk delete passes', error: error.message });
+  } finally {
+    client.release();
+  }
+};
+
+export const clearAllCheckInLogs = async (req, res) => {
+  const { eventId } = req.params;
+  try {
+    const result = await pool.query(
+      'DELETE FROM checkin_logs WHERE event_id = $1 RETURNING *',
+      [eventId]
+    );
+    res.json({ success: true, message: `Successfully cleared all ${result.rows.length} scan logs` });
+  } catch (error) {
+    console.error('Clear check-in logs error:', error);
+    res.status(500).json({ success: false, message: 'Failed to clear check-in logs', error: error.message });
+  }
+};
+
+export const deleteCheckInLog = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query(
+      'DELETE FROM checkin_logs WHERE id = $1 RETURNING *',
+      [id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Log entry not found' });
+    }
+    res.json({ success: true, message: 'Scan log entry deleted successfully' });
+  } catch (error) {
+    console.error('Delete log entry error:', error);
+    res.status(500).json({ success: false, message: 'Failed to delete scan log entry', error: error.message });
+  }
+};
+
 // ============================================================
 // SCANNER DEVICES MANAGEMENT (ADMIN)
 // ============================================================
