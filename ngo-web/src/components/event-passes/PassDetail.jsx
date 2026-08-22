@@ -104,7 +104,7 @@ const PassDetail = ({ pass, onClose, onPassUpdated, eventName }) => {
         <body>
           <div class="pass-card">
             <img class="logo" src="${logoUrl}" alt="Swadhyay Logo" />
-            <div class="org-title">SWADHYAY SEVA SANSTHAN</div>
+            <div class="org-title">SWADHYAY SEVA FOUNDATION</div>
             <div class="pass-label">OFFICIAL ENTRY PASS</div>
             <div class="event-title">${displayName}</div>
             <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${pass.qr_token}" alt="Pass QR" />
@@ -132,7 +132,7 @@ const PassDetail = ({ pass, onClose, onPassUpdated, eventName }) => {
           <div className="flex justify-center mb-3">
             <img src={ngoLogo} alt="NGO Logo" className="w-12 h-12 object-contain rounded-full border border-gray-100 p-0.5 bg-white shadow-sm" />
           </div>
-          <div className="text-primary font-extrabold text-sm tracking-wider">SWADHYAY SEVA SANSTHAN</div>
+          <div className="text-primary font-extrabold text-sm tracking-wider">SWADHYAY SEVA FOUNDATION</div>
           <div className="text-saffron-600 font-bold text-[10px] tracking-widest uppercase">Official Entry Pass</div>
 
           <div

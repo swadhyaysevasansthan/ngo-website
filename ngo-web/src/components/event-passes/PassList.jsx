@@ -181,7 +181,7 @@ const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
       passesHtml += `
         <div class="pass-card">
           <img class="logo" src="${logoUrl}" alt="Swadhyay Logo" />
-          <div class="org-title">SWADHYAY SEVA SANSTHAN</div>
+          <div class="org-title">SWADHYAY SEVA FOUNDATION</div>
           <div class="pass-label">OFFICIAL ENTRY PASS</div>
           <div class="event-title">${displayName}</div>
           <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${pass.qr_token}" alt="Pass QR" />
