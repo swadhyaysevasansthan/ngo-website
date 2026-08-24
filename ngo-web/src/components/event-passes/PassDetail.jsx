@@ -120,6 +120,7 @@ const PassDetail = ({ pass, onClose, onPassUpdated, onPassDeleted, eventName }) 
             .cat-VIP { background-color: #dc2626; }
             .cat-GUEST { background-color: #2563eb; }
             .cat-DELEGATE { background-color: #16a34a; }
+            .cat-ORGANISER, .cat-ORGANIZER { background-color: #7c3aed; }
             .note { font-size: 11px; color: #94a3b8; margin-top: 10px; border-top: 1px dashed #e2e8f0; padding-top: 10px; }
           </style>
         </head>

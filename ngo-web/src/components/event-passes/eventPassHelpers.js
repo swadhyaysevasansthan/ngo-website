@@ -8,6 +8,7 @@ export const getCategoryColor = (category) => {
   if (cat === 'VIP') return 'bg-red-100 text-red-800 border-red-200';
   if (cat === 'GUEST') return 'bg-blue-100 text-blue-800 border-blue-200';
   if (cat === 'DELEGATE') return 'bg-green-100 text-green-800 border-green-200';
+  if (cat === 'ORGANISER' || cat === 'ORGANIZER') return 'bg-purple-100 text-purple-800 border-purple-200';
   return 'bg-amber-100 text-amber-800 border-amber-200';
 };
 
@@ -234,6 +235,7 @@ export const downloadPassAsImage = (pass, eventName) => {
         if (categoryText === 'VIP') catBg = '#dc2626';
         else if (categoryText === 'GUEST') catBg = '#2563eb';
         else if (categoryText === 'DELEGATE') catBg = '#16a34a';
+        else if (categoryText === 'ORGANISER' || categoryText === 'ORGANIZER') catBg = '#7c3aed';
 
         ctx.fillStyle = catBg;
         drawRoundedRect(ctx, 300 - (catWidth + 28) / 2, catBadgeTopY, catWidth + 28, 28, 14);

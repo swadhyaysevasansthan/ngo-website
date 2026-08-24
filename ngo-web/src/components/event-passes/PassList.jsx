@@ -268,6 +268,7 @@ const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
             .cat-VIP { background-color: #dc2626; }
             .cat-GUEST { background-color: #2563eb; }
             .cat-DELEGATE { background-color: #16a34a; }
+            .cat-ORGANISER, .cat-ORGANIZER { background-color: #7c3aed; }
             .note { font-size: 11px; color: #94a3b8; margin-top: 10px; border-top: 1px dashed #e2e8f0; padding-top: 10px; }
             
             @media print {
@@ -590,6 +591,7 @@ const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
                   <option value="VIP">VIP</option>
                   <option value="Guest">Guest</option>
                   <option value="Delegate">Delegate</option>
+                  <option value="Organiser">Organiser</option>
                 </select>
               </div>
 
