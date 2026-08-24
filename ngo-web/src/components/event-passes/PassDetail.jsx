@@ -2,7 +2,7 @@ import React from 'react';
 import { toast } from 'react-toastify';
 import { eventPassAPI } from '../../utils/api';
 import Button from '../Button';
-import { getCategoryColor } from './eventPassHelpers';
+import { getCategoryColor, downloadPassAsImage } from './eventPassHelpers';
 import ngoLogo from '../../assets/ngo-logo.png';
 
 /**
@@ -55,6 +55,15 @@ const PassDetail = ({ pass, onClose, onPassUpdated, onPassDeleted, eventName }) 
       }
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to delete pass');
+    }
+  };
+
+  const handleDownloadImage = async () => {
+    try {
+      await downloadPassAsImage(pass, eventName);
+    } catch (err) {
+      console.error(err);
+      toast.error(err.message || 'Failed to download pass image');
     }
   };
 
@@ -206,9 +215,18 @@ const PassDetail = ({ pass, onClose, onPassUpdated, onPassDeleted, eventName }) 
             </Button>
           )}
           {pass.status !== 'CANCELLED' && (
-            <Button variant="primary" className="text-xs py-2 px-4 hover:scale-100" onClick={handlePrint}>
-              🖨️ Print Ticket
-            </Button>
+            <>
+              <Button variant="primary" className="text-xs py-2 px-4 hover:scale-100" onClick={handlePrint}>
+                🖨️ Print Ticket
+              </Button>
+              <Button
+                variant="secondary"
+                className="text-xs py-2 px-4 hover:scale-100 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg"
+                onClick={handleDownloadImage}
+              >
+                💾 Download Image
+              </Button>
+            </>
           )}
           <button
             type="button"

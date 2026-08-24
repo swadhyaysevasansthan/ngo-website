@@ -4,7 +4,7 @@ import { eventPassAPI } from '../../utils/api';
 import Card from '../Card';
 import Button from '../Button';
 import PassDetail from './PassDetail';
-import { getCategoryColor } from './eventPassHelpers';
+import { getCategoryColor, downloadPassAsImage } from './eventPassHelpers';
 import ngoLogo from '../../assets/ngo-logo.png';
 
 const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
@@ -301,6 +301,31 @@ const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
     printWindow.document.close();
   };
 
+  const handleDownloadBulk = async () => {
+    const selectedPassObjs = passes.filter((p) => selectedPassIds.includes(p.id));
+    if (selectedPassObjs.length === 0) {
+      toast.warning('No passes selected for downloading');
+      return;
+    }
+
+    toast.info(`Generating and downloading ${selectedPassObjs.length} pass images...`);
+
+    for (let i = 0; i < selectedPassObjs.length; i++) {
+      const pass = selectedPassObjs[i];
+      try {
+        await downloadPassAsImage(pass, currentEventName);
+        if (i < selectedPassObjs.length - 1) {
+          // Wait 300ms before triggering the next download to prevent browser blockages
+          await new Promise((resolve) => setTimeout(resolve, 300));
+        }
+      } catch (err) {
+        console.error(err);
+        toast.error(`Failed to download image for ${pass.guest_name}`);
+      }
+    }
+    toast.success('Finished triggering downloads!');
+  };
+
   // Called by PassDetail when pass state changes (reissue / manual check-in from modal)
   const handlePassUpdated = (updatedPass) => {
     setSelectedPass(updatedPass);
@@ -319,6 +344,13 @@ const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
           <div className="flex gap-2">
             {selectedPassIds.length > 0 && (
               <>
+                <Button
+                  variant="secondary"
+                  className="text-xs px-4 py-2 hover:scale-100 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg"
+                  onClick={handleDownloadBulk}
+                >
+                  💾 Download Images ({selectedPassIds.length})
+                </Button>
                 <Button
                   variant="secondary"
                   className="text-xs px-4 py-2 hover:scale-100"

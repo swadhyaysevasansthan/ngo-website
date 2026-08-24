@@ -1,3 +1,5 @@
+import ngoLogo from '../../assets/ngo-logo.png';
+
 /**
  * Returns a Tailwind CSS class string for a given pass category badge.
  */
@@ -19,4 +21,197 @@ export const generateScannerPassword = () => {
     pass += charset.charAt(Math.floor(Math.random() * charset.length));
   }
   return pass;
+};
+
+/**
+ * Renders an official event entry pass on a canvas and triggers a PNG download.
+ */
+export const downloadPassAsImage = (pass, eventName) => {
+  return new Promise((resolve, reject) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 600;
+    canvas.height = 900;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      reject(new Error('Canvas context not available'));
+      return;
+    }
+
+    const displayName = eventName || pass.event_name || 'Swadhyay Event';
+    const logoUrl = window.location.origin + ngoLogo;
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pass.qr_token)}`;
+
+    // Helper for rounded rectangles
+    const drawRoundedRect = (c, x, y, width, height, radius) => {
+      c.beginPath();
+      c.moveTo(x + radius, y);
+      c.lineTo(x + width - radius, y);
+      c.quadraticCurveTo(x + width, y, x + width, y + radius);
+      c.lineTo(x + width, y + height - radius);
+      c.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      c.lineTo(x + radius, y + height);
+      c.quadraticCurveTo(x, y + height, x, y + height - radius);
+      c.lineTo(x, y + radius);
+      c.quadraticCurveTo(x, y, x + radius, y);
+      c.closePath();
+    };
+
+    // Load images
+    const logoImg = new Image();
+    const qrImg = new Image();
+
+    logoImg.crossOrigin = 'anonymous';
+    qrImg.crossOrigin = 'anonymous';
+
+    let loadedCount = 0;
+    const checkLoaded = () => {
+      loadedCount++;
+      if (loadedCount === 2) {
+        renderAndDownload();
+      }
+    };
+
+    logoImg.onload = checkLoaded;
+    qrImg.onload = checkLoaded;
+    logoImg.onerror = () => {
+      // Fallback if logo fails to load (e.g. CORS or path issue)
+      checkLoaded();
+    };
+    qrImg.onerror = () => {
+      reject(new Error(`Failed to load QR code for pass ${pass.pass_number}`));
+    };
+
+    logoImg.src = logoUrl;
+    qrImg.src = qrUrl;
+
+    const renderAndDownload = () => {
+      try {
+        // 1. Draw card background with solid white
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // 2. Draw card boundary (dashed green border)
+        ctx.strokeStyle = '#1b4d3e';
+        ctx.lineWidth = 4;
+        ctx.setLineDash([8, 8]);
+        drawRoundedRect(ctx, 15, 15, 570, 870, 24);
+        ctx.stroke();
+        ctx.setLineDash([]); // Reset line dash
+
+        // 3. Draw logo (circular)
+        if (logoImg.complete && logoImg.naturalWidth !== 0) {
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(300, 80, 35, 0, Math.PI * 2);
+          ctx.closePath();
+          ctx.clip();
+          ctx.drawImage(logoImg, 265, 45, 70, 70);
+          ctx.restore();
+
+          // Outer circle border for logo
+          ctx.strokeStyle = '#e2e8f0';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(300, 80, 35, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        // 4. Draw Org Title
+        ctx.fillStyle = '#1b4d3e';
+        ctx.font = 'bold 20px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('SWADHYAY SEVA FOUNDATION', 300, 140);
+
+        // 5. Draw Pass Label
+        ctx.fillStyle = '#d97706';
+        ctx.font = 'bold 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.fillText('OFFICIAL ENTRY PASS', 300, 168);
+
+        // 6. Draw Event Title
+        ctx.fillStyle = '#0f172a';
+        ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.fillText(displayName, 300, 210);
+
+        // Draw solid thin divider line under Event Title
+        ctx.strokeStyle = '#f1f5f9';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(50, 240);
+        ctx.lineTo(550, 240);
+        ctx.stroke();
+
+        // 7. Draw QR Code Frame (rounded card)
+        ctx.strokeStyle = '#f1f5f9';
+        ctx.lineWidth = 2;
+        ctx.fillStyle = '#ffffff';
+        drawRoundedRect(ctx, 160, 265, 280, 280, 16);
+        ctx.fill();
+        ctx.stroke();
+
+        // Draw QR code image inside the frame
+        ctx.drawImage(qrImg, 180, 285, 240, 240);
+
+        // 8. Draw Guest Name
+        ctx.fillStyle = '#1e293b';
+        ctx.font = 'bold 26px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.fillText(pass.guest_name, 300, 580);
+
+        // 9. Draw Pass Number (badge)
+        const passNumText = pass.pass_number || '';
+        ctx.font = 'bold 16px monospace';
+        const numWidth = ctx.measureText(passNumText).width;
+
+        ctx.fillStyle = '#f1f5f9';
+        drawRoundedRect(ctx, 300 - (numWidth + 24) / 2, 608, numWidth + 24, 32, 6);
+        ctx.fill();
+
+        ctx.fillStyle = '#64748b';
+        ctx.fillText(passNumText, 300, 624);
+
+        // 10. Draw Category Badge
+        const categoryText = (pass.category || 'General').toUpperCase();
+        ctx.font = 'bold 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        const catWidth = ctx.measureText(categoryText).width;
+
+        let catBg = '#d97706'; // default saffron
+        if (categoryText === 'VIP') catBg = '#dc2626';
+        else if (categoryText === 'GUEST') catBg = '#2563eb';
+        else if (categoryText === 'DELEGATE') catBg = '#16a34a';
+
+        ctx.fillStyle = catBg;
+        drawRoundedRect(ctx, 300 - (catWidth + 28) / 2, 655, catWidth + 28, 28, 14);
+        ctx.fill();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(categoryText, 300, 669);
+
+        // 11. Draw bottom note with dashed line
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([6, 6]);
+        ctx.beginPath();
+        ctx.moveTo(50, 720);
+        ctx.lineTo(550, 720);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.fillText('Please present this QR code at the entry gate.', 300, 760);
+
+        // 12. Trigger image download
+        const dataUrl = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.download = `${pass.guest_name.replace(/\s+/g, '_')}_${pass.pass_number}.png`;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    };
+  });
 };
