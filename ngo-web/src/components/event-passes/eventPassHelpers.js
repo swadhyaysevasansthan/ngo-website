@@ -28,16 +28,66 @@ export const generateScannerPassword = () => {
  */
 export const downloadPassAsImage = (pass, eventName) => {
   return new Promise((resolve, reject) => {
+    const displayName = eventName || pass.event_name || 'Swadhyay Event';
+
+    // Parse the event name into lines.
+    const splitEventName = (str) => {
+      if (!str) return ['Swadhyay Event'];
+      // Split by dashes if present
+      if (str.includes('-')) {
+        return str.split(/\s*-\s*/).map(s => s.trim()).filter(Boolean);
+      }
+
+      // Word wrap fallback if no dash exists but the string is long
+      const words = str.split(' ');
+      const lines = [];
+      let currentLine = '';
+
+      for (const word of words) {
+        const testLine = currentLine ? `${currentLine} ${word}` : word;
+        if (testLine.length > 25) {
+          if (currentLine) lines.push(currentLine);
+          currentLine = word;
+        } else {
+          currentLine = testLine;
+        }
+      }
+      if (currentLine) {
+        lines.push(currentLine);
+      }
+      return lines;
+    };
+
+    const eventTitleLines = splitEventName(displayName).slice(0, 3);
+    const numLines = eventTitleLines.length;
+    const titleLineHeight = 26;
+    const blockHeight = numLines * titleLineHeight;
+    const blockCenterY = 210;
+    const titleStartY = blockCenterY - (blockHeight / 2) + (titleLineHeight / 2);
+
+    // Calculate dynamic layout variables
+    const dividerY = blockCenterY + (blockHeight / 2) + 15;
+    const qrFrameTopY = dividerY + 25;
+    const qrFrameHeight = 280;
+    const guestNameY = qrFrameTopY + qrFrameHeight + 35;
+    const passNumBadgeTopY = guestNameY + 28;
+    const passNumTextY = passNumBadgeTopY + 16;
+    const catBadgeTopY = passNumBadgeTopY + 47;
+    const catTextY = catBadgeTopY + 14;
+    const bottomDividerY = catBadgeTopY + 65;
+    const bottomNoteY = bottomDividerY + 40;
+    const cardBorderHeight = bottomNoteY + 45;
+    const totalCanvasHeight = cardBorderHeight + 30;
+
     const canvas = document.createElement('canvas');
     canvas.width = 600;
-    canvas.height = 900;
+    canvas.height = totalCanvasHeight;
     const ctx = canvas.getContext('2d');
     if (!ctx) {
       reject(new Error('Canvas context not available'));
       return;
     }
 
-    const displayName = eventName || pass.event_name || 'Swadhyay Event';
     const logoUrl = window.location.origin + ngoLogo;
     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pass.qr_token)}`;
 
@@ -94,7 +144,7 @@ export const downloadPassAsImage = (pass, eventName) => {
         ctx.strokeStyle = '#1b4d3e';
         ctx.lineWidth = 4;
         ctx.setLineDash([8, 8]);
-        drawRoundedRect(ctx, 15, 15, 570, 870, 24);
+        drawRoundedRect(ctx, 15, 15, 570, cardBorderHeight, 24);
         ctx.stroke();
         ctx.setLineDash([]); // Reset line dash
 
@@ -130,32 +180,38 @@ export const downloadPassAsImage = (pass, eventName) => {
 
         // 6. Draw Event Title
         ctx.fillStyle = '#0f172a';
-        ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-        ctx.fillText(displayName, 300, 210);
+        ctx.font = numLines > 1
+          ? 'bold 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+          : 'bold 24px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        eventTitleLines.forEach((line, index) => {
+          ctx.fillText(line, 300, titleStartY + index * titleLineHeight);
+        });
 
         // Draw solid thin divider line under Event Title
         ctx.strokeStyle = '#f1f5f9';
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(50, 240);
-        ctx.lineTo(550, 240);
+        ctx.moveTo(50, dividerY);
+        ctx.lineTo(550, dividerY);
         ctx.stroke();
 
         // 7. Draw QR Code Frame (rounded card)
         ctx.strokeStyle = '#f1f5f9';
         ctx.lineWidth = 2;
         ctx.fillStyle = '#ffffff';
-        drawRoundedRect(ctx, 160, 265, 280, 280, 16);
+        drawRoundedRect(ctx, 160, qrFrameTopY, 280, 280, 16);
         ctx.fill();
         ctx.stroke();
 
         // Draw QR code image inside the frame
-        ctx.drawImage(qrImg, 180, 285, 240, 240);
+        ctx.drawImage(qrImg, 180, qrFrameTopY + 20, 240, 240);
 
         // 8. Draw Guest Name
         ctx.fillStyle = '#1e293b';
         ctx.font = 'bold 26px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-        ctx.fillText(pass.guest_name, 300, 580);
+        ctx.fillText(pass.guest_name, 300, guestNameY);
 
         // 9. Draw Pass Number (badge)
         const passNumText = pass.pass_number || '';
@@ -163,11 +219,11 @@ export const downloadPassAsImage = (pass, eventName) => {
         const numWidth = ctx.measureText(passNumText).width;
 
         ctx.fillStyle = '#f1f5f9';
-        drawRoundedRect(ctx, 300 - (numWidth + 24) / 2, 608, numWidth + 24, 32, 6);
+        drawRoundedRect(ctx, 300 - (numWidth + 24) / 2, passNumBadgeTopY, numWidth + 24, 32, 6);
         ctx.fill();
 
         ctx.fillStyle = '#64748b';
-        ctx.fillText(passNumText, 300, 624);
+        ctx.fillText(passNumText, 300, passNumTextY);
 
         // 10. Draw Category Badge
         const categoryText = (pass.category || 'General').toUpperCase();
@@ -180,25 +236,25 @@ export const downloadPassAsImage = (pass, eventName) => {
         else if (categoryText === 'DELEGATE') catBg = '#16a34a';
 
         ctx.fillStyle = catBg;
-        drawRoundedRect(ctx, 300 - (catWidth + 28) / 2, 655, catWidth + 28, 28, 14);
+        drawRoundedRect(ctx, 300 - (catWidth + 28) / 2, catBadgeTopY, catWidth + 28, 28, 14);
         ctx.fill();
 
         ctx.fillStyle = '#ffffff';
-        ctx.fillText(categoryText, 300, 669);
+        ctx.fillText(categoryText, 300, catTextY);
 
         // 11. Draw bottom note with dashed line
         ctx.strokeStyle = '#e2e8f0';
         ctx.lineWidth = 2;
         ctx.setLineDash([6, 6]);
         ctx.beginPath();
-        ctx.moveTo(50, 720);
-        ctx.lineTo(550, 720);
+        ctx.moveTo(50, bottomDividerY);
+        ctx.lineTo(550, bottomDividerY);
         ctx.stroke();
         ctx.setLineDash([]);
 
         ctx.fillStyle = '#94a3b8';
         ctx.font = '13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-        ctx.fillText('Please present this QR code at the entry gate.', 300, 760);
+        ctx.fillText('Please present this QR code at the entry gate.', 300, bottomNoteY);
 
         // 12. Trigger image download
         const dataUrl = canvas.toDataURL('image/png');
