@@ -272,6 +272,8 @@ const NotPublishedYet = ({ competitionName }) => (
 
 /* ---------- Main page ---------- */
 
+const PAGE_SIZE = 20;
+
 const PhotographyGallery = () => {
   const [loading, setLoading] = useState(true);
   const [published, setPublished] = useState(true);
@@ -280,8 +282,10 @@ const PhotographyGallery = () => {
   const [lightboxEntry, setLightboxEntry] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [introPlaying, setIntroPlaying] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
   const reduceMotion = useReducedMotion();
   const heroRef = useRef(null);
+  const galleryRef = useRef(null);
 
   const load = useCallback(async () => {
     try {
@@ -304,16 +308,33 @@ const PhotographyGallery = () => {
     if (reduceMotion) setIntroPlaying(false);
   }, [reduceMotion]);
 
+  // Reset to page 1 when category changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory]);
+
   const categories = useMemo(() => {
     const seen = new Set();
     entries.forEach((e) => e.category && seen.add(e.category));
     return Array.from(seen);
   }, [entries]);
 
-  const visibleEntries = useMemo(
+  const filteredEntries = useMemo(
     () => (selectedCategory === 'all' ? entries : entries.filter((e) => e.category === selectedCategory)),
     [entries, selectedCategory]
   );
+
+  const totalPages = Math.max(1, Math.ceil(filteredEntries.length / PAGE_SIZE));
+
+  const visibleEntries = useMemo(
+    () => filteredEntries.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE),
+    [filteredEntries, currentPage]
+  );
+
+  const goToPage = (page) => {
+    setCurrentPage(page);
+    galleryRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   const handleHeroMouseMove = (e) => {
     if (!heroRef.current) return;
@@ -377,7 +398,7 @@ const PhotographyGallery = () => {
             className="mt-5 max-w-xl mx-auto text-sm sm:text-base leading-relaxed"
             style={{ color: '#C9BFAE' }}
           >
-            {entries.length} photograph{entries.length === 1 ? '' : 's'}, hung as they were shot — in the field,
+            {filteredEntries.length} photograph{filteredEntries.length === 1 ? '' : 's'}{selectedCategory !== 'all' ? ` in ${CATEGORY_META[selectedCategory]?.label ?? selectedCategory}` : ''}, hung as they were shot — in the field,
             in the wild, in passing light.
           </p>
         </motion.div>
@@ -410,16 +431,71 @@ const PhotographyGallery = () => {
       )}
 
       {/* GALLERY WALL */}
-      <section className="px-4 sm:px-6 pb-28 max-w-7xl mx-auto">
+      <section ref={galleryRef} className="px-4 sm:px-6 pb-10 max-w-7xl mx-auto scroll-mt-6">
+        {/* Page info bar */}
+        {filteredEntries.length > PAGE_SIZE && (
+          <div className="flex justify-between items-center mb-8 text-[11px] tracking-widest uppercase" style={{ ...mono, color: PARCHMENT_DIM }}>
+            <span>Plate {(currentPage - 1) * PAGE_SIZE + 1}–{Math.min(currentPage * PAGE_SIZE, filteredEntries.length)} of {filteredEntries.length}</span>
+            <span>Room {currentPage} / {totalPages}</span>
+          </div>
+        )}
+
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-14">
           {visibleEntries.map((entry, i) => (
             <PrintCard key={`${entry.fullName}-${entry.captureLocation}-${i}`} entry={entry} onClick={setLightboxEntry} index={i} />
           ))}
         </div>
+
         {visibleEntries.length === 0 && (
           <p className="text-center py-16 text-sm" style={{ ...mono, color: PARCHMENT_DIM }}>
             No entries to display yet.
           </p>
+        )}
+
+        {/* PAGINATION */}
+        {totalPages > 1 && (
+          <div className="mt-16 flex flex-wrap items-center justify-center gap-2">
+            <button
+              onClick={() => goToPage(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-4 py-2 text-[11px] tracking-widest uppercase transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+              style={{ ...mono, color: currentPage === 1 ? PARCHMENT_DIM : GOLD, border: `1px solid ${currentPage === 1 ? '#2A2320' : GOLD}` }}
+            >
+              ← Prev
+            </button>
+
+            {(() => {
+              const pills = [];
+              const maxVisible = 7;
+              let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+              let end = Math.min(totalPages, start + maxVisible - 1);
+              if (end - start < maxVisible - 1) start = Math.max(1, end - maxVisible + 1);
+              if (start > 1) {
+                pills.push(<button key={1} onClick={() => goToPage(1)} className="w-9 h-9 text-[11px] tracking-widest uppercase transition-colors cursor-pointer" style={{ ...mono, color: PARCHMENT_DIM, border: '1px solid #2A2320' }}>1</button>);
+                if (start > 2) pills.push(<span key="l" style={{ color: PARCHMENT_DIM, ...mono, fontSize: 11 }}>…</span>);
+              }
+              for (let p = start; p <= end; p++) {
+                const isActive = p === currentPage;
+                pills.push(
+                  <button key={p} onClick={() => goToPage(p)} className="w-9 h-9 text-[11px] tracking-widest uppercase transition-all cursor-pointer" style={{ ...mono, color: isActive ? INK : PARCHMENT_DIM, backgroundColor: isActive ? GOLD : 'transparent', border: `1px solid ${isActive ? GOLD : '#2A2320'}`, fontWeight: isActive ? 700 : 400 }}>{p}</button>
+                );
+              }
+              if (end < totalPages) {
+                if (end < totalPages - 1) pills.push(<span key="r" style={{ color: PARCHMENT_DIM, ...mono, fontSize: 11 }}>…</span>);
+                pills.push(<button key={totalPages} onClick={() => goToPage(totalPages)} className="w-9 h-9 text-[11px] tracking-widest uppercase transition-colors cursor-pointer" style={{ ...mono, color: PARCHMENT_DIM, border: '1px solid #2A2320' }}>{totalPages}</button>);
+              }
+              return pills;
+            })()}
+
+            <button
+              onClick={() => goToPage(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 text-[11px] tracking-widest uppercase transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+              style={{ ...mono, color: currentPage === totalPages ? PARCHMENT_DIM : GOLD, border: `1px solid ${currentPage === totalPages ? '#2A2320' : GOLD}` }}
+            >
+              Next →
+            </button>
+          </div>
         )}
       </section>
 
