@@ -11,8 +11,8 @@ const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
   const [passes, setPasses] = useState([]);
   const [passSearch, setPassSearch] = useState('');
   const [passStatus, setPassStatus] = useState('');
-  const [passLimit] = useState(50);
-  const [passOffset] = useState(0);
+  const [passLimit, setPassLimit] = useState(50);
+  const [passOffset, setPassOffset] = useState(0);
   const [totalPassesCount, setTotalPassesCount] = useState(0);
   const [selectedPass, setSelectedPass] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -44,6 +44,11 @@ const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
       toast.error('Failed to retrieve passes list');
     }
   }, [selectedEventId, passStatus, passSearch, passLimit, passOffset]);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setPassOffset(0);
+  }, [passSearch, passStatus, selectedEventId]);
 
   useEffect(() => {
     loadPasses();
@@ -537,6 +542,90 @@ const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination Controls */}
+        {totalPassesCount > 0 && (
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 pt-4 border-t border-gray-100">
+            <div className="flex items-center gap-2 text-sm text-gray-500">
+              <span>
+                Showing{' '}
+                <span className="font-semibold text-gray-700">{passOffset + 1}</span>
+                {' '}–{' '}
+                <span className="font-semibold text-gray-700">{Math.min(passOffset + passLimit, totalPassesCount)}</span>
+                {' '}of{' '}
+                <span className="font-semibold text-gray-700">{totalPassesCount}</span>
+                {' '}passes
+              </span>
+              <select
+                value={passLimit}
+                onChange={(e) => { setPassLimit(Number(e.target.value)); setPassOffset(0); }}
+                className="ml-2 px-2 py-1 border border-gray-200 rounded-lg text-xs bg-white focus:outline-none focus:ring-1 focus:ring-primary"
+              >
+                <option value={25}>25 / page</option>
+                <option value={50}>50 / page</option>
+                <option value={100}>100 / page</option>
+              </select>
+            </div>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setPassOffset(0)}
+                disabled={passOffset === 0}
+                className="px-2 py-1.5 rounded-lg text-xs font-semibold border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                title="First page"
+              >
+                «
+              </button>
+              <button
+                onClick={() => setPassOffset(Math.max(0, passOffset - passLimit))}
+                disabled={passOffset === 0}
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+              >
+                ‹ Prev
+              </button>
+              {/* Page number pills */}
+              {(() => {
+                const totalPages = Math.ceil(totalPassesCount / passLimit);
+                const currentPage = Math.floor(passOffset / passLimit);
+                const pages = [];
+                const maxVisible = 5;
+                let startPage = Math.max(0, currentPage - Math.floor(maxVisible / 2));
+                let endPage = Math.min(totalPages - 1, startPage + maxVisible - 1);
+                if (endPage - startPage < maxVisible - 1) startPage = Math.max(0, endPage - maxVisible + 1);
+                for (let i = startPage; i <= endPage; i++) {
+                  pages.push(
+                    <button
+                      key={i}
+                      onClick={() => setPassOffset(i * passLimit)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition ${
+                        i === currentPage
+                          ? 'bg-primary text-white border-primary shadow-sm'
+                          : 'border-gray-200 hover:bg-gray-50 text-gray-600'
+                      }`}
+                    >
+                      {i + 1}
+                    </button>
+                  );
+                }
+                return pages;
+              })()}
+              <button
+                onClick={() => setPassOffset(passOffset + passLimit)}
+                disabled={passOffset + passLimit >= totalPassesCount}
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+              >
+                Next ›
+              </button>
+              <button
+                onClick={() => setPassOffset((Math.ceil(totalPassesCount / passLimit) - 1) * passLimit)}
+                disabled={passOffset + passLimit >= totalPassesCount}
+                className="px-2 py-1.5 rounded-lg text-xs font-semibold border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                title="Last page"
+              >
+                »
+              </button>
+            </div>
+          </div>
+        )}
       </Card>
 
       {/* Create Pass Modal */}
