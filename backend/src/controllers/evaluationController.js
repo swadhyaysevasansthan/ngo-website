@@ -586,28 +586,48 @@ export const exportResults = async (req, res) => {
     }
 
     if (format === 'gallery') {
-      const qRes = await pool.query(
-        `SELECT e.entry_number, p.full_name, p.category, s.capture_location, s.cloudinary_url
-         FROM evaluation_qualifications q
-         JOIN evaluation_entries e ON e.id = q.entry_id
-         JOIN participants p ON p.participant_id = e.participant_id
-         JOIN submissions s ON s.id = e.source_id
-         WHERE e.competition_id = $1 AND q.qualified = true
-         ORDER BY q.total_score DESC, e.entry_number ASC`,
+      const settingsRes = await pool.query(
+        'SELECT gallery_top_n FROM evaluation_settings WHERE competition_id = $1',
         [competition.id]
       );
-      
+      const topN = settingsRes.rows[0]?.gallery_top_n || 60;
+
+      let results = await computeRoundResults(competition.id, 1);
+      results = results.filter((r) => r.status !== 'disqualified');
+      results.sort((a, b) => b.total - a.total);
+      const topResults = results.slice(0, topN);
+
+      if (topResults.length === 0) {
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', `attachment; filename=Top_Gallery_${Date.now()}.csv`);
+        return res.send('Entry Number,Participant Name,Category,Location,Photo Link\n');
+      }
+
+      const entryIds = topResults.map((r) => r.entryId);
+
+      const detailsRes = await pool.query(
+        `SELECT e.id AS entry_id, e.entry_number, p.full_name, p.category,
+                s.cloudinary_url, s.capture_location
+         FROM evaluation_entries e
+         JOIN participants p ON p.participant_id = e.participant_id
+         JOIN submissions s ON s.id = e.source_id
+         WHERE e.id = ANY($1::int[])`,
+        [entryIds]
+      );
+      const detailsMap = new Map(detailsRes.rows.map((r) => [r.entry_id, r]));
+
       const csvHeader = 'Entry Number,Participant Name,Category,Location,Photo Link\n';
-      const csvRows = qRes.rows.map(row => {
-        // We'll use the fullImageUrl transform for the gallery download
-        let url = row.cloudinary_url || '';
+      const csvRows = topResults.map(r => {
+        const detail = detailsMap.get(r.entryId) || {};
+        let url = detail.cloudinary_url || '';
         if (url.includes('/upload/')) {
           url = url.replace('/upload/', '/upload/w_2400,q_auto,f_auto/');
         }
-        const name = (row.full_name || '').replace(/"/g, '""');
-        const cat = (row.category || '').replace(/"/g, '""');
-        const loc = (row.capture_location || '').replace(/"/g, '""');
-        return `"${row.entry_number}","${name}","${cat}","${loc}","${url}"`;
+        const name = (detail.full_name || '').replace(/"/g, '""');
+        const cat = (detail.category || '').replace(/"/g, '""');
+        const loc = (detail.capture_location || '').replace(/"/g, '""');
+        const entryNumber = detail.entry_number || '';
+        return `"${entryNumber}","${name}","${cat}","${loc}","${url}"`;
       }).join('\n');
       
       res.setHeader('Content-Type', 'text/csv');
