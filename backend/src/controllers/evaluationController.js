@@ -585,7 +585,37 @@ export const exportResults = async (req, res) => {
       return res.send(buffer);
     }
 
-    return res.status(400).json({ success: false, message: 'Invalid export format. Use csv, excel, or pdf.' });
+    if (format === 'gallery') {
+      const qRes = await pool.query(
+        `SELECT e.entry_number, p.full_name, p.category, s.capture_location, s.cloudinary_url
+         FROM evaluation_qualifications q
+         JOIN evaluation_entries e ON e.id = q.entry_id
+         JOIN participants p ON p.participant_id = e.participant_id
+         JOIN submissions s ON s.id = e.source_id
+         WHERE e.competition_id = $1 AND q.qualified = true
+         ORDER BY q.total_score DESC, e.entry_number ASC`,
+        [competition.id]
+      );
+      
+      const csvHeader = 'Entry Number,Participant Name,Category,Location,Photo Link\n';
+      const csvRows = qRes.rows.map(row => {
+        // We'll use the fullImageUrl transform for the gallery download
+        let url = row.cloudinary_url || '';
+        if (url.includes('/upload/')) {
+          url = url.replace('/upload/', '/upload/w_2400,q_auto,f_auto/');
+        }
+        const name = (row.full_name || '').replace(/"/g, '""');
+        const cat = (row.category || '').replace(/"/g, '""');
+        const loc = (row.capture_location || '').replace(/"/g, '""');
+        return `"${row.entry_number}","${name}","${cat}","${loc}","${url}"`;
+      }).join('\n');
+      
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', `attachment; filename=Top_Gallery_${Date.now()}.csv`);
+      return res.send(csvHeader + csvRows);
+    }
+
+    return res.status(400).json({ success: false, message: 'Invalid export format. Use csv, excel, pdf, or gallery.' });
   } catch (error) {
     console.error('Export results error:', error);
     res.status(500).json({ success: false, message: 'Failed to export results', error: error.message });

@@ -163,7 +163,7 @@ const EvaluationResultsGrid = () => {
             <option value="wildlife">Wildlife</option>
             <option value="nature">Nature</option>
           </select>
-          {['csv', 'excel', 'pdf'].map((fmt) => (
+          {['csv', 'excel', 'pdf', 'gallery'].map((fmt) => (
             <button
               key={fmt}
               onClick={() => handleExport(fmt)}
@@ -173,7 +173,7 @@ const EvaluationResultsGrid = () => {
               {exportingFmt === fmt
                 ? <Loader2 size={13} className="animate-spin" />
                 : <Download size={13} />}
-              {fmt}
+              {fmt === 'gallery' ? 'Gallery Sheet' : fmt}
             </button>
           ))}
         </div>
