@@ -271,6 +271,7 @@ const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
             .pass-num { font-family: monospace; font-size: 13px; color: #64748b; background: #f8fafc; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-bottom: 10px; }
             .cat-badge { font-size: 11px; font-weight: bold; color: #fff; background-color: #d97706; padding: 4px 14px; border-radius: 9999px; display: inline-block; margin-bottom: 15px; text-transform: uppercase; }
             .cat-VIP { background-color: #dc2626; }
+            .cat-PATRON { background-color: #db2777; }
             .cat-GUEST { background-color: #2563eb; }
             .cat-DELEGATE { background-color: #16a34a; }
             .cat-ORGANISER, .cat-ORGANIZER { background-color: #7c3aed; }
@@ -671,17 +672,22 @@ const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
 
               <div>
                 <label className="text-xs font-bold text-gray-500 block mb-1">Pass Category</label>
-                <select
+                <input
+                  type="text"
+                  list="pass-categories"
                   value={newPass.category}
                   onChange={(e) => setNewPass({ ...newPass, category: e.target.value })}
                   className="w-full px-3 py-2 border rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-primary text-sm"
-                >
-                  <option value="General">General</option>
-                  <option value="VIP">VIP</option>
-                  <option value="Guest">Guest</option>
-                  <option value="Delegate">Delegate</option>
-                  <option value="Organiser">Organiser</option>
-                </select>
+                  placeholder="e.g. General, VIP, Patron..."
+                />
+                <datalist id="pass-categories">
+                  <option value="General" />
+                  <option value="VIP" />
+                  <option value="Patron" />
+                  <option value="Guest" />
+                  <option value="Delegate" />
+                  <option value="Organiser" />
+                </datalist>
               </div>
 
               <div>

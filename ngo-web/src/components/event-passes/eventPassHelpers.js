@@ -6,6 +6,7 @@ import ngoLogo from '../../assets/ngo-logo.png';
 export const getCategoryColor = (category) => {
   const cat = (category || '').toUpperCase();
   if (cat === 'VIP') return 'bg-red-100 text-red-800 border-red-200';
+  if (cat === 'PATRON') return 'bg-pink-100 text-pink-800 border-pink-200';
   if (cat === 'GUEST') return 'bg-blue-100 text-blue-800 border-blue-200';
   if (cat === 'DELEGATE') return 'bg-green-100 text-green-800 border-green-200';
   if (cat === 'ORGANISER' || cat === 'ORGANIZER') return 'bg-purple-100 text-purple-800 border-purple-200';
@@ -233,6 +234,7 @@ export const downloadPassAsImage = (pass, eventName) => {
 
         let catBg = '#d97706'; // default saffron
         if (categoryText === 'VIP') catBg = '#dc2626';
+        else if (categoryText === 'PATRON') catBg = '#db2777';
         else if (categoryText === 'GUEST') catBg = '#2563eb';
         else if (categoryText === 'DELEGATE') catBg = '#16a34a';
         else if (categoryText === 'ORGANISER' || categoryText === 'ORGANIZER') catBg = '#7c3aed';
