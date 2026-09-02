@@ -1,6 +1,33 @@
 import ngoLogo from '../../assets/ngo-logo.png';
 
 /**
+ * Escapes a single CSV cell value (wraps in quotes if it contains a
+ * comma, quote, or newline; doubles any inner quotes).
+ */
+export const escapeCsvCell = (value) => {
+  const str = value === null || value === undefined ? '' : String(value);
+  return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
+};
+
+/**
+ * Builds a CSV string from a header row + array-of-arrays body, and
+ * triggers a browser download. Includes a UTF-8 BOM so Excel opens
+ * non-Latin guest names (e.g. Hindi) correctly.
+ */
+export const downloadCsv = (filename, header, rows) => {
+  const csvContent = '\uFEFF' + [header, ...rows].map((row) => row.map(escapeCsvCell).join(',')).join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+};
+
+/**
  * Returns a Tailwind CSS class string for a given pass category badge.
  */
 export const getCategoryColor = (category) => {

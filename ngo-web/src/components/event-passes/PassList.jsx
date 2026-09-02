@@ -4,7 +4,7 @@ import { eventPassAPI } from '../../utils/api';
 import Card from '../Card';
 import Button from '../Button';
 import PassDetail from './PassDetail';
-import { getCategoryColor, downloadPassAsImage } from './eventPassHelpers';
+import { getCategoryColor, downloadPassAsImage, downloadCsv } from './eventPassHelpers';
 import ngoLogo from '../../assets/ngo-logo.png';
 
 const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
@@ -18,6 +18,7 @@ const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedPassIds, setSelectedPassIds] = useState([]);
   const [quickPassNum, setQuickPassNum] = useState('');
+  const [downloadingDirectory, setDownloadingDirectory] = useState(false);
   const [newPass, setNewPass] = useState({
     guestName: '',
     mobile: '',
@@ -340,6 +341,46 @@ const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
     onStatsRefreshNeeded?.();
   };
 
+  // Downloads the Passes Directory as CSV: Pass ID, Guest Name, Category,
+  // Status. Honours whatever Status Filter / Search is currently applied
+  // in the toolbar above, and fetches the FULL matching set — not just
+  // the current page — so the export isn't truncated to `passLimit`.
+  const handleDownloadDirectory = async () => {
+    if (!selectedEventId) return;
+    setDownloadingDirectory(true);
+    try {
+      const res = await eventPassAPI.listPasses({
+        eventId: selectedEventId,
+        status: passStatus,
+        search: passSearch,
+        limit: 100000,
+        offset: 0,
+      });
+      const allPasses = res.data.success ? res.data.passes : [];
+
+      if (!allPasses || allPasses.length === 0) {
+        toast.info('No passes match the current filters');
+        return;
+      }
+
+      const header = ['Pass ID', 'Guest Name', 'Category', 'Status'];
+      const rows = allPasses.map((p) => [
+        p.pass_number,
+        p.guest_name,
+        p.category || 'General',
+        p.status,
+      ]);
+      const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+      const statusPart = passStatus ? `-${passStatus.toLowerCase()}` : '';
+      downloadCsv(`passes-directory-event-${selectedEventId}${statusPart}-${stamp}.csv`, header, rows);
+      toast.success(`Downloaded ${allPasses.length} pass${allPasses.length === 1 ? '' : 'es'}`);
+    } catch {
+      toast.error('Failed to download passes directory');
+    } finally {
+      setDownloadingDirectory(false);
+    }
+  };
+
   const currentEventName = events?.find((e) => e.id.toString() === selectedEventId)?.name;
   const activePasses = passes.filter((p) => p.status !== 'CANCELLED');
 
@@ -373,6 +414,15 @@ const PassList = ({ selectedEventId, events, onStatsRefreshNeeded }) => {
                 </Button>
               </>
             )}
+            <Button
+              variant="outline"
+              className="text-xs px-4 py-2 hover:scale-100 flex items-center gap-1.5"
+              onClick={handleDownloadDirectory}
+              disabled={downloadingDirectory}
+              title="Downloads all passes matching the Status Filter / Search above, not just the current page"
+            >
+              {downloadingDirectory ? 'Preparing…' : '⬇️ Download List'}
+            </Button>
             <Button
               variant="primary"
               className="text-xs px-4 py-2 hover:scale-100"

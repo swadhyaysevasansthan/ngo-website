@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { eventPassAPI } from '../../utils/api';
 import Card from '../Card';
 import Button from '../Button';
+import { downloadCsv } from './eventPassHelpers';
 
 const AttendanceDashboard = ({ selectedEventId }) => {
   const [stats, setStats] = useState(null);
@@ -58,11 +59,6 @@ const AttendanceDashboard = ({ selectedEventId }) => {
   // Downloads a CSV of Time / Pass-Token / Guest Name / Result.
   // Fetches the full log set (the on-screen table is capped at 100
   // rows), so the export isn't silently truncated.
-  const escapeCsvCell = (value) => {
-    const str = value === null || value === undefined ? '' : String(value);
-    return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
-  };
-
   const handleDownloadLogs = async () => {
     if (!selectedEventId) return;
     setDownloading(true);
@@ -82,19 +78,8 @@ const AttendanceDashboard = ({ selectedEventId }) => {
         log.guest_name || 'N/A',
         log.result,
       ]);
-      // Leading BOM so Excel opens UTF-8 (e.g. Hindi guest names) correctly.
-      const csvContent = '\uFEFF' + [header, ...rows].map((row) => row.map(escapeCsvCell).join(',')).join('\n');
-
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
       const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
-      link.href = url;
-      link.download = `scan-audit-log-event-${selectedEventId}-${stamp}.csv`;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(url);
+      downloadCsv(`scan-audit-log-event-${selectedEventId}-${stamp}.csv`, header, rows);
       toast.success(`Downloaded ${allLogs.length} log entr${allLogs.length === 1 ? 'y' : 'ies'}`);
     } catch {
       toast.error('Failed to download scan logs');
