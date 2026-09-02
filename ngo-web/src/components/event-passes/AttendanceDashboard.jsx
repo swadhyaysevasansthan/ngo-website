@@ -9,6 +9,7 @@ const AttendanceDashboard = ({ selectedEventId }) => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [autoRefresh, setAutoRefresh] = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
   const loadEventData = useCallback(async (silent = false) => {
     if (!selectedEventId) return;
@@ -51,6 +52,54 @@ const AttendanceDashboard = ({ selectedEventId }) => {
       }
     } catch {
       toast.error('Failed to delete scan log entry');
+    }
+  };
+
+  // Downloads a CSV of Time / Pass-Token / Guest Name / Result.
+  // Fetches the full log set (the on-screen table is capped at 100
+  // rows), so the export isn't silently truncated.
+  const escapeCsvCell = (value) => {
+    const str = value === null || value === undefined ? '' : String(value);
+    return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
+  };
+
+  const handleDownloadLogs = async () => {
+    if (!selectedEventId) return;
+    setDownloading(true);
+    try {
+      const res = await eventPassAPI.getCheckInLogs(selectedEventId, { limit: 100000 });
+      const allLogs = res.data.success ? res.data.logs : [];
+
+      if (!allLogs || allLogs.length === 0) {
+        toast.info('No scan logs to download for this event');
+        return;
+      }
+
+      const header = ['Time', 'Pass/Token', 'Guest Name', 'Result'];
+      const rows = allLogs.map((log) => [
+        new Date(log.scanned_at).toLocaleString(),
+        log.pass_number || log.raw_token || 'INVALID_TOKEN',
+        log.guest_name || 'N/A',
+        log.result,
+      ]);
+      // Leading BOM so Excel opens UTF-8 (e.g. Hindi guest names) correctly.
+      const csvContent = '\uFEFF' + [header, ...rows].map((row) => row.map(escapeCsvCell).join(',')).join('\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+      link.href = url;
+      link.download = `scan-audit-log-event-${selectedEventId}-${stamp}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      toast.success(`Downloaded ${allLogs.length} log entr${allLogs.length === 1 ? 'y' : 'ies'}`);
+    } catch {
+      toast.error('Failed to download scan logs');
+    } finally {
+      setDownloading(false);
     }
   };
 
@@ -200,6 +249,16 @@ const AttendanceDashboard = ({ selectedEventId }) => {
             >
               🔄 Refresh Logs
             </Button>
+            {logs.length > 0 && (
+              <Button
+                variant="outline"
+                className="text-xs px-3 py-1.5 hover:scale-100 flex items-center gap-1.5"
+                onClick={handleDownloadLogs}
+                disabled={downloading}
+              >
+                {downloading ? 'Preparing…' : '⬇️ Download Logs'}
+              </Button>
+            )}
             {logs.length > 0 && (
               <Button
                 className="text-xs px-3 py-1.5 hover:scale-100 flex items-center gap-1.5 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-lg"

@@ -447,7 +447,7 @@ export const eventPassAPI = {
   manualCheckIn: (data) => apiClient.post('/event-passes/manual-checkin', data),
 
   getAttendanceStats: (eventId) => apiClient.get(`/event-passes/attendance/${eventId}`),
-  getCheckInLogs: (eventId) => apiClient.get(`/event-passes/check-in-logs/${eventId}`),
+  getCheckInLogs: (eventId, params) => apiClient.get(`/event-passes/check-in-logs/${eventId}`, { params }),
   clearAllCheckInLogs: (eventId) => apiClient.delete(`/event-passes/check-in-logs/event/${eventId}`),
   deleteCheckInLog: (id) => apiClient.delete(`/event-passes/check-in-logs/log/${id}`),
 
