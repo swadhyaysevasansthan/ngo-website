@@ -155,7 +155,7 @@ export const galleryTabs = [
     label: "Prize Distribution",
     photos: [
       { src: "CLOUDINARY_URL", caption: "Winner announcement moment" },
-      { src: "CLOUDINARY_URL", caption: "Consolation prize distribution" },
+      { src: "CLOUDINARY_URL", caption: "Runner-up receiving their prize" },
       { src: "CLOUDINARY_URL", caption: "Jury presenting the awards" },
     ],
   },
