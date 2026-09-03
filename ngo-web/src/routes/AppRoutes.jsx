@@ -28,6 +28,7 @@ import RefundPolicy from "../pages/RefundPolicy";
 import TermsAndConditions from "../pages/TermsAndConditions";
 import RegistrationClosed from "../pages/RegistrationClosed";
 import GrandFinalePage from "../pages/GrandFinalePage";
+import SNPCGrandFinalePage from "../pages/SNPCGrandFinalePage";
 import WetlandsDay from "../pages/WetlandsDay";
 import WorldEnvironmentDay2026 from "../pages/WorldEnvironmentDay2026";
 import ReviewsPage from "../pages/Reviews";
@@ -85,6 +86,7 @@ export default function AppRoutes() {
                 <Route path="/reviews" element={<ReviewsPage />} />
                 <Route path="/submit-review" element={<SubmitReview />} />
                 <Route path="/grand-finale26" element={<GrandFinalePage />} />
+                <Route path="/snpc-grand-finale26" element={<SNPCGrandFinalePage />} />
                 <Route path="/wetlands-day26" element={<WetlandsDay />} />
                 <Route path="/environment-day26" element={<WorldEnvironmentDay2026 />} />
 
