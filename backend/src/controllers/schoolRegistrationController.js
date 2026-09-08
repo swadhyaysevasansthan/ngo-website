@@ -170,18 +170,43 @@ export const validateToken = async (req, res) => {
         primary_allotted_date,
         secondary_allotted_date,
         competition_categories,
-        confirmation_sent
+        confirmation_sent,
+        primary_category_total,
+        secondary_category_total
 
        FROM school_competition_registrations
        WHERE request_id = $1`,
       [row.request_id]
     );
 
-    const registrations = {};
+    // Build per-category painting registrations so the home page can show
+    // Primary and Secondary cards independently.
+    let paintingPrimary = null;
+    let paintingSecondary = null;
 
     for (const reg of regResult.rows) {
-      registrations[reg.competition_type] = reg;
+      if (reg.competition_type === 'painting') {
+        const cats = reg.competition_categories || [];
+        if (cats.includes('primary')) {
+          paintingPrimary = {
+            total_participants: reg.primary_category_total,
+            submitted_at: reg.submitted_at,
+            allotted_date: reg.primary_allotted_date,
+            competition_categories: cats,
+          };
+        }
+        if (cats.includes('secondary')) {
+          paintingSecondary = {
+            total_participants: reg.secondary_category_total,
+            submitted_at: reg.submitted_at,
+            allotted_date: reg.secondary_allotted_date,
+            competition_categories: cats,
+          };
+        }
+      }
     }
+
+    const quizReg = regResult.rows.find((r) => r.competition_type === 'quiz') || null;
 
     return res.json({
       success: true,
@@ -200,8 +225,15 @@ export const validateToken = async (req, res) => {
         },
         tokenExpiresAt: row.expires_at,
         registrations: {
-          painting: registrations['painting'] || null,
-          quiz: registrations['quiz'] || null,
+          paintingPrimary,
+          paintingSecondary,
+          quiz: quizReg
+            ? {
+                total_participants: quizReg.total_participants,
+                submitted_at: quizReg.submitted_at,
+                allotted_date: quizReg.allotted_date,
+              }
+            : null,
         },
       },
     });
@@ -262,25 +294,30 @@ export const submitPaintingRegistration = async (req, res) => {
     }
 
     // ─────────────────────────────────────────────
-    // Prevent Duplicate Registration
+    // Prevent Duplicate Registration (per category)
     // ─────────────────────────────────────────────
 
+    // Each category (primary / secondary) is stored as its own row.
+    // We prevent a school from submitting the same category twice.
+    const submittedCategory = competitionCategories?.[0]; // 'primary' or 'secondary'
+
     const existing = await client.query(
-      `SELECT id
+      `SELECT id, competition_categories
        FROM school_competition_registrations
        WHERE request_id = $1
        AND competition_type = 'painting'`,
       [row.request_id]
     );
 
-    if (existing.rows.length > 0) {
-      await client.query('ROLLBACK');
-
-      return res.status(400).json({
-        success: false,
-        message:
-          'Your school has already submitted the painting competition registration.',
-      });
+    for (const existingReg of existing.rows) {
+      const existingCats = existingReg.competition_categories || [];
+      if (existingCats.includes(submittedCategory)) {
+        await client.query('ROLLBACK');
+        return res.status(400).json({
+          success: false,
+          message: `Your school has already submitted the painting competition registration for the ${submittedCategory} category.`,
+        });
+      }
     }
 
     // ─────────────────────────────────────────────

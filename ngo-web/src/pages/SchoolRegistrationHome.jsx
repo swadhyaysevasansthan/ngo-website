@@ -13,7 +13,7 @@ const SchoolRegistrationHome = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [school, setSchool] = useState(null);
-  const [registrations, setRegistrations] = useState({ painting: null, quiz: null });
+  const [registrations, setRegistrations] = useState({ paintingPrimary: null, paintingSecondary: null, quiz: null });
   const [tokenExpiresAt, setTokenExpiresAt] = useState(null);
 
   useEffect(() => {
@@ -112,37 +112,73 @@ const SchoolRegistrationHome = () => {
           </Card>
 
           {/* Competition Cards */}
-          <div className="grid md:grid-cols-2 gap-5 animate-slide-up">
-            {/* Painting */}
+          <div className="grid md:grid-cols-3 gap-5 animate-slide-up">
+            {/* Painting – Primary */}
             <div className={`rounded-2xl border-2 p-6 transition-all ${
-              registrations.painting
+              registrations.paintingPrimary
                 ? 'border-green-300 bg-green-50'
                 : 'border-gray-200 bg-white hover:border-primary/50 hover:shadow-md'
             }`}>
               <div className="text-4xl mb-3">🎨</div>
               <h3 className="text-xl font-bold text-gray-900 mb-1">National Environmental Painting Competition</h3>
-              <p className="text-sm text-gray-600 mb-1">Classes 3rd to 8th</p>
-              <p className="text-sm text-gray-600 mb-4">Maximum 300 students per school</p>
+              <p className="text-sm font-semibold text-blue-700 mb-1">Primary Category</p>
+              <p className="text-sm text-gray-600 mb-1">Classes 3rd to 5th</p>
+              <p className="text-sm text-gray-600 mb-4">Maximum 150 students per school</p>
 
-              {registrations.painting ? (
+              {registrations.paintingPrimary ? (
                 <div className="bg-green-100 rounded-xl p-3 text-sm text-green-800">
                   <p className="font-semibold">✓ Registered</p>
                   <p className="text-xs mt-1">
-                    {registrations.painting.total_participants} participants ·
-                    Submitted {formatDate(registrations.painting.submitted_at)}
+                    {registrations.paintingPrimary.total_participants} participants ·
+                    Submitted {formatDate(registrations.paintingPrimary.submitted_at)}
                   </p>
-                  {registrations.painting.allotted_date && (
+                  {registrations.paintingPrimary.allotted_date && (
                     <p className="text-xs mt-1 font-semibold">
-                      📅 Date allotted: {formatDate(registrations.painting.allotted_date)}
+                      📅 Date allotted: {formatDate(registrations.paintingPrimary.allotted_date)}
                     </p>
                   )}
                 </div>
               ) : (
                 <Button
                   fullWidth
-                  onClick={() => navigate(`/school-registration/painting?token=${token}`)}
+                  onClick={() => navigate(`/school-registration/painting?token=${token}&category=primary`)}
                 >
-                  Register for Painting
+                  Register for Primary Painting
+                </Button>
+              )}
+            </div>
+
+            {/* Painting – Secondary */}
+            <div className={`rounded-2xl border-2 p-6 transition-all ${
+              registrations.paintingSecondary
+                ? 'border-green-300 bg-green-50'
+                : 'border-gray-200 bg-white hover:border-primary/50 hover:shadow-md'
+            }`}>
+              <div className="text-4xl mb-3">🎨</div>
+              <h3 className="text-xl font-bold text-gray-900 mb-1">National Environmental Painting Competition</h3>
+              <p className="text-sm font-semibold text-purple-700 mb-1">Secondary Category</p>
+              <p className="text-sm text-gray-600 mb-1">Classes 6th to 8th</p>
+              <p className="text-sm text-gray-600 mb-4">Maximum 150 students per school</p>
+
+              {registrations.paintingSecondary ? (
+                <div className="bg-green-100 rounded-xl p-3 text-sm text-green-800">
+                  <p className="font-semibold">✓ Registered</p>
+                  <p className="text-xs mt-1">
+                    {registrations.paintingSecondary.total_participants} participants ·
+                    Submitted {formatDate(registrations.paintingSecondary.submitted_at)}
+                  </p>
+                  {registrations.paintingSecondary.allotted_date && (
+                    <p className="text-xs mt-1 font-semibold">
+                      📅 Date allotted: {formatDate(registrations.paintingSecondary.allotted_date)}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <Button
+                  fullWidth
+                  onClick={() => navigate(`/school-registration/painting?token=${token}&category=secondary`)}
+                >
+                  Register for Secondary Painting
                 </Button>
               )}
             </div>

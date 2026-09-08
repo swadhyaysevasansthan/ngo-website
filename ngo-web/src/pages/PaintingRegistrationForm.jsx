@@ -18,6 +18,7 @@ const PaintingRegistrationForm = () => {
   const navigate = useNavigate();
 
   const token = searchParams.get('token');
+  const categoryParam = searchParams.get('category'); // 'primary' or 'secondary'
 
   const [loading, setLoading] = useState(false);
   const [tokenLoading, setTokenLoading] = useState(true);
@@ -28,7 +29,7 @@ const PaintingRegistrationForm = () => {
   const [errors, setErrors] = useState({});
 
   const [formData, setFormData] = useState({
-    competitionCategories: [],
+    competitionCategories: categoryParam ? [categoryParam] : [],
     // PRIMARY
     primaryTeacher1Name: '',
     primaryTeacher1Email: '',
@@ -81,13 +82,25 @@ const PaintingRegistrationForm = () => {
       setTokenLoading(false);
       return;
     }
+    if (!categoryParam || !['primary', 'secondary'].includes(categoryParam)) {
+      setTokenError(
+        'Invalid category. Please use the link from the registration home page.'
+      );
+      setTokenLoading(false);
+      return;
+    }
     schoolRegistrationAPI
       .validateToken(token)
       .then((res) => {
         const { school, registrations } = res.data.data;
-        if (registrations.painting) {
+        // Check if this specific category is already registered
+        const alreadyRegistered =
+          categoryParam === 'primary'
+            ? registrations.paintingPrimary
+            : registrations.paintingSecondary;
+        if (alreadyRegistered) {
           setTokenError(
-            'Your school has already registered for the painting competition.'
+            `Your school has already registered for the painting competition – ${categoryParam === 'primary' ? 'Primary Category (Classes 3rd–5th)' : 'Secondary Category (Classes 6th–8th)'}.`
           );
           return;
         }
@@ -442,12 +455,6 @@ const PaintingRegistrationForm = () => {
           'All preferred dates must be different';
       }
     }
-    if (
-      totalParticipants > 300
-    ) {
-      e.class3 =
-        'Total participants across both categories cannot exceed 300';
-    }
     setErrors(e);
     return (
       Object.keys(e).length === 0
@@ -637,6 +644,11 @@ const PaintingRegistrationForm = () => {
         setLoading(false);
         return;
       }
+      const singleCategoryTotal =
+        categoryParam === 'primary'
+          ? primaryCategoryTotal
+          : secondaryCategoryTotal;
+
       await schoolRegistrationAPI.submitPainting(
         token,
         {
@@ -644,33 +656,19 @@ const PaintingRegistrationForm = () => {
             formData.competitionCategories,
           teachers,
           classCounts: {
-            3: getNum(
-              formData.class3
-            ),
-            4: getNum(
-              formData.class4
-            ),
-            5: getNum(
-              formData.class5
-            ),
-            6: getNum(
-              formData.class6
-            ),
-            7: getNum(
-              formData.class7
-            ),
-            8: getNum(
-              formData.class8
-            ),
+            3: getNum(formData.class3),
+            4: getNum(formData.class4),
+            5: getNum(formData.class5),
+            6: getNum(formData.class6),
+            7: getNum(formData.class7),
+            8: getNum(formData.class8),
           },
           primaryCategoryTotal,
           secondaryCategoryTotal,
-          totalParticipants,
+          totalParticipants: singleCategoryTotal,
 
           primaryPreferredDates:
-            formData.competitionCategories.includes(
-              'primary'
-            )
+            categoryParam === 'primary'
               ? [
                 formData.primaryDate1,
                 formData.primaryDate2,
@@ -679,9 +677,7 @@ const PaintingRegistrationForm = () => {
               ]
               : [],
           secondaryPreferredDates:
-            formData.competitionCategories.includes(
-              'secondary'
-            )
+            categoryParam === 'secondary'
               ? [
                 formData.secondaryDate1,
                 formData.secondaryDate2,
@@ -751,6 +747,11 @@ const PaintingRegistrationForm = () => {
           <h1 className="text-3xl font-extrabold text-forest mb-3">
             Painting Registration Confirmed!
           </h1>
+          <p className={`text-base font-semibold mb-2 ${categoryParam === 'primary' ? 'text-blue-700' : 'text-purple-700'}`}>
+            {categoryParam === 'primary'
+              ? 'Primary Category (Classes 3rd–5th)'
+              : 'Secondary Category (Classes 6th–8th)'}
+          </p>
           <p className="text-gray-600 mb-6">
             Your school's painting competition registration has been submitted successfully.
           </p>
@@ -776,6 +777,11 @@ const PaintingRegistrationForm = () => {
             <h1 className="text-3xl md:text-4xl font-extrabold text-forest mb-2">
               🎨 Painting Competition Registration
             </h1>
+            <p className={`text-base font-semibold mb-1 ${categoryParam === 'primary' ? 'text-blue-700' : 'text-purple-700'}`}>
+              {categoryParam === 'primary'
+                ? 'Primary Category (Classes 3rd–5th)'
+                : 'Secondary Category (Classes 6th–8th)'}
+            </p>
             <p className="text-gray-600">
               {school?.schoolName}
             </p>
@@ -788,68 +794,14 @@ const PaintingRegistrationForm = () => {
               >
                 <div className="bg-orange-50 rounded-xl p-5 border border-orange-100 text-sm text-gray-700">
                   <ul className="space-y-1">
-                    <li>
-                      ✓ Primary Category (Classes 3–5):
-                      Maximum 150 students
-                    </li>
-                    <li>
-                      ✓ Secondary Category (Classes 6–8):
-                      Maximum 150 students
-                    </li>
-                    <li>
-                      ✓ Schools may participate in one or both categories.
-                    </li>
-                    <li>
-                      ✓ Provide 4 preferred dates separately for each category.
-                    </li>
+                    {categoryParam === 'primary' ? (
+                      <li>✓ Primary Category (Classes 3–5): Maximum 150 students</li>
+                    ) : (
+                      <li>✓ Secondary Category (Classes 6–8): Maximum 150 students</li>
+                    )}
+                    <li>✓ Provide 4 preferred dates for this category.</li>
                   </ul>
                 </div>
-
-                {/* CATEGORY */}
-                <section>
-                  <h2 className="text-lg md:text-xl font-bold text-forest mb-4">
-                    SECTION · Competition Categories
-                  </h2>
-                  <div className="space-y-4">
-                    <label className="flex items-center gap-3">
-                      <input
-                        type="checkbox"
-                        checked={formData.competitionCategories.includes(
-                          'primary'
-                        )}
-                        onChange={() =>
-                          handleCategoryChange(
-                            'primary'
-                          )
-                        }
-                      />
-                      <span>
-                        Primary Category (Classes 3rd–5th)
-                      </span>
-                    </label>
-                    <label className="flex items-center gap-3">
-                      <input
-                        type="checkbox"
-                        checked={formData.competitionCategories.includes(
-                          'secondary'
-                        )}
-                        onChange={() =>
-                          handleCategoryChange(
-                            'secondary'
-                          )
-                        }
-                      />
-                      <span>
-                        Secondary Category (Classes 6th–8th)
-                      </span>
-                    </label>
-                  </div>
-                  {errors.categories && (
-                    <p className="text-red-500 text-sm mt-2">
-                      {errors.categories}
-                    </p>
-                  )}
-                </section>
 
                 {/* PRIMARY */}
                 {formData.competitionCategories.includes(
@@ -1102,27 +1054,6 @@ const PaintingRegistrationForm = () => {
                       </div>
                     </section>
                   )}
-                {/* TOTALS */}
-
-                <section>
-                  <h2 className="text-lg md:text-xl font-bold text-forest mb-4">
-                    SECTION · Final Totals
-                  </h2>
-                  <div
-                    className={`inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm font-bold ${totalParticipants > 300
-                      ? 'bg-red-100 text-red-700'
-                      : totalParticipants > 0
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-gray-100 text-gray-500'
-                      }`}
-                  >
-                    Total Participants Across Categories:
-                    {' '}
-                    {totalParticipants}
-                    {totalParticipants > 300 &&
-                      ' — exceeds maximum limit of 300'}
-                  </div>
-                </section>
 
                 {/* SUBMIT */}
                 <div className="pt-4">

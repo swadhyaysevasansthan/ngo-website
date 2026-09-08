@@ -60,10 +60,16 @@ const paintingValidation = [
   ...teachersValidation,
 
   body('competitionCategories')
-    .isArray({ min: 1 })
+    .isArray({ min: 1, max: 1 })
     .withMessage(
-      'At least one competition category must be selected'
-    ),
+      'Exactly one competition category must be selected'
+    )
+    .custom((cats) => {
+      if (!cats.every((c) => ['primary', 'secondary'].includes(c))) {
+        throw new Error('Invalid category. Must be primary or secondary.');
+      }
+      return true;
+    }),
 
   body('classCounts')
     .isObject()
