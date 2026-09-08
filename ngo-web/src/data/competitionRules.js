@@ -191,16 +191,15 @@ export const competitionRules = {
       {
         title: "3. Pre-Exam Communication",
         points: [
-          <b>Five days prior to the exam, the Swadhyay Team will send an email containing a certified question bank of 100 questions, an information sheet, an attendance sheet, and all necessary instructions.</b>,
-          "The question bank will be accessible online using a specific password, valid for 5 days, allowing students to prepare for the quiz.",
-          "The Student Information Sheet is not resent at this stage, as it is already shared earlier along with the date-allotment email."
+          <b>Five days prior to the exam, the Swadhyay Team will send an email containing information about the certified question bank of 100 questions and all necessary instructions.</b>,
+          "The question bank will be accessible online on our website using a specific password, valid for 5 days, allowing students to prepare for the quiz."
         ]
       },
 
       {
         title: "4. Exam Day Procedure",
         points: [
-          <b>On the day of the exam, the Swadhyay Team will send a specific Quiz Code, valid for 2–3 hours, 30 minutes before the start of the exam, along with final instructions.</b>,
+          <b>On the day of the exam, the Swadhyay Team will send a specific Quiz Code, valid for 2–3 hours, 1 hour before the start of the exam, along with final instructions.</b>,
           "The quiz will contain 25 objective-type questions based on the question bank provided earlier.",
           "The quiz has a maximum 10-minute time limit, with an attached timer for automatic submission upon time completion.",
           "Early submission will be an advantage for children during selection."
