@@ -264,7 +264,7 @@ const AdminDashboard = () => {
               <h1 className="text-2xl font-bold text-forest">
                 🌿 Swadhyay Seva Foundation Admin Panel
               </h1>
-              <p className="text-sm text-gray-600">Welcome, {adminUsername}</p>
+              <p className="text-sm text-gray-600">Welcome, Admin</p>
             </div>
             <Button variant="danger" size="small" onClick={handleLogout}>
               Logout
