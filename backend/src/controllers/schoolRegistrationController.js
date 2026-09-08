@@ -441,21 +441,23 @@ export const submitPaintingRegistration = async (req, res) => {
           'Teacher Coordinator',
 
         competitionType: 'painting',
+        category: submittedCategory, // 'primary' or 'secondary'
 
-        classCounts,
+        classCounts: registration.class_counts,
 
-        totalParticipants,
+        totalParticipants: registration.total_participants,
 
-        primaryCategoryTotal,
+        primaryCategoryTotal: registration.primary_category_total,
 
-        secondaryCategoryTotal,
+        secondaryCategoryTotal: registration.secondary_category_total,
 
-        primaryPreferredDates,
+        primaryPreferredDates: registration.primary_preferred_dates,
 
-        secondaryPreferredDates,
+        secondaryPreferredDates: registration.secondary_preferred_dates,
 
         submittedAt: registration.submitted_at,
       });
+
 
     await sendEmail({
       to: Array.from(emailAddresses),

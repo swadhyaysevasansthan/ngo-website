@@ -922,17 +922,21 @@ www.swadhyayseva.org
 // 4. Competition registration confirmed (sent after school submits painting or quiz form)
 export const schoolCompetitionRegistrationTemplate = (data) => {
   const {
-    schoolName, competitionType,
+    schoolName, competitionType, category,
     classCounts, totalParticipants, availableComputers,
     preferredDates, primaryPreferredDates, secondaryPreferredDates, submittedAt,
   } = data;
 
+  const categoryBadge = category
+    ? (category === 'primary' ? ' — Primary Category (Classes 3rd–5th)' : ' — Secondary Category (Classes 6th–8th)')
+    : '';
+
   const competitionLabel = competitionType === 'painting'
-    ? 'Swadhyay National Environmental Painting Competition (SNEPC)'
+    ? `Swadhyay National Environmental Painting Competition (SNEPC)${categoryBadge}`
     : 'Swadhyay National Environmental Quiz Competition ';
 
   const classLabel = competitionType === 'painting'
-    ? 'Classes 3rd – 8th'
+    ? (category === 'primary' ? 'Classes 3rd – 5th' : category === 'secondary' ? 'Classes 6th – 8th' : 'Classes 3rd – 8th')
     : 'Classes 6th – 8th';
 
   const formattedDate = new Date(submittedAt).toLocaleString('en-IN', {
@@ -940,52 +944,40 @@ export const schoolCompetitionRegistrationTemplate = (data) => {
     hour: '2-digit', minute: '2-digit',
   });
 
-  const classRows = Object.entries(classCounts)
+  const classRows = Object.entries(classCounts || {})
     .map(([cls, count]) => `<tr><td style="padding:6px 0; font-size:13px; color:#374151;">Class ${cls}</td><td style="padding:6px 0; font-size:13px; color:#111827; font-weight:500;">${count} students</td></tr>`)
     .join('');
 
-  const classText = Object.entries(classCounts)
+  const classText = Object.entries(classCounts || {})
     .map(([cls, count]) => `  Class ${cls}: ${count} students`)
     .join('\n');
+
+  const primaryDatesList = (primaryPreferredDates || []).length > 0
+    ? (primaryPreferredDates || [])
+        .map((d, i) => `<li>${i + 1}. ${new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' })}</li>`)
+        .join('')
+    : '<li style="color:#9ca3af; font-style:italic;">Not submitted yet</li>';
+
+  const secondaryDatesList = (secondaryPreferredDates || []).length > 0
+    ? (secondaryPreferredDates || [])
+        .map((d, i) => `<li>${i + 1}. ${new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' })}</li>`)
+        .join('')
+    : '<li style="color:#9ca3af; font-style:italic;">Not submitted yet</li>';
 
   const datesHtml =
     competitionType === 'painting'
       ? `
         <div style="margin-bottom:16px;">
-          <strong>Primary Category Preferred Dates</strong>
+          <strong style="color:#1d4ed8;">Primary Category Preferred Dates (Classes 3rd–5th)</strong>
           <ul>
-            ${(primaryPreferredDates || [])
-        .map((d, i) => `
-                <li>
-                  ${i + 1}.
-                  ${new Date(d).toLocaleDateString('en-IN', {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric',
-          timeZone: 'Asia/Kolkata',
-        })}
-                </li>
-              `)
-        .join('')}
+            ${primaryDatesList}
           </ul>
         </div>
 
         <div>
-          <strong>Secondary Category Preferred Dates</strong>
+          <strong style="color:#6b21a8;">Secondary Category Preferred Dates (Classes 6th–8th)</strong>
           <ul>
-            ${(secondaryPreferredDates || [])
-        .map((d, i) => `
-                <li>
-                  ${i + 1}.
-                  ${new Date(d).toLocaleDateString('en-IN', {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric',
-          timeZone: 'Asia/Kolkata',
-        })}
-                </li>
-              `)
-        .join('')}
+            ${secondaryDatesList}
           </ul>
         </div>
       `
@@ -1009,34 +1001,22 @@ export const schoolCompetitionRegistrationTemplate = (data) => {
         </ul>
       `;
 
+  const primaryDatesText = (primaryPreferredDates || []).length > 0
+    ? (primaryPreferredDates || []).map((d, i) => `  ${i + 1}. ${new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' })}`).join('\n')
+    : '  Not submitted yet';
+
+  const secondaryDatesText = (secondaryPreferredDates || []).length > 0
+    ? (secondaryPreferredDates || []).map((d, i) => `  ${i + 1}. ${new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' })}`).join('\n')
+    : '  Not submitted yet';
+
   const datesText =
     competitionType === 'painting'
       ? `
-  Primary Category Preferred Dates:
-  ${(primaryPreferredDates || [])
-        .map(
-          (d, i) =>
-            `  ${i + 1}. ${new Date(d).toLocaleDateString('en-IN', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-              timeZone: 'Asia/Kolkata',
-            })}`
-        )
-        .join('\n')}
+  Primary Category Preferred Dates (Classes 3rd–5th):
+${primaryDatesText}
 
-  Secondary Category Preferred Dates:
-  ${(secondaryPreferredDates || [])
-        .map(
-          (d, i) =>
-            `  ${i + 1}. ${new Date(d).toLocaleDateString('en-IN', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-              timeZone: 'Asia/Kolkata',
-            })}`
-        )
-        .join('\n')}
+  Secondary Category Preferred Dates (Classes 6th–8th):
+${secondaryDatesText}
   `
       : (preferredDates || [])
         .map(
@@ -1051,6 +1031,7 @@ export const schoolCompetitionRegistrationTemplate = (data) => {
             })}`
         )
         .join('\n');
+
 
   return {
     subject: `Registration Confirmed – ${competitionLabel} | SNEAC 2026–27`,
