@@ -9,7 +9,9 @@ import {
   allotPaintingDates,
   allotQuizDate,
   sendConfirmation,
+  deleteRegistration,
 } from '../controllers/schoolRegistrationController.js';
+
 
 import { validateRequest } from '../middleware/validation.js';
 import { rateLimiter } from '../middleware/rateLimiter.js';
@@ -241,6 +243,14 @@ router.post(
   sendConfirmation
 );
 
-
+router.delete(
+  '/admin/:id',
+  verifyAdmin,
+  param('id')
+    .isInt({ min: 1 })
+    .withMessage('Invalid registration ID'),
+  validateRequest,
+  deleteRegistration
+);
 
 export default router;

@@ -79,7 +79,7 @@ const SchoolRegistrationHome = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-emerald-50 via-white to-slate-50">
       <div className="py-12 px-4">
-        <div className="container-custom max-w-3xl mx-auto">
+        <div className="container-custom max-w-6xl mx-auto">
 
           {/* Header */}
           <div className="text-center mb-8 animate-slide-down">

@@ -4,9 +4,9 @@ import { toast } from 'react-toastify';
 
 import { schoolRegistrationAPI } from '../utils/api';
 
-import Input from '../components/Input';
 import Button from '../components/Button1';
 import Card from '../components/Card1';
+
 
 const INDIAN_DATES = {
   min: '2026-05-01',
@@ -115,7 +115,8 @@ const PaintingRegistrationForm = () => {
       .finally(() => {
         setTokenLoading(false);
       });
-  }, [token]);
+  }, [token, categoryParam]);
+
 
   const getNum = (v) =>
     parseInt(v, 10) || 0;

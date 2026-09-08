@@ -152,6 +152,7 @@ export const schoolAccessAPI = {
   rejectRequest: (id, rejectionReason) =>
     apiClient.patch(`/school-access/admin/requests/${id}/reject`, { rejectionReason }),
   resendLink: (id) => apiClient.post(`/school-access/admin/requests/${id}/resend-link`),
+  deleteRequest: (id) => apiClient.delete(`/school-access/admin/requests/${id}`),
 };
 
 // 🔥 SNEAC — School Registration API
@@ -203,7 +204,11 @@ export const schoolRegistrationAPI = {
     apiClient.post(
       `/school-registration/admin/${id}/send-confirmation`
     ),
+
+  deleteRegistration: (id) =>
+    apiClient.delete(`/school-registration/admin/${id}`),
 };
+
 
 export const visitorAPI = {
   track: (visitorToken) =>

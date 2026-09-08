@@ -67,23 +67,55 @@ const DateAllotmentModal = ({ dateModal, setDateModal, onSave, onClose, actionLo
   );
 };
 
-const DateOptionGroup = ({ title, titleClassName, dates, selected, onSelect }) => (
-  <div>
-    {title && <h4 className={`font-bold mb-3 ${titleClassName}`}>{title}</h4>}
-    <div className="grid gap-3">
-      {dates.map((d, i) => (
-        <label
-          key={i}
+const DateOptionGroup = ({ title, titleClassName, dates = [], selected, onSelect }) => {
+  const isPreferred = dates.includes(selected);
+  const isCustom = selected && !isPreferred;
+
+  return (
+    <div>
+      {title && <h4 className={`font-bold mb-3 ${titleClassName}`}>{title}</h4>}
+      <div className="grid gap-3">
+        {dates.map((d, i) => (
+          <label
+            key={i}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl border-2 cursor-pointer ${
+              selected === d ? 'border-primary bg-primary/5' : 'border-gray-200'
+            }`}
+          >
+            <input type="radio" name={title || 'dateGroup'} checked={selected === d} onChange={() => onSelect(d)} />
+            <span>{formatDateLong(d)}</span>
+          </label>
+        ))}
+
+        {/* CUSTOM DATE OPTION */}
+        <div
           className={`flex items-center gap-3 px-4 py-3 rounded-xl border-2 cursor-pointer ${
-            selected === d ? 'border-primary bg-primary/5' : 'border-gray-200'
+            isCustom ? 'border-primary bg-primary/5' : 'border-gray-200'
           }`}
         >
-          <input type="radio" checked={selected === d} onChange={() => onSelect(d)} />
-          <span>{formatDateLong(d)}</span>
-        </label>
-      ))}
+          <input
+            type="radio"
+            name={title || 'dateGroup'}
+            checked={isCustom}
+            onChange={() => onSelect(isCustom ? selected : '')}
+          />
+          <div className="flex-1 flex items-center gap-3">
+            <span className="text-sm font-medium">Custom Date:</span>
+            <input
+              type="date"
+              value={isCustom ? selected : ''}
+              onChange={(e) => onSelect(e.target.value)}
+              onClick={() => {
+                if (!isCustom && !selected) onSelect('');
+              }}
+              className="border border-gray-300 rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
+
 
 export default DateAllotmentModal;

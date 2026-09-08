@@ -7,7 +7,9 @@ import {
   approveAccessRequest,
   rejectAccessRequest,
   resendMagicLink,
+  deleteAccessRequest,
 } from '../controllers/schoolAccessController.js';
+
 import { validateRequest } from '../middleware/validation.js';
 import { rateLimiter } from '../middleware/rateLimiter.js';
 import { verifyAdmin } from '../middleware/auth.js';
@@ -183,6 +185,14 @@ router.post(
   param('id').isInt({ min: 1 }).withMessage('Invalid request ID'),
   validateRequest,
   resendMagicLink
+);
+
+router.delete(
+  '/admin/requests/:id',
+  verifyAdmin,
+  param('id').isInt({ min: 1 }).withMessage('Invalid request ID'),
+  validateRequest,
+  deleteAccessRequest
 );
 
 export default router;

@@ -11,7 +11,9 @@ const RegistrationDetailsModal = ({
   onClose,
   onOpenDateModal,
   onSendConfirmation,
+  onDelete,
 }) => {
+
   if (!registration) return null;
   const reg = registration;
   const isPainting = competitionType === 'painting';
@@ -102,6 +104,21 @@ const RegistrationDetailsModal = ({
 
         {/* ACTIONS */}
         <div className="flex flex-wrap gap-3 justify-end pt-4 border-t">
+          {onDelete && (
+            <button
+              onClick={() => {
+                if (reg.subRegistrations && reg.subRegistrations.length > 0) {
+                  reg.subRegistrations.forEach((sub) => onDelete(sub.id, reg.school_name));
+                } else {
+                  onDelete(reg.id, reg.school_name);
+                }
+                onClose();
+              }}
+              className="px-4 py-2 rounded-xl bg-red-100 text-red-700 font-semibold text-sm hover:bg-red-200"
+            >
+              🗑️ Delete Registration
+            </button>
+          )}
           <button
             onClick={() => onOpenDateModal(reg)}
             className="px-4 py-2 rounded-xl bg-blue-100 text-blue-700 font-semibold text-sm hover:bg-blue-200"
@@ -122,6 +139,7 @@ const RegistrationDetailsModal = ({
             </button>
           )}
         </div>
+
       </div>
     </div>
   );

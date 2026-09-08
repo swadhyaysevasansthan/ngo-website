@@ -1049,3 +1049,41 @@ export const sendConfirmation = async (req, res) => {
     });
   }
 };
+
+export const deleteRegistration = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Delete teachers first
+    await pool.query(
+      `DELETE FROM competition_registration_teachers WHERE registration_id = $1`,
+      [id]
+    );
+
+    // Delete registration record
+    const result = await pool.query(
+      `DELETE FROM school_competition_registrations WHERE id = $1 RETURNING *`,
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Registration not found.',
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: 'Registration deleted successfully.',
+      data: result.rows[0],
+    });
+  } catch (error) {
+    console.error('Delete registration error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to delete registration.',
+      error: error.message,
+    });
+  }
+};

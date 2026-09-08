@@ -24,10 +24,13 @@ const SneacAdminTab = () => {
     approveRequest,
     rejectRequest,
     resendLink,
+    deleteRequest,
     allotPaintingDates,
     allotQuizDate,
     sendConfirmation,
+    deleteRegistration,
   } = useSneacAdmin();
+
 
   // Registration currently open in the details modal
   const [selectedRegistration, setSelectedRegistration] = useState(null);
@@ -129,6 +132,7 @@ const SneacAdminTab = () => {
           onApprove={approveRequest}
           onReject={setRejectTarget}
           onResendLink={resendLink}
+          onDelete={deleteRequest}
         />
       )}
 
@@ -137,6 +141,7 @@ const SneacAdminTab = () => {
           competitionType={subTab}
           registrations={subTab === 'painting' ? paintingRegs : quizRegs}
           onViewDetails={setSelectedRegistration}
+          onDelete={deleteRegistration}
         />
       )}
 
@@ -148,8 +153,10 @@ const SneacAdminTab = () => {
           onClose={() => setSelectedRegistration(null)}
           onOpenDateModal={openDateModal}
           onSendConfirmation={sendConfirmation}
+          onDelete={deleteRegistration}
         />
       )}
+
 
       <DateAllotmentModal
         dateModal={dateModal}

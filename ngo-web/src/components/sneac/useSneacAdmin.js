@@ -128,6 +128,34 @@ export default function useSneacAdmin() {
     }
   };
 
+  const deleteRequest = async (id, schoolName) => {
+    if (!window.confirm(`Are you sure you want to PERMANENTLY delete the access request for ${schoolName || 'this school'}?`)) return;
+    setActionLoading(id);
+    try {
+      await schoolAccessAPI.deleteRequest(id);
+      toast.success('Access request deleted permanently.');
+      fetchAll();
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to delete access request.');
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const deleteRegistration = async (id, schoolName) => {
+    if (!window.confirm(`Are you sure you want to PERMANENTLY delete the registration for ${schoolName || 'this school'}?`)) return;
+    setActionLoading(id);
+    try {
+      await schoolRegistrationAPI.deleteRegistration(id);
+      toast.success('Registration deleted permanently.');
+      fetchAll();
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to delete registration.');
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
   return {
     // data
     requests,
@@ -140,8 +168,10 @@ export default function useSneacAdmin() {
     approveRequest,
     rejectRequest,
     resendLink,
+    deleteRequest,
     allotPaintingDates,
     allotQuizDate,
     sendConfirmation,
+    deleteRegistration,
   };
 }

@@ -577,3 +577,37 @@ export const resendMagicLink = async (req, res) => {
     });
   }
 };
+
+/**
+ * DELETE /api/school-access/admin/requests/:id
+ */
+export const deleteAccessRequest = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pool.query(
+      `DELETE FROM school_access_requests WHERE id = $1 RETURNING *`,
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Access request not found.',
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Access request deleted successfully.',
+      data: result.rows[0],
+    });
+  } catch (error) {
+    console.error('Delete access request error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to delete access request.',
+      error: error.message,
+    });
+  }
+};

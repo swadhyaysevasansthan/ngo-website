@@ -10,7 +10,9 @@ const AccessRequestsPanel = ({
   onApprove,
   onReject,
   onResendLink,
+  onDelete,
 }) => {
+
   const [statusFilter, setStatusFilter] = useState('all');
   const [search, setSearch] = useState('');
 
@@ -126,10 +128,18 @@ const AccessRequestsPanel = ({
                         🔗 Resend Link
                       </button>
                     )}
+                    <button
+                      disabled={actionLoading === req.id}
+                      onClick={() => onDelete && onDelete(req.id, req.school_name)}
+                      className="px-3 py-1 rounded-lg bg-red-50 text-red-600 text-xs font-semibold hover:bg-red-100 border border-red-200"
+                    >
+                      🗑️ Delete
+                    </button>
                   </div>
                 </td>
               </tr>
             ))}
+
           </tbody>
         </table>
       </div>
