@@ -189,7 +189,26 @@ export const competitionRules = {
       },
 
       {
-        title: "3. Competition Format",
+        title: "3. Pre-Exam Communication",
+        points: [
+          <b>Five days prior to the exam, the Swadhyay Team will send an email containing a certified question bank of 100 questions, an information sheet, an attendance sheet, and all necessary instructions.</b>,
+          "The question bank will be accessible online using a specific password, valid for 5 days, allowing students to prepare for the quiz.",
+          "The Student Information Sheet is not resent at this stage, as it is already shared earlier along with the date-allotment email."
+        ]
+      },
+
+      {
+        title: "4. Exam Day Procedure",
+        points: [
+          <b>On the day of the exam, the Swadhyay Team will send a specific Quiz Code, valid for 2–3 hours, 30 minutes before the start of the exam, along with final instructions.</b>,
+          "The quiz will contain 25 objective-type questions based on the question bank provided earlier.",
+          "The quiz has a maximum 10-minute time limit, with an attached timer for automatic submission upon time completion.",
+          "Early submission will be an advantage for children during selection."
+        ]
+      },
+
+      {
+        title: "5. Competition Format",
         points: [
           "School Level Round: Conducted online, within school premises only, under school supervision.",
           "School Level Round: Individual attempt on a computer system; Multiple Choice Questions (MCQs) only.",
@@ -199,7 +218,7 @@ export const competitionRules = {
       },
 
       {
-        title: "4. Verification, Scoring & Evaluation",
+        title: "6. Verification, Scoring & Evaluation",
         points: [
           "Schools must verify each participant's class, school enrollment, and student identity; incorrect or unverifiable details may lead to disqualification.",
           "The quiz will be evaluated automatically via the online platform, and system-generated scores are final.",
@@ -209,7 +228,17 @@ export const competitionRules = {
       },
 
       {
-        title: "5. Eligibility",
+        title: "7. Post-Exam Process & Certification",
+        points: [
+          "After the exam, E-Certificates for participants will be shared once the attendance sheet has been verified.",
+          "The school must fill in the feedback Google Form provided in the mail.",
+          "The school must also share a Testimonial on school letterhead.",
+          <b>Once the feedback form and testimonial are received, E-Certificates for the school and the teacher coordinator will be shared.</b>
+        ]
+      },
+
+      {
+        title: "8. Eligibility",
         points: [
           "Open to students of Classes 6th to 8th.",
           "The competition is conducted as a single combined category for all eligible classes."
@@ -217,14 +246,14 @@ export const competitionRules = {
       },
 
       {
-        title: "6. Maximum Participation",
+        title: "9. Maximum Participation",
         points: [
           "Up to 50 students per school."
         ]
       },
 
       {
-        title: "7. Theme & Topics",
+        title: "10. Theme & Topics",
         description: "Theme: Environment & Sustainability",
         points: [
           "Suggested topics: Global Warming, Renewable Energy, Pollution & Waste Management, Tree Plantation, Wildlife Conservation, Sustainable Living, Water Conservation, Climate Change, and Clean Environment."
@@ -232,7 +261,7 @@ export const competitionRules = {
       },
 
       {
-        title: "8. Language & Technical Requirements",
+        title: "11. Language & Technical Requirements",
         points: [
           "The quiz will be conducted in English only.",
           "Schools must ensure a stable internet connection, availability of computer systems, and proper supervision.",
@@ -241,7 +270,7 @@ export const competitionRules = {
       },
 
       {
-        title: "9. Awards & Recognition",
+        title: "12. Awards & Recognition",
         points: [
           "All Participants: E-Certificates.",
           "School Level: Merit Certificates for the Top 3 performers from each school.",
@@ -250,14 +279,14 @@ export const competitionRules = {
       },
 
       {
-        title: "10. Participation Fee",
+        title: "13. Participation Fee",
         points: [
           "There is no registration or participation fee — participation is completely free of cost."
         ]
       },
 
       {
-        title: "11. Unfair Means & Disqualification",
+        title: "14. Unfair Means & Disqualification",
         points: [
           "Participants may be disqualified for cheating, receiving external assistance, internet misuse, multiple registrations, impersonation, rule violations, conducting the competition outside school premises, or using unauthorized devices/materials.",
           "Schools are requested to ensure fair and transparent conduct."
@@ -265,21 +294,21 @@ export const competitionRules = {
       },
 
       {
-        title: "12. Teacher Coordinators",
+        title: "15. Teacher Coordinators",
         points: [
           "Each participating school should appoint 2 teacher coordinators for smooth management and supervision of the competition."
         ]
       },
 
       {
-        title: "13. Copyright, Media & Usage Rights",
+        title: "16. Copyright, Media & Usage Rights",
         points: [
           "By participating, schools and participants grant Swadhyay Seva Foundation permission to record online sessions/events, use photographs and videos, and publish participant names and results for social media, publications, awareness campaigns, and educational & promotional activities."
         ]
       },
 
       {
-        title: "14. General Instructions",
+        title: "17. General Instructions",
         points: [
           "Students must participate individually and follow all instructions from the school and the Foundation.",
           "Any attempt to disrupt the fairness or integrity of the competition may result in disqualification.",
