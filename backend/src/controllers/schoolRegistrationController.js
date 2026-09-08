@@ -294,23 +294,25 @@ export const submitPaintingRegistration = async (req, res) => {
     }
 
     // ─────────────────────────────────────────────
-    // Prevent Duplicate Registration (per category)
+    // Prevent Duplicate Registration & Upsert
     // ─────────────────────────────────────────────
 
-    // Each category (primary / secondary) is stored as its own row.
-    // We prevent a school from submitting the same category twice.
     const submittedCategory = competitionCategories?.[0]; // 'primary' or 'secondary'
 
     const existing = await client.query(
-      `SELECT id, competition_categories
+      `SELECT *
        FROM school_competition_registrations
        WHERE request_id = $1
        AND competition_type = 'painting'`,
       [row.request_id]
     );
 
-    for (const existingReg of existing.rows) {
+    let registration;
+
+    if (existing.rows.length > 0) {
+      const existingReg = existing.rows[0];
       const existingCats = existingReg.competition_categories || [];
+
       if (existingCats.includes(submittedCategory)) {
         await client.query('ROLLBACK');
         return res.status(400).json({
@@ -318,40 +320,84 @@ export const submitPaintingRegistration = async (req, res) => {
           message: `Your school has already submitted the painting competition registration for the ${submittedCategory} category.`,
         });
       }
+
+      // Merge class counts
+      const existingCounts = existingReg.class_counts || {};
+      const newCounts = { ...existingCounts };
+      Object.keys(classCounts || {}).forEach((cls) => {
+        if (classCounts[cls]) {
+          newCounts[cls] = classCounts[cls];
+        }
+      });
+
+      // Merge categories
+      const updatedCategories = Array.from(new Set([...existingCats, submittedCategory]));
+
+      // Merge totals
+      const newPrimaryTotal = submittedCategory === 'primary' ? primaryCategoryTotal : (existingReg.primary_category_total || 0);
+      const newSecondaryTotal = submittedCategory === 'secondary' ? secondaryCategoryTotal : (existingReg.secondary_category_total || 0);
+      const newTotalParticipants = newPrimaryTotal + newSecondaryTotal;
+
+      // Merge preferred dates
+      const newPrimaryDates = submittedCategory === 'primary' ? primaryPreferredDates : (existingReg.primary_preferred_dates || []);
+      const newSecondaryDates = submittedCategory === 'secondary' ? secondaryPreferredDates : (existingReg.secondary_preferred_dates || []);
+
+      const updateResult = await client.query(
+        `UPDATE school_competition_registrations
+         SET competition_categories = $1,
+             class_counts = $2,
+             primary_category_total = $3,
+             secondary_category_total = $4,
+             total_participants = $5,
+             primary_preferred_dates = $6,
+             secondary_preferred_dates = $7,
+             updated_at = NOW()
+         WHERE id = $8
+         RETURNING *`,
+        [
+          JSON.stringify(updatedCategories),
+          JSON.stringify(newCounts),
+          newPrimaryTotal,
+          newSecondaryTotal,
+          newTotalParticipants,
+          JSON.stringify(newPrimaryDates),
+          JSON.stringify(newSecondaryDates),
+          existingReg.id,
+        ]
+      );
+
+      registration = updateResult.rows[0];
+    } else {
+      // First submission for painting
+      const registrationResult = await client.query(
+        `INSERT INTO school_competition_registrations (
+          request_id,
+          competition_type,
+          competition_categories,
+          class_counts,
+          primary_category_total,
+          secondary_category_total,
+          total_participants,
+          primary_preferred_dates,
+          secondary_preferred_dates
+        )
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+        RETURNING *`,
+        [
+          row.request_id,
+          'painting',
+          JSON.stringify(competitionCategories),
+          JSON.stringify(classCounts),
+          primaryCategoryTotal,
+          secondaryCategoryTotal,
+          totalParticipants,
+          JSON.stringify(primaryPreferredDates),
+          JSON.stringify(secondaryPreferredDates),
+        ]
+      );
+
+      registration = registrationResult.rows[0];
     }
-
-    // ─────────────────────────────────────────────
-    // Insert Registration
-    // ─────────────────────────────────────────────
-
-    const registrationResult = await client.query(
-      `INSERT INTO school_competition_registrations (
-        request_id,
-        competition_type,
-        competition_categories,
-        class_counts,
-        primary_category_total,
-        secondary_category_total,
-        total_participants,
-        primary_preferred_dates,
-        secondary_preferred_dates
-      )
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
-      RETURNING *`,
-      [
-        row.request_id,
-        'painting',
-        JSON.stringify(competitionCategories),
-        JSON.stringify(classCounts),
-        primaryCategoryTotal,
-        secondaryCategoryTotal,
-        totalParticipants,
-        JSON.stringify(primaryPreferredDates),
-        JSON.stringify(secondaryPreferredDates),
-      ]
-    );
-
-    const registration = registrationResult.rows[0];
 
     // ─────────────────────────────────────────────
     // Insert Teachers
@@ -364,6 +410,7 @@ export const submitPaintingRegistration = async (req, res) => {
     );
 
     await client.query('COMMIT');
+
 
     // ─────────────────────────────────────────────
     // Prepare Email List
