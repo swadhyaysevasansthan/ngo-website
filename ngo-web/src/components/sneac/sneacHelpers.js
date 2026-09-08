@@ -39,3 +39,57 @@ export const isFullyAllotted = (reg, competitionType) => {
   }
   return !!reg.allotted_date;
 };
+
+// Excel Export Helper (.xls XML format for perfect Excel column separation without CSV comma issues)
+export const downloadExcel = (filename, headers, rows) => {
+  const escapeXML = (val) => {
+    if (val === null || val === undefined) return '';
+    return String(val)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;');
+  };
+
+  const headerRowXML = headers
+    .map((h) => `<Cell><Data ss:Type="String">${escapeXML(h)}</Data></Cell>`)
+    .join('');
+
+  const rowsXML = rows
+    .map(
+      (r) =>
+        `<Row>${r
+          .map(
+            (cell) =>
+              `<Cell><Data ss:Type="${typeof cell === 'number' ? 'Number' : 'String'}">${escapeXML(cell)}</Data></Cell>`
+          )
+          .join('')}</Row>`
+    )
+    .join('');
+
+  const excelXML = `<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
+ <Worksheet ss:Name="Sheet1">
+  <Table>
+   <Row>${headerRowXML}</Row>
+   ${rowsXML}
+  </Table>
+ </Worksheet>
+</Workbook>`;
+
+  const blob = new Blob([excelXML], { type: 'application/vnd.ms-excel;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  const xlsFilename = filename.replace(/\.csv$/i, '.xls');
+  link.setAttribute('href', url);
+  link.setAttribute('download', xlsFilename);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};

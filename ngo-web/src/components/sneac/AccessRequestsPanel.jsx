@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import Card from '../Card1';
-import { STATUS_COLORS } from './sneacHelpers';
+import { STATUS_COLORS, downloadExcel } from './sneacHelpers';
 
 // 🔥 SNEAC — Access Requests tab. Search/filter state is local since nothing
 // outside this panel needs it.
@@ -12,7 +12,6 @@ const AccessRequestsPanel = ({
   onResendLink,
   onDelete,
 }) => {
-
   const [statusFilter, setStatusFilter] = useState('all');
   const [search, setSearch] = useState('');
 
@@ -29,10 +28,46 @@ const AccessRequestsPanel = ({
     });
   }, [requests, statusFilter, search]);
 
+  const handleDownloadExcel = () => {
+    const headers = [
+      'School Name',
+      'Board',
+      'Primary Email',
+      'Alternate Email',
+      'Landline',
+      'Mobile',
+      'Principal Name',
+      'Principal Phone',
+      'City',
+      'State',
+      'Eco Club',
+      'Status',
+      'Submitted At',
+    ];
+
+    const rows = filteredRequests.map((r) => [
+      r.school_name,
+      r.board_of_education,
+      r.school_email,
+      r.school_email_2 || '',
+      r.landline_number || '',
+      r.mobile_number || '',
+      r.principal_name,
+      r.principal_phone || '',
+      r.city,
+      r.state,
+      r.has_eco_club ? 'Yes' : 'No',
+      r.status,
+      r.created_at || '',
+    ]);
+
+    downloadExcel('SNEAC_Access_Requests.xls', headers, rows);
+  };
+
   return (
     <Card>
-      {/* FILTERS */}
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
+      {/* FILTERS & DOWNLOAD */}
+      <div className="flex flex-col md:flex-row gap-4 mb-6 items-stretch md:items-center">
         <input
           type="text"
           placeholder="Search by school, email or city..."
@@ -50,7 +85,15 @@ const AccessRequestsPanel = ({
           <option value="approved">Approved</option>
           <option value="rejected">Rejected</option>
         </select>
+        <button
+          onClick={handleDownloadExcel}
+          className="px-5 py-3 rounded-xl bg-emerald-600 text-white font-semibold text-sm hover:bg-emerald-700 transition flex items-center justify-center gap-2 whitespace-nowrap shadow-sm"
+        >
+          📊 Download Excel ({filteredRequests.length})
+        </button>
       </div>
+
+
 
       {/* TABLE */}
       <div className="overflow-x-auto">

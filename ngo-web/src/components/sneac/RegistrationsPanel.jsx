@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import Card from '../Card1';
-import { isFullyAllotted } from './sneacHelpers';
+import { isFullyAllotted, downloadExcel, parseMaybeJSON } from './sneacHelpers';
 
 // 🔥 SNEAC — compact registrations list for painting/quiz.
 // Groups painting submissions by school so primary & secondary show in one single consolidated row.
@@ -53,10 +53,132 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
     return Array.from(grouped.values());
   }, [registrations, isPainting]);
 
+  const handleDownloadExcel = () => {
+    let headers = [];
+    let rows = [];
+
+    if (isPainting) {
+      headers = [
+        'School Name',
+        'School Email',
+        'City',
+        'State',
+        'Board',
+        'Total Participants',
+        'Primary Total',
+        'Secondary Total',
+        'Class 3',
+        'Class 4',
+        'Class 5',
+        'Class 6',
+        'Class 7',
+        'Class 8',
+        'Teachers',
+        'Primary Preferred Dates',
+        'Primary Allotted Date',
+        'Secondary Preferred Dates',
+        'Secondary Allotted Date',
+        'Confirmation Sent',
+        'Submitted At',
+      ];
+
+      rows = displayList.map((r) => {
+        const counts = parseMaybeJSON(r.class_counts) || {};
+        const teachersStr = (r.teachers || []).map((t) => `${t.teacher_name} (${t.teacher_email || ''}, ${t.teacher_phone || ''})`).join('; ');
+        const primaryPref = (parseMaybeJSON(r.primary_preferred_dates) || []).join(', ');
+        const secondaryPref = (parseMaybeJSON(r.secondary_preferred_dates) || []).join(', ');
+
+        return [
+          r.school_name,
+          r.school_email,
+          r.city,
+          r.state,
+          r.board_of_education,
+          r.total_participants,
+          r.primary_category_total || 0,
+          r.secondary_category_total || 0,
+          counts['3'] || 0,
+          counts['4'] || 0,
+          counts['5'] || 0,
+          counts['6'] || 0,
+          counts['7'] || 0,
+          counts['8'] || 0,
+          teachersStr,
+          primaryPref,
+          r.primary_allotted_date || '',
+          secondaryPref,
+          r.secondary_allotted_date || '',
+          r.confirmation_sent ? 'Yes' : 'No',
+          r.submitted_at || '',
+        ];
+      });
+    } else {
+      headers = [
+        'School Name',
+        'School Email',
+        'City',
+        'State',
+        'Board',
+        'Total Participants',
+        'Available Computers',
+        'Class 6',
+        'Class 7',
+        'Class 8',
+        'Teachers',
+        'Preferred Dates',
+        'Allotted Date',
+        'Confirmation Sent',
+        'Submitted At',
+      ];
+
+      rows = displayList.map((r) => {
+        const counts = parseMaybeJSON(r.class_counts) || {};
+        const teachersStr = (r.teachers || []).map((t) => `${t.teacher_name} (${t.teacher_email || ''}, ${t.teacher_phone || ''})`).join('; ');
+        const prefDates = (parseMaybeJSON(r.preferred_dates) || []).join(', ');
+
+        return [
+          r.school_name,
+          r.school_email,
+          r.city,
+          r.state,
+          r.board_of_education,
+          r.total_participants,
+          r.available_computers || 0,
+          counts['6'] || 0,
+          counts['7'] || 0,
+          counts['8'] || 0,
+          teachersStr,
+          prefDates,
+          r.allotted_date || '',
+          r.confirmation_sent ? 'Yes' : 'No',
+          r.submitted_at || '',
+        ];
+      });
+    }
+
+    const filename = `SNEAC_${isPainting ? 'Painting' : 'Quiz'}_Registrations.xls`;
+    downloadExcel(filename, headers, rows);
+  };
+
   return (
     <Card>
+      {/* HEADER & DOWNLOAD */}
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-base font-bold text-gray-800">
+          {isPainting ? 'Painting Registrations' : 'Quiz Registrations'} ({displayList.length} Schools)
+        </h3>
+        <button
+          onClick={handleDownloadExcel}
+          className="px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold text-xs hover:bg-emerald-700 transition flex items-center gap-2 shadow-sm"
+        >
+          📊 Download Excel ({displayList.length})
+        </button>
+      </div>
+
+
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
+
           <thead className="bg-gray-50">
             <tr>
               <th className="px-4 py-3 text-left">School</th>
