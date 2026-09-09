@@ -1,11 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import Card from '../Card1';
-import { STATUS_COLORS, downloadExcel } from './sneacHelpers';
+import { STATUS_COLORS, downloadExcel, parseMaybeJSON } from './sneacHelpers';
 
 // 🔥 SNEAC — Access Requests tab. Search/filter state is local since nothing
 // outside this panel needs it.
 const AccessRequestsPanel = ({
   requests,
+  paintingRegs = [],
+  quizRegs = [],
   actionLoading,
   onApprove,
   onReject,
@@ -14,6 +16,24 @@ const AccessRequestsPanel = ({
 }) => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [search, setSearch] = useState('');
+
+  // Build a lookup: request_id → { hasPrimary, hasSecondary, hasQuiz }
+  const regLookup = useMemo(() => {
+    const map = new Map();
+    for (const reg of paintingRegs) {
+      const key = reg.request_id;
+      if (!map.has(key)) map.set(key, { hasPrimary: false, hasSecondary: false, hasQuiz: false });
+      const cats = parseMaybeJSON(reg.competition_categories) || reg.competition_categories || [];
+      if (cats.includes('primary')) map.get(key).hasPrimary = true;
+      if (cats.includes('secondary')) map.get(key).hasSecondary = true;
+    }
+    for (const reg of quizRegs) {
+      const key = reg.request_id;
+      if (!map.has(key)) map.set(key, { hasPrimary: false, hasSecondary: false, hasQuiz: false });
+      map.get(key).hasQuiz = true;
+    }
+    return map;
+  }, [paintingRegs, quizRegs]);
 
   const filteredRequests = useMemo(() => {
     const q = search.toLowerCase();
@@ -110,11 +130,35 @@ const AccessRequestsPanel = ({
             </tr>
           </thead>
           <tbody>
-            {filteredRequests.map((req) => (
+            {filteredRequests.map((req) => {
+              const regs = regLookup.get(req.id) || {};
+              const hasPainting = regs.hasPrimary || regs.hasSecondary;
+              return (
               <tr key={req.id} className="border-b hover:bg-gray-50">
                 <td className="px-4 py-3">
                   <div className="font-semibold">{req.school_name}</div>
                   <div className="text-xs text-gray-500 mt-1">{req.board_of_education}</div>
+                  {/* Competition badges */}
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {regs.hasPrimary && (
+                      <span className="inline-flex items-center gap-1 bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                        🎨 Painting · Primary
+                      </span>
+                    )}
+                    {regs.hasSecondary && (
+                      <span className="inline-flex items-center gap-1 bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                        🎨 Painting · Secondary
+                      </span>
+                    )}
+                    {regs.hasQuiz && (
+                      <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                        🧠 Quiz
+                      </span>
+                    )}
+                    {!hasPainting && !regs.hasQuiz && (
+                      <span className="text-[10px] text-gray-400 italic">No registrations yet</span>
+                    )}
+                  </div>
                 </td>
                 <td className="px-4 py-3 text-xs">
                   <div>{req.school_email}</div>
@@ -181,7 +225,8 @@ const AccessRequestsPanel = ({
                   </div>
                 </td>
               </tr>
-            ))}
+              );
+            })}
 
           </tbody>
         </table>

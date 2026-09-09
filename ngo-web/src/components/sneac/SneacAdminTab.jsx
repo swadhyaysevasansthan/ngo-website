@@ -129,6 +129,8 @@ const SneacAdminTab = () => {
       {subTab === 'requests' && (
         <AccessRequestsPanel
           requests={requests}
+          paintingRegs={paintingRegs}
+          quizRegs={quizRegs}
           actionLoading={actionLoading}
           onApprove={approveRequest}
           onReject={setRejectTarget}
