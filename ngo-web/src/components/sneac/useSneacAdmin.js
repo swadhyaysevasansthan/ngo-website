@@ -156,6 +156,22 @@ export default function useSneacAdmin() {
     }
   };
 
+  const toggleConcluded = async (id, currentStatus) => {
+    const newStatus = !currentStatus;
+    setActionLoading(id);
+    try {
+      await schoolRegistrationAPI.toggleConcluded(id, newStatus);
+      toast.success(`Competition marked as ${newStatus ? 'concluded' : 'in progress'}.`);
+      await fetchAll();
+      return true;
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to update competition status.');
+      return false;
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
   return {
     // data
     requests,
@@ -173,5 +189,6 @@ export default function useSneacAdmin() {
     allotQuizDate,
     sendConfirmation,
     deleteRegistration,
+    toggleConcluded,
   };
 }

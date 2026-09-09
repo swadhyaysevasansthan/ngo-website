@@ -29,6 +29,7 @@ const SneacAdminTab = () => {
     allotQuizDate,
     sendConfirmation,
     deleteRegistration,
+    toggleConcluded,
   } = useSneacAdmin();
 
 
@@ -142,6 +143,8 @@ const SneacAdminTab = () => {
           registrations={subTab === 'painting' ? paintingRegs : quizRegs}
           onViewDetails={setSelectedRegistration}
           onDelete={deleteRegistration}
+          onToggleConcluded={toggleConcluded}
+          actionLoading={actionLoading}
         />
       )}
 

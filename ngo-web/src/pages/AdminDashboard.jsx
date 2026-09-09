@@ -117,6 +117,9 @@ const AdminDashboard = () => {
     ).length;
     const quizDatesAllotted = quizRegs.filter((r) => r.allotted_date).length;
 
+    const paintingConcluded = paintingRegs.filter((r) => r.is_concluded);
+    const quizConcluded = quizRegs.filter((r) => r.is_concluded);
+
     return {
       totalSchools: sneacRequests.length,
       approvedCount: approved.length,
@@ -127,6 +130,10 @@ const AdminDashboard = () => {
       quizParticipants,
       paintingDatesAllotted,
       quizDatesAllotted,
+      paintingConcludedCount: paintingConcluded.length,
+      quizConcludedCount: quizConcluded.length,
+      paintingConcludedSchools: paintingConcluded.map((r) => r.school_name),
+      quizConcludedSchools: quizConcluded.map((r) => r.school_name),
     };
   }, [sneacRequests, paintingRegs, quizRegs]);
 
@@ -507,6 +514,53 @@ const AdminDashboard = () => {
                         </div>
                       </Card>
                     </div>
+
+                    {/* Concluded Competitions */}
+                    <Card>
+                      <h3 className="text-xl font-bold mb-4">
+                        🏆 Competitions Concluded
+                      </h3>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div>
+                          <div className="flex justify-between items-center mb-3">
+                            <span className="font-semibold">🎨 Painting</span>
+                            <span className="bg-purple-100 text-purple-800 px-4 py-1 rounded-full font-bold">
+                              {sneacStats.paintingConcludedCount} / {paintingRegs.length} schools
+                            </span>
+                          </div>
+                          {sneacStats.paintingConcludedSchools.length > 0 ? (
+                            <ul className="space-y-1">
+                              {sneacStats.paintingConcludedSchools.map((name) => (
+                                <li key={name} className="text-sm text-gray-700 flex items-center gap-2">
+                                  <span className="text-purple-500">✓</span> {name}
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <p className="text-sm text-gray-400">No schools concluded yet.</p>
+                          )}
+                        </div>
+                        <div>
+                          <div className="flex justify-between items-center mb-3">
+                            <span className="font-semibold">🧠 Quiz</span>
+                            <span className="bg-purple-100 text-purple-800 px-4 py-1 rounded-full font-bold">
+                              {sneacStats.quizConcludedCount} / {quizRegs.length} schools
+                            </span>
+                          </div>
+                          {sneacStats.quizConcludedSchools.length > 0 ? (
+                            <ul className="space-y-1">
+                              {sneacStats.quizConcludedSchools.map((name) => (
+                                <li key={name} className="text-sm text-gray-700 flex items-center gap-2">
+                                  <span className="text-purple-500">✓</span> {name}
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <p className="text-sm text-gray-400">No schools concluded yet.</p>
+                          )}
+                        </div>
+                      </div>
+                    </Card>
                   </>
                 )}
               </>

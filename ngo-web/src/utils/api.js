@@ -207,7 +207,11 @@ export const schoolRegistrationAPI = {
 
   deleteRegistration: (id) =>
     apiClient.delete(`/school-registration/admin/${id}`),
+
+  toggleConcluded: (id, isConcluded) =>
+    apiClient.patch(`/school-registration/admin/${id}/toggle-concluded`, { isConcluded }),
 };
+
 
 
 export const visitorAPI = {

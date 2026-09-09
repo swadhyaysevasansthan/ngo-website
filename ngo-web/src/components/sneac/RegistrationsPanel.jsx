@@ -4,7 +4,7 @@ import { isFullyAllotted, downloadExcel, parseMaybeJSON } from './sneacHelpers';
 
 // 🔥 SNEAC — compact registrations list for painting/quiz.
 // Groups painting submissions by school so primary & secondary show in one single consolidated row.
-const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onDelete }) => {
+const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onDelete, onToggleConcluded, actionLoading }) => {
   const isPainting = competitionType === 'painting';
 
   const displayList = useMemo(() => {
@@ -47,6 +47,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
         if (reg.secondary_preferred_dates) existing.secondary_preferred_dates = reg.secondary_preferred_dates;
 
         existing.confirmation_sent = existing.confirmation_sent || reg.confirmation_sent;
+        existing.is_concluded = existing.is_concluded || reg.is_concluded;
       }
     }
 
@@ -79,6 +80,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
         'Secondary Preferred Dates',
         'Secondary Allotted Date',
         'Confirmation Sent',
+        'Competition Concluded',
         'Submitted At',
       ];
 
@@ -109,6 +111,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
           secondaryPref,
           r.secondary_allotted_date || '',
           r.confirmation_sent ? 'Yes' : 'No',
+          r.is_concluded ? 'Yes' : 'No',
           r.submitted_at || '',
         ];
       });
@@ -128,6 +131,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
         'Preferred Dates',
         'Allotted Date',
         'Confirmation Sent',
+        'Competition Concluded',
         'Submitted At',
       ];
 
@@ -151,6 +155,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
           prefDates,
           r.allotted_date || '',
           r.confirmation_sent ? 'Yes' : 'No',
+          r.is_concluded ? 'Yes' : 'No',
           r.submitted_at || '',
         ];
       });
@@ -175,10 +180,8 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
         </button>
       </div>
 
-
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-
           <thead className="bg-gray-50">
             <tr>
               <th className="px-4 py-3 text-left">School</th>
@@ -187,7 +190,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
               <th className="px-4 py-3 text-center">Students</th>
               {!isPainting && <th className="px-4 py-3 text-center">Computers</th>}
               <th className="px-4 py-3 text-left">Dates</th>
-              <th className="px-4 py-3 text-left">Confirmation</th>
+              <th className="px-4 py-3 text-left">Status</th>
               <th className="px-4 py-3 text-left">Actions</th>
             </tr>
           </thead>
@@ -195,6 +198,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
             {displayList.map((reg) => {
               const fullyAllotted = isFullyAllotted(reg, competitionType);
               const teacherCount = reg.teachers?.length || 0;
+              const isConcluded = reg.is_concluded;
 
               return (
                 <tr key={reg.id} className="border-b hover:bg-gray-50">
@@ -231,13 +235,17 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    {reg.confirmation_sent ? (
-                      <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
-                        ✓ Sent
+                    {isConcluded ? (
+                      <span className="bg-purple-100 text-purple-800 px-2.5 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1">
+                        🏆 Concluded
+                      </span>
+                    ) : reg.confirmation_sent ? (
+                      <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-semibold">
+                        ✓ Date Confirmed
                       </span>
                     ) : (
                       <span className="bg-gray-100 text-gray-500 px-2 py-1 rounded-full text-xs">
-                        Not sent
+                        Registered
                       </span>
                     )}
                   </td>
@@ -247,7 +255,24 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
                         onClick={() => onViewDetails(reg)}
                         className="px-3 py-1.5 bg-primary/10 text-primary rounded-lg text-xs font-semibold hover:bg-primary/20 whitespace-nowrap"
                       >
-                        View Details / Take Action
+                        View Details
+                      </button>
+                      <button
+                        disabled={actionLoading === reg.id}
+                        onClick={() => {
+                          if (reg.subRegistrations && reg.subRegistrations.length > 0) {
+                            reg.subRegistrations.forEach((sub) => onToggleConcluded && onToggleConcluded(sub.id, reg.is_concluded));
+                          } else {
+                            onToggleConcluded && onToggleConcluded(reg.id, reg.is_concluded);
+                          }
+                        }}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap border transition-all ${
+                          isConcluded
+                            ? 'bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100'
+                            : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
+                        }`}
+                      >
+                        {isConcluded ? '↩ Re-open' : '🏆 Mark Concluded'}
                       </button>
                       <button
                         onClick={() => {

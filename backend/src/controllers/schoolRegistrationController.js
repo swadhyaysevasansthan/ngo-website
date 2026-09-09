@@ -1136,3 +1136,39 @@ export const deleteRegistration = async (req, res) => {
     });
   }
 };
+
+export const toggleCompetitionConcluded = async (req, res) => {
+  const { id } = req.params;
+  const { isConcluded } = req.body;
+
+  try {
+    const result = await pool.query(
+      `UPDATE school_competition_registrations
+       SET is_concluded = $1,
+           concluded_at = CASE WHEN $1 = true THEN NOW() ELSE NULL END
+       WHERE id = $2
+       RETURNING *`,
+      [isConcluded, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Registration not found.',
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: `Competition marked as ${isConcluded ? 'concluded' : 'in progress'}.`,
+      data: result.rows[0],
+    });
+  } catch (error) {
+    console.error('Toggle competition concluded error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to update competition status.',
+      error: error.message,
+    });
+  }
+};

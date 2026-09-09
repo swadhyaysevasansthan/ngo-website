@@ -10,7 +10,9 @@ import {
   allotQuizDate,
   sendConfirmation,
   deleteRegistration,
+  toggleCompetitionConcluded,
 } from '../controllers/schoolRegistrationController.js';
+
 
 
 import { validateRequest } from '../middleware/validation.js';
@@ -251,6 +253,19 @@ router.delete(
     .withMessage('Invalid registration ID'),
   validateRequest,
   deleteRegistration
+);
+
+router.patch(
+  '/admin/:id/toggle-concluded',
+  verifyAdmin,
+  param('id')
+    .isInt({ min: 1 })
+    .withMessage('Invalid registration ID'),
+  body('isConcluded')
+    .isBoolean()
+    .withMessage('isConcluded must be a boolean'),
+  validateRequest,
+  toggleCompetitionConcluded
 );
 
 export default router;
