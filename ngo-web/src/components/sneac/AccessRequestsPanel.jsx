@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Card from '../Card1';
 import { STATUS_COLORS, downloadExcel, parseMaybeJSON } from './sneacHelpers';
+import Pagination from './Pagination';
 
 // 🔥 SNEAC — Access Requests tab. Search/filter state is local since nothing
 // outside this panel needs it.
@@ -16,6 +17,13 @@ const AccessRequestsPanel = ({
 }) => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  // Reset page when filter or search changes
+  useEffect(() => {
+    setPage(1);
+  }, [search, statusFilter]);
 
   // Build a lookup: request_id → { hasPrimary, hasSecondary, hasQuiz }
   const regLookup = useMemo(() => {
@@ -47,6 +55,11 @@ const AccessRequestsPanel = ({
       return matchStatus && matchSearch;
     });
   }, [requests, statusFilter, search]);
+
+  const paginatedRequests = useMemo(() => {
+    const start = (page - 1) * pageSize;
+    return filteredRequests.slice(start, start + pageSize);
+  }, [filteredRequests, page, pageSize]);
 
   const handleDownloadExcel = () => {
     const headers = [
@@ -122,8 +135,6 @@ const AccessRequestsPanel = ({
         </button>
       </div>
 
-
-
       {/* TABLE */}
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
@@ -139,7 +150,7 @@ const AccessRequestsPanel = ({
             </tr>
           </thead>
           <tbody>
-            {filteredRequests.map((req) => {
+            {paginatedRequests.map((req) => {
               const regs = regLookup.get(req.id) || {};
               const hasPainting = regs.hasPrimary || regs.hasSecondary;
               return (
@@ -236,10 +247,25 @@ const AccessRequestsPanel = ({
               </tr>
               );
             })}
-
+            {filteredRequests.length === 0 && (
+              <tr>
+                <td colSpan={7} className="px-4 py-10 text-center text-gray-400">
+                  No requests found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
+
+      {/* PAGINATION */}
+      <Pagination
+        page={page}
+        pageSize={pageSize}
+        total={filteredRequests.length}
+        onPage={setPage}
+        onPageSize={setPageSize}
+      />
     </Card>
   );
 };

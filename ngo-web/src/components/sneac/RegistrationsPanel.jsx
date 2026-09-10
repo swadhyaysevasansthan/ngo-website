@@ -1,58 +1,95 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Card from '../Card1';
 import { isFullyAllotted, downloadExcel, parseMaybeJSON } from './sneacHelpers';
+import Pagination from './Pagination';
 
 // 🔥 SNEAC — compact registrations list for painting/quiz.
 // Groups painting submissions by school so primary & secondary show in one single consolidated row.
 const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onDelete, onToggleConcluded, actionLoading }) => {
   const isPainting = competitionType === 'painting';
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  // Reset page when filter/search/competitionType changes
+  useEffect(() => {
+    setPage(1);
+  }, [search, statusFilter, competitionType]);
 
   const displayList = useMemo(() => {
-    if (!isPainting) return registrations;
+    let list = registrations;
 
-    // Group painting registrations by request_id (school)
-    const grouped = new Map();
+    if (isPainting) {
+      // Group painting registrations by request_id (school)
+      const grouped = new Map();
 
-    for (const reg of registrations) {
-      const key = reg.request_id || reg.school_name;
-      if (!grouped.has(key)) {
-        grouped.set(key, {
-          ...reg,
-          subRegistrations: [reg],
-          total_participants: Number(reg.total_participants || 0),
-          teachers: [...(reg.teachers || [])],
-        });
-      } else {
-        const existing = grouped.get(key);
-        existing.subRegistrations.push(reg);
-        existing.total_participants += Number(reg.total_participants || 0);
+      for (const reg of registrations) {
+        const key = reg.request_id || reg.school_name;
+        if (!grouped.has(key)) {
+          grouped.set(key, {
+            ...reg,
+            subRegistrations: [reg],
+            total_participants: Number(reg.total_participants || 0),
+            teachers: [...(reg.teachers || [])],
+          });
+        } else {
+          const existing = grouped.get(key);
+          existing.subRegistrations.push(reg);
+          existing.total_participants += Number(reg.total_participants || 0);
 
-        // Merge teachers deduplicating by teacher_name/email
-        const existingTeacherNames = new Set(existing.teachers.map((t) => t.teacher_name?.toLowerCase()));
-        for (const t of reg.teachers || []) {
-          if (!existingTeacherNames.has(t.teacher_name?.toLowerCase())) {
-            existing.teachers.push(t);
-            existingTeacherNames.add(t.teacher_name?.toLowerCase());
+          // Merge teachers deduplicating by teacher_name/email
+          const existingTeacherNames = new Set(existing.teachers.map((t) => t.teacher_name?.toLowerCase()));
+          for (const t of reg.teachers || []) {
+            if (!existingTeacherNames.has(t.teacher_name?.toLowerCase())) {
+              existing.teachers.push(t);
+              existingTeacherNames.add(t.teacher_name?.toLowerCase());
+            }
           }
+
+          // Merge categories and dates
+          const cats1 = existing.competition_categories || [];
+          const cats2 = reg.competition_categories || [];
+          existing.competition_categories = Array.from(new Set([...cats1, ...cats2]));
+
+          if (reg.primary_allotted_date) existing.primary_allotted_date = reg.primary_allotted_date;
+          if (reg.secondary_allotted_date) existing.secondary_allotted_date = reg.secondary_allotted_date;
+          if (reg.primary_preferred_dates) existing.primary_preferred_dates = reg.primary_preferred_dates;
+          if (reg.secondary_preferred_dates) existing.secondary_preferred_dates = reg.secondary_preferred_dates;
+
+          existing.confirmation_sent = existing.confirmation_sent || reg.confirmation_sent;
+          existing.is_concluded = existing.is_concluded || reg.is_concluded;
         }
-
-        // Merge categories and dates
-        const cats1 = existing.competition_categories || [];
-        const cats2 = reg.competition_categories || [];
-        existing.competition_categories = Array.from(new Set([...cats1, ...cats2]));
-
-        if (reg.primary_allotted_date) existing.primary_allotted_date = reg.primary_allotted_date;
-        if (reg.secondary_allotted_date) existing.secondary_allotted_date = reg.secondary_allotted_date;
-        if (reg.primary_preferred_dates) existing.primary_preferred_dates = reg.primary_preferred_dates;
-        if (reg.secondary_preferred_dates) existing.secondary_preferred_dates = reg.secondary_preferred_dates;
-
-        existing.confirmation_sent = existing.confirmation_sent || reg.confirmation_sent;
-        existing.is_concluded = existing.is_concluded || reg.is_concluded;
       }
+      list = Array.from(grouped.values());
     }
 
-    return Array.from(grouped.values());
-  }, [registrations, isPainting]);
+    // Apply Search and Status Filter
+    const q = search.toLowerCase();
+    return list.filter((r) => {
+      const matchSearch =
+        !q ||
+        r.school_name.toLowerCase().includes(q) ||
+        r.school_email.toLowerCase().includes(q) ||
+        r.city.toLowerCase().includes(q);
+
+      let matchStatus = true;
+      if (statusFilter === 'allotted') {
+        matchStatus = isFullyAllotted(r, competitionType);
+      } else if (statusFilter === 'pending') {
+        matchStatus = !isFullyAllotted(r, competitionType);
+      } else if (statusFilter === 'concluded') {
+        matchStatus = Boolean(r.is_concluded);
+      }
+
+      return matchSearch && matchStatus;
+    });
+  }, [registrations, isPainting, competitionType, search, statusFilter]);
+
+  const paginatedList = useMemo(() => {
+    const start = (page - 1) * pageSize;
+    return displayList.slice(start, start + pageSize);
+  }, [displayList, page, pageSize]);
 
   const handleDownloadExcel = () => {
     let headers = [];
@@ -168,7 +205,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
   return (
     <Card>
       {/* HEADER & DOWNLOAD */}
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
         <h3 className="text-base font-bold text-gray-800">
           {isPainting ? 'Painting Registrations' : 'Quiz Registrations'} ({displayList.length} Schools)
         </h3>
@@ -178,6 +215,27 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
         >
           📊 Download Excel ({displayList.length})
         </button>
+      </div>
+
+      {/* SEARCH AND FILTERS */}
+      <div className="flex flex-col md:flex-row gap-3 mb-4">
+        <input
+          type="text"
+          placeholder="Search by school, email or city..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="flex-1 border border-gray-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+        />
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="border border-gray-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+        >
+          <option value="all">All Status</option>
+          <option value="pending">Date Allotment Pending</option>
+          <option value="allotted">Date Allotted</option>
+          <option value="concluded">Concluded</option>
+        </select>
       </div>
 
       <div className="overflow-x-auto">
@@ -195,7 +253,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
             </tr>
           </thead>
           <tbody>
-            {displayList.map((reg) => {
+            {paginatedList.map((reg) => {
               const fullyAllotted = isFullyAllotted(reg, competitionType);
               const teacherCount = reg.teachers?.length || 0;
               const isConcluded = reg.is_concluded;
@@ -298,13 +356,22 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
                   colSpan={isPainting ? 7 : 8}
                   className="px-4 py-10 text-center text-gray-400"
                 >
-                  No registrations yet.
+                  No registrations found.
                 </td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
+
+      {/* PAGINATION */}
+      <Pagination
+        page={page}
+        pageSize={pageSize}
+        total={displayList.length}
+        onPage={setPage}
+        onPageSize={setPageSize}
+      />
     </Card>
   );
 };
