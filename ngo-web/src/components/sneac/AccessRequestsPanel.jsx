@@ -62,24 +62,33 @@ const AccessRequestsPanel = ({
       'State',
       'Eco Club',
       'Status',
+      'Painting – Primary',
+      'Painting – Secondary',
+      'Quiz',
       'Submitted At',
     ];
 
-    const rows = filteredRequests.map((r) => [
-      r.school_name,
-      r.board_of_education,
-      r.school_email,
-      r.school_email_2 || '',
-      r.landline_number || '',
-      r.mobile_number || '',
-      r.principal_name,
-      r.principal_phone || '',
-      r.city,
-      r.state,
-      r.has_eco_club ? 'Yes' : 'No',
-      r.status,
-      r.created_at || '',
-    ]);
+    const rows = filteredRequests.map((r) => {
+      const regs = regLookup.get(r.id) || {};
+      return [
+        r.school_name,
+        r.board_of_education,
+        r.school_email,
+        r.school_email_2 || '',
+        r.landline_number || '',
+        r.mobile_number || '',
+        r.principal_name,
+        r.principal_phone || '',
+        r.city,
+        r.state,
+        r.has_eco_club ? 'Yes' : 'No',
+        r.status,
+        regs.hasPrimary ? 'Yes' : 'No',
+        regs.hasSecondary ? 'Yes' : 'No',
+        regs.hasQuiz ? 'Yes' : 'No',
+        r.created_at || '',
+      ];
+    });
 
     downloadExcel('SNEAC_Access_Requests.xls', headers, rows);
   };
