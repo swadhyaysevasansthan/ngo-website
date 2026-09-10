@@ -1296,12 +1296,35 @@ ${formattedSecondaryDate}
   const attendanceRuleText =
     'Along with this date-allotment email, we have attached a Student Information Sheet. It must be filled in with the participating students\' details and submitted 3-4 days before the competition date.';
 
+  // ─────────────────────────────────────────────
+  // QUIZ-SPECIFIC ADDITIONAL REMINDERS
+  // ─────────────────────────────────────────────
+
+  const quizAdditionalRemindersHtml = competitionType === 'quiz' ? `
+    <li style="margin-bottom:12px;">
+      <strong>Pre-Exam Communication:</strong> Five days prior to the exam, the Swadhyay Team will send an email containing information about the certified question bank of 100 questions and all necessary instructions. The question bank will be accessible online on our website using a specific password, valid for 5 days, allowing students to prepare for the quiz.
+    </li>
+    <li style="margin-bottom:12px;">
+      <strong>Exam Day Procedure:</strong> On the day of the exam, the Swadhyay Team will send a specific Quiz Code (valid for 2–3 hours) 1 hour before the exam starts, along with final instructions. The quiz consists of 25 objective-type (MCQ) questions from the provided question bank and must be completed within 10 minutes — the timer submits automatically. Rankings are determined primarily by the number of correct answers; in the event of a tie, the participant who submits in the shortest time is ranked higher. Early completion is therefore an advantage.
+    </li>
+    <li>
+      Ensure a stable internet connection, availability of computer systems, and proper supervision on the exam day.
+    </li>
+  ` : '';
+
+  const quizAdditionalRemindersText = competitionType === 'quiz' ? `
+- Pre-Exam Communication: Five days prior to the exam, the Swadhyay Team will send an email containing information about the certified question bank of 100 questions and all necessary instructions. The question bank will be accessible online on our website using a specific password, valid for 5 days, allowing students to prepare for the quiz.
+- Exam Day Procedure: On the day of the exam, the Swadhyay Team will send a specific Quiz Code (valid for 2–3 hours) 1 hour before the exam starts, along with final instructions. The quiz consists of 25 objective-type (MCQ) questions from the provided question bank and must be completed within 10 minutes — the timer submits automatically. Rankings are determined primarily by the number of correct answers; in the event of a tie, the participant who submits in the shortest time is ranked higher. Early completion is therefore an advantage.
+- Ensure a stable internet connection, availability of computer systems, and proper supervision on the exam day.
+` : '';
+
   const rulesHtml = `
     <div class="rules-box">
       <div class="rules-title">Important Reminders</div>
       <ul class="rules-list">
         ${hasAttendanceSheet ? `<li>${attendanceRuleText}</li>` : ''}
         <li>${documentationRuleText}</li>
+        ${quizAdditionalRemindersHtml}
       </ul>
     </div>
   `;
@@ -1309,7 +1332,7 @@ ${formattedSecondaryDate}
   const rulesText = `
 Important Reminders:
 ${hasAttendanceSheet ? `- ${attendanceRuleText}\n` : ''}- ${documentationRuleText}
-`;
+${quizAdditionalRemindersText}`;
 
   return {
     subject: `Date Confirmed – ${competitionLabel} | SNEAC 2026–27`,
