@@ -1294,7 +1294,7 @@ ${formattedSecondaryDate}
       : 'Capture a minimum of 4 photographs and 1 video recording of the competition using GPS-enabled camera devices. Failure to provide this documentation may affect eligibility for National-Level qualification.';
 
   const attendanceRuleText =
-    'Along with this date-allotment email, we have attached a Student Information Sheet. It must be filled in with the participating students\' details and submitted 3-4 days before the competition date.';
+    'Along with this date-allotment email, we have attached a Student Information Sheet. It must be filled in with the participating students\' details and emailed to <strong>swadhyaysevafoundation@gmail.com</strong> 3-4 days before the competition date.';
 
   // ─────────────────────────────────────────────
   // QUIZ-SPECIFIC ADDITIONAL REMINDERS
@@ -1331,7 +1331,7 @@ ${formattedSecondaryDate}
 
   const rulesText = `
 Important Reminders:
-${hasAttendanceSheet ? `- ${attendanceRuleText}\n` : ''}- ${documentationRuleText}
+${hasAttendanceSheet ? `- ${attendanceRuleText.replace(/<\/?strong>/g, '')}\n` : ''}- ${documentationRuleText}
 ${quizAdditionalRemindersText}`;
 
   return {
@@ -1492,12 +1492,23 @@ ${quizAdditionalRemindersText}`;
             margin-bottom: 0;
           }
 
+          .divider {
+            margin: 24px 0 16px 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+          }
+
           .footer {
-            padding: 14px 20px;
+            padding: 14px 20px 10px 20px;
             text-align: center;
             font-size: 11px;
             color: #9ca3af;
             background-color: #f9fafb;
+          }
+
+          .footer a {
+            color: #4b5563;
+            text-decoration: none;
           }
         </style>
       </head>
@@ -1554,15 +1565,17 @@ ${quizAdditionalRemindersText}`;
               <p>
                 In case of any scheduling conflict, kindly contact us immediately.
               </p>
-              <br/>
-              <p>
-                Regards,<br/>
-                <strong>Swadhyay Seva Foundation</strong>
+              <div class="divider"></div>
+              <p style="font-size: 12px; margin-bottom: 4px;"><strong>Support</strong></p>
+              <p style="font-size: 12px; line-height: 1.6;">
+                Email: <a href="mailto:swadhyaysevafoundation@gmail.com" style="color: #2563eb; text-decoration: underline;">swadhyaysevafoundation@gmail.com</a><br/>
+                WhatsApp: <a href="https://wa.me/919599224323" style="color: #2563eb; text-decoration: underline;">+91 9599224323</a> | <a href="https://wa.me/919837042298" style="color: #2563eb; text-decoration: underline;">+91 9837042298</a>
               </p>
             </div>
             <div class="footer">
-              Swadhyay Seva Foundation<br/>
-              www.swadhyayseva.org
+              <p style="margin: 0 0 4px 0;"><strong>Swadhyay Seva Foundation</strong></p>
+              <p style="margin: 0 0 4px 0;">This is an automated message. Please do not reply.</p>
+              <p style="margin: 0;">Website: <a href="https://www.swadhyayseva.org">www.swadhyayseva.org</a></p>
             </div>
           </div>
         </div>
@@ -1583,9 +1596,14 @@ Total Participants:
 ${totalParticipants}
 
 ${rulesText}
-Regards,
+
+Support:
+Email: swadhyaysevafoundation@gmail.com
+WhatsApp: +91 9599224323 | +91 9837042298
+
 Swadhyay Seva Foundation
-www.swadhyayseva.org
+This is an automated message. Please do not reply.
+Website: www.swadhyayseva.org
 `,
   };
 };
