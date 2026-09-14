@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Card from '../Card1';
-import { isFullyAllotted, downloadExcel, parseMaybeJSON } from './sneacHelpers';
+import { isFullyAllotted, downloadExcel, parseMaybeJSON, formatDateSimple } from './sneacHelpers';
 import Pagination from './Pagination';
 
 // 🔥 SNEAC — compact registrations list for painting/quiz.
@@ -135,8 +135,8 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
 
       rows = displayList.map((r) => {
         const counts = parseMaybeJSON(r.class_counts) || {};
-        const primaryPref = (parseMaybeJSON(r.primary_preferred_dates) || []).join(', ');
-        const secondaryPref = (parseMaybeJSON(r.secondary_preferred_dates) || []).join(', ');
+        const primaryPref = (parseMaybeJSON(r.primary_preferred_dates) || []).map(formatDateSimple).join(', ');
+        const secondaryPref = (parseMaybeJSON(r.secondary_preferred_dates) || []).map(formatDateSimple).join(', ');
 
         const teacherCols = [];
         for (let i = 0; i < maxTeachers; i++) {
@@ -161,12 +161,12 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
           counts['8'] || 0,
           ...teacherCols,
           primaryPref,
-          r.primary_allotted_date || '',
+          formatDateSimple(r.primary_allotted_date),
           secondaryPref,
-          r.secondary_allotted_date || '',
+          formatDateSimple(r.secondary_allotted_date),
           r.confirmation_sent ? 'Yes' : 'No',
           r.is_concluded ? 'Yes' : 'No',
-          r.submitted_at || '',
+          formatDateSimple(r.submitted_at),
         ];
       });
     } else {
@@ -191,7 +191,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
 
       rows = displayList.map((r) => {
         const counts = parseMaybeJSON(r.class_counts) || {};
-        const prefDates = (parseMaybeJSON(r.preferred_dates) || []).join(', ');
+        const prefDates = (parseMaybeJSON(r.preferred_dates) || []).map(formatDateSimple).join(', ');
 
         const teacherCols = [];
         for (let i = 0; i < maxTeachers; i++) {
@@ -212,10 +212,10 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
           counts['8'] || 0,
           ...teacherCols,
           prefDates,
-          r.allotted_date || '',
+          formatDateSimple(r.allotted_date),
           r.confirmation_sent ? 'Yes' : 'No',
           r.is_concluded ? 'Yes' : 'No',
-          r.submitted_at || '',
+          formatDateSimple(r.submitted_at),
         ];
       });
     }

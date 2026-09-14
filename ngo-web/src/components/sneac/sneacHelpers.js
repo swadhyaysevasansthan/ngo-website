@@ -13,6 +13,16 @@ export const formatDate = (d) =>
     year: 'numeric',
   });
 
+export const formatDateSimple = (d) => {
+  if (!d) return '';
+  const dateObj = new Date(d);
+  if (isNaN(dateObj.getTime())) return String(d);
+  const day = String(dateObj.getDate()).padStart(2, '0');
+  const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+  const year = dateObj.getFullYear();
+  return `${day}-${month}-${year}`;
+};
+
 export const formatDateLong = (d) =>
   new Date(d).toLocaleDateString('en-IN', {
     weekday: 'long',

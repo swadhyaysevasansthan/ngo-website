@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Card from '../Card1';
-import { STATUS_COLORS, downloadExcel, parseMaybeJSON } from './sneacHelpers';
+import { STATUS_COLORS, downloadExcel, parseMaybeJSON, formatDateSimple } from './sneacHelpers';
 import Pagination from './Pagination';
 
 // 🔥 SNEAC — Access Requests tab. Search/filter state is local since nothing
@@ -99,7 +99,7 @@ const AccessRequestsPanel = ({
         regs.hasPrimary ? 'Yes' : 'No',
         regs.hasSecondary ? 'Yes' : 'No',
         regs.hasQuiz ? 'Yes' : 'No',
-        r.created_at || '',
+        formatDateSimple(r.created_at),
       ];
     });
 
