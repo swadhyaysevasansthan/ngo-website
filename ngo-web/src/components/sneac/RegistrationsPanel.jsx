@@ -91,14 +91,23 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
     return displayList.slice(start, start + pageSize);
   }, [displayList, page, pageSize]);
 
-  const handleDownloadExcel = () => {
-    // Determine maximum number of teachers across displayList (at least 1, up to max found or capped gracefully)
+  const handleDownloadExcel = (categoryFilter = 'all') => {
+    // Filter list by category if categoryFilter is specified for painting
+    let exportList = displayList;
+    if (isPainting && categoryFilter !== 'all') {
+      exportList = displayList.filter((r) => {
+        const cats = r.competition_categories || [];
+        return cats.includes(categoryFilter);
+      });
+    }
+
+    // Determine maximum number of teachers across exportList
     const maxTeachers = Math.max(
       1,
-      ...displayList.map((r) => (r.teachers || []).length)
+      ...exportList.map((r) => (r.teachers || []).length)
     );
 
-    // Build teacher headers dynamically: Teacher 1 Name, Teacher 1 Email, Teacher 1 Phone, etc.
+    // Build teacher headers dynamically
     const teacherHeaders = [];
     for (let i = 1; i <= maxTeachers; i++) {
       teacherHeaders.push(`Teacher ${i} Name`, `Teacher ${i} Email`, `Teacher ${i} Phone`);
@@ -108,32 +117,27 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
     let rows = [];
 
     if (isPainting) {
+      const isPrimaryOnly = categoryFilter === 'primary';
+      const isSecondaryOnly = categoryFilter === 'secondary';
+
       headers = [
         'School Name',
         'School Email',
         'City',
         'State',
         'Board',
-        'Total Participants',
-        'Primary Total',
-        'Secondary Total',
-        'Class 3',
-        'Class 4',
-        'Class 5',
-        'Class 6',
-        'Class 7',
-        'Class 8',
+        ...(!isSecondaryOnly ? ['Primary Total', 'Class 3', 'Class 4', 'Class 5'] : []),
+        ...(!isPrimaryOnly ? ['Secondary Total', 'Class 6', 'Class 7', 'Class 8'] : []),
+        ...(categoryFilter === 'all' ? ['Total Participants'] : []),
         ...teacherHeaders,
-        'Primary Preferred Dates',
-        'Primary Allotted Date',
-        'Secondary Preferred Dates',
-        'Secondary Allotted Date',
+        ...(!isSecondaryOnly ? ['Primary Preferred Dates', 'Primary Allotted Date'] : []),
+        ...(!isPrimaryOnly ? ['Secondary Preferred Dates', 'Secondary Allotted Date'] : []),
         'Confirmation Sent',
         'Competition Concluded',
         'Submitted At',
       ];
 
-      rows = displayList.map((r) => {
+      rows = exportList.map((r) => {
         const counts = parseMaybeJSON(r.class_counts) || {};
         const primaryPref = (parseMaybeJSON(r.primary_preferred_dates) || []).map(formatDateSimple).join(', ');
         const secondaryPref = (parseMaybeJSON(r.secondary_preferred_dates) || []).map(formatDateSimple).join(', ');
@@ -150,20 +154,26 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
           r.city,
           r.state,
           r.board_of_education,
-          r.total_participants,
-          r.primary_category_total || 0,
-          r.secondary_category_total || 0,
-          counts['3'] || 0,
-          counts['4'] || 0,
-          counts['5'] || 0,
-          counts['6'] || 0,
-          counts['7'] || 0,
-          counts['8'] || 0,
+          ...(!isSecondaryOnly
+            ? [
+                r.primary_category_total || 0,
+                counts['3'] || 0,
+                counts['4'] || 0,
+                counts['5'] || 0,
+              ]
+            : []),
+          ...(!isPrimaryOnly
+            ? [
+                r.secondary_category_total || 0,
+                counts['6'] || 0,
+                counts['7'] || 0,
+                counts['8'] || 0,
+              ]
+            : []),
+          ...(categoryFilter === 'all' ? [r.total_participants] : []),
           ...teacherCols,
-          primaryPref,
-          formatDateSimple(r.primary_allotted_date),
-          secondaryPref,
-          formatDateSimple(r.secondary_allotted_date),
+          ...(!isSecondaryOnly ? [primaryPref, formatDateSimple(r.primary_allotted_date)] : []),
+          ...(!isPrimaryOnly ? [secondaryPref, formatDateSimple(r.secondary_allotted_date)] : []),
           r.confirmation_sent ? 'Yes' : 'No',
           r.is_concluded ? 'Yes' : 'No',
           formatDateSimple(r.submitted_at),
@@ -189,7 +199,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
         'Submitted At',
       ];
 
-      rows = displayList.map((r) => {
+      rows = exportList.map((r) => {
         const counts = parseMaybeJSON(r.class_counts) || {};
         const prefDates = (parseMaybeJSON(r.preferred_dates) || []).map(formatDateSimple).join(', ');
 
@@ -220,7 +230,8 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
       });
     }
 
-    const filename = `SNEAC_${isPainting ? 'Painting' : 'Quiz'}_Registrations.xls`;
+    const catSuffix = isPainting && categoryFilter !== 'all' ? `_${categoryFilter.toUpperCase()}` : '';
+    const filename = `SNEAC_${isPainting ? 'Painting' : 'Quiz'}_Registrations${catSuffix}.xls`;
     downloadExcel(filename, headers, rows);
   };
 
@@ -231,12 +242,38 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
         <h3 className="text-base font-bold text-gray-800">
           {isPainting ? 'Painting Registrations' : 'Quiz Registrations'} ({displayList.length} Schools)
         </h3>
-        <button
-          onClick={handleDownloadExcel}
-          className="px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold text-xs hover:bg-emerald-700 transition flex items-center gap-2 shadow-sm"
-        >
-          📊 Download Excel ({displayList.length})
-        </button>
+        {isPainting ? (
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => handleDownloadExcel('all')}
+              className="px-3 py-2 rounded-xl bg-emerald-600 text-white font-semibold text-xs hover:bg-emerald-700 transition flex items-center gap-1.5 shadow-sm"
+              title="Download all painting registrations"
+            >
+              📊 All ({displayList.length})
+            </button>
+            <button
+              onClick={() => handleDownloadExcel('primary')}
+              className="px-3 py-2 rounded-xl bg-orange-600 text-white font-semibold text-xs hover:bg-orange-700 transition flex items-center gap-1.5 shadow-sm"
+              title="Download Primary Category (Classes 3rd-5th) registrations"
+            >
+              🎨 Primary ({displayList.filter((r) => (r.competition_categories || []).includes('primary')).length})
+            </button>
+            <button
+              onClick={() => handleDownloadExcel('secondary')}
+              className="px-3 py-2 rounded-xl bg-amber-600 text-white font-semibold text-xs hover:bg-amber-700 transition flex items-center gap-1.5 shadow-sm"
+              title="Download Secondary Category (Classes 6th-8th) registrations"
+            >
+              🎨 Secondary ({displayList.filter((r) => (r.competition_categories || []).includes('secondary')).length})
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => handleDownloadExcel('all')}
+            className="px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold text-xs hover:bg-emerald-700 transition flex items-center gap-2 shadow-sm"
+          >
+            📊 Download Excel ({displayList.length})
+          </button>
+        )}
       </div>
 
       {/* SEARCH AND FILTERS */}
