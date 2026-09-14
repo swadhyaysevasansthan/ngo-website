@@ -92,6 +92,18 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
   }, [displayList, page, pageSize]);
 
   const handleDownloadExcel = () => {
+    // Determine maximum number of teachers across displayList (at least 1, up to max found or capped gracefully)
+    const maxTeachers = Math.max(
+      1,
+      ...displayList.map((r) => (r.teachers || []).length)
+    );
+
+    // Build teacher headers dynamically: Teacher 1 Name, Teacher 1 Email, Teacher 1 Phone, etc.
+    const teacherHeaders = [];
+    for (let i = 1; i <= maxTeachers; i++) {
+      teacherHeaders.push(`Teacher ${i} Name`, `Teacher ${i} Email`, `Teacher ${i} Phone`);
+    }
+
     let headers = [];
     let rows = [];
 
@@ -111,7 +123,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
         'Class 6',
         'Class 7',
         'Class 8',
-        'Teachers',
+        ...teacherHeaders,
         'Primary Preferred Dates',
         'Primary Allotted Date',
         'Secondary Preferred Dates',
@@ -123,9 +135,14 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
 
       rows = displayList.map((r) => {
         const counts = parseMaybeJSON(r.class_counts) || {};
-        const teachersStr = (r.teachers || []).map((t) => `${t.teacher_name} (${t.teacher_email || ''}, ${t.teacher_phone || ''})`).join('; ');
         const primaryPref = (parseMaybeJSON(r.primary_preferred_dates) || []).join(', ');
         const secondaryPref = (parseMaybeJSON(r.secondary_preferred_dates) || []).join(', ');
+
+        const teacherCols = [];
+        for (let i = 0; i < maxTeachers; i++) {
+          const t = (r.teachers || [])[i];
+          teacherCols.push(t?.teacher_name || '', t?.teacher_email || '', t?.teacher_phone || '');
+        }
 
         return [
           r.school_name,
@@ -142,7 +159,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
           counts['6'] || 0,
           counts['7'] || 0,
           counts['8'] || 0,
-          teachersStr,
+          ...teacherCols,
           primaryPref,
           r.primary_allotted_date || '',
           secondaryPref,
@@ -164,7 +181,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
         'Class 6',
         'Class 7',
         'Class 8',
-        'Teachers',
+        ...teacherHeaders,
         'Preferred Dates',
         'Allotted Date',
         'Confirmation Sent',
@@ -174,8 +191,13 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
 
       rows = displayList.map((r) => {
         const counts = parseMaybeJSON(r.class_counts) || {};
-        const teachersStr = (r.teachers || []).map((t) => `${t.teacher_name} (${t.teacher_email || ''}, ${t.teacher_phone || ''})`).join('; ');
         const prefDates = (parseMaybeJSON(r.preferred_dates) || []).join(', ');
+
+        const teacherCols = [];
+        for (let i = 0; i < maxTeachers; i++) {
+          const t = (r.teachers || [])[i];
+          teacherCols.push(t?.teacher_name || '', t?.teacher_email || '', t?.teacher_phone || '');
+        }
 
         return [
           r.school_name,
@@ -188,7 +210,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
           counts['6'] || 0,
           counts['7'] || 0,
           counts['8'] || 0,
-          teachersStr,
+          ...teacherCols,
           prefDates,
           r.allotted_date || '',
           r.confirmation_sent ? 'Yes' : 'No',
