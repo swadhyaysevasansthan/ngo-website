@@ -101,10 +101,21 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
       });
     }
 
-    // Determine maximum number of teachers across exportList
+    // Helper to extract relevant teachers for a row based on categoryFilter
+    const getExportTeachers = (row) => {
+      const allTeachers = row.teachers || [];
+      if (!isPainting || categoryFilter === 'all') return allTeachers;
+      // Filter teachers matching the selected category (or 'coordinator'/'alternate' fallbacks if category is missing)
+      const filtered = allTeachers.filter(
+        (t) => t.category === categoryFilter || !t.category
+      );
+      return filtered.length > 0 ? filtered : allTeachers;
+    };
+
+    // Determine maximum number of teachers across exportList for current filter
     const maxTeachers = Math.max(
       1,
-      ...exportList.map((r) => (r.teachers || []).length)
+      ...exportList.map((r) => getExportTeachers(r).length)
     );
 
     // Build teacher headers dynamically
@@ -142,9 +153,10 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
         const primaryPref = (parseMaybeJSON(r.primary_preferred_dates) || []).map(formatDateSimple).join(', ');
         const secondaryPref = (parseMaybeJSON(r.secondary_preferred_dates) || []).map(formatDateSimple).join(', ');
 
+        const rowTeachers = getExportTeachers(r);
         const teacherCols = [];
         for (let i = 0; i < maxTeachers; i++) {
-          const t = (r.teachers || [])[i];
+          const t = rowTeachers[i];
           teacherCols.push(t?.teacher_name || '', t?.teacher_email || '', t?.teacher_phone || '');
         }
 
@@ -203,9 +215,10 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
         const counts = parseMaybeJSON(r.class_counts) || {};
         const prefDates = (parseMaybeJSON(r.preferred_dates) || []).map(formatDateSimple).join(', ');
 
+        const rowTeachers = getExportTeachers(r);
         const teacherCols = [];
         for (let i = 0; i < maxTeachers; i++) {
-          const t = (r.teachers || [])[i];
+          const t = rowTeachers[i];
           teacherCols.push(t?.teacher_name || '', t?.teacher_email || '', t?.teacher_phone || '');
         }
 
