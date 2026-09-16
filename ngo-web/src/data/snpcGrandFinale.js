@@ -1,12 +1,15 @@
-// src/data/snpcGrandFinale.js
-//
-// Content sourced from the official event posters and the Grand Finale
-// minutes/flow-of-programme document. Photo/video fields use the
-// "CLOUDINARY_URL" placeholder convention (see Photo component in the
-// page file) — replace each with the real Cloudinary URL once the
-// ~400 event photos are uploaded. Winner names are intentionally NOT
-// hardcoded here: the page links out to the live Results Gallery
-// (/photography-gallery) instead, which is already wired to real data.
+const CLOUD_BASE = "https://res.cloudinary.com/demp2xljz/image/upload";
+
+// Build a delivery URL for an event photo with sensible default
+// transformations (auto-format, auto-quality) applied.
+const cld = (path, transform = "q_auto,f_auto") => `${CLOUD_BASE}/${transform}/${path}`;
+
+// Large "hero" style crop — used for full-width banner/section images.
+const cldHero = (path) => cld(path, "w_1920,q_auto,f_auto");
+
+// Gallery-thumbnail crop — matches the ~3:2 aspect ratio of the source
+// files (6720x4480) so nothing gets awkwardly cropped.
+const cldThumb = (path) => cld(path, "w_900,h_600,c_fill,g_auto,q_auto,f_auto");
 
 export const eventMeta = {
   title: "SNPC 2026 Grand Finale",
@@ -20,8 +23,8 @@ export const eventMeta = {
   organizer: "Swadhyay Seva Foundation",
   collaboration: "Centre for Promotion of Environmental Conservation, Public Health and Hygiene, Lakshmibai College",
   associateSponsor: "Hayonergy",
-  heroImage: "CLOUDINARY_URL",
-  aboutImage: "CLOUDINARY_URL",
+  heroImage: cldHero("v1789465373/0K4A0274_afxg17.jpg"),
+  aboutImage: cldThumb("v1789465468/0K4A0432_tbhwuy.jpg"),
 };
 
 export const chiefGuest = {
@@ -68,7 +71,7 @@ export const jury = [
     designation: "Internationally acclaimed fine art photographer",
     bio: "A professional career spanning over three decades in fine art photography.",
     photo: "https://res.cloudinary.com/demp2xljz/image/upload/v1788421654/c3a7f4f6-e1f8-4007-8528-13088b913c69.png",
-  },  
+  },
   {
     name: "Anup Sah",
     designation: "Padma Shri Awardee Photographer",
@@ -122,59 +125,89 @@ export const schedule = [
 
 export const galleryTabs = [
   {
-    label: "Opening & Felicitation",
+    label: "Opening & Welcome Ceremony",
     photos: [
-      { src: "CLOUDINARY_URL", caption: "Tilak ceremony welcoming the guests" },
-      { src: "CLOUDINARY_URL", caption: "Diya lighting ceremony" },
-      { src: "CLOUDINARY_URL", caption: "Felicitation with Tulsi pots and mementoes" },
+      { src: cldThumb("v1789465451/0K4A0378_ekd3g4.jpg"), caption: "Guests arriving at Lakshmibai College" },
+      { src: cldThumb("v1789465373/0K4A0298_btehr4.jpg"), caption: "Reception ahead of the Tilak ceremony" },
+      { src: cldThumb("v1789465376/0K4A0329_s4wqkr.jpg"), caption: "Tilak ceremony welcoming the guests" },
+      { src: cldThumb("v1789465384/0K4A0317_lcgkjz.jpg"), caption: "Welcome address begins" },
+      { src: cldThumb("v1789465453/0K4A0398_ihp2wy.jpg"), caption: "Introducing SNPC 2026–27" },
+      { src: cldThumb("v1789465454/0K4A0403_kyqfie.jpg"), caption: "The Founder introduces the Santosh Kumar Goel Memorial is introduced" },
+      { src: cldThumb("v1789465456/0K4A0414_q22spn.jpg"), caption: "Diya lighting ceremony" },
+      { src: cldThumb("v1789465462/0K4A0418_hd8nom.jpg"), caption: "Saraswati Vandana" },
+      { src: cldThumb("v1789465468/0K4A0436_rrx363.jpg"), caption: "Group Photograph" },
     ],
   },
   {
-    label: "Chief Guest & Guests of Honour",
+    label: "Guests & Jury Felicitation",
     photos: [
-      { src: "CLOUDINARY_URL", caption: "Mr. Bharat Arora addressing the gathering" },
-      { src: "CLOUDINARY_URL", caption: "Guests of Honour on stage" },
-      { src: "CLOUDINARY_URL", caption: "Founders in conversation with guests" },
+      { src: cldThumb("v1789567671/0K4A0443_maqt6g.jpg"), caption: "Chief Guest, Sh. Bharat Arora, felicitated by the President and VP" },
+      { src: cldThumb("v1789465472/0K4A0457_sxhyb1.jpg"), caption: "Guests of Honour, Dr. Preeti Chitkara, honoured with memento." },
+      { src: cldThumb("v1789567867/0K4A0450_wolbwm.jpg"), caption: "Guests of Honour, Dr. Saahil Arora, honoured with Tulsi pot." },
+      { src: cldThumb("v1789562859/0K4A0470_zmmnd7.jpg"), caption: "Sh. Anup Sah honoured by Guests and VP" },
+      { src: cldThumb("v1789465476/0K4A0484_v8xrza.jpg"), caption: "Dr. Bhupesh C. Little honoured by Guests and VP" },
+      { src: cldThumb("v1789562858/0K4A0475_lw2a4e.jpg"), caption: "Sh. Parveen Gahlot honoured by Guests and VP" },
+      { src: cldThumb("v1789465476/0K4A0494_wyzfkt.jpg"), caption: "Foundation's Patrons are felicitated" },
     ],
   },
   {
-    label: "Jury & Showcase",
+    label: "Environment Play",
     photos: [
-      { src: "CLOUDINARY_URL", caption: "The jury panel of SNPC 2026" },
-      { src: "CLOUDINARY_URL", caption: "Showcase of the top photographs" },
+      { src: cldThumb("v1789465477/0K4A0502_om9pp4.jpg"), caption: "Manvi Public School's environment-themed play" },
+      { src: cldThumb("v1789563380/0K4A0503_wtzcj6.jpg"), caption: "Students performing on stage" },
+      { src: cldThumb("v1789465479/0K4A0508_y17pzd.jpg"), caption: "A scene from the play" },
     ],
   },
   {
-    label: "Cultural Performances",
+    label: "Winners & Prize Distribution",
     photos: [
-      { src: "CLOUDINARY_URL", caption: "Environment-themed play by Manvi Public School" },
-      { src: "CLOUDINARY_URL", caption: "Dance performance by Dr. Rakesh Gulati & Happiness Gulati" },
+      { src: cldThumb("v1789465483/0K4A0520_vxqbej.jpg"), caption: "The jury panel of SNPC 2026" },
+      { src: cldThumb("v1789465480/0K4A0517_akzwa8.jpg"), caption: "A winner receiving their prize" },
+      { src: cldThumb("v1789465479/0K4A0515_p2vbwp.jpg"), caption: "Runner-up prize distribution" },
     ],
   },
   {
-    label: "Prize Distribution",
+    label: "Dance Performance",
     photos: [
-      { src: "CLOUDINARY_URL", caption: "Winner announcement moment" },
-      { src: "CLOUDINARY_URL", caption: "Runner-up receiving their prize" },
-      { src: "CLOUDINARY_URL", caption: "Jury presenting the awards" },
+      { src: cldThumb("v1789465487/0K4A0538_fmoyz4.jpg"), caption: "Dr. Rakesh Gulati perform" },
+      { src: cldThumb("v1789465487/0K4A0541_thnoy8.jpg"), caption: "A lively moment from the dance" },
+      { src: cldThumb("v1789465490/0K4A0544_kql95s.jpg"), caption: "Performers take a bow" },
     ],
   },
   {
-    label: "In Loving Memory",
+    label: "Words by Jury Panel",
     photos: [
-      { src: "CLOUDINARY_URL", caption: "Tribute reel for Santosh Kumar Goel" },
+      { src: cldThumb("v1789465484/0K4A0524_mtwimn.jpg"), caption: "Sh. Anup Sah discusses about the competition" },
+      { src: cldThumb("v1789465487/0K4A0531_q2y0cj.jpg"), caption: "Dr. Bhupesh C. Little addresses the audience" },
+      { src: cldThumb("v1789565187/0K4A0534_r13ebr.jpg"), caption: "Sh. Parveen Gahlot tells the audience about SNPC 2026" },
     ],
   },
   {
-    label: "Audience & Networking",
+    label: "Special Honours",
     photos: [
-      { src: "CLOUDINARY_URL", caption: "Guests networking over lunch" },
-      { src: "CLOUDINARY_URL", caption: "Audience at the venue" },
-      { src: "CLOUDINARY_URL", caption: "Group photo of the day" },
+      { src: cldThumb("v1789465496/0K4A0591_qsvtft.jpg"), caption: "Mrs. Sudha Goel is honoured" },
+      { src: cldThumb("v1789465498/0K4A0602_xs7gnr.jpg"), caption: "Mrs. Sudha Goel presenting the Special Award to Mr. Vinay Das" },
+      { src: cldThumb("v1789465498/0K4A0610_ofzz5e.jpg"), caption: "Mrs. Sudha Goel presenting the Special Award to Mr. Jalaj Nagar" },
+      { src: cldThumb("v1789465499/0K4A0616_p6fcz1.jpg"), caption: "Mementoes presented to the IT Team" },
+      { src: cldThumb("v1789465501/0K4A0619_uwyj3h.jpg"), caption: "Mementoes presented to the IT Team" },
+      { src: cldThumb("v1789465500/0K4A0613_i32edo.jpg"), caption: "Mementoes presented to the IT Team" },
     ],
-  },
+  },  
+  {
+    label: "Closing Words & Lunch",
+    photos: [
+      { src: cldThumb("v1789465500/0K4A0623_vdsgx0.jpg"), caption: "Sh. Bharat Arora addressing the gathering" },
+      { src: cldThumb("v1789465501/0K4A0631_awzdxb.jpg"), caption: "Words from Dr. Saahil Arora" },
+      { src: cldThumb("v1789465489/0K4A0557_asy2a3.jpg"), caption: "Dr. Preeti Chitkara taking the stage" },
+      { src: cldThumb("v1789465511/0K4A0651_dtdyxm.jpg"), caption: "Vote of Thanks by VP Dr. Rajesh Agarwal" },
+      { src: cldThumb("v1789465512/0K4A0657_nillxq.jpg"), caption: "Closing of the Event" },
+      { src: cldThumb("v1789465524/0K4A0723_j9f3ai.jpg"), caption: "Guests heading in for lunch" },
+      { src: cldThumb("v1789465520/0K4A0714_valals.jpg"), caption: "Networking over lunch" },
+      { src: cldThumb("v1789465519/0K4A0679_vc8isy.jpg"), caption: "Group photo of the day" },
+    ],
+  }
 ];
 
-export const closingImage = "CLOUDINARY_URL";
+export const closingImage = cldHero("v1789567405/0K4A0426_wdwy8e.jpg");
 export const memorialImage = "CLOUDINARY_URL";
 export const youtubeVideoId = "YOUR_YOUTUBE_VIDEO_ID";
