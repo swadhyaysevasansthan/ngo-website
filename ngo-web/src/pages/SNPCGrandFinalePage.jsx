@@ -114,9 +114,9 @@ const PersonCard = ({ person, index, size = "md" }) => {
         <h3 className="font-bold text-base leading-tight" style={{ color: INK }}>{person.name}</h3>
         {person.credentials && <p className="text-[11px] mt-0.5" style={{ ...mono, color: MAROON }}>{person.credentials}</p>}
         <div className="w-8 h-0.5 rounded-full mx-auto my-2.5" style={{ background: `linear-gradient(90deg, ${GOLD}, ${MAROON})` }} />
-        <p className="text-xs leading-relaxed" style={{ color: "#6B5F50" }}>{person.designation}</p>
-        {person.subDesignation && <p className="text-[11px] mt-1 italic" style={{ ...serif, color: "#9C8F7C" }}>{person.subDesignation}</p>}
-        {person.bio && <p className="text-[11px] mt-3 leading-relaxed" style={{ color: "#9C8F7C" }}>{person.bio}</p>}
+        <p className="text-[15px] leading-relaxed" style={{ color: "#6B5F50" }}>{person.designation}</p>
+        {person.subDesignation && <p className="text-[13px] mt-1 italic" style={{ ...serif, color: "#9C8F7C" }}>{person.subDesignation}</p>}
+        {person.bio && <p className="text-[13px] mt-3 leading-relaxed" style={{ color: "#9C8F7C" }}>{person.bio}</p>}
       </div>
     </Reveal>
   );

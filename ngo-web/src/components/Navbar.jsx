@@ -60,7 +60,7 @@ const Navbar = () => {
   const eventsSubLinks = [
     { name: 'SNPC 2026 Grand Finale', path: '/snpc-grand-finale26' },
     { name: 'Worlds Wetlands Day 2026', path: '/wetlands-day26' },
-    { name: 'Grand Finale 2025-26', path: '/grand-finale26' },
+    { name: 'SNEAC Grand Finale 2025-26', path: '/grand-finale26' },
     { name: 'World Environment Day 2026', path: '/environment-day26' },
   ];
 

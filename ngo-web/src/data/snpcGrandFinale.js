@@ -36,7 +36,6 @@ export const chiefGuest = {
 export const guestsOfHonour = [
   {
     name: "Prof. (Dr.) Saahil Arora",
-    credentials: "MPharm, PhD",
     designation: "Dean & Professor, School of Medical & Allied Sciences, G D Goenka University",
     subDesignation: "Former Director, Chandigarh University, Mohali, Punjab",
     bio: "30 years in pharmaceutical research, credited with 70+ research papers, 4 book chapters and 2 patents, and five novel products spanning oral and transparent gels for pain and fungal infections.",
