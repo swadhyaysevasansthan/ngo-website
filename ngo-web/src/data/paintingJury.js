@@ -112,7 +112,7 @@ export const paintingJury = [
     name: "Meinam Irikhomba Meetei",
     designation: "Assistant Professor, Dept. of Fine Arts",
     subDesignation: "Manipur University",
-    image: "/images/painting-jury/meinam-irikhomba-meetei.jpg",
+    image: "/images/painting-jury/meinam-irikhomba-meetei.jpeg",
     shortBio:
       "Assistant Professor of Fine Arts at Manipur University and an award-winning artist recognized by multiple state and regional art bodies.",
     profile:
@@ -137,7 +137,7 @@ export const paintingJury = [
     name: "Dr. Saday C Das",
     designation: "Associate Professor, Department of Visual Arts",
     subDesignation: "Assam University, Silchar",
-    image: "/images/painting-jury/saday-c-das.jpg",
+    image: "/images/painting-jury/saday-c-das.jpeg",
     shortBio:
       "Associate Professor with 20+ years of teaching experience in Visual Arts, and an active researcher and resource person at national and international seminars.",
     profile:
@@ -164,7 +164,7 @@ export const paintingJury = [
     name: "Dr. Subrata Dey",
     designation: "Assistant Professor, Department of Fine Arts",
     subDesignation: "Tripura University (A Central University), Suryamaninagar, Agartala",
-    image: "/images/painting-jury/subrata-dey.jpg",
+    image: "/images/painting-jury/subrata-dey.jpeg",
     shortBio:
       "Assistant Professor of Fine Arts at Tripura University, a multiple-time Best Artist awardee with a strong record in both art and research workshops.",
     profile:
