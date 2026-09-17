@@ -164,7 +164,7 @@ export const paintingJury = [
     name: "Dr. Subrata Dey",
     designation: "Assistant Professor, Department of Fine Arts",
     subDesignation: "Tripura University (A Central University), Suryamaninagar, Agartala",
-    image: "/images/painting-jury/subrata-dey.jpeg",
+    image: "/images/painting-jury/subrata-day.jpeg",
     shortBio:
       "Assistant Professor of Fine Arts at Tripura University, a multiple-time Best Artist awardee with a strong record in both art and research workshops.",
     profile:
