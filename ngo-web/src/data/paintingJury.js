@@ -5,6 +5,32 @@
 
 export const paintingJury = [
   {
+    id: "ashok-kumar-biswas",
+    name: "Ashok Kumar Biswas",
+    designation: "Padma Shri Awardee",
+    subDesignation: "Tikuli Painting, Bihar",
+    image: "/images/painting-jury/ashok-kumar-biswas.jpeg",
+    shortBio:
+      "Padma Shri awardee credited with reviving Bihar's centuries-old Tikuli Painting art form, and a lifelong advocate for women's empowerment through craft training.",
+    profile:
+      "Shri Ashok Kumar Biswas has dedicated over 50 years to reviving Tikuli Painting — an art form dating back to the Mauryan era. Trained at the Shilp Anusandhan Sansthan in 1973, he transformed the craft's future, introducing around 1000 new designs while sending over 20 lakh pieces of Tikuli art across the globe. His work stands at the intersection of cultural heritage, innovation and social impact.",
+    education: [
+      "Trained under Shri Lal Babu Gupta, Shilp Anusandhan Sansthan (1973)",
+    ],
+    experience: [
+      "50+ Years reviving and popularizing Tikuli Painting",
+      "Core Faculty in Tikuli Painting, MSME, Ministry of MSME, Govt. of India",
+      "Empanelled Faculty, UMSAS, Government of Bihar",
+    ],
+    highlights: [
+      "Padma Shri, Government of India — 2024",
+      "Trained 9,000+ women free of cost over 52 years, empowering them as self-enterprising artisans",
+      "Creation chosen as the official gift for international athletes at the 1982 Asian Games",
+      "Represented India at international exhibitions in Bhutan, Mauritius, Spain, London & South Korea",
+      "Art housed at the Bihar Museum, Patna, and gifted by Rashtrapati Bhawan at the 79th Independence Day 'At Home', 2025",
+    ],
+  },
+  {
     id: "joydeep-das-gupta",
     name: "Dr. Joydeep Das Gupta",
     designation: "Former Subject Expert, University of Lucknow",
@@ -29,7 +55,6 @@ export const paintingJury = [
       "National & International Seminar Speaker, with numerous research papers & presentations",
     ],
   },
-
   {
     id: "jasminder-kaur",
     name: "Jasminder Kaur",
@@ -55,7 +80,6 @@ export const paintingJury = [
       "Presented research internationally in the UK and Portugal; published 30+ research papers",
     ],
   },
-
   {
     id: "varun-sahai",
     name: "Dr. Varun Sahai",
@@ -83,31 +107,80 @@ export const paintingJury = [
       "Academic associations with NCERT, Delhi University, Jamia Millia Islamia and other institutions",
     ],
   },
-
   {
-    id: "ashok-kumar-biswas",
-    name: "Ashok Kumar Biswas",
-    designation: "Padma Shri Awardee",
-    subDesignation: "Tikuli Painting, Bihar",
-    image: "/images/painting-jury/ashok-kumar-biswas.jpeg",
+    id: "meinam-irikhomba-meetei",
+    name: "Meinam Irikhomba Meetei",
+    designation: "Assistant Professor, Dept. of Fine Arts",
+    subDesignation: "Manipur University",
+    image: "/images/painting-jury/meinam-irikhomba-meetei.jpg",
     shortBio:
-      "Padma Shri awardee credited with reviving Bihar's centuries-old Tikuli Painting art form, and a lifelong advocate for women's empowerment through craft training.",
+      "Assistant Professor of Fine Arts at Manipur University and an award-winning artist recognized by multiple state and regional art bodies.",
     profile:
-      "Shri Ashok Kumar Biswas has dedicated over 50 years to reviving Tikuli Painting — an art form dating back to the Mauryan era. Trained at the Shilp Anusandhan Sansthan in 1973, he transformed the craft's future, introducing around 1000 new designs while sending over 20 lakh pieces of Tikuli art across the globe. His work stands at the intersection of cultural heritage, innovation and social impact.",
+      "Meinam Irikhomba Meetei believes art can help us see a more compassionate and sustainable tomorrow, bringing that perspective to his teaching and practice across art, education, culture and the environment.",
     education: [
-      "Trained under Shri Lal Babu Gupta, Shilp Anusandhan Sansthan (1973)",
+      "Department of Fine Arts, Manipur University",
     ],
     experience: [
-      "50+ Years reviving and popularizing Tikuli Painting",
-      "Core Faculty in Tikuli Painting, MSME, Ministry of MSME, Govt. of India",
-      "Empanelled Faculty, UMSAS, Government of Bihar",
+      "Assistant Professor, Department of Fine Arts, Manipur University",
     ],
     highlights: [
-      "Padma Shri, Government of India — 2024",
-      "Trained 9,000+ women free of cost over 52 years, empowering them as self-enterprising artisans",
-      "Creation chosen as the official gift for international athletes at the 1982 Asian Games",
-      "Represented India at international exhibitions in Bhutan, Mauritius, Spain, London & South Korea",
-      "Art housed at the Bihar Museum, Patna, and gifted by Rashtrapati Bhawan at the 79th Independence Day 'At Home', 2025",
+      "Art Society Manipur Annual Art Award (ASMAAA), 2025",
+      "2nd M.K. Priyobrata Singh Memorial Award, 2016 — Manipur Cultural Integration Conference & Art Society Manipur",
+      "Art Society Manipur Annual Art Award (ASMAAA), 2017",
+      "Dwijendra–Doli Memorial Trust Prize, 2009, Silchar, Assam",
+      "1st Position in Cartooning, Eastern Zonal Youth Festival (A.I.U.), 2003, Vinoba Bhave University, Jharkhand",
     ],
   },
+
+  {
+    id: "saday-c-das",
+    name: "Dr. Saday C Das",
+    designation: "Associate Professor, Department of Visual Arts",
+    subDesignation: "Assam University, Silchar",
+    image: "/images/painting-jury/saday-c-das.jpg",
+    shortBio:
+      "Associate Professor with 20+ years of teaching experience in Visual Arts, and an active researcher and resource person at national and international seminars.",
+    profile:
+      "Dr. Saday C Das holds that art has the power to awaken awareness, inspire action and shape a greener tomorrow — a philosophy reflected in his teaching, research and extensive exhibition record across India and abroad.",
+    education: [
+      "Ph.D in Graffiti and Its Relevance, Assam University (2014)",
+      "MFA & BFA in Painting, Department of Visual Arts, Assam University, Silchar",
+    ],
+    experience: [
+      "Associate Professor, Department of Visual Arts, Assam University, Silchar",
+      "20+ Years of Teaching Experience in Visual Arts and Art Education",
+      "Visual Arts & Art History Researcher with a focus on contemporary art practices",
+    ],
+    highlights: [
+      "Resource Person and Paper Presenter at National and International Seminars, Conferences and Academic Programmes",
+      "Contributor to research publications in Visual Arts and Art History",
+      "Member of various Academic and Statutory Bodies",
+      "Participated in numerous national and international exhibitions, with artworks held in collections in India and abroad",
+    ],
+  },
+
+  {
+    id: "subrata-dey",
+    name: "Dr. Subrata Dey",
+    designation: "Assistant Professor, Department of Fine Arts",
+    subDesignation: "Tripura University (A Central University), Suryamaninagar, Agartala",
+    image: "/images/painting-jury/subrata-dey.jpg",
+    shortBio:
+      "Assistant Professor of Fine Arts at Tripura University, a multiple-time Best Artist awardee with a strong record in both art and research workshops.",
+    profile:
+      "Dr. Subrata Dey believes art and research together can build a more sensitive and sustainable tomorrow, an ethos reflected in his participation across research-technology workshops and art residencies in India and Bangladesh.",
+    education: [
+      "Department of Fine Arts, Tripura University, A Central University",
+    ],
+    experience: [
+      "Assistant Professor, Department of Fine Arts, Tripura University",
+    ],
+    highlights: [
+      "Best Artist Award, Tripura Rabindra Parishad, Agartala — 2002, 2000, 1999",
+      "National Workshop on Emerging Tools and Technologies in Research (ETTR-2020), Tripura University",
+      "Faculty Development Programme on Recent Trends in Electronics and Information Technology (RTEIT-2020)",
+      "All Media Camp preparatory workshop for XII Triennale at Lalit Kala Akademi, Kolkata (2013)",
+      "Indo-Bangla Public Art Workshop, Chobirhat, Shabagh, Dhaka, Bangladesh (2012)",
+    ],
+  }, 
 ];
