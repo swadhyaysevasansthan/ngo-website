@@ -183,4 +183,29 @@ export const paintingJury = [
       "Indo-Bangla Public Art Workshop, Chobirhat, Shabagh, Dhaka, Bangladesh (2012)",
     ],
   }, 
+  {
+    id: "gayatri-mathur",
+    name: "Dr. Gayatri Mathur",
+    designation: "Programme Officer — Conservation & Special Projects",
+    subDesignation: "Lalit Kala Akademi, Ministry of Culture, Govt. of India",
+    image: "/images/painting-jury/gayatri-mathur.jpeg",
+    shortBio:
+      "Programme Officer at the Lalit Kala Akademi specializing in Women, Gender & Contemporary Art and international cultural diplomacy, with curatorial work spanning Mauritius and Germany.",
+    profile:
+      "Dr. Gayatri Mathur believes art has the power to build a more inclusive, compassionate and sustainable world — a conviction reflected in her curatorial advocacy for women artists and her work fostering government-to-government cultural exchange.",
+    education: [
+      "Specialization in Women, Gender & Contemporary Art and International Cultural Diplomacy",
+    ],
+    experience: [
+      "Programme Officer — Conservation & Special Projects, Lalit Kala Akademi, Ministry of Culture, Govt. of India",
+    ],
+    highlights: [
+      "Core specialization: Women, Gender & Contemporary Art — curatorial advocacy, feminist art historiography, cross-border women artists' collectives, and archival equity",
+      "Core specialization: International Cultural Diplomacy — bilateral & multilateral exhibitions, state residencies, government-to-government MoUs",
+      "Curatorial project on the Indian diaspora, Mauritius — Indenture Village (2012)",
+      "Curated 'Moderns: Contemporary Indian Artists' showcase, Germany (2012)",
+      "ICCR International Travel Grant recipient",
+      "Veerangana Rani Laxmi Bai Gaurav Samman — for contribution to art, culture and women empowerment",
+    ],
+  },
 ];
