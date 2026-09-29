@@ -151,7 +151,7 @@ const QuestionBank = () => {
         <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <SectionHeader
             title="Environment Awareness – Learn, Prepare, Excel"
-            subtitle="Question Bank for Students (Class 7ᵗʰ – 9ᵗʰ)"
+            subtitle="Question Bank for Students (Class 7ᵗʰ – 8ᵗʰ)"
           />
           <Card className="mt-8">
             <div className="p-2">
