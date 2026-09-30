@@ -249,19 +249,7 @@ export const teamMembers = [
 
 
 export const environmentExperts = [
-  {
-    name: "Dr. Piyush Mehta",
-    role: "Associate Professor (Agribusiness)",
-    description: "Dr. YS Parmar University of Horticulture & Forestry",
-    image: "/images/team/user-nobg.png",
-  },
-  {
-    name: "Dr. Anil Chandra",
-    role: "Scientist",
-    description: "Krishi Vigyan Kendra, Kashipur – G.B. Pant University of Agriculture & Technology",
-    image: "/images/team/user-nobg.png",
-  },
-  {
+    {
     name: "Dr. Anand Singh",
     role: "Professor, Fruit Science",
     description: "Professor of Fruit Science, Researcher, Extension Specialist",
@@ -306,6 +294,56 @@ export const environmentExperts = [
         <p>Recognized for her academic excellence, administrative leadership, and field-level innovation, Dr. Phool Kumari continues to champion inclusive agricultural growth and sustainable rural transformation, proving the powerful impact of science guided by empathy and vision.</p>
       </div>
     ),
+  },
+    {
+    name: "Dr. Soma Giri",
+    role: "Assistant Professor, Environmental Science",
+    description: "Assistant Professor, Dept. of Environmental Science | Radioecology & Environmental Risk Assessment Expert",
+    image: "/images/team/soma-giri.jpeg",
+    details: (
+      <div>
+        <p>Dr. Soma Giri is an Assistant Professor in the Department of Environmental Science at the Central University of South Bihar, Gaya, with a strong research background in environmental contamination, radioecology, and risk assessment.</p><br />
+        <p>She previously served as a DST Women Scientist (WOS-A) in the Natural Resources and Environmental Management Research Group (NREM) at CSIR–Central Institute of Mining and Fuel Research, where she conducted extensive studies on metal and radionuclide contamination in mining-affected regions of Jharkhand, including risk assessment through drinking water, vegetables, cereals, pulses, fish, and milk.</p><br />
+        <p>Dr. Giri has authored 52 research papers in international journals with a cumulative impact factor of 133.8, along with several book chapters, and has presented her research at numerous national and international conferences. She is a peer reviewer for leading international journals including Science of the Total Environment, Environmental Pollution, and Environmental Science and Pollution Research, among others.</p><br />
+        <p>Her academic excellence has been recognized with multiple honors, including five Dr. Adinath Lahiri Awards from CSIR-CIMFR, the Young Scientist Award at the International Symposium on Environment Pollution, Ecology and Human Health (2009), and the Best Performance Award at the BRNS-AEACI Eighth School on Analytical Chemistry (2014).</p><br />
+        <p>Through her research on environmental contamination and public health risk, Dr. Soma Giri continues to contribute meaningfully to environmental science and sustainability.</p>
+      </div>
+    ),
+  },
+  {
+    name: "Dr. Pabitra Kumar Mani",
+    role: "Professor, Soil Science",
+    description: "Professor of Soil Science, Researcher, Extension Specialist",
+    image: "/images/team/pabitra-kumar-mani.jpeg",
+    details: (
+      <div>
+        <p>Dr. Pabitra Kumar Mani is a distinguished Professor of Soil Science at Bidhan Chandra Krishi Viswavidyalaya (BCKV), Mohanpur, Nadia, West Bengal, known for his significant contributions to research in soil fertility and soil chemistry, education at the UG, PG and Ph.D. level, and agricultural extension.</p><br />
+        <p>He earned both his M.Sc. and Ph.D. in Agricultural Chemistry and Soil Science from BCKV, Mohanpur.</p><br />
+        <p>With a rich professional journey, Dr. Mani has previously served as Secretary of the Faculty Council of UG and PG, Member of the Executive Council, and Dean, Faculty of Agriculture. His leadership and scientific guidance have enabled the Agriculture Faculty of BCKV to achieve recognition and awards across several platforms.</p><br />
+        <p>Dr. Mani has worked extensively on government-funded research initiatives supported by ICAR and DAE-BRNS, among other prestigious agencies. His areas of focus include nitrogen dynamics, coated nitrogen fertilizer use efficiency, nano urea in rice-wheat cropping systems, potassium dynamics, long-term fertility experiments, and diffuse reflectance spectroscopy, alongside farmer-centric cropping system research and extension programs supporting livelihood security in the fragile coastal ecosystem of the Sundarbans.</p><br />
+        <p>A respected member of multiple professional societies, Dr. Mani is a Fellow of the West Bengal Academy of Science and Technology and has received several awards recognizing his contributions to soil science and agricultural research.</p>
+      </div>
+    ),
+  },  {
+    name: "Dr. Gopi Krishna Das",
+    role: "Professor and Ex-Dean, College of Agriculture",
+    description: "Professor, Indira Gandhi Krishi Vishwavidyalaya, Raipur | Former Dean & Head of Department, Multi-disciplinary Researcher",
+    image: "/images/team/gopi-krishna-das.jpeg",
+    details: (
+      <div>
+        <p>Dr. Gopi Krishna Das is a Professor and former Dean, College of Agriculture, at Indira Gandhi Krishi Vishwavidyalaya (IGKV), Raipur, Chhattisgarh, with a distinguished academic and administrative career spanning agrometeorology, soil science, and forestry.</p><br />
+        <p>Over the course of his career at IGKV, Dr. Das has held several key leadership positions, including Dean, College of Agriculture, Raipur; Head of the Department of Agrometeorology; Head of the Department of Forestry; Head of the Department of Soil Science; Head of the University Library; and Director, Instructions and Controller of Examination.</p><br />
+        <p>He has authored 18 research publications on topics ranging from weed control in direct-seeded rice to nutrient supply capacity of vertisols and the medicinal use of rice in Chhattisgarh, along with contributions to books on technological interventions for improving agricultural profitability.</p><br />
+        <p>His contributions have been widely recognized, including the Best Poster Award at an International Symposium organized by State Agricultural Universities of Maharashtra, JART and WALMI, Aurangabad (2017); the Best National Centre Award to the GKMS Unit, Department of Agrometeorology, Raipur, conferred by the India Meteorological Department (2016); and the Second Best Poster Presentation Award at a National Seminar on Emerging Technology for Enhancing Water Productivity, IGKV Raipur (2016).</p><br />
+        <p>Through his research, teaching, and long-standing administrative leadership, Dr. Gopi Krishna Das continues to contribute significantly to agricultural science and higher education in Chhattisgarh.</p>
+      </div>
+    ),
+  },
+  {
+    name: "Dr. Anil Chandra",
+    role: "Scientist",
+    description: "Krishi Vigyan Kendra, Kashipur – G.B. Pant University of Agriculture & Technology",
+    image: "/images/team/anil-chandra.jpeg",
   },
 ];
 
