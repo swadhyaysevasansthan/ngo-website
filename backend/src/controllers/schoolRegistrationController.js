@@ -964,6 +964,22 @@ export const sendConfirmation = async (req, res) => {
 
       if (registration.school_email) {
 
+        const hasPrimary =
+          !!registration.primary_allotted_date;
+
+        const hasSecondary =
+          !!registration.secondary_allotted_date;
+
+        // 'school'    → both dates allotted  (shows both blocks)
+        // 'primary'   → only primary allotted (shows primary block only)
+        // 'secondary' → only secondary allotted (shows secondary block only)
+        const schoolEmailCategory =
+          hasPrimary && hasSecondary
+            ? 'school'
+            : hasSecondary
+              ? 'secondary'
+              : 'primary';
+
         const schoolTemplate =
           schoolDateAllotmentTemplate({
             schoolName:
@@ -975,7 +991,7 @@ export const sendConfirmation = async (req, res) => {
             competitionType:
               'painting',
 
-            category: 'school',
+            category: schoolEmailCategory,
 
             primaryAllottedDate:
               registration.primary_allotted_date,
