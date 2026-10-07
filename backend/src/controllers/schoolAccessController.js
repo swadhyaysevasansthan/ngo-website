@@ -90,11 +90,11 @@ export const createAccessRequest = async (req, res) => {
         city.trim(),
         state.trim(),
         boardOfEducation.trim(),
-        null,
+        '',
         mobileNumber.trim(),
         hasEcoClub === true || hasEcoClub === 'true',
         principalName.trim(),
-        null,
+        '',
         principalPhone?.trim() || null,
         notes?.trim() || null,
       ]
