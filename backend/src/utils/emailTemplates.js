@@ -1192,7 +1192,14 @@ export const schoolDateAllotmentTemplate = (data) => {
 
   // Class-wise breakdown HTML & Text
   const countsObj = typeof classCounts === 'string' ? JSON.parse(classCounts) : (classCounts || {});
-  const classEntries = Object.entries(countsObj).filter(([_, count]) => Number(count) > 0);
+  const classEntries = Object.entries(countsObj).filter(([cls, count]) => {
+    const cnt = Number(count);
+    if (isNaN(cnt) || cnt <= 0) return false;
+    const classNum = Number(cls);
+    if (category === 'primary') return classNum >= 3 && classNum <= 5;
+    if (category === 'secondary') return classNum >= 6 && classNum <= 8;
+    return true;
+  });
   
   const classRowsHtml = classEntries.length > 0
     ? classEntries.map(([cls, count]) => `
