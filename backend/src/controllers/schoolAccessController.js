@@ -85,7 +85,7 @@ export const createAccessRequest = async (req, res) => {
       [
         schoolName.trim(),
         primaryEmail,
-        schoolEmail2?.toLowerCase().trim(),
+        schoolEmail2?.toLowerCase().trim() || '',
         schoolAddress.trim(),
         city.trim(),
         state.trim(),
@@ -95,8 +95,8 @@ export const createAccessRequest = async (req, res) => {
         hasEcoClub === true || hasEcoClub === 'true',
         principalName.trim(),
         '',
-        principalPhone?.trim() || null,
-        notes?.trim() || null,
+        principalPhone?.trim() || '',
+        notes?.trim() || '',
       ]
     );
 

@@ -93,12 +93,12 @@ const insertTeachers = async (client, registrationId, teachers = []) => {
       VALUES ($1,$2,$3,$4,$5,$6,$7)`,
       [
         registrationId,
-        teacher.category || null,
-        teacher.role || null,
-        teacher.name?.trim(),
-        teacher.email?.toLowerCase().trim() || null,
-        teacher.phone?.trim() || null,
-        teacher.designation?.trim() || null,
+        teacher.category || '',
+        teacher.role || '',
+        teacher.name?.trim() || '',
+        teacher.email?.toLowerCase().trim() || '',
+        teacher.phone?.trim() || '',
+        teacher.designation?.trim() || '',
       ]
     );
   }
