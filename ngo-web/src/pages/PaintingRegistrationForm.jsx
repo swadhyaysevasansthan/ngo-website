@@ -37,7 +37,6 @@ const PaintingRegistrationForm = () => {
     primaryTeacher1Designation: '',
 
     primaryTeacher2Name: '',
-    primaryTeacher2Email: '',
     primaryTeacher2Phone: '',
     primaryTeacher2Designation: '',
 
@@ -48,7 +47,6 @@ const PaintingRegistrationForm = () => {
     secondaryTeacher1Designation: '',
 
     secondaryTeacher2Name: '',
-    secondaryTeacher2Email: '',
     secondaryTeacher2Phone: '',
     secondaryTeacher2Designation: '',
 
@@ -150,32 +148,6 @@ const PaintingRegistrationForm = () => {
     }
   };
 
-  const handleCategoryChange = (
-    category
-  ) => {
-    setFormData((prev) => {
-      if (
-        prev.competitionCategories.includes(
-          category
-        )
-      ) {
-        return {
-          ...prev,
-          competitionCategories:
-            prev.competitionCategories.filter(
-              (c) => c !== category
-            ),
-        };
-      }
-      return {
-        ...prev,
-        competitionCategories: [
-          ...prev.competitionCategories,
-          category,
-        ],
-      };
-    });
-  };
 
   const validateUniqueTeachers = (teachers) => {
     const errors = {};
@@ -266,7 +238,8 @@ const PaintingRegistrationForm = () => {
     const phoneRegex =
       /^[6-9]\d{9}$/;
     const validateTeacherFields = (
-      prefix
+      prefix,
+      requiresEmail = true
     ) => {
       if (
         !formData[
@@ -278,25 +251,27 @@ const PaintingRegistrationForm = () => {
         ] =
           'Teacher name is required';
       }
-      if (
-        !formData[
-          `${prefix}Email`
-        ].trim()
-      ) {
-        e[
-          `${prefix}Email`
-        ] =
-          'Teacher email is required';
-      } else if (
-        !emailRegex.test(
-          formData[
-          `${prefix}Email`
-          ]
-        )
-      ) {
-        e[
-          `${prefix}Email`
-        ] = 'Invalid email';
+      if (requiresEmail) {
+        if (
+          !formData[
+            `${prefix}Email`
+          ].trim()
+        ) {
+          e[
+            `${prefix}Email`
+          ] =
+            'Teacher email is required';
+        } else if (
+          !emailRegex.test(
+            formData[
+            `${prefix}Email`
+            ]
+          )
+        ) {
+          e[
+            `${prefix}Email`
+          ] = 'Invalid email';
+        }
       }
       if (
         !formData[
@@ -337,10 +312,12 @@ const PaintingRegistrationForm = () => {
       )
     ) {
       validateTeacherFields(
-        'primaryTeacher1'
+        'primaryTeacher1',
+        true
       );
       validateTeacherFields(
-        'primaryTeacher2'
+        'primaryTeacher2',
+        false
       );
       ['class3', 'class4', 'class5'].forEach(
         (field) => {
@@ -400,10 +377,12 @@ const PaintingRegistrationForm = () => {
       )
     ) {
       validateTeacherFields(
-        'secondaryTeacher1'
+        'secondaryTeacher1',
+        true
       );
       validateTeacherFields(
-        'secondaryTeacher2'
+        'secondaryTeacher2',
+        false
       );
       ['class6', 'class7', 'class8'].forEach(
         (field) => {
@@ -566,16 +545,13 @@ const PaintingRegistrationForm = () => {
             role: 'coordinator',
             name:
               formData.primaryTeacher2Name,
-            email:
-              formData.primaryTeacher2Email,
+            email: '',
             phone:
               formData.primaryTeacher2Phone,
             designation:
               formData.primaryTeacher2Designation,
             nameField:
               'primaryTeacher2Name',
-            emailField:
-              'primaryTeacher2Email',
             phoneField:
               'primaryTeacher2Phone',
           }
@@ -610,16 +586,13 @@ const PaintingRegistrationForm = () => {
             role: 'coordinator',
             name:
               formData.secondaryTeacher2Name,
-            email:
-              formData.secondaryTeacher2Email,
+            email: '',
             phone:
               formData.secondaryTeacher2Phone,
             designation:
               formData.secondaryTeacher2Designation,
             nameField:
               'secondaryTeacher2Name',
-            emailField:
-              'secondaryTeacher2Email',
             phoneField:
               'secondaryTeacher2Phone',
           }
@@ -755,6 +728,7 @@ const PaintingRegistrationForm = () => {
           </p>
           <p className="text-gray-600 mb-6">
             Your school's painting competition registration has been submitted successfully.
+            Our team will review your preferred dates and send a date allotment email with complete details.
           </p>
           <Button
             onClick={() =>
@@ -833,11 +807,6 @@ const PaintingRegistrationForm = () => {
                         {renderInput(
                           'Primary Teacher 2 Name',
                           'primaryTeacher2Name'
-                        )}
-                        {renderInput(
-                          'Primary Teacher 2 Email',
-                          'primaryTeacher2Email',
-                          'email'
                         )}
                         {renderInput(
                           'Primary Teacher 2 Phone',
@@ -959,11 +928,6 @@ const PaintingRegistrationForm = () => {
                         {renderInput(
                           'Secondary Teacher 2 Name',
                           'secondaryTeacher2Name'
-                        )}
-                        {renderInput(
-                          'Secondary Teacher 2 Email',
-                          'secondaryTeacher2Email',
-                          'email'
                         )}
                         {renderInput(
                           'Secondary Teacher 2 Phone',

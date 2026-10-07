@@ -24,9 +24,10 @@ const QuizRegistrationForm = () => {
     primaryTeacherName: '',
     primaryTeacherEmail: '',
     primaryTeacherPhone: '',
+    primaryTeacherDesignation: '',
     altTeacherName: '',
-    altTeacherEmail: '',
     altTeacherPhone: '',
+    altTeacherDesignation: '',
     class6: '',
     class7: '',
     class8: '',
@@ -153,12 +154,12 @@ const QuizRegistrationForm = () => {
     else if (!/\S+@\S+\.\S+/.test(formData.primaryTeacherEmail)) e.primaryTeacherEmail = 'Invalid email';
     if (!formData.primaryTeacherPhone.trim()) e.primaryTeacherPhone = 'Primary teacher phone is required';
     else if (!/^[6-9]\d{9}$/.test(formData.primaryTeacherPhone)) e.primaryTeacherPhone = 'Invalid 10-digit number';
+    if (!formData.primaryTeacherDesignation.trim()) e.primaryTeacherDesignation = 'Primary teacher designation is required';
 
     if (!formData.altTeacherName.trim()) e.altTeacherName = 'Alternate teacher name is required';
-    if (!formData.altTeacherEmail.trim()) e.altTeacherEmail = 'Alternate teacher email is required';
-    else if (!/\S+@\S+\.\S+/.test(formData.altTeacherEmail)) e.altTeacherEmail = 'Invalid email';
     if (!formData.altTeacherPhone.trim()) e.altTeacherPhone = 'Alternate teacher phone is required';
     else if (!/^[6-9]\d{9}$/.test(formData.altTeacherPhone)) e.altTeacherPhone = 'Invalid 10-digit number';
+    if (!formData.altTeacherDesignation.trim()) e.altTeacherDesignation = 'Alternate teacher designation is required';
 
     const c6 = parseInt(formData.class6) || 0;
     const c7 = parseInt(formData.class7) || 0;
@@ -207,6 +208,9 @@ const QuizRegistrationForm = () => {
           phone:
             formData.primaryTeacherPhone,
 
+          designation:
+            formData.primaryTeacherDesignation,
+
           nameField:
             'primaryTeacherName',
 
@@ -224,17 +228,16 @@ const QuizRegistrationForm = () => {
           name:
             formData.altTeacherName,
 
-          email:
-            formData.altTeacherEmail,
+          email: '',
 
           phone:
             formData.altTeacherPhone,
 
+          designation:
+            formData.altTeacherDesignation,
+
           nameField:
             'altTeacherName',
-
-          emailField:
-            'altTeacherEmail',
 
           phoneField:
             'altTeacherPhone',
@@ -322,7 +325,7 @@ const QuizRegistrationForm = () => {
           <h1 className="text-3xl font-extrabold text-forest mb-3">Quiz Registration Confirmed!</h1>
           <p className="text-gray-600 mb-6">
             Your school's quiz competition registration has been submitted successfully.
-            A confirmation email has been sent to <strong>{school?.schoolEmail}</strong> and your primary teacher.
+            Our team will review your preferred dates and send a date allotment email with complete details.
           </p>
           <Button onClick={() => navigate(`/school-registration?token=${token}`)}>
             Back to Registration Home
@@ -361,7 +364,7 @@ const QuizRegistrationForm = () => {
                     SECTION 1 · Supervising Teachers
                   </h2>
                   <p className="text-sm text-gray-600 mb-4">
-                    Primary teacher will be the main contact. Alternate teacher is optional but recommended.
+                    Provide details of two supervising teachers for the competition.
                   </p>
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="md:col-span-2">
@@ -369,6 +372,8 @@ const QuizRegistrationForm = () => {
                     </div>
                     <Input label="Full Name" name="primaryTeacherName" value={formData.primaryTeacherName}
                       onChange={handleChange} placeholder="Full name" error={errors.primaryTeacherName} required />
+                    <Input label="Designation" name="primaryTeacherDesignation" value={formData.primaryTeacherDesignation}
+                      onChange={handleChange} placeholder="e.g. TGT Science" error={errors.primaryTeacherDesignation} required />
                     <Input label="Email Address" name="primaryTeacherEmail" type="email"
                       value={formData.primaryTeacherEmail} onChange={handleChange}
                       placeholder="teacher@school.com" error={errors.primaryTeacherEmail} required />
@@ -384,9 +389,8 @@ const QuizRegistrationForm = () => {
                     </div>
                     <Input label="Full Name" name="altTeacherName" value={formData.altTeacherName}
                       onChange={handleChange} placeholder="Full name" error={errors.altTeacherName} required/>
-                    <Input label="Email Address" name="altTeacherEmail" type="email"
-                      value={formData.altTeacherEmail} onChange={handleChange}
-                      placeholder="teacher@school.com" error={errors.altTeacherEmail} required/>
+                    <Input label="Designation" name="altTeacherDesignation" value={formData.altTeacherDesignation}
+                      onChange={handleChange} placeholder="e.g. TGT Computer Science" error={errors.altTeacherDesignation} required/>
                     <Input label="Mobile Number" name="altTeacherPhone" value={formData.altTeacherPhone}
                       onChange={handleChange} placeholder="10-digit number" error={errors.altTeacherPhone}
                       maxLength="10" required/>

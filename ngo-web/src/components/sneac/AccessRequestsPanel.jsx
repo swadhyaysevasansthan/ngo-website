@@ -187,8 +187,8 @@ const AccessRequestsPanel = ({
                   )}
                 </td>
                 <td className="px-4 py-3 text-xs">
-                  <div>📞 {req.landline_number}</div>
-                  <div className="mt-1">📱 {req.mobile_number}</div>
+                  {req.landline_number && <div>📞 {req.landline_number}</div>}
+                  <div className={req.landline_number ? "mt-1" : ""}>📱 {req.mobile_number}</div>
                 </td>
                 <td className="px-4 py-3 text-xs">
                   <div className="font-semibold">{req.principal_name}</div>

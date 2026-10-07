@@ -411,61 +411,6 @@ export const submitPaintingRegistration = async (req, res) => {
 
     await client.query('COMMIT');
 
-
-    // ─────────────────────────────────────────────
-    // Prepare Email List
-    // ─────────────────────────────────────────────
-
-    const emailAddresses = new Set();
-
-    if (row.school_email) {
-      emailAddresses.add(row.school_email);
-    }
-
-    teachers.forEach((teacher) => {
-      if (teacher.email) {
-        emailAddresses.add(teacher.email);
-      }
-    });
-
-    // ─────────────────────────────────────────────
-    // Send Confirmation Email
-    // ─────────────────────────────────────────────
-
-    const template =
-      schoolCompetitionRegistrationTemplate({
-        schoolName: row.school_name,
-
-        teacherName:
-          teachers?.[0]?.name ||
-          'Teacher Coordinator',
-
-        competitionType: 'painting',
-        category: submittedCategory, // 'primary' or 'secondary'
-
-        classCounts: registration.class_counts,
-
-        totalParticipants: registration.total_participants,
-
-        primaryCategoryTotal: registration.primary_category_total,
-
-        secondaryCategoryTotal: registration.secondary_category_total,
-
-        primaryPreferredDates: registration.primary_preferred_dates,
-
-        secondaryPreferredDates: registration.secondary_preferred_dates,
-
-        submittedAt: registration.submitted_at,
-      });
-
-
-    await sendEmail({
-      to: Array.from(emailAddresses),
-      subject: template.subject,
-      html: template.html,
-      text: template.text,
-    });
-
     // ─────────────────────────────────────────────
     // Success Response
     // ─────────────────────────────────────────────
@@ -574,36 +519,6 @@ export const submitQuizRegistration = async (req, res) => {
     await insertTeachers(client, registration.id, teachers);
 
     await client.query('COMMIT');
-
-    const emailAddresses = new Set();
-
-    if (row.school_email) {
-      emailAddresses.add(row.school_email);
-    }
-
-    teachers.forEach((teacher) => {
-      if (teacher.email) {
-        emailAddresses.add(teacher.email);
-      }
-    });
-
-    const template = schoolCompetitionRegistrationTemplate({
-      schoolName: row.school_name,
-      teacherName: teachers?.[0]?.name || 'Teacher Coordinator',
-      competitionType: 'quiz', // use 'quiz' in quiz controller
-      classCounts,
-      totalParticipants,
-      availableComputers, // quiz controller uses real value
-      preferredDates,
-      submittedAt: registration.submitted_at,
-    });
-
-    await sendEmail({
-      to: Array.from(emailAddresses),
-      subject: template.subject,
-      html: template.html,
-      text: template.text,
-    });
 
     return res.status(201).json({
       success: true,
@@ -888,6 +803,9 @@ export const sendConfirmation = async (req, res) => {
             primaryAllottedDate: registration.primary_allotted_date,
             totalParticipants: registration.primary_category_total,
             hasAttendanceSheet: attendanceSheetAttachments.length > 0,
+            classCounts: registration.class_counts,
+            teachers: primaryTeachers,
+            submittedAt: registration.submitted_at,
           });
 
         const primaryEmails =
@@ -939,6 +857,10 @@ export const sendConfirmation = async (req, res) => {
 
             hasAttendanceSheet:
               attendanceSheetAttachments.length > 0,
+
+            classCounts: registration.class_counts,
+            teachers: secondaryTeachers,
+            submittedAt: registration.submitted_at,
           });
 
         const secondaryEmails =
@@ -1004,6 +926,10 @@ export const sendConfirmation = async (req, res) => {
 
             hasAttendanceSheet:
               attendanceSheetAttachments.length > 0,
+
+            classCounts: registration.class_counts,
+            teachers: teachers,
+            submittedAt: registration.submitted_at,
           });
 
         await sendEmail({
@@ -1065,6 +991,11 @@ export const sendConfirmation = async (req, res) => {
 
           hasAttendanceSheet:
             attendanceSheetAttachments.length > 0,
+
+          classCounts: registration.class_counts,
+          teachers: teachers,
+          availableComputers: registration.available_computers,
+          submittedAt: registration.submitted_at,
         });
 
       await sendEmail({

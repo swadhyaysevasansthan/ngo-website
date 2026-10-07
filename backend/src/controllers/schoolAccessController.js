@@ -28,7 +28,6 @@ const getRecipients = (...emails) =>
 export const createAccessRequest = async (req, res) => {
   const {
     schoolName,
-    landlineNumber,
     mobileNumber,
     schoolEmail1,
     schoolEmail2,
@@ -38,7 +37,6 @@ export const createAccessRequest = async (req, res) => {
     boardOfEducation,
     hasEcoClub,
     principalName,
-    principalEmail,
     principalPhone,
     notes,
   } = req.body;
@@ -92,55 +90,17 @@ export const createAccessRequest = async (req, res) => {
         city.trim(),
         state.trim(),
         boardOfEducation.trim(),
-        landlineNumber.trim(),
+        null,
         mobileNumber.trim(),
         hasEcoClub === true || hasEcoClub === 'true',
         principalName.trim(),
-        principalEmail?.toLowerCase().trim() || null,
+        null,
         principalPhone?.trim() || null,
         notes?.trim() || null,
       ]
     );
 
     const request = result.rows[0];
-
-    if (process.env.ENABLE_EMAILS === 'true') {
-      try {
-        const template = schoolAccessRequestReceivedTemplate({
-          schoolName: request.school_name,
-          teacherName: request.principal_name,
-        });
-
-        const recipients = getRecipients(
-          request.school_email,
-          request.school_email_2,
-          request.principal_email
-        );
-
-        const emailResult = await sendEmail({
-          to: recipients,
-          subject: template.subject,
-          html: template.html,
-          text: template.text,
-        });
-
-        await pool.query(
-          `INSERT INTO email_logs
-             (participant_id, email_type, recipient_email, subject, status, error_message)
-           VALUES ($1, $2, $3, $4, $5, $6)`,
-          [
-            null,
-            'school_access_request_received',
-            recipients.join(', '),
-            template.subject,
-            emailResult.success ? 'sent' : 'failed',
-            emailResult.error || null,
-          ]
-        );
-      } catch (err) {
-        console.error('Access request acknowledgement email error (skipped):', err);
-      }
-    }
 
     res.status(201).json({
       success: true,

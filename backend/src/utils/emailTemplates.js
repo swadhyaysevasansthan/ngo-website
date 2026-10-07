@@ -1156,6 +1156,10 @@ export const schoolDateAllotmentTemplate = (data) => {
     secondaryAllottedDate,
     totalParticipants,
     hasAttendanceSheet,
+    classCounts,
+    teachers,
+    availableComputers,
+    submittedAt,
   } = data;
 
   const competitionLabel =
@@ -1184,6 +1188,45 @@ export const schoolDateAllotmentTemplate = (data) => {
   const formattedAllottedDate = formatDate(allottedDate);
   const formattedPrimaryDate = formatDate(primaryAllottedDate);
   const formattedSecondaryDate = formatDate(secondaryAllottedDate);
+  const formattedSubmittedAt = submittedAt ? formatDate(submittedAt) : '';
+
+  // Class-wise breakdown HTML & Text
+  const countsObj = typeof classCounts === 'string' ? JSON.parse(classCounts) : (classCounts || {});
+  const classEntries = Object.entries(countsObj).filter(([_, count]) => Number(count) > 0);
+  
+  const classRowsHtml = classEntries.length > 0
+    ? classEntries.map(([cls, count]) => `
+        <tr>
+          <td style="padding: 6px 12px; border-bottom: 1px solid #f3f4f6; font-size: 13px; color: #374151;">Class ${cls}</td>
+          <td style="padding: 6px 12px; border-bottom: 1px solid #f3f4f6; font-size: 13px; font-weight: 600; color: #111827; text-align: right;">${count} students</td>
+        </tr>
+      `).join('')
+    : '';
+
+  const classRowsText = classEntries.length > 0
+    ? classEntries.map(([cls, count]) => `  - Class ${cls}: ${count} students`).join('\n')
+    : '';
+
+  // Teachers HTML & Text
+  const teacherListHtml = (teachers || [])
+    .filter(t => t.teacher_name || t.name)
+    .map(t => {
+      const name = t.teacher_name || t.name;
+      const desig = t.designation ? ` (${t.designation})` : '';
+      const phone = t.teacher_phone || t.phone ? ` · 📞 ${t.teacher_phone || t.phone}` : '';
+      const email = t.teacher_email || t.email ? ` · ✉️ ${t.teacher_email || t.email}` : '';
+      return `<li style="font-size: 13px; color: #374151; margin-bottom: 6px;"><strong>${name}</strong>${desig}${phone}${email}</li>`;
+    }).join('');
+
+  const teacherListText = (teachers || [])
+    .filter(t => t.teacher_name || t.name)
+    .map(t => {
+      const name = t.teacher_name || t.name;
+      const desig = t.designation ? ` (${t.designation})` : '';
+      const phone = t.teacher_phone || t.phone ? ` · Phone: ${t.teacher_phone || t.phone}` : '';
+      const email = t.teacher_email || t.email ? ` · Email: ${t.teacher_email || t.email}` : '';
+      return `  - ${name}${desig}${phone}${email}`;
+    }).join('\n');
 
   // ─────────────────────────────────────────────
   // DYNAMIC DATE CONTENT
@@ -1557,7 +1600,31 @@ ${quizAdditionalRemindersText}`;
                 <div class="meta-value">
                   ${totalParticipants} students
                 </div>
+                ${competitionType === 'quiz' && availableComputers ? `
+                <div class="meta-label">Available Computers</div>
+                <div class="meta-value">${availableComputers}</div>
+                ` : ''}
+                ${formattedSubmittedAt ? `
+                <div class="meta-label">Registration Submitted On</div>
+                <div class="meta-value">${formattedSubmittedAt}</div>
+                ` : ''}
               </div>
+              ${classRowsHtml ? `
+              <div style="margin: 20px 0 16px 0;">
+                <div style="font-size: 13px; font-weight: 600; color: #111827; margin-bottom: 8px;">Class-wise Participation</div>
+                <table style="width: 100%; border-collapse: collapse;">
+                  ${classRowsHtml}
+                </table>
+              </div>
+              ` : ''}
+              ${teacherListHtml ? `
+              <div style="margin: 20px 0 16px 0;">
+                <div style="font-size: 13px; font-weight: 600; color: #111827; margin-bottom: 8px;">Assigned Teacher Coordinators</div>
+                <ul style="margin: 0; padding-left: 18px;">
+                  ${teacherListHtml}
+                </ul>
+              </div>
+              ` : ''}
               <p>
                 Please ensure that all registered participants are informed and prepared accordingly.
               </p>
@@ -1592,10 +1659,9 @@ ${schoolName}
 
 ${dateText}
 
-Total Participants:
-${totalParticipants}
-
-${rulesText}
+Total Participants: ${totalParticipants} students
+${competitionType === 'quiz' && availableComputers ? `Available Computers: ${availableComputers}\n` : ''}${formattedSubmittedAt ? `Submitted On: ${formattedSubmittedAt}\n` : ''}
+${classRowsText ? `Class-wise Participation:\n${classRowsText}\n\n` : ''}${teacherListText ? `Assigned Teacher Coordinators:\n${teacherListText}\n\n` : ''}${rulesText}
 
 Support:
 Email: swadhyaysevafoundation@gmail.com

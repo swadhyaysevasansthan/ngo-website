@@ -30,7 +30,6 @@ const SchoolAccessRequest = () => {
     schoolEmail1: '',
     schoolEmail2: '',
     schoolAddress: '',
-    landlineNumber: '',
     mobileNumber: '',
     city: '',
     state: '',
@@ -38,7 +37,6 @@ const SchoolAccessRequest = () => {
     hasEcoClub: '',
     principalName: '',
     principalPhone: '',
-    principalEmail: '',
     notes: '',
   });
 
@@ -97,25 +95,6 @@ const SchoolAccessRequest = () => {
     }
 
     // ─────────────────────────────────────────────
-    // LANDLINE
-    // ─────────────────────────────────────────────
-
-    if (!formData.landlineNumber.trim()) {
-
-      e.landlineNumber =
-        'Landline number is required';
-
-    } else if (
-      !/^[0-9]{2,5}-?[0-9]{5,8}$/.test(
-        formData.landlineNumber
-      )
-    ) {
-
-      e.landlineNumber =
-        'Invalid landline number';
-    }
-
-    // ─────────────────────────────────────────────
     // MOBILE
     // ─────────────────────────────────────────────
 
@@ -132,29 +111,6 @@ const SchoolAccessRequest = () => {
 
       e.mobileNumber =
         'Invalid mobile number';
-    }
-
-    // PHONE UNIQUENESS
-    const cleanLandline =
-      formData.landlineNumber.replace(
-        /[-\s]/g,
-        ''
-      );
-
-    const cleanMobile =
-      formData.mobileNumber.replace(
-        /[-\s]/g,
-        ''
-      );
-
-    if (
-      cleanLandline &&
-      cleanMobile &&
-      cleanLandline === cleanMobile
-    ) {
-
-      e.mobileNumber =
-        'Landline and mobile number cannot be the same';
     }
 
     // ─────────────────────────────────────────────
@@ -201,16 +157,6 @@ const SchoolAccessRequest = () => {
     ) {
       e.principalPhone =
         'Invalid 10-digit mobile number';
-    }
-
-    if (
-      formData.principalEmail.trim() &&
-      !/\S+@\S+\.\S+/.test(
-        formData.principalEmail
-      )
-    ) {
-      e.principalEmail =
-        'Invalid email address';
     }
 
     // ─────────────────────────────────────────────
@@ -357,16 +303,6 @@ const SchoolAccessRequest = () => {
                     />
 
                     <Input
-                      label="School Landline Number with STD Code"
-                      name="landlineNumber"
-                      value={formData.landlineNumber}
-                      onChange={handleChange}
-                      placeholder="011-27612345"
-                      error={errors.landlineNumber}
-                      required
-                    />
-
-                    <Input
                       label="Official Mobile Number"
                       name="mobileNumber"
                       value={formData.mobileNumber}
@@ -501,16 +437,6 @@ const SchoolAccessRequest = () => {
                       placeholder="10-digit mobile number"
                       error={errors.principalPhone}
                       maxLength="10"
-                    />
-
-                    <Input
-                      label="Principal Email Address"
-                      name="principalEmail"
-                      type="email"
-                      value={formData.principalEmail}
-                      onChange={handleChange}
-                      placeholder="optional@example.com"
-                      error={errors.principalEmail}
                     />
                   </div>
                 </section>
