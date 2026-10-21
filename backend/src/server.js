@@ -6,7 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 // Import database connection
-import pool from './config/database.js';
+import pool, { getPoolStats } from './config/database.js';
 
 // Import Routes 
 import participantRoutes from './routes/participantRoutes.js';
@@ -172,7 +172,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, '0.0.0.0', () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`
   ╔════════════════════════════════════════════════════════╗
   ║   Swadhyay Seva Foundation Backend Server              ║
@@ -182,5 +182,44 @@ app.listen(PORT, '0.0.0.0', () => {
   ╚════════════════════════════════════════════════════════╝
   `);
 });
+
+// Graceful shutdown handling (Render deploys and manual terminations)
+let isShuttingDown = false;
+
+const gracefulShutdown = async (signal) => {
+  if (isShuttingDown) return;
+  isShuttingDown = true;
+  const ts = new Date().toISOString();
+  console.log(`\n[${ts}] 🛑 Received ${signal}. Starting graceful shutdown...`);
+
+  // Stop accepting new HTTP requests
+  server.close(async (err) => {
+    if (err) {
+      console.error(`[${new Date().toISOString()}] ❌ Error closing HTTP server:`, err);
+    } else {
+      console.log(`[${new Date().toISOString()}] 🚪 HTTP server closed successfully`);
+    }
+
+    try {
+      console.log(`[${new Date().toISOString()}] Closing database connection pool...`);
+      await pool.end();
+      console.log(`[${new Date().toISOString()}] ✅ Database connection pool closed cleanly`);
+      process.exit(0);
+    } catch (dbErr) {
+      console.error(`[${new Date().toISOString()}] ❌ Error while closing database pool:`, dbErr);
+      process.exit(1);
+    }
+  });
+
+  // Force exit deadline if in-flight requests hang beyond 10 seconds
+  const forceExitTimer = setTimeout(() => {
+    console.error(`[${new Date().toISOString()}] ⚠️  Graceful shutdown timed out after 10s. Forcing exit.`);
+    process.exit(1);
+  }, 10000);
+  if (forceExitTimer.unref) forceExitTimer.unref();
+};
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
 export default app;

@@ -1,4 +1,4 @@
-import pool from '../config/database.js';
+import pool, { safeRollback } from '../config/database.js';
 import bcrypt from 'bcryptjs';
 import { 
   generateQRToken, 
@@ -133,7 +133,7 @@ export const createPass = async (req, res) => {
     await client.query('COMMIT');
     res.status(201).json({ success: true, pass: result.rows[0] });
   } catch (error) {
-    await client.query('ROLLBACK');
+    await safeRollback(client);
     console.error('Create pass error:', error);
     res.status(500).json({ success: false, message: 'Failed to create pass', error: error.message });
   } finally {
@@ -192,7 +192,7 @@ export const bulkImportPasses = async (req, res) => {
     await client.query('COMMIT');
     res.json({ success: true, count: insertedPasses.length, passes: insertedPasses });
   } catch (error) {
-    await client.query('ROLLBACK');
+    await safeRollback(client);
     console.error('Bulk import passes error:', error);
     res.status(500).json({ success: false, message: 'Bulk import failed', error: error.message });
   } finally {
@@ -433,7 +433,7 @@ export const deletePass = async (req, res) => {
     await client.query('COMMIT');
     res.json({ success: true, message: 'Pass permanently deleted successfully' });
   } catch (error) {
-    await client.query('ROLLBACK');
+    await safeRollback(client);
     console.error('Delete pass error:', error);
     res.status(500).json({ success: false, message: 'Failed to delete pass permanently', error: error.message });
   } finally {
@@ -464,7 +464,7 @@ export const deletePassesBulk = async (req, res) => {
     await client.query('COMMIT');
     res.json({ success: true, count: result.rows.length, message: `Successfully deleted ${result.rows.length} passes permanently` });
   } catch (error) {
-    await client.query('ROLLBACK');
+    await safeRollback(client);
     console.error('Bulk delete passes error:', error);
     res.status(500).json({ success: false, message: 'Failed bulk delete passes', error: error.message });
   } finally {

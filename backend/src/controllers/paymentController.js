@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import razorpay from '../config/razorpay.js';
-import pool from '../config/database.js';
+import pool, { safeRollback } from '../config/database.js';
 import { sendEmail } from '../config/email.js';
 import { registrationEmailTemplate } from '../utils/emailTemplates.js';
 
@@ -122,7 +122,7 @@ export const verifyRegistrationPayment = async (req, res) => {
       });
     }
 
-    const client = await pool.connect();
+    let client = await pool.connect();
     try {
       await client.query('BEGIN');
 
@@ -201,6 +201,9 @@ export const verifyRegistrationPayment = async (req, res) => {
       ]);
 
       await client.query('COMMIT');
+      // Release client back to pool immediately so slow external network calls (email) do not tie up DB connections
+      client.release();
+      client = null;
 
       // ✅ Send confirmation email after successful DB commit
       if (process.env.ENABLE_EMAILS === 'true') {
@@ -252,14 +255,16 @@ export const verifyRegistrationPayment = async (req, res) => {
         participant: participantRes.rows[0],
       });
     } catch (dbErr) {
-      await client.query('ROLLBACK');
+      await safeRollback(client);
       console.error('DB error during registration:', dbErr);
       res.status(500).json({
         success: false,
         message: 'Failed to complete registration after payment',
       });
     } finally {
-      client.release();
+      if (client) {
+        client.release();
+      }
     }
   } catch (err) {
     console.error('Verify payment error:', err);

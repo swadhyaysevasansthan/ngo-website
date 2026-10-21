@@ -1,4 +1,4 @@
-import pool from '../config/database.js';
+import pool, { safeRollback } from '../config/database.js';
 import { verifyPassRecord } from '../utils/passQRUtils.js';
 
 /**
@@ -105,7 +105,7 @@ export const checkInPass = async (req, res) => {
     });
 
   } catch (error) {
-    await client.query('ROLLBACK');
+    await safeRollback(client);
     console.error('Check-in error:', error);
     return res.status(500).json({
       success: false,
@@ -224,7 +224,7 @@ export const manualCheckIn = async (req, res) => {
     });
 
   } catch (error) {
-    await client.query('ROLLBACK');
+    await safeRollback(client);
     console.error('Manual check-in error:', error);
     return res.status(500).json({
       success: false,

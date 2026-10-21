@@ -1,4 +1,4 @@
-import pool from '../config/database.js';
+import pool, { safeRollback } from '../config/database.js';
 import { sendSneacEmail as sendEmail } from '../config/sneacEmail.js';
 import { hashToken, verifyTokenRecord } from '../utils/tokenService.js';
 import {
@@ -7,7 +7,7 @@ import {
 } from '../utils/emailTemplates.js';
 import { getAttendanceSheetAttachment } from '../utils/attendanceSheets.js';
 
-const resolveToken = async (rawToken, res) => {
+const resolveToken = async (rawToken, res, dbClient = pool) => {
   if (!rawToken) {
     res.status(400).json({
       success: false,
@@ -19,7 +19,7 @@ const resolveToken = async (rawToken, res) => {
 
   const tokenHash = hashToken(rawToken);
 
-  const tokenResult = await pool.query(
+  const tokenResult = await dbClient.query(
     `SELECT
       t.*,
       r.id AS request_id,
@@ -286,10 +286,10 @@ export const submitPaintingRegistration = async (req, res) => {
     // Resolve Token
     // ─────────────────────────────────────────────
 
-    const row = await resolveToken(token, res);
+    const row = await resolveToken(token, res, client);
 
     if (!row) {
-      await client.query('ROLLBACK');
+      await safeRollback(client);
       return;
     }
 
@@ -423,7 +423,7 @@ export const submitPaintingRegistration = async (req, res) => {
     });
 
   } catch (error) {
-    await client.query('ROLLBACK');
+    await safeRollback(client);
 
     console.error(
       'Submit painting registration error:',
@@ -469,10 +469,10 @@ export const submitQuizRegistration = async (req, res) => {
       });
     }
 
-    const row = await resolveToken(token, res);
+    const row = await resolveToken(token, res, client);
 
     if (!row) {
-      await client.query('ROLLBACK');
+      await safeRollback(client);
       return;
     }
 
@@ -526,7 +526,7 @@ export const submitQuizRegistration = async (req, res) => {
       data: registration,
     });
   } catch (error) {
-    await client.query('ROLLBACK');
+    await safeRollback(client);
 
     console.error(error);
 
@@ -564,15 +564,29 @@ export const listRegistrations = async (req, res) => {
       [competitionType]
     );
 
-    const registrations = [];
+    const registrations = result.rows;
 
-    for (const registration of result.rows) {
-      const teachers = await getRegistrationTeachers(registration.id);
+    if (registrations.length > 0) {
+      const regIds = registrations.map((r) => r.id);
+      const teachersResult = await pool.query(
+        `SELECT *
+         FROM competition_registration_teachers
+         WHERE registration_id = ANY($1::int[])
+         ORDER BY id ASC`,
+        [regIds]
+      );
 
-      registrations.push({
-        ...registration,
-        teachers,
-      });
+      const teachersByRegId = new Map();
+      for (const teacher of teachersResult.rows) {
+        if (!teachersByRegId.has(teacher.registration_id)) {
+          teachersByRegId.set(teacher.registration_id, []);
+        }
+        teachersByRegId.get(teacher.registration_id).push(teacher);
+      }
+
+      for (const reg of registrations) {
+        reg.teachers = teachersByRegId.get(reg.id) || [];
+      }
     }
 
     return res.json({

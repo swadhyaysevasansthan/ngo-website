@@ -1,11 +1,4 @@
-import { Pool } from 'pg';
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
+import pool, { safeRollback } from '../config/database.js';
 
 export const Review = {
   // Submit new review
@@ -26,43 +19,47 @@ export const Review = {
   },
 
   // Get public reviews (approved only)
-async findPublic(limit = 5, offset = 0) {
-  const query = `
-    SELECT
-      id,
-      name,
-      designation,
-      COALESCE(NULLIF(refined_review_text, ''), original_review_text) AS review_text,
-      is_featured,
-      is_pinned,
-      created_at
-    FROM reviews
-    WHERE status = 'approved'
-    ORDER BY is_pinned DESC, created_at DESC
-    LIMIT $1 OFFSET $2
-  `;
+  async findPublic(limit = 5, offset = 0) {
+    const query = `
+      SELECT
+        id,
+        name,
+        designation,
+        COALESCE(NULLIF(refined_review_text, ''), original_review_text) AS review_text,
+        is_featured,
+        is_pinned,
+        created_at
+      FROM reviews
+      WHERE status = 'approved'
+      ORDER BY is_pinned DESC, created_at DESC
+      LIMIT $1 OFFSET $2
+    `;
 
-  const countQuery = `SELECT COUNT(*) FROM reviews WHERE status = 'approved'`;
+    const countQuery = `SELECT COUNT(*) FROM reviews WHERE status = 'approved'`;
 
-  const [itemsResult, countResult] = await Promise.all([
-    pool.query(query, [limit, offset]),
-    pool.query(countQuery),
-  ]);
+    const [itemsResult, countResult] = await Promise.all([
+      pool.query(query, [limit, offset]),
+      pool.query(countQuery),
+    ]);
 
-  return {
-    items: itemsResult.rows,
-    total: parseInt(countResult.rows[0].count, 10),
-  };
-},
+    return {
+      items: itemsResult.rows,
+      total: parseInt(countResult.rows[0].count, 10),
+    };
+  },
+
   // Get admin reviews
   async findAdmin(status = 'pending') {
     const query = `
       SELECT r.*, rv.version_text as latest_version
       FROM reviews r
-      LEFT JOIN (
-        SELECT review_id, version_text, ROW_NUMBER() OVER (PARTITION BY review_id ORDER BY created_at DESC) as rn
+      LEFT JOIN LATERAL (
+        SELECT version_text
         FROM review_versions
-      ) rv ON r.id = rv.review_id AND rv.rn = 1
+        WHERE review_id = r.id
+        ORDER BY created_at DESC
+        LIMIT 1
+      ) rv ON true
       WHERE r.status = $1
       ORDER BY r.created_at DESC
     `;
@@ -82,17 +79,17 @@ async findPublic(limit = 5, offset = 0) {
     return result.rows[0];
   },
 
-  // Refine review text
+  // Refine review text with safe transaction handling
   async refine(id, refinedText, adminName) {
     const client = await pool.connect();
     try {
       await client.query('BEGIN');
-      
+
       // Save version history
       const originalQuery = 'SELECT refined_review_text FROM reviews WHERE id = $1';
       const originalResult = await client.query(originalQuery, [id]);
       const originalText = originalResult.rows[0]?.refined_review_text || '';
-      
+
       if (originalText !== refinedText) {
         const versionQuery = `
           INSERT INTO review_versions (review_id, version_text, created_by)
@@ -100,7 +97,7 @@ async findPublic(limit = 5, offset = 0) {
         `;
         await client.query(versionQuery, [id, originalText || '', adminName]);
       }
-      
+
       // Update refined text
       const updateQuery = `
         UPDATE reviews 
@@ -109,11 +106,11 @@ async findPublic(limit = 5, offset = 0) {
         RETURNING *
       `;
       const result = await client.query(updateQuery, [refinedText, id]);
-      
+
       await client.query('COMMIT');
       return result.rows[0];
     } catch (error) {
-      await client.query('ROLLBACK');
+      await safeRollback(client);
       throw error;
     } finally {
       client.release();
@@ -166,13 +163,18 @@ async findPublic(limit = 5, offset = 0) {
     const query = `
       SELECT r.*, rv.version_text as latest_version
       FROM reviews r
-      LEFT JOIN (
-        SELECT review_id, version_text, ROW_NUMBER() OVER (PARTITION BY review_id ORDER BY created_at DESC) as rn
+      LEFT JOIN LATERAL (
+        SELECT version_text
         FROM review_versions
-      ) rv ON r.id = rv.review_id AND rv.rn = 1
+        WHERE review_id = r.id
+        ORDER BY created_at DESC
+        LIMIT 1
+      ) rv ON true
       WHERE r.id = $1
     `;
     const result = await pool.query(query, [id]);
     return result.rows[0];
   }
 };
+
+export default Review;
