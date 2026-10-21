@@ -166,7 +166,10 @@ export const startPoolMonitoring = () => {
 
   poolMonitoringInterval = setInterval(() => {
     const stats = getPoolStats();
-    console.log(`[${getTimestamp()}] 📊 [DB Pool Stats]:`, stats);
+    // Only log if there are active/idle connections to prevent log spam when site is idle
+    if (stats.totalCount > 0) {
+      console.log(`[${getTimestamp()}] 📊 [DB Pool Stats]:`, stats);
+    }
   }, intervalMs);
 
   // Ensure timer does not prevent process from exiting
