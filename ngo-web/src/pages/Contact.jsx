@@ -140,7 +140,7 @@ const Contact = () => {
                   allowFullScreen=""
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Swadhyay Seva Sansthan Location"
+                  title="Swadhyay Seva Foundation Location"
                 ></iframe>
               </div>
             </div>

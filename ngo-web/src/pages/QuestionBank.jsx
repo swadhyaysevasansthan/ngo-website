@@ -189,7 +189,7 @@ const PdfJsViewer = ({ src }) => {
       <div className="px-5 py-3 bg-slate-900 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400">
         <div className="flex items-center gap-2">
           <ShieldAlert className="w-4 h-4 text-amber-400 shrink-0" />
-          <span>Swadhyay Seva Sansthan Protected Academic Asset • Unauthorised copying, distribution or printing strictly prohibited</span>
+          <span>Swadhyay Seva Foundation Protected Academic Asset • Unauthorised copying, distribution or printing strictly prohibited</span>
         </div>
         <span className="font-mono text-slate-500">Watermarked Session</span>
       </div>
@@ -203,7 +203,7 @@ const PdfJsViewer = ({ src }) => {
 ═══════════════════════════════════════════════════════════════════════ */
 const QuestionBank = () => {
   useEffect(() => { 
-    document.title = "Official Question Bank | Swadhyay Seva Sansthan"; 
+    document.title = "Official Question Bank | Swadhyay Seva Foundation"; 
   }, []);
 
   const [accessCode,   setAccessCode]   = useState(null); // null = loading
@@ -395,7 +395,7 @@ const QuestionBank = () => {
                   )}
 
                   <p className="text-center text-xs text-slate-400 mt-6">
-                    Need the passcode? Contact your participating school administration or the Swadhyay Seva Sansthan support desk.
+                    Need the passcode? Contact your participating school administration or the Swadhyay Seva Foundation support desk.
                   </p>
                 </div>
               </div>

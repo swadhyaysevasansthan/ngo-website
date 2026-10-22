@@ -28,7 +28,7 @@ const minutesSince = (ts) => (Date.now() - ts) / 60000;
 ═══════════════════════════════════════════════════════════════════════ */
 const Quiz = () => {
   useEffect(() => { 
-    document.title = 'Environmental Awareness Quiz | Swadhyay Seva Sansthan'; 
+    document.title = 'Environmental Awareness Quiz | Swadhyay Seva Foundation'; 
   }, []);
 
   /* quiz config */
@@ -193,7 +193,7 @@ const Quiz = () => {
             {/* Pill Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-semibold uppercase tracking-wider mb-6 backdrop-blur-md">
               <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Swadhyay Seva Sansthan Quiz Portal</span>
+              <span>Swadhyay Seva Foundation Quiz Portal</span>
             </div>
 
             {/* Main Title */}
