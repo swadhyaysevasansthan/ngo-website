@@ -473,4 +473,15 @@ export const evaluationPublicAPI = {
   getGallery: () => apiClient.get('/public/evaluation/gallery'),
 };
 
+// 🔥 QUIZ SETTINGS — quiz list + access codes + question bank code.
+// Public endpoint used by Quiz.jsx / QuestionBank.jsx.
+// Admin endpoints used by the admin dashboard.
+export const quizSettingsAPI = {
+  // Public — no auth
+  getPublic: () => apiClient.get('/quiz-settings'),
+  // Admin — requires auth token
+  getAdmin: () => apiClient.get('/quiz-settings/admin'),
+  update: (data) => apiClient.put('/quiz-settings/admin', data),
+};
+
 export default apiClient;

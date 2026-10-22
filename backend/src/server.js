@@ -33,6 +33,7 @@ import evaluationRoutes from './routes/evaluationRoutes.js';
 import publicResultsRoutes from './routes/publicResultsRoutes.js';
 import eventPassRoutes from './routes/eventPassRoutes.js';
 import scannerRoutes from './routes/scannerRoutes.js';
+import quizSettingsRoutes from './routes/quizSettingsRoutes.js';
 
 
 // Get __dirname equivalent in ES modules
@@ -151,6 +152,7 @@ app.use('/api/admin/evaluation', evaluationRoutes);
 app.use('/api/public/evaluation', publicResultsRoutes);
 app.use('/api/event-passes', eventPassRoutes);
 app.use('/api/scanner', scannerRoutes);
+app.use('/api/quiz-settings', quizSettingsRoutes);
 
 
 // 404 handler

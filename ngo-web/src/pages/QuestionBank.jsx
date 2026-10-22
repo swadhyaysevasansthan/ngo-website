@@ -3,11 +3,11 @@ import { BookOpen, Eye, Lock } from "lucide-react";
 import Card from "../components/Card";
 import SectionHeader from "../components/SectionHeader";
 import { Document, Page, pdfjs } from "react-pdf";
+import { quizSettingsAPI } from "../utils/api";
 
 // Set PDF.js worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-const ACCESS_CODE = process.env.REACT_APP_QUESTION_ACCESS_CODE; // 
 const PDF_FILE = "/question-banks/SNEQC 26-27.pdf"; // 
 
 // ✅ Responsive PDF viewer
@@ -85,19 +85,33 @@ const QuestionBank = () => {
     document.title = 'Question Bank';
   }, []);
 
+  // Access code fetched from backend (shown in plain text to admin, hidden from users)
+  const [accessCode, setAccessCode] = useState(null); // null = loading
   const [code, setCode] = useState("");
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [error, setError] = useState("");
 
+  // Load the question bank code from the public quiz-settings API
+  useEffect(() => {
+    quizSettingsAPI.getPublic()
+      .then((res) => {
+        setAccessCode(res.data.data.questionBankCode || '');
+      })
+      .catch(() => {
+        setAccessCode(''); // allow form to render even if fetch fails
+      });
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (code.trim() === ACCESS_CODE) {
+    if (accessCode !== null && code.trim() === accessCode) {
       setIsAuthorized(true);
       setError("");
     } else {
       setError("Invalid access code. Please try again.");
     }
   };
+
 
   return (
     <div className="bg-gray-50">
