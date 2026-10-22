@@ -211,7 +211,7 @@ const Quiz = () => {
                 { icon: Sparkles, label: 'Verified Assessment', color: 'text-amber-300' },
                 { icon: BookOpen, label: 'Standardized Questions', color: 'text-teal-300' },
                 { icon: ShieldCheck, label: 'Anti-Malpractice Locked', color: 'text-emerald-300' },
-                { icon: Award, label: 'Official SSS Certificate', color: 'text-cyan-300' }
+                { icon: Award, label: 'Official SSF Certificate', color: 'text-cyan-300' }
               ].map(({ icon: Icon, label, color }) => (
                 <div 
                   key={label} 
