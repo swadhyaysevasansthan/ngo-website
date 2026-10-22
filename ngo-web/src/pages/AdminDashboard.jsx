@@ -289,11 +289,11 @@ const AdminDashboard = () => {
               { id: 'dashboard', label: '📊 Dashboard' },
               { id: 'participants', label: '👥 Participants' },
               { id: 'reviews', label: '💬 Reviews', badge: pendingReviewsCount },
+              { id: 'quiz-settings', label: '🧠 Quiz Settings' },
               { id: 'sneac', label: '🏫 SNEAC Schools' },
               { id: 'farmers', label: '👨‍🌾 Farmers' },
               { id: 'evaluation', label: '🏆 Evaluation' },
               { id: 'event-passes', label: '🎫 Event Passes' },
-              { id: 'quiz-settings', label: '🧠 Quiz Settings' },
               { id: 'email', label: '✉️ Send Email' },
             ].map((tab) => (
               <button
