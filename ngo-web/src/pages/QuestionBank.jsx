@@ -75,7 +75,7 @@ const PdfJsViewer = ({ src }) => {
           </div>
           <div>
             <h4 className="font-semibold text-slate-200 text-xs sm:text-sm">SNEQC Official Question Bank</h4>
-            <span className="text-[10px] text-slate-400">Class 7th – 8th • Protected Document</span>
+            <span className="text-[10px] text-slate-400">Class 6th – 8th • Protected Document</span>
           </div>
         </div>
 
@@ -238,7 +238,7 @@ const QuestionBank = () => {
 
   const highlights = [
     { title: "Standardized Syllabus", desc: "Covers environmental conservation, flora & fauna, and climate awareness." },
-    { title: "Class 7th – 8th Focused", desc: "Tailored to intermediate school curriculum with conceptual questions." },
+    { title: "Class 6th – 8th Focused", desc: "Tailored to intermediate school curriculum with conceptual questions." },
     { title: "Direct Preparation", desc: "Representative of actual competition formats and scoring rubrics." }
   ];
 
@@ -276,7 +276,7 @@ const QuestionBank = () => {
             {/* Badges */}
             <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
               {[
-                { icon: GraduationCap, label: "Class 7th – 8th Curriculum", color: "text-blue-300" },
+                { icon: GraduationCap, label: "Class 6th – 8th Curriculum", color: "text-blue-300" },
                 { icon: FileText, label: "Official PDF Document", color: "text-cyan-300" },
                 { icon: Lock, label: "Access Code Protected", color: "text-amber-300" },
                 { icon: ShieldCheck, label: "Verified Study Material", color: "text-emerald-300" }
@@ -415,7 +415,7 @@ const QuestionBank = () => {
                     SNEQC 2026–27 Question Bank
                   </h3>
                   <p className="text-slate-500 text-xs mt-0.5">
-                    Official Environmental Education Syllabus · Class 7th & 8th
+                    Official Environmental Education Syllabus · Class 6th – 8th
                   </p>
                 </div>
                 <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 px-3.5 py-1.5 rounded-full text-xs font-bold self-start sm:self-auto">

@@ -144,7 +144,7 @@ const QuizAdminTab = () => {
         <div>
           <h2 className="text-2xl font-bold text-gray-800">🧠 Quiz & Question Bank Settings</h2>
           <p className="text-sm text-gray-500 mt-1">
-            Manage quiz Microsoft Form links, access codes, and the Question Bank access code.
+            Manage quiz links, access codes, and the Question Bank access code.
             Access codes are shown in plain text so you can view or copy them at any time.
           </p>
         </div>
@@ -194,8 +194,8 @@ const QuizAdminTab = () => {
           <div>
             <h3 className="text-lg font-bold">🔗 Quiz Entries</h3>
             <p className="text-sm text-gray-500 mt-0.5">
-              Each quiz has a unique access code. When a user enters the correct code on the Quiz page,
-              they are redirected to that Microsoft Form link.
+              Each quiz has a unique access code. When a user enters the code on the Quiz page,
+              they are granted access to that quiz link.
             </p>
           </div>
           <button
@@ -285,16 +285,16 @@ const QuizAdminTab = () => {
                   />
                 </div>
 
-                {/* Microsoft Form URL */}
+                {/* Quiz URL */}
                 <div className="md:col-span-2">
                   <label className="block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide">
-                    Microsoft Form URL <span className="text-red-500">*</span>
+                    Quiz Link / URL <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="url"
                     value={quiz.url}
                     onChange={(e) => handleQuizChange(index, 'url', e.target.value)}
-                    placeholder="https://forms.cloud.microsoft/r/..."
+                    placeholder="https://..."
                     className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg text-sm font-mono focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none bg-white"
                   />
                   {quiz.url && (
@@ -304,7 +304,7 @@ const QuizAdminTab = () => {
                       rel="noopener noreferrer"
                       className="inline-block mt-1 text-xs text-primary hover:underline"
                     >
-                      ↗ Open form link
+                      ↗ Test quiz link
                     </a>
                   )}
                 </div>
