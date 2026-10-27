@@ -133,7 +133,7 @@ const UpcomingEngagements = () => {
       tabActive: 'bg-orange-500 text-white',
       tabHover: 'hover:bg-orange-50 text-orange-600',
       icon: Brush,
-      poster: '/images/competitions/paint1.jpeg',
+      poster: '/images/competitions/paint2.jpeg',
       description:
         'Students creatively express their ideas and concerns about nature, environmental protection, and sustainable living through artwork. The competition includes two categories for students: Primary Category (Classes 3rd–5th) and Secondary Category (Classes 6th–8th).',
     },
