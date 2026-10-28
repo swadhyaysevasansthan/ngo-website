@@ -118,7 +118,7 @@ const Home = () => {
       </p>
     </div>
 
-    <div className="grid md:grid-cols-2 gap-8">
+    <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
 
       {/* Painting Competition Poster */}
       <motion.div
@@ -126,25 +126,41 @@ const Home = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         viewport={{ once: true }}
-        className="bg-gray-50 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition"
+        className="bg-gray-50 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition flex flex-col"
       >
-        <img
-          src="/images/competitions/paint2.jpeg"
-          alt="Painting Competition"
-          className="w-full h-[420px] object-cover"
-        />
+        <Link
+          to="/upcoming-engagements"
+          className="w-full bg-gray-100/80 p-3 sm:p-4 flex items-center justify-center group"
+          title="Click to view competition details"
+        >
+          <img
+            src="/images/competitions/paint2.jpeg"
+            alt="Swadhyay National Environmental Painting Competition Poster"
+            className="w-auto h-auto max-h-[340px] sm:max-h-[400px] md:max-h-[450px] object-contain rounded-xl shadow-md transition-transform duration-300 group-hover:scale-[1.02]"
+          />
+        </Link>
 
-        <div className="p-6">
-          <h3 className="text-2xl font-bold text-primary-700 mb-2">
-           Swadhyay National Environmental Painting Competition
-          </h3>
+        <div className="p-6 flex flex-col flex-1 justify-between">
+          <div>
+            <h3 className="text-xl sm:text-2xl font-bold text-primary-700 mb-2">
+              Swadhyay National Environmental Painting Competition
+            </h3>
 
-          <p className="text-gray-600 mb-4">
-            Showcase your creativity and artistic talent in our upcoming
-            painting competition open for students and young artists.
-          </p>
+            <p className="text-gray-600 mb-4 text-sm sm:text-base leading-relaxed">
+              Showcase your creativity and artistic talent in our upcoming
+              painting competition open for students and young artists.
+            </p>
+          </div>
 
-                  </div>
+          <div className="pt-2">
+            <Link
+              to="/upcoming-engagements"
+              className="inline-flex items-center text-primary-600 font-semibold hover:text-primary-700 text-sm transition"
+            >
+              Learn more & register →
+            </Link>
+          </div>
+        </div>
       </motion.div>
 
       {/* Quiz Competition Poster */}
@@ -153,25 +169,40 @@ const Home = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
-        className="bg-gray-50 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition"
+        className="bg-gray-50 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition flex flex-col"
       >
-        <img
-          src="/images/competitions/quiz1.jpeg"
-          alt="Quiz Competition"
-          className="w-full h-[420px] object-cover"
-        />
+        <Link
+          to="/upcoming-engagements"
+          className="w-full bg-gray-100/80 p-3 sm:p-4 flex items-center justify-center group"
+          title="Click to view competition details"
+        >
+          <img
+            src="/images/competitions/quiz1.jpeg"
+            alt="Swadhyay National Environmental Quiz Competition Poster"
+            className="w-auto h-auto max-h-[340px] sm:max-h-[400px] md:max-h-[450px] object-contain rounded-xl shadow-md transition-transform duration-300 group-hover:scale-[1.02]"
+          />
+        </Link>
 
-        <div className="p-6">
-          <h3 className="text-2xl font-bold text-primary-700 mb-2">
-            Swadhyay National Environmental Quiz Competition
-          </h3>
+        <div className="p-6 flex flex-col flex-1 justify-between">
+          <div>
+            <h3 className="text-xl sm:text-2xl font-bold text-primary-700 mb-2">
+              Swadhyay National Environmental Quiz Competition
+            </h3>
 
-          <p className="text-gray-600 mb-4">
-            Test your knowledge, compete with participants nationwide,
-            and win exciting recognition and prizes.
-          </p>
+            <p className="text-gray-600 mb-4 text-sm sm:text-base leading-relaxed">
+              Test your knowledge, compete with participants nationwide,
+              and win exciting recognition and prizes.
+            </p>
+          </div>
 
-          
+          <div className="pt-2">
+            <Link
+              to="/upcoming-engagements"
+              className="inline-flex items-center text-primary-600 font-semibold hover:text-primary-700 text-sm transition"
+            >
+              Learn more & register →
+            </Link>
+          </div>
         </div>
       </motion.div>
 
