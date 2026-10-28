@@ -129,7 +129,7 @@ const Home = () => {
         className="bg-gray-50 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition"
       >
         <img
-          src="/images/competitions/paint1.jpeg"
+          src="/images/competitions/paint2.jpeg"
           alt="Painting Competition"
           className="w-full h-[420px] object-cover"
         />
