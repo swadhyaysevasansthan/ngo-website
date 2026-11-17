@@ -50,7 +50,8 @@ const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:8081',  // Expo web dev server
   'https://ngo-website-rouge-five.vercel.app',
-  'https://www.swadhyayseva.org'
+  'https://www.swadhyayseva.org',
+  'https://swadhyayseva.org',  // non-www variant
 ]
 
 if (process.env.FRONTEND_URL) {
