@@ -27,7 +27,7 @@ const colorMap = {
     },
 };
 
-export default function CompetitionRulesModal({open, onClose, competition,}) {
+export default function CompetitionRulesModal({open, onClose, competition, onAgree, showAgreeButton = false}) {
     useEffect(() => {
         if (!open) return;
         const handleKeyDown = (e) => {
@@ -175,6 +175,29 @@ export default function CompetitionRulesModal({open, onClose, competition,}) {
                                         ☎ 9599224323 / 9837042298
                                     </p>
                                 </div>
+
+                                {showAgreeButton && onAgree && (
+                                    <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-orange-50 border border-orange-200">
+                                        <div className="text-sm text-gray-700">
+                                            <p className="font-semibold text-gray-900 mb-1">
+                                                Agreement to Rules & Regulations
+                                            </p>
+                                            <p>
+                                                By clicking Agree, you confirm that your school accepts all rules and regulations, including the ownership and assignment of artwork rights to Swadhyay Seva Foundation.
+                                            </p>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                onAgree();
+                                                onClose();
+                                            }}
+                                            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-bold text-sm transition shadow-md whitespace-nowrap"
+                                        >
+                                            ✓ I Agree & Accept Rules
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </motion.div>

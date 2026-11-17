@@ -30,6 +30,7 @@ const SneacAdminTab = () => {
     sendConfirmation,
     deleteRegistration,
     toggleConcluded,
+    toggleRulesAgreed,
   } = useSneacAdmin();
 
 
@@ -146,6 +147,7 @@ const SneacAdminTab = () => {
           onViewDetails={setSelectedRegistration}
           onDelete={deleteRegistration}
           onToggleConcluded={toggleConcluded}
+          onToggleRulesAgreed={toggleRulesAgreed}
           actionLoading={actionLoading}
         />
       )}
@@ -159,6 +161,7 @@ const SneacAdminTab = () => {
           onOpenDateModal={openDateModal}
           onSendConfirmation={sendConfirmation}
           onDelete={deleteRegistration}
+          onToggleRulesAgreed={toggleRulesAgreed}
         />
       )}
 

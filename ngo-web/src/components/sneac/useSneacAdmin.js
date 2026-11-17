@@ -172,6 +172,22 @@ export default function useSneacAdmin() {
     }
   };
 
+  const toggleRulesAgreed = async (id, currentStatus) => {
+    const newStatus = !currentStatus;
+    setActionLoading(id);
+    try {
+      await schoolRegistrationAPI.toggleRulesAgreed(id, newStatus);
+      toast.success(`Rules agreement updated to ${newStatus ? 'Agreed' : 'Not Agreed'}.`);
+      await fetchAll();
+      return true;
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to update rules agreement.');
+      return false;
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
   return {
     // data
     requests,
@@ -190,5 +206,6 @@ export default function useSneacAdmin() {
     sendConfirmation,
     deleteRegistration,
     toggleConcluded,
+    toggleRulesAgreed,
   };
 }

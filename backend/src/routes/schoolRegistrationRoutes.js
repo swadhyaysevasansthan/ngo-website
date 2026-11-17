@@ -11,6 +11,7 @@ import {
   sendConfirmation,
   deleteRegistration,
   toggleCompetitionConcluded,
+  toggleRulesAgreed,
 } from '../controllers/schoolRegistrationController.js';
 
 
@@ -112,6 +113,14 @@ const paintingValidation = [
     .withMessage(
       'Secondary preferred dates must be an array'
     ),
+
+  body('rulesAgreed')
+    .custom((val) => {
+      if (val !== true && val !== 'true') {
+        throw new Error('You must accept the competition rules and regulations');
+      }
+      return true;
+    }),
 ];
 
 // ─────────────────────────────────────────────
@@ -266,6 +275,19 @@ router.patch(
     .withMessage('isConcluded must be a boolean'),
   validateRequest,
   toggleCompetitionConcluded
+);
+
+router.patch(
+  '/admin/:id/toggle-rules-agreed',
+  verifyAdmin,
+  param('id')
+    .isInt({ min: 1 })
+    .withMessage('Invalid registration ID'),
+  body('rulesAgreed')
+    .isBoolean()
+    .withMessage('rulesAgreed must be a boolean'),
+  validateRequest,
+  toggleRulesAgreed
 );
 
 export default router;

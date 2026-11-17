@@ -265,7 +265,10 @@ export const submitPaintingRegistration = async (req, res) => {
       secondaryCategoryTotal,
       primaryPreferredDates,
       secondaryPreferredDates,
+      rulesAgreed,
     } = req.body;
+
+    const isRulesAgreed = rulesAgreed === true || rulesAgreed === 'true';
 
     // ─────────────────────────────────────────────
     // Duplicate Teacher Validation
@@ -351,8 +354,10 @@ export const submitPaintingRegistration = async (req, res) => {
              total_participants = $5,
              primary_preferred_dates = $6,
              secondary_preferred_dates = $7,
+             rules_agreed = CASE WHEN $8 = true THEN true ELSE rules_agreed END,
+             rules_agreed_at = CASE WHEN $8 = true THEN COALESCE(rules_agreed_at, NOW()) ELSE rules_agreed_at END,
              updated_at = NOW()
-         WHERE id = $8
+         WHERE id = $9
          RETURNING *`,
         [
           JSON.stringify(updatedCategories),
@@ -362,6 +367,7 @@ export const submitPaintingRegistration = async (req, res) => {
           newTotalParticipants,
           JSON.stringify(newPrimaryDates),
           JSON.stringify(newSecondaryDates),
+          isRulesAgreed,
           existingReg.id,
         ]
       );
@@ -379,9 +385,11 @@ export const submitPaintingRegistration = async (req, res) => {
           secondary_category_total,
           total_participants,
           primary_preferred_dates,
-          secondary_preferred_dates
+          secondary_preferred_dates,
+          rules_agreed,
+          rules_agreed_at
         )
-        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,CASE WHEN $10 = true THEN NOW() ELSE NULL END)
         RETURNING *`,
         [
           row.request_id,
@@ -393,6 +401,7 @@ export const submitPaintingRegistration = async (req, res) => {
           totalParticipants,
           JSON.stringify(primaryPreferredDates),
           JSON.stringify(secondaryPreferredDates),
+          isRulesAgreed,
         ]
       );
 
@@ -1129,6 +1138,43 @@ export const toggleCompetitionConcluded = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: 'Failed to update competition status.',
+      error: error.message,
+    });
+  }
+};
+
+export const toggleRulesAgreed = async (req, res) => {
+  const { id } = req.params;
+  const { rulesAgreed } = req.body;
+
+  try {
+    const result = await pool.query(
+      `UPDATE school_competition_registrations
+       SET rules_agreed = $1,
+           rules_agreed_at = CASE WHEN $1 = true THEN COALESCE(rules_agreed_at, NOW()) ELSE NULL END,
+           updated_at = NOW()
+       WHERE id = $2
+       RETURNING *`,
+      [rulesAgreed, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Registration not found.',
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: `Rules agreement updated to ${rulesAgreed ? 'Yes (Agreed)' : 'No (Not Agreed)'}.`,
+      data: result.rows[0],
+    });
+  } catch (error) {
+    console.error('Toggle rules agreed error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to update rules agreement status.',
       error: error.message,
     });
   }

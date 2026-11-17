@@ -210,6 +210,9 @@ export const schoolRegistrationAPI = {
 
   toggleConcluded: (id, isConcluded) =>
     apiClient.patch(`/school-registration/admin/${id}/toggle-concluded`, { isConcluded }),
+
+  toggleRulesAgreed: (id, rulesAgreed) =>
+    apiClient.patch(`/school-registration/admin/${id}/toggle-rules-agreed`, { rulesAgreed }),
 };
 
 

@@ -6,6 +6,8 @@ import { schoolRegistrationAPI } from '../utils/api';
 
 import Button from '../components/Button1';
 import Card from '../components/Card1';
+import CompetitionRulesModal from '../components/CompetitionRulesModal';
+import { competitionRules } from '../data/competitionRules';
 
 
 const INDIAN_DATES = {
@@ -25,6 +27,8 @@ const PaintingRegistrationForm = () => {
   const [tokenError, setTokenError] = useState(null);
   const [school, setSchool] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  const [agreedToRules, setAgreedToRules] = useState(false);
+  const [showRulesModal, setShowRulesModal] = useState(false);
 
   const [errors, setErrors] = useState({});
 
@@ -435,6 +439,10 @@ const PaintingRegistrationForm = () => {
           'All preferred dates must be different';
       }
     }
+    if (!agreedToRules) {
+      e.agreedToRules =
+        'You must read and agree to the competition rules and regulations';
+    }
     setErrors(e);
     return (
       Object.keys(e).length === 0
@@ -659,6 +667,7 @@ const PaintingRegistrationForm = () => {
                 formData.secondaryDate4,
               ]
               : [],
+          rulesAgreed: agreedToRules,
         }
       );
       toast.success(
@@ -1020,8 +1029,79 @@ const PaintingRegistrationForm = () => {
                     </section>
                   )}
 
+                {/* RULES & REGULATIONS AGREEMENT */}
+                <div
+                  className={`p-5 rounded-2xl border transition-all ${
+                    errors.agreedToRules
+                      ? 'bg-red-50/70 border-red-300 ring-2 ring-red-100'
+                      : agreedToRules
+                        ? 'bg-emerald-50/60 border-emerald-300'
+                        : 'bg-orange-50/60 border-orange-200'
+                  }`}
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-gray-200/80 mb-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xl">📜</span>
+                      <h3 className="text-base font-bold text-gray-900">
+                        Rules & Regulations Agreement
+                      </h3>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowRulesModal(true)}
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-700 hover:text-orange-900 bg-white border border-orange-300 px-3.5 py-2 rounded-xl shadow-sm hover:bg-orange-50 transition w-fit"
+                    >
+                      📖 Read Painting Competition Rules
+                    </button>
+                  </div>
+
+                  <label className="flex items-start gap-3 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      id="agreedToRules"
+                      name="agreedToRules"
+                      checked={agreedToRules}
+                      onChange={(e) => {
+                        setAgreedToRules(e.target.checked);
+                        if (errors.agreedToRules) {
+                          setErrors((prev) => ({
+                            ...prev,
+                            agreedToRules: '',
+                          }));
+                        }
+                      }}
+                      className="mt-1 w-5 h-5 text-orange-600 rounded border-gray-300 focus:ring-orange-500 cursor-pointer flex-shrink-0"
+                    />
+                    <div className="text-sm text-gray-700 leading-relaxed">
+                      <span>
+                        I confirm that I have read and agree to the{' '}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setShowRulesModal(true);
+                        }}
+                        className="font-bold text-orange-600 hover:text-orange-800 underline inline"
+                      >
+                        Painting Competition Rules & Regulations
+                      </button>
+                      <span>
+                        , including the unconditional transfer and assignment of all artwork rights, title, and ownership to Swadhyay Seva Foundation on behalf of the participating school and students.
+                      </span>
+                      <span className="text-red-500 font-bold ml-1">*</span>
+                    </div>
+                  </label>
+
+                  {errors.agreedToRules && (
+                    <p className="mt-2 text-xs font-semibold text-red-600 flex items-center gap-1">
+                      ⚠️ {errors.agreedToRules}
+                    </p>
+                  )}
+                </div>
+
                 {/* SUBMIT */}
-                <div className="pt-4">
+                <div className="pt-2">
                   <Button
                     type="submit"
                     disabled={loading}
@@ -1037,6 +1117,19 @@ const PaintingRegistrationForm = () => {
           </div>
         </div>
       </div>
+
+      <CompetitionRulesModal
+        open={showRulesModal}
+        onClose={() => setShowRulesModal(false)}
+        competition={competitionRules.painting}
+        showAgreeButton={true}
+        onAgree={() => {
+          setAgreedToRules(true);
+          if (errors.agreedToRules) {
+            setErrors((prev) => ({ ...prev, agreedToRules: '' }));
+          }
+        }}
+      />
     </div>
   );
 };

@@ -5,7 +5,7 @@ import Pagination from './Pagination';
 
 // 🔥 SNEAC — compact registrations list for painting/quiz.
 // Groups painting submissions by school so primary & secondary show in one single consolidated row.
-const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onDelete, onToggleConcluded, actionLoading }) => {
+const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onDelete, onToggleConcluded, onToggleRulesAgreed, actionLoading }) => {
   const isPainting = competitionType === 'painting';
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -32,6 +32,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
             subRegistrations: [reg],
             total_participants: Number(reg.total_participants || 0),
             teachers: [...(reg.teachers || [])],
+            rules_agreed: Boolean(reg.rules_agreed),
           });
         } else {
           const existing = grouped.get(key);
@@ -59,6 +60,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
 
           existing.confirmation_sent = existing.confirmation_sent || reg.confirmation_sent;
           existing.is_concluded = existing.is_concluded || reg.is_concluded;
+          existing.rules_agreed = existing.rules_agreed || Boolean(reg.rules_agreed);
         }
       }
       list = Array.from(grouped.values());
@@ -80,6 +82,10 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
         matchStatus = !isFullyAllotted(r, competitionType);
       } else if (statusFilter === 'concluded') {
         matchStatus = Boolean(r.is_concluded);
+      } else if (statusFilter === 'rules_agreed') {
+        matchStatus = Boolean(r.rules_agreed);
+      } else if (statusFilter === 'rules_pending') {
+        matchStatus = !r.rules_agreed;
       }
 
       return matchSearch && matchStatus;
@@ -143,6 +149,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
         ...teacherHeaders,
         ...(!isSecondaryOnly ? ['Primary Preferred Dates', 'Primary Allotted Date'] : []),
         ...(!isPrimaryOnly ? ['Secondary Preferred Dates', 'Secondary Allotted Date'] : []),
+        'Rules Agreed',
         'Confirmation Sent',
         'Competition Concluded',
         'Submitted At',
@@ -186,6 +193,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
           ...teacherCols,
           ...(!isSecondaryOnly ? [primaryPref, formatDateSimple(r.primary_allotted_date)] : []),
           ...(!isPrimaryOnly ? [secondaryPref, formatDateSimple(r.secondary_allotted_date)] : []),
+          r.rules_agreed ? 'Yes' : 'No',
           r.confirmation_sent ? 'Yes' : 'No',
           r.is_concluded ? 'Yes' : 'No',
           formatDateSimple(r.submitted_at),
@@ -307,6 +315,12 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
           <option value="pending">Date Allotment Pending</option>
           <option value="allotted">Date Allotted</option>
           <option value="concluded">Concluded</option>
+          {isPainting && (
+            <>
+              <option value="rules_pending">Rules Agreement Pending (No)</option>
+              <option value="rules_agreed">Rules Agreed (Yes)</option>
+            </>
+          )}
         </select>
       </div>
 
@@ -320,6 +334,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
               <th className="px-4 py-3 text-center">Students</th>
               {!isPainting && <th className="px-4 py-3 text-center">Computers</th>}
               <th className="px-4 py-3 text-left">Dates</th>
+              {isPainting && <th className="px-4 py-3 text-center">Rules Agreed</th>}
               <th className="px-4 py-3 text-left">Status</th>
               <th className="px-4 py-3 text-left">Actions</th>
             </tr>
@@ -364,6 +379,36 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
                       <span className="text-amber-600 font-semibold text-xs">Pending</span>
                     )}
                   </td>
+                  {isPainting && (
+                    <td className="px-4 py-3 text-center">
+                      <button
+                        type="button"
+                        disabled={actionLoading === reg.id}
+                        onClick={() => {
+                          const currentAgreed = Boolean(reg.rules_agreed);
+                          if (reg.subRegistrations && reg.subRegistrations.length > 0) {
+                            reg.subRegistrations.forEach((sub) =>
+                              onToggleRulesAgreed && onToggleRulesAgreed(sub.id, currentAgreed)
+                            );
+                          } else {
+                            onToggleRulesAgreed && onToggleRulesAgreed(reg.id, currentAgreed);
+                          }
+                        }}
+                        className={`px-2.5 py-1 rounded-full text-xs font-bold transition inline-flex items-center gap-1 shadow-xs border ${
+                          reg.rules_agreed
+                            ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
+                            : 'bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100'
+                        }`}
+                        title={
+                          reg.rules_agreed
+                            ? 'Rules Agreed (Yes). Click to change to No.'
+                            : 'Rules Agreement Pending (No). Click to confirm from school and mark as Yes.'
+                        }
+                      >
+                        {reg.rules_agreed ? '✓ Yes' : '⚠️ No'}
+                      </button>
+                    </td>
+                  )}
                   <td className="px-4 py-3">
                     {isConcluded ? (
                       <span className="bg-purple-100 text-purple-800 px-2.5 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1">
@@ -425,7 +470,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
             {displayList.length === 0 && (
               <tr>
                 <td
-                  colSpan={isPainting ? 7 : 8}
+                  colSpan={8}
                   className="px-4 py-10 text-center text-gray-400"
                 >
                   No registrations found.

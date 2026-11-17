@@ -120,6 +120,7 @@ const AdminDashboard = () => {
 
     const paintingConcluded = paintingRegs.filter((r) => r.is_concluded);
     const quizConcluded = quizRegs.filter((r) => r.is_concluded);
+    const paintingRulesAgreed = paintingRegs.filter((r) => r.rules_agreed).length;
 
     return {
       totalSchools: sneacRequests.length,
@@ -135,6 +136,7 @@ const AdminDashboard = () => {
       quizConcludedCount: quizConcluded.length,
       paintingConcludedSchools: paintingConcluded.map((r) => r.school_name),
       quizConcludedSchools: quizConcluded.map((r) => r.school_name),
+      paintingRulesAgreed,
     };
   }, [sneacRequests, paintingRegs, quizRegs]);
 
@@ -481,9 +483,10 @@ const AdminDashboard = () => {
                         <div className="space-y-3">
                           <div className="flex justify-between items-center">
                             <span className="font-semibold">🎨 Painting</span>
-                            <span className="bg-primary/10 text-primary px-4 py-1 rounded-full">
+                            <span className="bg-primary/10 text-primary px-4 py-1 rounded-full text-xs font-semibold">
                               {paintingRegs.length} schools ·{' '}
-                              {sneacStats.paintingParticipants} participants
+                              {sneacStats.paintingParticipants} participants ·{' '}
+                              {sneacStats.paintingRulesAgreed} agreed
                             </span>
                           </div>
                           <div className="flex justify-between items-center">

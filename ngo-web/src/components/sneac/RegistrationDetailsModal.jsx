@@ -12,6 +12,7 @@ const RegistrationDetailsModal = ({
   onOpenDateModal,
   onSendConfirmation,
   onDelete,
+  onToggleRulesAgreed,
 }) => {
 
   if (!registration) return null;
@@ -73,6 +74,56 @@ const RegistrationDetailsModal = ({
             ))}
           </div>
         </div>
+
+        {/* RULES AGREEMENT (PAINTING ONLY) */}
+        {isPainting && (
+          <div className="mb-6 p-4 rounded-xl border border-gray-200 bg-gray-50 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-base">📜</span>
+                <h4 className="font-bold text-gray-800 text-sm">Rules & Rights Agreement</h4>
+              </div>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Agreement to painting rules & assignment of artwork rights to Foundation
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span
+                className={`px-2.5 py-1 rounded-full text-xs font-bold border ${
+                  reg.rules_agreed
+                    ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
+                    : 'bg-amber-100 text-amber-800 border-amber-200'
+                }`}
+              >
+                {reg.rules_agreed ? '✓ Agreed (Yes)' : '⚠️ Not Agreed (No)'}
+              </span>
+              {onToggleRulesAgreed && (
+                <button
+                  type="button"
+                  disabled={actionLoading === reg.id}
+                  onClick={() => {
+                    const currentAgreed = Boolean(reg.rules_agreed);
+                    if (reg.subRegistrations && reg.subRegistrations.length > 0) {
+                      reg.subRegistrations.forEach((sub) =>
+                        onToggleRulesAgreed(sub.id, currentAgreed)
+                      );
+                    } else {
+                      onToggleRulesAgreed(reg.id, currentAgreed);
+                    }
+                    reg.rules_agreed = !currentAgreed;
+                  }}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition ${
+                    reg.rules_agreed
+                      ? 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+                      : 'bg-emerald-600 text-white border-emerald-600 hover:bg-emerald-700 shadow-sm'
+                  }`}
+                >
+                  {reg.rules_agreed ? 'Change to No' : '✓ Confirm Agreement (Mark Yes)'}
+                </button>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* DATES */}
         <div className="mb-6">
