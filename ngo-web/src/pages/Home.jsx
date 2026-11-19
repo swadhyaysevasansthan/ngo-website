@@ -134,7 +134,7 @@ const Home = () => {
           title="Click to view competition details"
         >
           <img
-            src="/images/competitions/paint2.jpeg"
+            src="/images/competitions/paint1.jpeg"
             alt="Swadhyay National Environmental Painting Competition Poster"
             className="w-auto h-auto max-h-[340px] sm:max-h-[400px] md:max-h-[450px] object-contain rounded-xl shadow-md transition-transform duration-300 group-hover:scale-[1.02]"
           />
