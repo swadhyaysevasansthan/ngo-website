@@ -139,9 +139,11 @@ export const competitionRules = {
       },
 
       {
-        title: "15. Copyright & Usage Rights",
+        title: "15. Submission Ownership",
         points: [
-          "By participating, schools and participants grant Swadhyay Seva Foundation permission to use the submitted artworks for social media, exhibitions, publications, certificates, environmental awareness campaigns, and educational and promotional activities. Proper credit to students and schools may be provided wherever applicable."
+          "By submitting any drawing, painting, sketch, or other artwork (collectively, the “Submissions”) to Swadhyay Seva Foundation (the “Foundation”), each participating school on behalf of participating student irrevocably and unconditionally assigns, transfers, and conveys to the Foundation all right, title, and interest, for the full term of such rights and any renewals or extensions thereof. Upon submission, the Submissions shall become the sole and exclusive property of the Foundation, and neither the participating school nor the student, nor any person claiming through them, shall retain any right, title, interest, claim, or lien of any nature whatsoever in the Submissions.",
+          "The Foundation shall be entitled, at its sole discretion and without any further consent, notice, attribution, or payment of any royalty, fee, or other consideration, to use, reproduce, publish, display, exhibit, adapt, modify, distribute, sell, license, sub-license, or otherwise exploit the Submissions, in whole or in part, in any form, medium, or manner now known or hereafter devised, for any purpose whatsoever, including commercial, promotional, educational, and charitable purposes.",
+          "The participating school of each student represent and warrant that the Submission is the original work of the student, that they have full authority to grant the rights set out herein, and that the Foundation’s use of the Submissions shall not infringe the rights of any third party."
         ]
       },
 
@@ -152,16 +154,8 @@ export const competitionRules = {
           "The use of unfair means or misrepresentation may result in disqualification.",
           "The Foundation reserves the right to modify these rules, if necessary, for the smooth conduct of the programme."
         ]
-      },
-
-      {
-        title: "17. Submission Ownership & Assignment of Rights",
-        points: [
-          "By submitting any drawing, painting, sketch, or other artwork (collectively, the “Submissions”) to Swadhyay Seva Foundation (the “Foundation”), each participating school on behalf of participating student irrevocably and unconditionally assigns, transfers, and conveys to the Foundation all right, title, and interest, for the full term of such rights and any renewals or extensions thereof. Upon submission, the Submissions shall become the sole and exclusive property of the Foundation, and neither the participating school nor the student, nor any person claiming through them, shall retain any right, title, interest, claim, or lien of any nature whatsoever in the Submissions.",
-          "The Foundation shall be entitled, at its sole discretion and without any further consent, notice, attribution, or payment of any royalty, fee, or other consideration, to use, reproduce, publish, display, exhibit, adapt, modify, distribute, sell, license, sub-license, or otherwise exploit the Submissions, in whole or in part, in any form, medium, or manner now known or hereafter devised, for any purpose whatsoever, including commercial, promotional, educational, and charitable purposes.",
-          "The participating school of each student represent and warrant that the Submission is the original work of the student, that they have full authority to grant the rights set out herein, and that the Foundation’s use of the Submissions shall not infringe the rights of any third party."
-        ]
       }
+
     ]
   },
 
