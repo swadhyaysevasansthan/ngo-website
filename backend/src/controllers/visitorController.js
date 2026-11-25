@@ -16,6 +16,8 @@ export const trackVisitor = async (req, res) => {
       [visitorToken]
     );
 
+    let totalVisitors = null;
+
     if (existing.rows.length === 0) {
       const ip =
         req.headers['x-forwarded-for'] ||
@@ -23,30 +25,36 @@ export const trackVisitor = async (req, res) => {
         req.socket.remoteAddress;
 
       await pool.query(
-        `INSERT INTO visitor_logs
-        (visitor_token, ip_address)
-        VALUES ($1, $2)`,
+        `INSERT INTO visitor_logs (visitor_token, ip_address)
+         VALUES ($1, $2)
+         ON CONFLICT (visitor_token) DO NOTHING`,
         [visitorToken, ip]
       );
 
-      await pool.query(`
+      const updateResult = await pool.query(`
         UPDATE visitor_stats
         SET total_visitors = total_visitors + 1
         WHERE id = 1
+        RETURNING total_visitors
       `);
+
+      if (updateResult.rows.length > 0) {
+        totalVisitors = Number(updateResult.rows[0].total_visitors);
+      }
     }
 
-    const result = await pool.query(`
-      SELECT total_visitors
-      FROM visitor_stats
-      WHERE id = 1
-    `);
+    if (totalVisitors === null) {
+      const result = await pool.query(`
+        SELECT total_visitors
+        FROM visitor_stats
+        WHERE id = 1
+      `);
+      totalVisitors = Number(result.rows[0]?.total_visitors || 0);
+    }
 
     return res.json({
       success: true,
-      totalVisitors: Number(
-        result.rows[0].total_visitors
-      )
+      totalVisitors
     });
 
   } catch (error) {

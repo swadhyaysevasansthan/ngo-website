@@ -8,13 +8,13 @@ const { Pool } = pg;
 // Formatted ISO timestamp for logging
 const getTimestamp = () => new Date().toISOString();
 
-// Pool sizing and timeout configuration
+// Pool sizing and timeout configuration (tuned for low-memory cloud DB instances like Aiven 1GB)
 const poolMax = parseInt(process.env.DB_POOL_MAX, 10) || 5;
-const poolMin = parseInt(process.env.DB_POOL_MIN, 10) || 0;
-const idleTimeoutMillis = parseInt(process.env.DB_IDLE_TIMEOUT_MS, 10) || 30000;
-const connectionTimeoutMillis = parseInt(process.env.DB_CONNECTION_TIMEOUT_MS, 10) || 5000;
+const poolMin = process.env.DB_POOL_MIN !== undefined ? parseInt(process.env.DB_POOL_MIN, 10) : 1;
+const idleTimeoutMillis = parseInt(process.env.DB_IDLE_TIMEOUT_MS, 10) || 120000; // 2 min (avoids rapid disconnect/reconnect cycles)
+const connectionTimeoutMillis = parseInt(process.env.DB_CONNECTION_TIMEOUT_MS, 10) || 10000;
 const statementTimeout = parseInt(process.env.DB_STATEMENT_TIMEOUT_MS, 10) || 15000;
-const slowQueryThreshold = parseInt(process.env.SLOW_QUERY_THRESHOLD_MS, 10) || 500;
+const slowQueryThreshold = parseInt(process.env.SLOW_QUERY_THRESHOLD_MS, 10) || 1000; // 1000ms threshold avoids false alarms on TLS handshake latency
 
 // SSL configuration
 // If custom CA certificate is provided via CA_CERT or PGSSLROOTCERT, enforce rejectUnauthorized: true.
@@ -32,6 +32,8 @@ const pool = new Pool({
   idleTimeoutMillis,
   connectionTimeoutMillis,
   statement_timeout: statementTimeout,
+  keepAlive: true,
+  keepAliveInitialDelayMillis: 10000,
 });
 
 // Test database connection event
