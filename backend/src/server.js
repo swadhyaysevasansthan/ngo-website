@@ -49,14 +49,32 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:8081',  // Expo web dev server
+  'http://localhost:19006', // Expo web alternative port
   'https://ngo-website-rouge-five.vercel.app',
   'https://www.swadhyayseva.org',
   'https://swadhyayseva.org',  // non-www variant
-]
+  'https://swadhyay-backend-uu4d.onrender.com',
+];
 
 if (process.env.FRONTEND_URL) {
-  allowedOrigins.push(process.env.FRONTEND_URL);
+  const envOrigins = process.env.FRONTEND_URL.split(',').map((o) => o.trim()).filter(Boolean);
+  for (const envOrigin of envOrigins) {
+    if (!allowedOrigins.includes(envOrigin)) {
+      allowedOrigins.push(envOrigin);
+    }
+  }
 }
+
+// Flexible origin validator supporting exact matches, subdomains, and Vercel preview deployments
+const isOriginAllowed = (origin) => {
+  if (!origin) return true; // Mobile apps, Postman, server-to-server, curl
+  if (allowedOrigins.includes(origin)) return true;
+  // Match any Vercel preview branch for this project (e.g. https://ngo-website-xxx.vercel.app)
+  if (/^https:\/\/ngo-website[a-z0-9_-]*\.vercel\.app$/i.test(origin)) return true;
+  // Match any *.swadhyayseva.org subdomain
+  if (/^https:\/\/([a-z0-9_-]+\.)?swadhyayseva\.org$/i.test(origin)) return true;
+  return false;
+};
 
 // Middleware
 app.use(helmet({
@@ -65,10 +83,11 @@ app.use(helmet({
 
 app.use(cors({
   origin: (origin, cb) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      cb(null, true)
+    if (isOriginAllowed(origin)) {
+      cb(null, true);
     } else {
-      cb(new Error('Not allowed by CORS'))
+      console.warn(`[CORS Blocked] Origin: ${origin}`);
+      cb(null, false); // Return false instead of throwing Error to prevent 500 server stack traces
     }
   },
   credentials: true,
@@ -93,7 +112,7 @@ app.use(
   '/uploads',
   (req, res, next) => {
     const origin = req.headers.origin;
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || isOriginAllowed(origin)) {
       res.header('Access-Control-Allow-Origin', origin || allowedOrigins[0]);
     }
     res.header('Access-Control-Allow-Methods', 'GET');
