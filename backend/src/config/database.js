@@ -97,35 +97,61 @@ const logQueryMetrics = (text, duration, res, error) => {
   }
 };
 
-// Wrap pool.query to intercept both direct pool.query calls and track metrics safely
-const originalPoolQuery = pool.query.bind(pool);
-pool.query = function (text, params, callback) {
-  const start = Date.now();
+// Error codes that are safe to retry — transient connection failures caused by
+// DB failover (57P01), TCP resets (ECONNRESET/ECONNREFUSED), or broken pipes.
+// These are all network/infra-level and not caused by bad query logic.
+const RETRYABLE_CODES = new Set([
+  'ECONNREFUSED',  // DB host unreachable (new master not yet ready after failover)
+  'ECONNRESET',    // TCP connection reset mid-query
+  'EPIPE',         // Broken pipe — client dropped while writing
+  '57P01',         // PostgreSQL: "terminating connection due to administrator command" (OOM kill)
+  '08006',         // PostgreSQL: "connection failure"
+  '08001',         // PostgreSQL: "sqlclient_unable_to_establish_sqlconnection"
+  '08P01',         // PostgreSQL: "protocol_violation" (sometimes after failover)
+]);
+const MAX_QUERY_RETRIES = 3;
 
+// Wrap pool.query to: (1) log metrics, (2) auto-retry on transient connection errors
+const originalPoolQuery = pool.query.bind(pool);
+
+async function queryWithRetry(text, params, attempt = 1) {
+  const start = Date.now();
+  try {
+    const res = await originalPoolQuery(text, params);
+    const duration = Date.now() - start;
+    logQueryMetrics(text, duration, res, null);
+    return res;
+  } catch (err) {
+    const duration = Date.now() - start;
+    if (attempt < MAX_QUERY_RETRIES && RETRYABLE_CODES.has(err.code)) {
+      // Exponential back-off: 400ms, 800ms — capped at 3 s
+      const delay = Math.min(200 * 2 ** attempt, 3000);
+      console.warn(
+        `[${getTimestamp()}] ⚠️  Transient DB error (${err.code}), retrying query in ${delay}ms (attempt ${attempt}/${MAX_QUERY_RETRIES - 1})…`
+      );
+      await new Promise((resolve) => setTimeout(resolve, delay));
+      return queryWithRetry(text, params, attempt + 1);
+    }
+    logQueryMetrics(text, duration, null, err);
+    throw err;
+  }
+}
+
+pool.query = function (text, params, callback) {
   if (typeof params === 'function') {
     callback = params;
     params = undefined;
   }
 
   if (typeof callback === 'function') {
-    return originalPoolQuery(text, params, (err, res) => {
-      const duration = Date.now() - start;
-      logQueryMetrics(text, duration, res, err);
-      callback(err, res);
-    });
+    // Callback-style callers — wrap the promise and forward result
+    queryWithRetry(text, params)
+      .then((res) => callback(null, res))
+      .catch((err) => callback(err));
+    return; // callback style doesn't return a promise
   }
 
-  return originalPoolQuery(text, params)
-    .then((res) => {
-      const duration = Date.now() - start;
-      logQueryMetrics(text, duration, res, null);
-      return res;
-    })
-    .catch((err) => {
-      const duration = Date.now() - start;
-      logQueryMetrics(text, duration, null, err);
-      throw err;
-    });
+  return queryWithRetry(text, params);
 };
 
 // Query helper function

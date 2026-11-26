@@ -8,8 +8,9 @@ import AdminReviewCard from '../components/AdminReviewCard';
 import SneacAdminTab from '../components/sneac/SneacAdminTab';
 import useSneacAdmin from '../components/sneac/useSneacAdmin';
 import FarmersAdminTab from '../components/admin/FarmersAdminTab';
-import EvaluationAdminTab from '../components/evaluation/EvaluationAdminTab';
-import EventPassAdminTab from '../components/event-passes/EventPassAdminTab';
+// EvaluationAdminTab and EventPassAdminTab removed from main dashboard nav
+// to reduce DB load. Evaluation backend routes remain intact for the
+// public PhotographyGallery page which calls /api/public/evaluation.
 import QuizAdminTab from '../components/admin/QuizAdminTab';
 
 // 🔥 7 days is the window used for "recent registrations" across both
@@ -25,9 +26,8 @@ const isWithinLastNDays = (dateValue, days = 7) => {
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [stats, setStats] = useState(null);
-  const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, participants, email
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [dashboardCompetition, setDashboardCompetition] = useState('sneac'); // snpc, sneac
   const [emailForm, setEmailForm] = useState({
     recipients: 'pending',
@@ -58,23 +58,17 @@ const AdminDashboard = () => {
 
   const fetchData = async () => {
     try {
-      const [statsRes, participantsRes, pendingRes, approvedRes] = await Promise.all([
+      const [statsRes, pendingRes, approvedRes] = await Promise.all([
         adminAPI.getStats(),
-        adminAPI.getParticipants(),
         adminAPI.getAdminReviews('pending'),
         adminAPI.getAdminReviews('approved'),
       ]);
 
       setStats(statsRes.data.data);
-      setParticipants(participantsRes.data.data);
 
       const pending = pendingRes.data.data || [];
       const approved = approvedRes.data.data || [];
-
-      // merge lists; if you want newest first, you can sort after merge
-      const merged = [...pending, ...approved];
-
-      setReviews(merged);
+      setReviews([...pending, ...approved]);
     } catch (error) {
       toast.error('Failed to load data');
       if (error.response?.status === 401) {
@@ -254,16 +248,6 @@ const AdminDashboard = () => {
     );
   }
 
-  const totalParticipants = participants.length;
-  const natureParticipants = participants.filter(
-    (p) => p.category === 'nature'
-  );
-  const wildlifeParticipants = participants.filter(
-    (p) => p.category === 'wildlife'
-  );
-  const submittedParticipants = participants.filter((p) => p.has_submitted);
-  const pendingParticipants = participants.filter((p) => !p.has_submitted);
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -289,13 +273,10 @@ const AdminDashboard = () => {
           <div className="flex gap-4 overflow-x-auto pb-2">
             {[
               { id: 'dashboard', label: '📊 Dashboard' },
-              { id: 'participants', label: '👥 Participants' },
               { id: 'reviews', label: '💬 Reviews', badge: pendingReviewsCount },
               { id: 'quiz-settings', label: '🧠 Quiz Settings' },
               { id: 'sneac', label: '🏫 SNEAC Schools' },
               { id: 'farmers', label: '👨‍🌾 Farmers' },
-              { id: 'evaluation', label: '🏆 Evaluation' },
-              { id: 'event-passes', label: '🎫 Event Passes' },
               { id: 'email', label: '✉️ Send Email' },
             ].map((tab) => (
               <button
@@ -573,150 +554,6 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* PARTICIPANTS TAB */}
-        {activeTab === 'participants' && (
-          <div className="animate-fade-in">
-            <Card>
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-                <h2 className="text-2xl font-bold">
-                  👥 All Participants ({totalParticipants})
-                </h2>
-                <div className="flex flex-wrap gap-3">
-                  <Button
-                    size="small"
-                    onClick={() =>
-                      downloadCSV(
-                        participants,
-                        'snpc2026_participants_all.csv'
-                      )
-                    }
-                  >
-                    📥 All CSV
-                  </Button>
-                  <Button
-                    size="small"
-                    variant="outline"
-                    onClick={() =>
-                      downloadCSV(
-                        natureParticipants,
-                        'snpc2026_participants_nature.csv'
-                      )
-                    }
-                  >
-                    🌲 Nature CSV
-                  </Button>
-                  <Button
-                    size="small"
-                    variant="outline"
-                    onClick={() =>
-                      downloadCSV(
-                        wildlifeParticipants,
-                        'snpc2026_participants_wildlife.csv'
-                      )
-                    }
-                  >
-                    🦁 Wildlife CSV
-                  </Button>
-                  <Button
-                    size="small"
-                    variant="outline"
-                    onClick={() =>
-                      downloadCSV(
-                        submittedParticipants,
-                        'snpc2026_participants_submitted.csv'
-                      )
-                    }
-                  >
-                    ✅ Submitted CSV
-                  </Button>
-                  <Button
-                    size="small"
-                    variant="outline"
-                    onClick={() =>
-                      downloadCSV(
-                        pendingParticipants,
-                        'snpc2026_participants_pending.csv'
-                      )
-                    }
-                  >
-                    ⏳ Pending CSV
-                  </Button>
-                </div>
-              </div>
-
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead className="bg-gray-100">
-                    <tr>
-                      <th className="px-4 py-3 text-left">Participant ID</th>
-                      <th className="px-4 py-3 text-left">Name</th>
-                      <th className="px-4 py-3 text-left">Submitted?</th>
-                      <th className="px-4 py-3 text-left">Actions</th>
-                      <th className="px-4 py-3 text-left">Email</th>
-                      <th className="px-4 py-3 text-left">Phone</th>
-                      <th className="px-4 py-3 text-left">Category</th>
-                      <th className="px-4 py-3 text-left">College</th>
-                      <th className="px-4 py-3 text-left">City</th>
-                      <th className="px-4 py-3 text-left">State</th>
-                      <th className="px-4 py-3 text-left">Paid?</th>
-                      
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {participants.map((p) => (
-                      <tr key={p.id} className="border-b hover:bg-gray-50">
-                        <td className="px-4 py-3 font-mono text-xs">
-                          {p.participant_id}
-                        </td>
-                        <td className="px-4 py-3">{p.full_name}</td>
-                        <td className="px-4 py-3">
-                          <button
-                            onClick={() => handleToggleSubmitted(p)}
-                            className={`px-3 py-1 rounded-full text-xs ${
-                              p.has_submitted
-                                ? 'bg-green-100 text-green-700'
-                                : 'bg-orange-100 text-orange-700'
-                            }`}
-                          >
-                            {p.has_submitted ? '✓ Submitted' : '⏳ Pending'}
-                          </button>
-                        </td>
-                        <td className="px-4 py-3 text-xs">
-                          <button
-                            onClick={() =>
-                              navigator.clipboard.writeText(p.participant_id)
-                            }
-                            className="text-primary hover:underline"
-                          >
-                            Copy ID
-                          </button>
-                        </td>
-                        <td className="px-4 py-3">{p.email}</td>
-                        <td className="px-4 py-3">{p.phone}</td>
-                        <td className="px-4 py-3">{p.category}</td>
-                        <td className="px-4 py-3">{p.college_name}</td>
-                        <td className="px-4 py-3">{p.city}</td>
-                        <td className="px-4 py-3">{p.state}</td>
-                        <td className="px-4 py-3">
-                          {p.payment_status ? (
-                            <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs">
-                              Paid
-                            </span>
-                          ) : (
-                            <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs">
-                              Unpaid
-                            </span>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </Card>
-          </div>
-        )}
-
         {/* EMAIL TAB */}
         {activeTab === 'email' && (
           <div className="animate-fade-in max-w-3xl mx-auto">
@@ -930,15 +767,6 @@ const AdminDashboard = () => {
           <FarmersAdminTab />
         )}
 
-        {/* EVALUATION TAB */}
-        {activeTab === 'evaluation' && (
-          <EvaluationAdminTab />
-        )}
-
-        {/* EVENT PASSES TAB */}
-        {activeTab === 'event-passes' && (
-          <EventPassAdminTab />
-        )}
         {/* QUIZ SETTINGS TAB */}
         {activeTab === 'quiz-settings' && (
           <QuizAdminTab />

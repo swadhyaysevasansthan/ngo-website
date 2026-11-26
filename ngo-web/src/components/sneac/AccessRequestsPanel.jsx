@@ -18,7 +18,7 @@ const AccessRequestsPanel = ({
   const [statusFilter, setStatusFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(50);
 
   // Reset page when filter or search changes
   useEffect(() => {
@@ -265,6 +265,7 @@ const AccessRequestsPanel = ({
         total={filteredRequests.length}
         onPage={setPage}
         onPageSize={setPageSize}
+        pageSizeOptions={[50, 100]}
       />
     </Card>
   );

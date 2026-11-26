@@ -10,7 +10,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(50);
 
   // Reset page when filter/search/competitionType changes
   useEffect(() => {
@@ -488,6 +488,7 @@ const RegistrationsPanel = ({ competitionType, registrations, onViewDetails, onD
         total={displayList.length}
         onPage={setPage}
         onPageSize={setPageSize}
+        pageSizeOptions={[50, 100]}
       />
     </Card>
   );

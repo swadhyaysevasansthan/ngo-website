@@ -62,34 +62,50 @@ export const adminLogin = async (req, res) => {
 };
 
 /**
- * Get all participants (with has_submitted flag from column)
+ * Get all participants (paginated — avoids full-table fetch on large datasets)
+ * Query params: ?page=1&limit=50
  */
 export const getAllParticipants = async (req, res) => {
   try {
-    const result = await pool.query(`
-      SELECT
-        id,
-        participant_id,
-        full_name,
-        email,
-        phone,
-        category,
-        college_name,
-        course,
-        year_of_study,
-        city,
-        state,
-        payment_status,
-        has_submitted,
-        registration_date
-      FROM participants
-      ORDER BY registration_date DESC
-    `);
+    const page  = Math.max(1, parseInt(req.query.page, 10)  || 1);
+    const limit = Math.min(200, parseInt(req.query.limit, 10) || 50);
+    const offset = (page - 1) * limit;
+
+    const [dataRes, countRes] = await Promise.all([
+      pool.query(
+        `SELECT
+          id,
+          participant_id,
+          full_name,
+          email,
+          phone,
+          category,
+          college_name,
+          course,
+          year_of_study,
+          city,
+          state,
+          payment_status,
+          has_submitted,
+          registration_date
+        FROM participants
+        ORDER BY registration_date DESC
+        LIMIT $1 OFFSET $2`,
+        [limit, offset]
+      ),
+      pool.query('SELECT COUNT(*) FROM participants'),
+    ]);
+
+    const total = parseInt(countRes.rows[0].count, 10);
 
     res.json({
       success: true,
-      count: result.rows.length,
-      data: result.rows,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+      count: dataRes.rows.length,
+      data: dataRes.rows,
     });
   } catch (error) {
     console.error('Error fetching participants:', error);
@@ -143,47 +159,49 @@ export const updateSubmissionStatus = async (req, res) => {
 
 /**
  * Get dashboard statistics (registrations + submission status)
+ * Single CTE query instead of 6 sequential round-trips — drastically reduces
+ * per-request connection hold time and DB memory pressure.
  */
 export const getDashboardStats = async (req, res) => {
   try {
-    const totalRegistrations = await pool.query(
-      'SELECT COUNT(*) FROM participants'
-    );
-
-    const totalSubmitted = await pool.query(
-      'SELECT COUNT(*) FROM participants WHERE has_submitted = true'
-    );
-
-    const categoryBreakdown = await pool.query(`
-      SELECT category, COUNT(*) AS count
-      FROM participants
-      GROUP BY category
-      ORDER BY category;
+    const result = await pool.query(`
+      WITH base AS (
+        SELECT category, has_submitted, registration_date FROM participants
+      ),
+      totals AS (
+        SELECT
+          COUNT(*)                                                        AS total_reg,
+          COUNT(*) FILTER (WHERE has_submitted)                           AS total_sub,
+          COUNT(*) FILTER (WHERE registration_date >= NOW() - INTERVAL '7 days')
+                                                                          AS recent_reg,
+          COUNT(*) FILTER (WHERE has_submitted
+                             AND registration_date >= NOW() - INTERVAL '7 days')
+                                                                          AS recent_sub
+        FROM base
+      ),
+      cat_breakdown AS (
+        SELECT category, COUNT(*) AS count
+        FROM base
+        GROUP BY category
+        ORDER BY category
+      ),
+      sub_cat_breakdown AS (
+        SELECT category, COUNT(*) AS count
+        FROM base
+        WHERE has_submitted
+        GROUP BY category
+        ORDER BY category
+      )
+      SELECT
+        (SELECT row_to_json(totals) FROM totals)                          AS totals,
+        (SELECT json_agg(cat_breakdown ORDER BY category) FROM cat_breakdown)   AS category_breakdown,
+        (SELECT json_agg(sub_cat_breakdown ORDER BY category) FROM sub_cat_breakdown) AS submissions_by_category
     `);
 
-    const submissionsByCategory = await pool.query(`
-      SELECT category, COUNT(*) AS count
-      FROM participants
-      WHERE has_submitted = true
-      GROUP BY category
-      ORDER BY category;
-    `);
+    const { totals, category_breakdown, submissions_by_category } = result.rows[0];
 
-    const recentRegistrations = await pool.query(`
-      SELECT COUNT(*) 
-      FROM participants 
-      WHERE registration_date >= NOW() - INTERVAL '7 days';
-    `);
-
-    const recentSubmissions = await pool.query(`
-      SELECT COUNT(*) 
-      FROM participants 
-      WHERE has_submitted = true
-        AND registration_date >= NOW() - INTERVAL '7 days';
-    `);
-
-    const totalReg = parseInt(totalRegistrations.rows[0].count, 10);
-    const totalSub = parseInt(totalSubmitted.rows[0].count, 10);
+    const totalReg = parseInt(totals.total_reg, 10);
+    const totalSub = parseInt(totals.total_sub, 10);
 
     res.json({
       success: true,
@@ -191,16 +209,10 @@ export const getDashboardStats = async (req, res) => {
         totalRegistrations: totalReg,
         totalSubmissions: totalSub,
         pendingSubmissions: totalReg - totalSub,
-        categoryBreakdown: categoryBreakdown.rows,
-        submissionsByCategory: submissionsByCategory.rows,
-        recentRegistrations: parseInt(
-          recentRegistrations.rows[0].count,
-          10
-        ),
-        recentSubmissions: parseInt(
-          recentSubmissions.rows[0].count,
-          10
-        ),
+        categoryBreakdown: category_breakdown || [],
+        submissionsByCategory: submissions_by_category || [],
+        recentRegistrations: parseInt(totals.recent_reg, 10),
+        recentSubmissions: parseInt(totals.recent_sub, 10),
       },
     });
   } catch (error) {
