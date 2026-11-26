@@ -25,17 +25,11 @@ const isWithinLastNDays = (dateValue, days = 7) => {
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [dashboardCompetition, setDashboardCompetition] = useState('sneac');
   const [reviews, setReviews] = useState([]);
-  const [reviewsLoading, setReviewsLoading] = useState(false);
   const [reviewsTab, setReviewsTab] = useState('pending'); // pending, approved
   const pendingReviewsCount = reviews.filter(r => r.status === 'pending').length;
-  
-
-  const adminUsername = localStorage.getItem('adminUsername');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -50,13 +44,10 @@ const AdminDashboard = () => {
 
   const fetchData = async () => {
     try {
-      const [statsRes, pendingRes, approvedRes] = await Promise.all([
-        adminAPI.getStats(),
+      const [pendingRes, approvedRes] = await Promise.all([
         adminAPI.getAdminReviews('pending'),
         adminAPI.getAdminReviews('approved'),
       ]);
-
-      setStats(statsRes.data.data);
 
       const pending = pendingRes.data.data || [];
       const approved = approvedRes.data.data || [];
@@ -200,108 +191,15 @@ const AdminDashboard = () => {
         {/* DASHBOARD TAB */}
         {activeTab === 'dashboard' && (
           <div className="animate-fade-in">
-            {/* Competition Selector */}
+            {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-6">
               <h2 className="text-xl font-bold text-gray-800">
-                {dashboardCompetition === 'snpc'
-                  ? '🌿 SNPC 2026 Stats'
-                  : '🏫 SNEAC Stats'}
+                🏫 SNEAC Stats
               </h2>
-              <select
-                value={dashboardCompetition}
-                onChange={(e) => setDashboardCompetition(e.target.value)}
-                className="px-4 py-2 border-2 border-gray-300 rounded-lg font-semibold focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none bg-white"
-              >
-                <option value="snpc">🌿 SNPC 2026</option>
-                <option value="sneac">🏫 SNEAC</option>
-              </select>
             </div>
 
-            {/* SNPC STATS */}
-            {dashboardCompetition === 'snpc' && stats && (
-              <>
-                {/* Stats Cards */}
-                <div className="grid md:grid-cols-4 gap-6 mb-8">
-                  <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
-                    <div className="text-4xl mb-2">👥</div>
-                    <div className="text-3xl font-bold">
-                      {stats.totalRegistrations}
-                    </div>
-                    <div className="text-blue-100">Total Registrations</div>
-                  </Card>
-
-                  <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white">
-                    <div className="text-4xl mb-2">✅</div>
-                    <div className="text-3xl font-bold">
-                      {stats.totalSubmissions}
-                    </div>
-                    <div className="text-green-100">Marked as Submitted</div>
-                  </Card>
-
-                  <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-white">
-                    <div className="text-4xl mb-2">⏳</div>
-                    <div className="text-3xl font-bold">
-                      {stats.pendingSubmissions}
-                    </div>
-                    <div className="text-orange-100">Pending Submissions</div>
-                  </Card>
-
-                  <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white">
-                    <div className="text-4xl mb-2">📈</div>
-                    <div className="text-3xl font-bold">
-                      {stats.recentRegistrations}
-                    </div>
-                    <div className="text-purple-100">Last 7 Days (Regs)</div>
-                  </Card>
-                </div>
-
-                {/* Category Breakdown */}
-                <div className="grid md:grid-cols-2 gap-6">
-                  <Card>
-                    <h3 className="text-xl font-bold mb-4">
-                      📋 Registrations by Category
-                    </h3>
-                    <div className="space-y-3">
-                      {stats.categoryBreakdown.map((cat) => (
-                        <div
-                          key={cat.category}
-                          className="flex justify-between items-center"
-                        >
-                          <span className="font-semibold">{cat.category}</span>
-                          <span className="bg-primary/10 text-primary px-4 py-1 rounded-full">
-                            {cat.count} registrations
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </Card>
-
-                  <Card>
-                    <h3 className="text-xl font-bold mb-4">
-                      ✅ Marked Submissions by Category
-                    </h3>
-                    <div className="space-y-3">
-                      {stats.submissionsByCategory.map((cat) => (
-                        <div
-                          key={cat.category}
-                          className="flex justify-between items-center"
-                        >
-                          <span className="font-semibold">{cat.category}</span>
-                          <span className="bg-green-100 text-green-700 px-4 py-1 rounded-full">
-                            {cat.count} submitted
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </Card>
-                </div>
-              </>
-            )}
-
             {/* SNEAC STATS */}
-            {dashboardCompetition === 'sneac' && (
-              <>
-                {sneacLoading ? (
+            {sneacLoading ? (
                   <div className="flex items-center justify-center py-24">
                     <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
                   </div>
@@ -444,8 +342,6 @@ const AdminDashboard = () => {
                     </Card>
                   </>
                 )}
-              </>
-            )}
           </div>
         )}
 

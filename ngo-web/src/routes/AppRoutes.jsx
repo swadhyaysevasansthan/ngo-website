@@ -17,7 +17,7 @@ import Contact from "../pages/Contact";
 import QuestionBank from "../pages/QuestionBank";
 import OurTeam from "../pages/OurTeam";
 import PartnerWithUs from "../pages/PartnerWithUs";
-import PhotographyCompetition from "../pages/PhotographyCompetition";
+// import PhotographyCompetition from "../pages/PhotographyCompetition";
 import SchoolStories from "../pages/SchoolStories";
 import CurrentlyActiveEvents from "../pages/CurrentlyActiveEvents";
 import UpcomingEngagements from "../pages/UpcomingEngagements";
@@ -78,7 +78,7 @@ export default function AppRoutes() {
                 <Route path="/yoga" element={<CommunityPage />} />
                 <Route path="/donate" element={<DonatePage />} />
                 <Route path="/partner-with-us" element={<PartnerWithUs />} />
-                <Route path="/photography-competition" element={<PhotographyCompetition />} />
+                {/* <Route path="/photography-competition" element={<PhotographyCompetition />} /> */}
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/refund-policy" element={<RefundPolicy />} />
                 <Route path="/terms-conditions" element={<TermsAndConditions />} />

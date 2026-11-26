@@ -49,7 +49,6 @@ const Navbar = () => {
   ];
 
   const competitionSubLinks = [
-    { name: 'SNPC 2026', path: '/photography-competition' },
     { name: 'SNEAC 2026-27', path: '/upcoming-engagements' },
   ];
 
