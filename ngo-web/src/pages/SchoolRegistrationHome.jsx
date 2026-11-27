@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { schoolRegistrationAPI } from '../utils/api';
 import Card from '../components/Card1';
 import Button from '../components/Button1';

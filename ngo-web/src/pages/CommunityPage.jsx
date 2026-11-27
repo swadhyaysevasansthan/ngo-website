@@ -14,15 +14,7 @@ const CommunityPage = () => {
   const slug = paramSlug || location.pathname.slice(1);
 
   const [topic, setTopic] = useState(null);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const galleryRef = useRef(null);
-
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   // Auto-scroll to gallery every time it enters viewport
   useEffect(() => {

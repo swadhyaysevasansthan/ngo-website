@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Heart, Users, BookOpen, Sprout, ArrowRight, Target, Eye, Brain } from 'lucide-react';
+import { Heart, Users, BookOpen, Sprout, Target, Eye, Brain } from 'lucide-react';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import SectionHeader from '../components/SectionHeader';
@@ -40,26 +40,6 @@ const Home = () => {
       description: "Conducting engaging quiz competitions in schools and communities to encourage learning, stimulate curiosity, and foster healthy competition. Participants gain recognition and valuable knowledge through interactive experiences.",
     },
   ];
-
-  // ---------- Highlights slideshow logic ----------
-  const images = [
-    '/images/highlight/high1.png',
-    '/images/highlight/high2.png',
-    '/images/highlight/high3.png',
-    '/images/highlight/high4.png',
-    '/images/highlight/high5.png',
-    '/images/highlight/high6.png',
-  ];
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
 
   return (
     <div className="bg-gray-50">

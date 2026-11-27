@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { toast } from 'react-toastify';
-import { X, MapPin, Calendar, Camera, Leaf, Maximize2, Loader2, Lock, Tag, History, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, MapPin, Calendar, Camera, Leaf, Maximize2, Loader2, Lock, Tag, ChevronLeft, ChevronRight } from 'lucide-react';
 import { judgeAPI } from '../../utils/api';
 import JudgeImageViewer from './JudgeImageViewer';
 import CategoryBadge from './CategoryBadge';

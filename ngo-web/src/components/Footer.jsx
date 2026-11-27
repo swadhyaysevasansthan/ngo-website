@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Mail,
@@ -6,7 +6,6 @@ import {
   MapPin,
   Heart,
   Instagram,
-  Linkedin,
   Youtube,
   Facebook
 } from 'lucide-react';

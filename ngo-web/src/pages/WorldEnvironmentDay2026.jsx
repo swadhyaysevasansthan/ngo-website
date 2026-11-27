@@ -1,12 +1,10 @@
 import { motion } from "framer-motion";
 import {
   TreePine,
-  PlayCircle,
   School,
   Building2,
   Users,
   Leaf,
-  ArrowRight,
 } from "lucide-react";
 
 export default function WorldEnvironmentDay2026() {

@@ -133,9 +133,7 @@ const PaintingRegistrationForm = () => {
     getNum(formData.class7) +
     getNum(formData.class8);
 
-  const totalParticipants =
-    primaryCategoryTotal +
-    secondaryCategoryTotal;
+  // const totalParticipants = primaryCategoryTotal + secondaryCategoryTotal;
 
   const handleChange = (e) => {
     const { name, value } =

@@ -63,11 +63,6 @@ const InnovativeFarmers = () => {
     selectedCategory,
   ]);
 
-  const featuredFarmers =
-    filteredFarmers.filter(
-      (farmer) => farmer.is_featured
-    );
-
   return (
     <div>
 

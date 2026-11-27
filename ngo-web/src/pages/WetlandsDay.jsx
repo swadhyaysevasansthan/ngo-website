@@ -5,10 +5,6 @@ import {
   Users,
   Trophy,
   Trees,
-  Landmark,
-  Calendar,
-  MapPin,
-  Award,
 } from "lucide-react";
 
 export default function WetlandsDay() {
@@ -29,6 +25,7 @@ export default function WetlandsDay() {
       <section className="relative min-h-screen">
         <img
             src="https://res.cloudinary.com/demp2xljz/image/upload/v1781006284/3b807194-042f-48f3-89ee-9424ea118e16_uqohgu.jpg"
+            alt="Wetlands Day celebration"
             className="absolute inset-0 w-full h-full object-cover"
         />
 
@@ -219,6 +216,7 @@ export default function WetlandsDay() {
                     <img
                         key={image}
                         src={image}
+                        alt="Wetlands Day event highlight"
                         className="mb-4 rounded-3xl hover:scale-105 transition duration-500"
                     />
 
@@ -295,6 +293,7 @@ export default function WetlandsDay() {
 
                 <img
                     src="https://res.cloudinary.com/demp2xljz/image/upload/v1781006517/591c4ab3-c4be-4a08-9015-b88a6e9aebb2_botys6.jpg"
+                    alt="Wetlands conservation drive"
                     className="absolute inset-0 h-full w-full object-cover"
                 />
 

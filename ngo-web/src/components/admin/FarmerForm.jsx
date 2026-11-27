@@ -16,7 +16,7 @@ const FarmerForm = ({
   onDelete,
 }) => {
   const [form, setForm] = useState(farmer);
-  const [uploading, setUploading] = useState(false);
+  const [, setUploading] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
 
   useEffect(() => {

@@ -9,7 +9,7 @@ import {
 import {
   eventMeta, stats, winners, chiefGuest, distinguishedGuests,
   guestsOfHonour, venueDignities, schedule, galleryTabs,
-  launch2627, closingImage, youtubeVideoId, foundationPatron,
+  launch2627, closingImage, foundationPatron,
 } from "../data/sneacGrandFinale";
 
 // ─── useInView ──────────────────────────────────────────────

@@ -35,6 +35,7 @@ const FarmerProfile = () => {
 
   useEffect(() => {
     loadFarmer();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
   useEffect(() => {

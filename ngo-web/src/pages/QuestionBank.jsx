@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  BookOpen, Eye, EyeOff, Lock, FileText, GraduationCap, ShieldCheck, 
+  Eye, EyeOff, Lock, FileText, GraduationCap, ShieldCheck, 
   ChevronUp, ChevronDown, Sparkles, AlertCircle, ZoomIn, ZoomOut,
-  Maximize2, ArrowRight, CheckCircle2, ShieldAlert
+  ArrowRight, CheckCircle2, ShieldAlert
 } from "lucide-react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { quizSettingsAPI } from "../utils/api";

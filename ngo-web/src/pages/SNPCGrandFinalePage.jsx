@@ -22,7 +22,6 @@ const INK = "#120F0C";
 const PARCHMENT = "#FBF7EF";
 const GOLD = "#E7A93B";
 const MAROON = "#7A2331";
-const GREEN = "#1B4D3E";
 
 const serif = { fontFamily: "'Fraunces', serif" };
 const mono = { fontFamily: "'JetBrains Mono', monospace" };
