@@ -40,12 +40,12 @@ export const seoDataByPath = {
     keywords: "SNEAC 2025-26, school environmental stories, student eco achievements, school awareness campaign, green school initiatives"
   },
   "/sneac2026-27": {
-    title: "SNEAC 2026-27 | Swadhyay National Environmental Awareness Campaign",
+    title: "SNEAC 2026-27 | Swadhyay National Environmental Awareness Competitions",
     description: "Official portal for SNEAC 2026-27 by Swadhyay Seva Foundation. Register students for national environmental quizzes & painting competitions. View rules, dates & awards.",
     keywords: "SNEAC 2026-27, SNEAC, Swadhyay National Environmental Awareness Campaign, Swadhyay Seva Foundation, environmental competition 2026, school quiz registration, painting competition India"
   },
   "/upcoming-engagements": {
-    title: "SNEAC 2026-27 | Swadhyay National Environmental Awareness Campaign",
+    title: "SNEAC 2026-27 | Swadhyay National Environmental Awareness Competitions",
     description: "Official portal for SNEAC 2026-27 by Swadhyay Seva Foundation. Register students for national environmental quizzes & painting competitions. View rules, dates & awards.",
     keywords: "SNEAC 2026-27, SNEAC, Swadhyay National Environmental Awareness Campaign, Swadhyay Seva Foundation, environmental competition 2026, school quiz registration, painting competition India"
   },
