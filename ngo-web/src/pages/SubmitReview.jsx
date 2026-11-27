@@ -1,13 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import ReviewForm from '../components/ReviewForm';
 import SectionHeader from '../components/SectionHeader';
 
 const SubmitReview = () => {
-  useEffect(() => {
-    document.title = 'Share Your Experience';
-  }, []);
-
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* Hero Section */}

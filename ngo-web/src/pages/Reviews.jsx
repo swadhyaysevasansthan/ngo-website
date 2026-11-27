@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getPublicReviews } from '../utils/api';
 import ReviewCard from '../components/ReviewCard';
@@ -11,10 +11,6 @@ const Reviews = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedReview, setSelectedReview] = useState(null);
   const limit = 6;
-
-  useEffect(() => {
-    document.title = 'Community Reviews';
-  }, []);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['publicReviews', currentPage, limit],

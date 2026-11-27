@@ -5,6 +5,7 @@ import { Calendar, Clock, Rocket } from 'lucide-react';
 import SectionHeader from '../components/SectionHeader';
 import Button from '../components/Button';
 import CircularGallery from '../components/CircularGallery';
+import SEO from '../components/SEO';
 import { communityAPI } from '../utils/api';
 
 const CommunityPage = () => {
@@ -88,6 +89,11 @@ const CommunityPage = () => {
 
   return (
     <div className="bg-gray-50">
+      <SEO
+        title={topic ? `${topic.title} | Swadhyay Seva Foundation` : undefined}
+        description={topic ? (topic.tagline || (topic.description ? topic.description.replace(/<[^>]*>/g, '').slice(0, 155) : undefined)) : undefined}
+        image={topic?.hero_image_url}
+      />
       {/* Hero Section */}
       <section className="relative h-[400px] md:h-[500px] overflow-hidden">
         <div

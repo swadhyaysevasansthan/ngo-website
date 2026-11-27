@@ -15,6 +15,7 @@ import "yet-another-react-lightbox/styles.css";
 import { useParams, Link } from "react-router-dom";
 import { teamMembers } from "../data/teamData";
 import { useEffect, useState } from "react";
+import SEO from "../components/SEO";
 
 const TeacherProfile = () => {
     const { slug } = useParams();
@@ -59,6 +60,11 @@ const TeacherProfile = () => {
 
     return (
         <div className="bg-gray-50 min-h-screen">
+            <SEO
+                title={teacher ? `${teacher.name} | Yoga Instructor | Swadhyay Seva Foundation` : undefined}
+                description={teacher ? `${teacher.name} - ${teacher.designation || 'Yoga Instructor'} at Swadhyay Seva Foundation. Read profile, expertise, and wellness classes.` : undefined}
+                image={teacher?.image || teacher?.coverImage}
+            />
 
             {/* Hero Section */}
             <section

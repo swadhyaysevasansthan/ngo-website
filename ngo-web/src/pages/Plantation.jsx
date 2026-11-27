@@ -6,10 +6,6 @@ import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 
 const Plantation = () => {
-  useEffect(() => {
-    document.title = 'Plantation';
-  }, []);
-
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const galleryImages = [

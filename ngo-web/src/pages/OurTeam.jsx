@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import SectionHeader from '../components/SectionHeader';
 import TeamSection from '../components/TeamSection';
 import ModalCard from '../components/ModalCard';
@@ -16,10 +16,6 @@ import {
 
 const OurTeam = () => {
   const [selectedMember, setSelectedMember] = useState(null);
-
-  useEffect(() => {
-    document.title = 'Our Team';
-  }, []);
 
   return (
     <div className="bg-gray-50">

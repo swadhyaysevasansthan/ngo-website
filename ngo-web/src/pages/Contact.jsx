@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, } from 'lucide-react';
 import Card from '../components/Card';
@@ -6,10 +6,6 @@ import SectionHeader from '../components/SectionHeader';
 // import Button from '../components/Button';
 
 const Contact = () => {
-
-  useEffect(() => {
-    document.title = 'Contact - Swadhyay Seva Foundation';
-  }, []);
 
   const [formData, setFormData] = useState({
     name: '',

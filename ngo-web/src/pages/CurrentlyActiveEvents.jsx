@@ -1,12 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Activity } from 'lucide-react';
 
 const CurrentlyActiveEvents = () => {
-  useEffect(() => {
-    document.title = 'Currently Active Events - Swadhyay Seva Foundation';
-  }, []);
-
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col">
       {/* Hero Section */}

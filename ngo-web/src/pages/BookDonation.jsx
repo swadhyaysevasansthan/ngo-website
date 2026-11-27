@@ -3,11 +3,6 @@ import { Book, Heart, Library, Sparkles, GraduationCap, CheckCircle2, ChevronRig
 import { Link } from 'react-router-dom';
 
 const BookDonation = () => {
-
-    useEffect(() => {
-      document.title = 'Pustak Daan - Swadhyay Seva Foundation';
-    }, []);
-
   return (
     <main className="min-h-screen bg-white">
       {/* Campaign Hero Section */}

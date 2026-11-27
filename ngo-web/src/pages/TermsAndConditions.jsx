@@ -1,12 +1,7 @@
-import React, {useEffect} from "react";
+import React from "react";
 import PolicyHero from "../components/PolicyHero";
 
 const TermsAndConditions = () => {
-
-    useEffect(() => {
-        document.title = 'Terms & Conditions';
-      }, []);
-
   return (
     <main className="bg-gray-50 min-h-screen">
         <PolicyHero

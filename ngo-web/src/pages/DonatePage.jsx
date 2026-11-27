@@ -1,11 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 const DonatePage = () => {
-  useEffect(() => {
-    document.title = 'Donate - Swadhyay Seva Foundation';
-  }, []);
-
   // TODO: Replace this with your actual Razorpay integration
   const handleDonateClick = () => {
     // Example placeholder – integrate Razorpay Checkout or Payment Button here.

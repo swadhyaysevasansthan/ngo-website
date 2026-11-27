@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   ArrowRight,
   Award,
@@ -19,10 +19,6 @@ import {
 import { Link } from "react-router-dom";
 
 const PartnerWithUs = () => {
-
-  useEffect(() => {
-    document.title = 'Partner With Us - Swadhyay Seva Foundation';
-  }, []);
   return (
     <main className="min-h-screen bg-white">
       {/* HERO */}

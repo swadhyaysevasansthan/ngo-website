@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 
 import { farmerAPI } from '../utils/api';
+import SEO from '../components/SEO';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
@@ -87,6 +88,11 @@ const FarmerProfile = () => {
 
   return (
     <div>
+      <SEO
+        title={farmer ? `${farmer.name} | Innovative Farmers | Swadhyay Seva Foundation` : undefined}
+        description={farmer ? `${farmer.name} from ${farmer.location || 'India'} - Discover their sustainable practices, innovative natural farming techniques, and inspiring achievements.` : undefined}
+        image={farmer?.profile_image || farmer?.cover_image}
+      />
 
       {/* HERO */}
 

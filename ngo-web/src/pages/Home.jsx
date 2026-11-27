@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Heart, Users, BookOpen, Sprout, ArrowRight, Target, Eye, Brain } from 'lucide-react';
@@ -12,9 +12,6 @@ import TestimonialCarousel from '../components/TestimonialCarousel';
 import FeaturedFarmers from '../components/FeaturedFarmers';
 
 const Home = () => {
-  useEffect(() => {
-    document.title = 'Home - Swadhyay Seva Foundation';
-  }, []);
 
   const services = [
     {

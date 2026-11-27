@@ -12,10 +12,6 @@ import {
 } from '../data/eventsData';
 
 const SchoolStories = () => {
-  useEffect(() => {
-    document.title = 'SNEAC 2025-26 (1st Edition)';
-  }, []);
-
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedState, setSelectedState] = useState('all');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

@@ -1,12 +1,7 @@
-import React, {useEffect} from "react";
+import React from "react";
 import PolicyHero from "../components/PolicyHero";
 
 const PrivacyPolicy = () => {
-
-  useEffect(() => {
-    document.title = 'Privacy Policy';
-  }, []);
-
   return (
     <main className="bg-gray-50 min-h-screen">
         <PolicyHero

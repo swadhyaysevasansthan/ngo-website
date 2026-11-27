@@ -1,0 +1,11 @@
+# robots.txt for Swadhyay Seva Foundation
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /judge/
+
+# Host
+Host: https://www.swadhyayseva.org
+
+# Sitemap
+Sitemap: https://www.swadhyayseva.org/sitemap.xml

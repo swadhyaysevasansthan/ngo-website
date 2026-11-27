@@ -16,16 +16,6 @@ const InnovativeFarmers = () => {
     loadData();
   }, []);
 
-  useEffect(() => {
-    document.title =
-      'Our Innovative Farmers - Swadhyay Seva Foundation';
-
-    return () => {
-      document.title =
-        'Swadhyay Seva Foundation';
-    };
-  }, []);
-
   const loadData = async () => {
     try {
       const [farmersRes, categoriesRes] =

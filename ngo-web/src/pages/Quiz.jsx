@@ -27,10 +27,6 @@ const minutesSince = (ts) => (Date.now() - ts) / 60000;
    Quiz Component
 ═══════════════════════════════════════════════════════════════════════ */
 const Quiz = () => {
-  useEffect(() => { 
-    document.title = 'Environmental Awareness Quiz | Swadhyay Seva Foundation'; 
-  }, []);
-
   /* quiz config */
   const [allQuizzes,    setAllQuizzes]    = useState([]);
   const [accessCodeMap, setAccessCodeMap] = useState({});

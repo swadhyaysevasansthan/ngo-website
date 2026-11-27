@@ -5,10 +5,12 @@ import Footer from "../components/Footer";
 import AnnouncementBanner from "../components/AnnouncementBanner";
 import VisitorCounter from "../components/VisitorCounter";
 import WhatsAppButton from "../components/WhatsAppButton";
+import SEO from "../components/SEO";
 
 const PublicLayout = () => {
     return (
         <div className="flex flex-col min-h-screen">
+            <SEO />
             <Navbar />
             <AnnouncementBanner />
             <main className="flex-grow">

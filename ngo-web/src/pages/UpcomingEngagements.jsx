@@ -81,10 +81,6 @@ const UpcomingEngagements = () => {
   const [selectedJuror, setSelectedJuror] = useState(null);
   const [showJuryModal, setShowJuryModal] = useState(false);
 
-  useEffect(() => {
-    document.title = 'SNEAC 2026-27';
-  }, []);
-
   const openRules = (competition) => {
     setSelectedRules(competition);
     setShowRulesModal(true);

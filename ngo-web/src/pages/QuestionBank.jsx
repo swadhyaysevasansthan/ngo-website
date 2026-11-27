@@ -202,10 +202,6 @@ const PdfJsViewer = ({ src }) => {
    QuestionBank Component
 ═══════════════════════════════════════════════════════════════════════ */
 const QuestionBank = () => {
-  useEffect(() => { 
-    document.title = "Official Question Bank | Swadhyay Seva Foundation"; 
-  }, []);
-
   const [accessCode,   setAccessCode]   = useState(null); // null = loading
   const [code,         setCode]         = useState("");
   const [showCode,     setShowCode]     = useState(false);

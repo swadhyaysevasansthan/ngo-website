@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Quote } from 'lucide-react';
 import SectionHeader from '../components/SectionHeader';
@@ -6,10 +6,6 @@ import Card from '../components/Card';
 import { testimonials } from '../data/testimonialsData';
 
 const TestimonialsPage = () => {
-  useEffect(() => {
-    document.title = 'Testimonials';
-  }, []);
-
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* Hero Section */}
