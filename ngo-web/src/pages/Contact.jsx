@@ -11,6 +11,7 @@ const Contact = () => {
       icon: <MapPin className="w-6 h-6" />,
       title: "Our Address",
       content: "A-5/44, Pocket 5, Sector 18, Rohini, Delhi, 110089",
+      link: "https://maps.app.goo.gl/eRM99ZgC7g22nzDf8",
     },
     {
       icon: <Phone className="w-6 h-6" />,
@@ -65,6 +66,8 @@ const Contact = () => {
                       {info.link ? (
                         <a
                           href={info.link}
+                          target={info.link.startsWith('http') ? '_blank' : undefined}
+                          rel={info.link.startsWith('http') ? 'noopener noreferrer' : undefined}
                           className="text-gray-600 hover:text-primary-600 transition-colors text-sm"
                         >
                           {info.content}
@@ -103,7 +106,7 @@ const Contact = () => {
               />
               <div className="rounded-lg overflow-hidden shadow-lg" style={{ height: 'calc(100% - 120px)', minHeight: '400px' }}>
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3498.3592469351793!2d77.12842447496064!3d28.73868917925311!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d01c90af497bd%3A0x96ee0f1a815c8e4c!2sSwadhyay%20Health%20Care!5e0!3m2!1sen!2sin!4v1760185621415!5m2!1sen!2sin"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1749.172!2d77.1323207!3d28.7390638!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d010002e90fb1%3A0x4549019c8cd88654!2sSwadhyay%20seva%20foundation!5e0!3m2!1sen!2sin!4v1732730000000!5m2!1sen!2sin"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}

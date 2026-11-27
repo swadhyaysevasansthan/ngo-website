@@ -130,9 +130,14 @@ const Footer = () => {
                   size={18}
                   className="text-primary-400 mt-1 flex-shrink-0"
                 />
-                <span className="text-sm">
+                <a
+                  href="https://maps.app.goo.gl/eRM99ZgC7g22nzDf8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm hover:text-white transition-colors"
+                >
                   A-5/44, Pocket 5, Sector 18, Rohini, Delhi, 110089
-                </span>
+                </a>
               </li>
 
               <li className="flex items-center space-x-3">

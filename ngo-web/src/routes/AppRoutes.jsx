@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import PublicRoute from "./PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
@@ -19,7 +19,6 @@ import OurTeam from "../pages/OurTeam";
 import PartnerWithUs from "../pages/PartnerWithUs";
 // import PhotographyCompetition from "../pages/PhotographyCompetition";
 import SchoolStories from "../pages/SchoolStories";
-import CurrentlyActiveEvents from "../pages/CurrentlyActiveEvents";
 import UpcomingEngagements from "../pages/UpcomingEngagements";
 import TestimonialsPage from "../pages/TestimonialsPage";
 import DonatePage from "../pages/DonatePage";
@@ -66,8 +65,8 @@ export default function AppRoutes() {
                 <Route path="/quiz" element={<Quiz />} />
                 <Route path="/question-bank" element={<QuestionBank />} />
                 <Route path="/sneac2025-26" element={<SchoolStories />} />
-                <Route path="/quiz/currently-active" element={<CurrentlyActiveEvents />} />
-                <Route path="/upcoming-engagements" element={<UpcomingEngagements />} />
+                <Route path="/sneac2026-27" element={<UpcomingEngagements />} />
+                <Route path="/upcoming-engagements" element={<Navigate to="/sneac2026-27" replace />} />
                 <Route path="/ourteam" element={<OurTeam />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/testimonials" element={<TestimonialsPage />} />

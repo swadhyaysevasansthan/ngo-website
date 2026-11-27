@@ -32,7 +32,7 @@ const CurrentlyActiveEvents = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
             <a
-              href="/quiz/upcoming-engagements"
+              href="/sneac2026-27"
               className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
             >
               View Upcoming Events

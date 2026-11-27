@@ -49,7 +49,7 @@ const Navbar = () => {
   ];
 
   const competitionSubLinks = [
-    { name: 'SNEAC 2026-27', path: '/upcoming-engagements' },
+    { name: 'SNEAC 2026-27', path: '/sneac2026-27' },
   ];
 
   const gallerySubLinks = [

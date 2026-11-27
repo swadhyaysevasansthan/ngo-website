@@ -39,15 +39,15 @@ export const seoDataByPath = {
     description: "Explore inspiring stories, photo galleries, and student achievements from schools participating in the Swadhyay National Environment Awareness Campaign.",
     keywords: "SNEAC 2025-26, school environmental stories, student eco achievements, school awareness campaign, green school initiatives"
   },
-  "/quiz/currently-active": {
-    title: "Currently Active Events & Quizzes | Swadhyay Seva Foundation",
-    description: "Browse live and active environmental quizzes, student competitions, workshops, and community campaigns hosted by Swadhyay Seva Foundation.",
-    keywords: "active environmental events, live quiz, ongoing competitions, environmental workshops, live student contests"
+  "/sneac2026-27": {
+    title: "SNEAC 2026-27 | Swadhyay National Environmental Awareness Campaign",
+    description: "Official portal for SNEAC 2026-27 by Swadhyay Seva Foundation. Register students for national environmental quizzes & painting competitions. View rules, dates & awards.",
+    keywords: "SNEAC 2026-27, SNEAC, Swadhyay National Environmental Awareness Campaign, Swadhyay Seva Foundation, environmental competition 2026, school quiz registration, painting competition India"
   },
   "/upcoming-engagements": {
-    title: "Upcoming Engagements & Campaigns | Swadhyay Seva Foundation",
-    description: "Stay informed about upcoming national environmental competitions, student workshops, yoga camps, and sustainability campaigns for 2026-27.",
-    keywords: "upcoming NGO events, SNEAC 2026-27, upcoming environmental campaigns, future student competitions, school engagements"
+    title: "SNEAC 2026-27 | Swadhyay National Environmental Awareness Campaign",
+    description: "Official portal for SNEAC 2026-27 by Swadhyay Seva Foundation. Register students for national environmental quizzes & painting competitions. View rules, dates & awards.",
+    keywords: "SNEAC 2026-27, SNEAC, Swadhyay National Environmental Awareness Campaign, Swadhyay Seva Foundation, environmental competition 2026, school quiz registration, painting competition India"
   },
   "/ourteam": {
     title: "Our Team & Leadership | Swadhyay Seva Foundation",

@@ -12,7 +12,7 @@ const announcements = [
     id: 1,
     title: 'Swadhyay National Environment Awareness Competitions (SNEAC 2026-27) 2nd Edition',
     subtitle: 'Registration Open • No Registration Fee',
-    link: '/upcoming-engagements',
+    link: '/sneac2026-27',
     internal: true,
     icon: Leaf,
     cta: 'View Competition Details',

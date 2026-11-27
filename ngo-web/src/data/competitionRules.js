@@ -40,7 +40,7 @@ export const competitionRules = {
 
       {
         title: "4. Registration & Confirmation",
-        description: "More information: www.swadhyayseva.org/upcoming-engagements  ·  Register here: www.swadhyayseva.org/school-competition",
+        description: "More information: www.swadhyayseva.org/sneac2026-27  ·  Register here: www.swadhyayseva.org/school-competition",
         points: [
           "The school's teacher coordinator submits the School Access Form at the registration link above.",
           "Competition officials review the submitted details and approve the request.",
@@ -180,7 +180,7 @@ export const competitionRules = {
 
       {
         title: "2. Registration & Confirmation",
-        description: "More information: www.swadhyayseva.org/upcoming-engagements  ·  Register here: www.swadhyayseva.org/school-competition",
+        description: "More information: www.swadhyayseva.org/sneac2026-27  ·  Register here: www.swadhyayseva.org/school-competition",
         points: [
           "The school's teacher coordinator submits the School Access Form at the registration link above.",
           "Competition officials review the submitted details and approve the request.",

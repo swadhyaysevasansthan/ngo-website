@@ -106,7 +106,7 @@ const Home = () => {
         className="bg-gray-50 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition flex flex-col"
       >
         <Link
-          to="/upcoming-engagements"
+          to="/sneac2026-27"
           className="w-full bg-gray-100/80 p-3 sm:p-4 flex items-center justify-center group"
           title="Click to view competition details"
         >
@@ -131,7 +131,7 @@ const Home = () => {
 
           <div className="pt-2">
             <Link
-              to="/upcoming-engagements"
+              to="/sneac2026-27"
               className="inline-flex items-center text-primary-600 font-semibold hover:text-primary-700 text-sm transition"
             >
               Learn more & register →
@@ -149,7 +149,7 @@ const Home = () => {
         className="bg-gray-50 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition flex flex-col"
       >
         <Link
-          to="/upcoming-engagements"
+          to="/sneac2026-27"
           className="w-full bg-gray-100/80 p-3 sm:p-4 flex items-center justify-center group"
           title="Click to view competition details"
         >
@@ -174,7 +174,7 @@ const Home = () => {
 
           <div className="pt-2">
             <Link
-              to="/upcoming-engagements"
+              to="/sneac2026-27"
               className="inline-flex items-center text-primary-600 font-semibold hover:text-primary-700 text-sm transition"
             >
               Learn more & register →
@@ -187,7 +187,7 @@ const Home = () => {
 
     {/* Engagements Page CTA */}
     <div className="text-center mt-10">
-      <Link to="/upcoming-engagements">
+      <Link to="/sneac2026-27">
         <Button
           variant="outline"
           className="border-2 border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white"
